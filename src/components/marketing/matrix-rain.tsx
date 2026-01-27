@@ -35,8 +35,8 @@ export function MatrixRain() {
     const newColumns: Column[] = Array.from({ length: columnCount }, (_, i) => ({
       id: i,
       left: `${(i / columnCount) * 100}%`,
-      delay: Math.random() * 5,
-      duration: isMobile ? 15 + Math.random() * 10 : 10 + Math.random() * 15,
+      delay: (i % 5) * 0.3, // Staggered start, max 1.5s delay
+      duration: isMobile ? 8 + Math.random() * 4 : 5 + Math.random() * 5, // Faster: 5-10s on desktop
       chars: generateRandomString(isMobile ? 30 : 40 + Math.floor(Math.random() * 30)),
     }));
     setColumns(newColumns);
