@@ -8,6 +8,7 @@ import { ChatGptAdMock } from "@/components/marketing/chatgpt-ad-mock";
 import { AnimatedStats } from "@/components/marketing/animated-stats";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { OpenAIIcon, ClaudeIcon, PerplexityIcon, GeminiIcon, GrokIcon } from "@/components/marketing/platform-icons";
+import { OrganizationSchema, WebSiteSchema, FAQSchema, ServiceSchema } from "@/components/seo/structured-data";
 
 const clients = [
   { name: "Nexus", logo: "◈" },
@@ -95,8 +96,15 @@ const services = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Header />
+    <>
+      {/* Structured Data for SEO */}
+      <OrganizationSchema />
+      <WebSiteSchema />
+      <FAQSchema />
+      <ServiceSchema />
+
+      <div className="min-h-screen bg-black text-white">
+        <Header />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -440,7 +448,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }

@@ -5,8 +5,13 @@ import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description: "Full-service AI search advertising. Strategy, execution, and analytics for ChatGPT, Perplexity, Claude, and emerging AI platforms.",
+  title: "AI Search Advertising Services - ChatGPT Ads, AI Visibility & More",
+  description: "Full-service AI search advertising: ChatGPT ads, AI visibility tracking, content optimization, and brand protection. Get your brand recommended by AI assistants.",
+  keywords: ["ChatGPT advertising services", "AI search services", "AI visibility tracking", "LLM content optimization", "AI brand protection"],
+  openGraph: {
+    title: "AI Search Advertising Services | AdsX",
+    description: "Full-service AI search advertising: ChatGPT ads, AI visibility tracking, content optimization, and brand protection.",
+  },
 };
 
 const services = [

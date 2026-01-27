@@ -3,8 +3,12 @@ import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Get in touch with AdsX. Book a strategy call or send us a message.",
+  title: "Contact Us - Book Your Free AI Visibility Audit",
+  description: "Book a free AI visibility audit and strategy call. Learn how to get your brand recommended by ChatGPT, Claude, Perplexity and other AI platforms.",
+  openGraph: {
+    title: "Contact AdsX - Book Your Free AI Visibility Audit",
+    description: "Book a free AI visibility audit and strategy call with the leading AI search advertising agency.",
+  },
 };
 
 export default function ContactPage() {
