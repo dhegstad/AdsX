@@ -18,18 +18,31 @@ interface Column {
 
 export function MatrixRain() {
   const [columns, setColumns] = useState<Column[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const columnCount = Math.floor(window.innerWidth / 40);
+    setIsMounted(true);
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Fewer columns on mobile for performance
+    const isMobile = window.innerWidth < 768;
+    const columnSpacing = isMobile ? 60 : 40;
+    const columnCount = Math.max(5, Math.floor(window.innerWidth / columnSpacing));
+
     const newColumns: Column[] = Array.from({ length: columnCount }, (_, i) => ({
       id: i,
       left: `${(i / columnCount) * 100}%`,
       delay: Math.random() * 5,
-      duration: 10 + Math.random() * 15,
-      chars: generateRandomString(40 + Math.floor(Math.random() * 30)),
+      duration: isMobile ? 15 + Math.random() * 10 : 10 + Math.random() * 15,
+      chars: generateRandomString(isMobile ? 30 : 40 + Math.floor(Math.random() * 30)),
     }));
     setColumns(newColumns);
   }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div className="matrix-rain">

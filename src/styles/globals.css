@@ -115,6 +115,27 @@
   animation: matrix-fall linear infinite;
   user-select: none;
   text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+  will-change: transform, opacity;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-column {
+    animation: none;
+    opacity: 0.15;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .matrix-column {
+    font-size: 10px;
+    color: rgba(74, 222, 128, 0.2);
+    text-shadow: 0 0 4px rgba(74, 222, 128, 0.2);
+  }
 }
 
 /* Gradient text */
