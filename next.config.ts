@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
-    instrumentationHook: true,
+    optimizePackageImports: ["lucide-react"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -17,24 +15,4 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
-export default withSentryConfig(nextConfig, {
-  // Suppresses source map uploading logs during build
-  silent: true,
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-}, {
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
-
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  tunnelRoute: "/monitoring",
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  automaticVercelMonitors: true,
-});
+export default nextConfig;

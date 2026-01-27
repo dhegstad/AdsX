@@ -4,50 +4,26 @@
 
 @layer base {
   :root {
-    /* Vercel-inspired theme - Light mode */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 0%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    /* Vercel-inspired theme - Dark mode */
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
+    --card: 0 0% 4%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 0%;
+    --popover: 0 0% 4%;
     --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
+    --primary: 142 71% 45%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 10%;
+    --secondary: 0 0% 8%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 100%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 0 0% 100%;
+    --ring: 142 71% 45%;
+    --radius: 0.5rem;
   }
 }
 
@@ -81,5 +57,84 @@
 
 /* Selection */
 ::selection {
-  @apply bg-primary text-primary-foreground;
+  @apply bg-emerald-500/30 text-white;
+}
+
+/* Grid graph pattern */
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Dot pattern */
+.dot-pattern {
+  background-image: radial-gradient(circle, rgba(74, 222, 128, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Matrix rain animation */
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.matrix-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  color: rgba(74, 222, 128, 0.25);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  animation: matrix-fall linear infinite;
+  user-select: none;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent;
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 40px rgba(74, 222, 128, 0.15);
+}
+
+/* Animated gradient border */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animated-border {
+  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
 }

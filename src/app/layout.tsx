@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "@/styles/globals.css";
-import { AnalyticsProvider } from "@/lib/analytics/posthog";
 
 export const metadata: Metadata = {
   title: {
-    default: "AdsX - Monitor ad account changes",
+    default: "AdsX - The Agency for AI Search Advertising",
     template: "%s | AdsX",
   },
-  description: "Monitor Meta & Google ad account changes and get Slack alerts",
+  description: "The agency for running ads in AI search results. Reach customers in ChatGPT, Perplexity, Claude, and emerging AI platforms.",
 };
 
 export default function RootLayout({
@@ -18,11 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark">
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
       >
-        <AnalyticsProvider>{children}</AnalyticsProvider>
+        {children}
       </body>
     </html>
   );
