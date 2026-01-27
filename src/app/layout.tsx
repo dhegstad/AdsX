@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   keywords: ["AI advertising", "ChatGPT ads", "AI search", "Perplexity ads", "Claude", "Gemini", "AI marketing", "LLM advertising"],
   authors: [{ name: "AdsX" }],
   creator: "AdsX",
-  metadataBase: new URL("https://adsx.agency"),
+  metadataBase: new URL("https://adsx.com"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://adsx.agency",
+    url: "https://adsx.com",
     siteName: "AdsX",
     title: "AdsX - Advertising for the AI Search Era",
     description: "Get your brand recommended by ChatGPT, Claude, Perplexity & more. The first agency built for AI search advertising.",
