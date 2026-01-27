@@ -23,6 +23,7 @@ export default async function Image() {
           backgroundColor: '#000000',
           backgroundImage: 'linear-gradient(to bottom right, #000000, #0a0a0a, #000000)',
           position: 'relative',
+          padding: '60px',
         }}
       >
         {/* Grid pattern overlay */}
@@ -45,9 +46,9 @@ export default async function Image() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)',
+            width: '800px',
+            height: '800px',
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%)',
             borderRadius: '50%',
           }}
         />
@@ -68,96 +69,86 @@ export default async function Image() {
               display: 'flex',
               alignItems: 'center',
               gap: '16px',
-              marginBottom: '40px',
+              marginBottom: '32px',
             }}
           >
             <div
               style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '16px',
+                width: '56px',
+                height: '56px',
+                borderRadius: '14px',
                 backgroundColor: 'rgba(16, 185, 129, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <span style={{ color: '#10b981', fontSize: '32px', fontWeight: 'bold' }}>X</span>
+              <span style={{ color: '#10b981', fontSize: '28px', fontWeight: 'bold' }}>X</span>
             </div>
-            <span style={{ color: 'white', fontSize: '48px', fontWeight: 'bold' }}>AdsX</span>
+            <span style={{ color: 'white', fontSize: '42px', fontWeight: 'bold' }}>AdsX</span>
           </div>
 
-          {/* Headline */}
-          <div
+          {/* Headline - Single Line */}
+          <span
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '8px',
+              fontSize: '72px',
+              fontWeight: 'bold',
+              color: 'white',
+              textAlign: 'center',
+              lineHeight: 1.1,
             }}
           >
+            Advertising for the{' '}
             <span
               style={{
-                fontSize: '64px',
-                fontWeight: 'bold',
-                color: 'white',
-                textAlign: 'center',
-              }}
-            >
-              Advertising for the
-            </span>
-            <span
-              style={{
-                fontSize: '64px',
-                fontWeight: 'bold',
                 background: 'linear-gradient(to right, #34d399, #6ee7b7, #10b981)',
                 backgroundClip: 'text',
                 color: 'transparent',
-                textAlign: 'center',
               }}
             >
               AI Search Era
             </span>
-          </div>
-
-          {/* Subheadline */}
-          <span
-            style={{
-              marginTop: '32px',
-              fontSize: '24px',
-              color: 'rgba(255,255,255,0.6)',
-              textAlign: 'center',
-              maxWidth: '800px',
-            }}
-          >
-            Get your brand recommended by ChatGPT, Claude, Perplexity & more
           </span>
 
-          {/* Platform badges */}
+          {/* Social Proof Stats */}
           <div
             style={{
               display: 'flex',
-              gap: '24px',
-              marginTop: '48px',
+              gap: '48px',
+              marginTop: '40px',
+              marginBottom: '40px',
             }}
           >
-            {['ChatGPT', 'Claude', 'Perplexity', 'Gemini', 'Grok'].map((platform) => (
-              <div
-                key={platform}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                <span style={{ color: '#10b981', fontSize: '16px' }}>●</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px' }}>{platform}</span>
-              </div>
-            ))}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>340%</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Avg. increase in AI mentions</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>4.2x</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Average client ROI</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>52+</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Brands launched</span>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '16px 32px',
+              borderRadius: '12px',
+              backgroundColor: '#10b981',
+              marginTop: '8px',
+            }}
+          >
+            <span style={{ fontSize: '24px', fontWeight: '600', color: '#000000' }}>
+              Get Your Free AI Visibility Audit
+            </span>
+            <span style={{ fontSize: '24px', color: '#000000' }}>→</span>
           </div>
         </div>
       </div>
