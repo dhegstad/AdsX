@@ -5,7 +5,6 @@ import { Footer } from "@/components/marketing/footer";
 import { MatrixRain } from "@/components/marketing/matrix-rain";
 import { AiVisibilityDemo } from "@/components/marketing/ai-visibility-demo";
 import { ChatGptAdMock } from "@/components/marketing/chatgpt-ad-mock";
-import { AnnouncementBar } from "@/components/marketing/announcement-bar";
 import { AnimatedStats } from "@/components/marketing/animated-stats";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { OpenAIIcon, ClaudeIcon, PerplexityIcon, GeminiIcon, GrokIcon } from "@/components/marketing/platform-icons";
@@ -99,10 +98,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-black text-white">
       <Header />
 
-      <AnnouncementBar />
-
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Grid graph background */}
         <div className="absolute inset-0 grid-pattern" />
 
@@ -112,7 +109,7 @@ export default function HomePage() {
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black" />
 
-        <div className="relative mx-auto max-w-5xl px-6 py-24 text-center lg:px-8">
+        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center lg:px-8">
           {/* Announcement badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
