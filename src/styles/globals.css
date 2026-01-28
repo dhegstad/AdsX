@@ -159,3 +159,51 @@
   background-size: 200% 100%;
   animation: gradient-shift 3s ease infinite;
 }
+
+/* Matrix rain animation - light mode */
+.matrix-rain-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.matrix-column-light {
+  position: absolute;
+  top: -100%;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  color: rgba(16, 185, 129, 0.25);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  animation: matrix-fall linear infinite;
+  user-select: none;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  will-change: transform, opacity;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-column-light {
+    animation: none;
+    opacity: 0.1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .matrix-column-light {
+    font-size: 10px;
+    color: rgba(16, 185, 129, 0.12);
+    text-shadow: 0 0 4px rgba(16, 185, 129, 0.08);
+  }
+}

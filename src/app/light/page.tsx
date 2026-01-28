@@ -7,6 +7,7 @@ import { ChatGptAdMockLight } from "@/components/marketing/chatgpt-ad-mock-light
 import { AnimatedStats } from "@/components/marketing/animated-stats";
 import { FaqSectionLight } from "@/components/marketing/faq-section-light";
 import { OpenAIIcon, ClaudeIcon, PerplexityIcon, GeminiIcon, GrokIcon } from "@/components/marketing/platform-icons";
+import { MatrixRainLight } from "@/components/marketing/matrix-rain-light";
 
 const clients = [
   { name: "Nexus", logo: "◈" },
@@ -102,10 +103,13 @@ export default function HomePageLight() {
         {/* Grid pattern - light version */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-white/80 to-white" />
+        {/* Matrix rain effect */}
+        <MatrixRainLight />
 
-        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center lg:px-8">
+        {/* Gradient overlay - subtle so matrix shows through */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/50 to-white/90 z-[2]" />
+
+        <div className="relative z-10 mx-auto max-w-5xl px-6 py-16 text-center lg:px-8">
           {/* Announcement badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />

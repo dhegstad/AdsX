@@ -1,0 +1,363 @@
+---
+title: "How to Track Your Brand's AI Visibility: Tools and Methods"
+excerpt: "Learn how to monitor and measure your brand's presence across ChatGPT, Perplexity, Claude, and other AI platforms. Practical tools and techniques for AI visibility tracking."
+date: "2026-01-16"
+category: "How-To"
+tags: ["AI Visibility", "Tracking", "Measurement", "Analytics", "Tools"]
+author:
+  name: "Sarah Chen"
+  role: "Head of AI Strategy"
+featured: false
+---
+
+You can't improve what you don't measure. As AI search becomes a critical channel, tracking how your brand appears across AI platforms is essential.
+
+This guide covers practical methods for monitoring your AI visibility, from manual approaches to automated tools.
+
+## Why AI Visibility Tracking Matters
+
+Unlike traditional search where you can check rankings, AI visibility is:
+- **Variable**: Same query can yield different responses
+- **Conversational**: Context affects recommendations
+- **Opaque**: No official "AI rankings" to check
+
+Without tracking, you're flying blind in an increasingly important channel.
+
+## What to Track
+
+### Core Metrics
+
+| Metric | Description | Why It Matters |
+|--------|-------------|----------------|
+| **Mention Rate** | How often your brand appears for relevant queries | Overall visibility |
+| **Position** | Where you appear in the response (first, second, etc.) | Prominence |
+| **Sentiment** | How positively you're described | Brand perception |
+| **Accuracy** | Whether information about you is correct | Reputation management |
+| **Share of Voice** | Your mentions vs. competitors | Competitive position |
+
+### Secondary Metrics
+
+- **Query coverage**: Which queries mention you vs. which don't
+- **Feature mentions**: Which product features are highlighted
+- **Comparison context**: How you're positioned vs. competitors
+- **Consistency**: How similar responses are across queries
+
+## Method 1: Manual Auditing
+
+The simplest approach—regularly query AI platforms and document results.
+
+### How to Do It
+
+**Step 1: Build a Query List**
+
+Create 20-50 queries your target customers might ask:
+
+```
+Category Queries:
+- "What's the best [category] for [use case]?"
+- "Can you recommend a [category]?"
+- "What [category] should I use for [need]?"
+
+Comparison Queries:
+- "[Your Brand] vs [Competitor]"
+- "Is [Your Brand] better than [Competitor]?"
+- "Difference between [Your Brand] and [Competitor]"
+
+Problem Queries:
+- "How do I solve [problem your product addresses]?"
+- "What's the best way to [task your product helps with]?"
+
+Brand Queries:
+- "What is [Your Brand]?"
+- "Is [Your Brand] good?"
+- "Tell me about [Your Brand]"
+```
+
+**Step 2: Query Each Platform**
+
+Test on:
+- ChatGPT (GPT-4)
+- Claude
+- Perplexity
+- Google Gemini
+- Microsoft Copilot
+
+**Step 3: Document Results**
+
+For each query, record:
+- Date and time
+- Platform and model version
+- Full response text
+- Whether you were mentioned
+- Position in response
+- Sentiment (positive/neutral/negative)
+- Accuracy of information
+- Competitors mentioned
+
+**Step 4: Track Over Time**
+
+Repeat monthly to track changes.
+
+### Manual Audit Template
+
+```markdown
+## AI Visibility Audit - [Month Year]
+
+### Query: "What's the best CRM for small businesses?"
+
+**ChatGPT Response:**
+[Paste full response]
+
+**Analysis:**
+- Mentioned: Yes/No
+- Position: 1st/2nd/3rd/Not mentioned
+- Sentiment: Positive/Neutral/Negative
+- Accuracy: Correct/Minor errors/Major errors
+- Competitors mentioned: [List]
+
+**Notes:**
+[Any observations]
+```
+
+### Pros and Cons of Manual Tracking
+
+**Pros:**
+- No cost
+- Full context of responses
+- Flexibility in queries
+
+**Cons:**
+- Time-consuming
+- Results vary (not statistically significant)
+- Hard to scale
+
+## Method 2: Systematic Sampling
+
+For more reliable data, use systematic sampling with multiple queries.
+
+### The Approach
+
+1. **Query each test prompt 5-10 times** across different sessions
+2. **Calculate mention rate** as percentage of queries where you appear
+3. **Use statistical significance** to track real changes vs. noise
+
+### Example Tracking Sheet
+
+| Query | Attempts | Mentions | Rate | Avg Position |
+|-------|----------|----------|------|--------------|
+| "Best CRM for startups" | 10 | 7 | 70% | 2.1 |
+| "CRM recommendations" | 10 | 6 | 60% | 2.8 |
+| "What CRM should I use" | 10 | 8 | 80% | 1.5 |
+
+### Statistical Considerations
+
+With AI variability, small changes may be noise. Look for:
+- Changes >15-20% in mention rate
+- Consistent changes across multiple queries
+- Changes that persist over multiple audits
+
+## Method 3: API-Based Monitoring
+
+For scale, use AI platform APIs to automate tracking.
+
+### Basic Setup
+
+```python
+# Conceptual example - adapt to your needs
+import openai
+from datetime import datetime
+
+queries = [
+    "What's the best CRM for small businesses?",
+    "Can you recommend a CRM?",
+    # ... more queries
+]
+
+def check_visibility(query, brand_name):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": query}]
+    )
+
+    text = response.choices[0].message.content
+    mentioned = brand_name.lower() in text.lower()
+
+    return {
+        "query": query,
+        "mentioned": mentioned,
+        "response": text,
+        "timestamp": datetime.now().isoformat()
+    }
+
+# Run daily/weekly and store results
+```
+
+### What to Build
+
+1. **Query runner**: Systematically test queries across platforms
+2. **Response parser**: Extract mentions, position, sentiment
+3. **Data storage**: Store results for trend analysis
+4. **Alerting**: Notify on significant changes
+
+### Considerations
+
+- **Cost**: API calls have costs—budget accordingly
+- **Rate limits**: Respect platform rate limits
+- **Terms of service**: Ensure compliance with platform ToS
+
+## Method 4: Third-Party Tools
+
+Several tools now offer AI visibility tracking:
+
+### Tool Categories
+
+**AI Monitoring Platforms:**
+- Track mentions across multiple AI platforms
+- Provide dashboards and alerts
+- Offer competitive benchmarking
+
+**Brand Monitoring Tools (with AI features):**
+- Traditional brand monitoring adding AI tracking
+- May have broader coverage but less depth
+
+**SEO Platforms (adding AI):**
+- SEO tools incorporating AI visibility metrics
+- Useful for combined traditional + AI search view
+
+### What to Look For
+
+- Coverage of major AI platforms (ChatGPT, Claude, Perplexity)
+- Query customization for your industry
+- Historical data and trend analysis
+- Competitive tracking capabilities
+- Sentiment analysis
+- Accuracy checking
+
+## Method 5: Proxy Metrics
+
+When direct tracking is difficult, use proxy metrics that correlate with AI visibility:
+
+### Brand Search Volume
+
+If AI mentions your brand, some users will search for it directly:
+- Track branded search volume in Google Search Console
+- Monitor trends over time
+- Compare to AI optimization efforts
+
+### Direct Traffic
+
+Brand awareness from AI can drive direct site visits:
+- Monitor direct traffic in analytics
+- Track new vs. returning visitor ratios
+- Analyze traffic patterns around AI events
+
+### Survey Data
+
+Ask customers how they found you:
+- Include "AI assistant recommendation" as an option
+- Track percentage over time
+- Correlate with visibility efforts
+
+### Social Listening
+
+AI recommendations can generate social discussion:
+- Monitor brand mentions on social platforms
+- Track "ChatGPT told me about [brand]" style mentions
+- Analyze sentiment trends
+
+## Setting Up Your Tracking System
+
+### Starter Setup (Low Budget)
+
+1. **Manual monthly audit** using the template above
+2. **Brand search tracking** via Google Search Console
+3. **Survey question** added to post-purchase flows
+4. **Spreadsheet tracking** of results over time
+
+### Intermediate Setup (Medium Budget)
+
+1. **Systematic sampling** with 5-10 query attempts
+2. **Basic API monitoring** for automated tracking
+3. **Third-party tool** for one platform
+4. **Dashboard** for visualization
+
+### Advanced Setup (Higher Budget)
+
+1. **Full API monitoring** across all platforms
+2. **Comprehensive third-party tool** with competitive tracking
+3. **Custom alerting** for significant changes
+4. **Integration** with other marketing dashboards
+
+## Reporting AI Visibility
+
+### Monthly Report Template
+
+```markdown
+# AI Visibility Report - [Month Year]
+
+## Summary
+- Overall mention rate: X% (change from last month)
+- Share of voice: X% (competitors: Y%, Z%)
+- Key wins: [queries where visibility improved]
+- Areas for improvement: [queries where competitors lead]
+
+## Platform Breakdown
+| Platform | Mention Rate | Position | Sentiment |
+|----------|--------------|----------|-----------|
+| ChatGPT  | X%          | X.X      | Positive  |
+| Claude   | X%          | X.X      | Positive  |
+| Perplexity| X%         | X.X      | Positive  |
+
+## Competitive Analysis
+[How you compare to top 3 competitors]
+
+## Query Analysis
+[Top queries where you appear/don't appear]
+
+## Recommendations
+[Actions to improve visibility]
+```
+
+### Key Stakeholder Metrics
+
+For executives, focus on:
+- Share of voice vs. competitors
+- Trend direction (improving/declining)
+- Correlation with business metrics (leads, revenue)
+
+For marketing teams:
+- Specific query performance
+- Content gaps to address
+- Competitive positioning details
+
+## Action From Data
+
+Tracking is only valuable if you act on insights:
+
+### If Mention Rate is Low
+
+- Create more AI-friendly content
+- Build brand authority (PR, reviews)
+- Address information gaps AI might have
+
+### If Sentiment is Negative
+
+- Investigate source of negative associations
+- Create positive content to counter
+- Address underlying product/service issues
+
+### If Accuracy is Poor
+
+- Ensure website has correct information
+- Build structured data
+- Monitor for misinformation and address
+
+### If Competitors Lead
+
+- Analyze what they're doing differently
+- Identify content/authority gaps
+- Develop catch-up strategy
+
+---
+
+*Need help building an AI visibility tracking system? [Contact AdsX](/contact) for monitoring solutions tailored to your brand.*
