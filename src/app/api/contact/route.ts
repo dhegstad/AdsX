@@ -1,4 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+// Only initialize Resend if API key is available
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 interface ContactFormData {
   firstName: string;
@@ -16,6 +22,15 @@ function validateEmail(email: string): boolean {
 
 function sanitize(str: string): string {
   return str.trim().slice(0, 1000);
+}
+
+function formatBudget(budget: string): string {
+  const budgetMap: Record<string, string> = {
+    "5k-10k": "$5,000 - $10,000",
+    "10k-25k": "$10,000 - $25,000",
+    "25k+": "$25,000+",
+  };
+  return budgetMap[budget] || "Not specified";
 }
 
 export async function POST(request: NextRequest) {
@@ -60,31 +75,133 @@ export async function POST(request: NextRequest) {
       lastName: sanitize(data.lastName),
       email: sanitize(data.email),
       company: sanitize(data.company),
-      budget: sanitize(data.budget || "Not specified"),
+      budget: formatBudget(data.budget),
       message: sanitize(data.message),
       submittedAt: new Date().toISOString(),
     };
 
-    // Log the submission (in production, you would send this to an email service,
-    // CRM, or database like Supabase, Airtable, etc.)
-    console.log("Contact form submission:", sanitizedData);
+    // Send email via Resend
+    if (resend) {
+      const toEmail = process.env.CONTACT_EMAIL || "hello@adsx.com";
 
-    // Here you could integrate with:
-    // - Email service (SendGrid, Resend, Postmark)
-    // - CRM (HubSpot, Salesforce)
-    // - Database (Supabase, PlanetScale)
-    // - Notification (Slack webhook)
+      await resend.emails.send({
+        from: "AdsX Contact Form <onboarding@resend.dev>",
+        to: toEmail,
+        replyTo: sanitizedData.email,
+        subject: `New Contact: ${sanitizedData.firstName} ${sanitizedData.lastName} from ${sanitizedData.company}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 32px; border-radius: 12px 12px 0 0;">
+              <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Form Submission</h1>
+            </div>
+            <div style="background: #f9fafb; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151; width: 140px;">Name</td>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${sanitizedData.firstName} ${sanitizedData.lastName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151;">Email</td>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
+                    <a href="mailto:${sanitizedData.email}" style="color: #10b981; text-decoration: none;">${sanitizedData.email}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151;">Company</td>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${sanitizedData.company}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151;">Budget</td>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${sanitizedData.budget}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: 600; color: #374151; vertical-align: top;">Message</td>
+                  <td style="padding: 12px 0; color: #1f2937; white-space: pre-wrap;">${sanitizedData.message}</td>
+                </tr>
+              </table>
+              <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                  Submitted on ${new Date(sanitizedData.submittedAt).toLocaleString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    timeZoneName: "short",
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
+        text: `
+New Contact Form Submission
 
-    // Example Slack webhook integration (uncomment and add SLACK_WEBHOOK_URL env var):
-    // if (process.env.SLACK_WEBHOOK_URL) {
-    //   await fetch(process.env.SLACK_WEBHOOK_URL, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       text: `New contact form submission!\n*Name:* ${sanitizedData.firstName} ${sanitizedData.lastName}\n*Email:* ${sanitizedData.email}\n*Company:* ${sanitizedData.company}\n*Budget:* ${sanitizedData.budget}\n*Message:* ${sanitizedData.message}`,
-    //     }),
-    //   });
-    // }
+Name: ${sanitizedData.firstName} ${sanitizedData.lastName}
+Email: ${sanitizedData.email}
+Company: ${sanitizedData.company}
+Budget: ${sanitizedData.budget}
+
+Message:
+${sanitizedData.message}
+
+Submitted: ${sanitizedData.submittedAt}
+        `.trim(),
+      });
+
+      // Send confirmation email to the user
+      await resend.emails.send({
+        from: "AdsX <onboarding@resend.dev>",
+        to: sanitizedData.email,
+        subject: "Thanks for reaching out to AdsX!",
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 32px; border-radius: 12px 12px 0 0;">
+              <h1 style="color: white; margin: 0; font-size: 24px;">Thanks for reaching out!</h1>
+            </div>
+            <div style="background: #ffffff; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 16px;">
+                Hi ${sanitizedData.firstName},
+              </p>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 16px;">
+                We've received your message and will get back to you within 24 hours. In the meantime, here's what you shared with us:
+              </p>
+              <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 24px 0;">
+                <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px;"><strong>Company:</strong> ${sanitizedData.company}</p>
+                <p style="color: #6b7280; font-size: 14px; margin: 0 0 8px;"><strong>Budget:</strong> ${sanitizedData.budget}</p>
+                <p style="color: #6b7280; font-size: 14px; margin: 0;"><strong>Message:</strong> ${sanitizedData.message.slice(0, 200)}${sanitizedData.message.length > 200 ? "..." : ""}</p>
+              </div>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 24px;">
+                While you wait, check out our <a href="https://adsx.com/blog" style="color: #10b981; text-decoration: none;">latest blog posts</a> on AI search advertising.
+              </p>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0;">
+                Best,<br>
+                The AdsX Team
+              </p>
+            </div>
+          </div>
+        `,
+        text: `
+Hi ${sanitizedData.firstName},
+
+Thanks for reaching out to AdsX! We've received your message and will get back to you within 24 hours.
+
+Here's what you shared with us:
+- Company: ${sanitizedData.company}
+- Budget: ${sanitizedData.budget}
+- Message: ${sanitizedData.message}
+
+While you wait, check out our latest blog posts on AI search advertising: https://adsx.com/blog
+
+Best,
+The AdsX Team
+        `.trim(),
+      });
+    } else {
+      // Log to console if Resend is not configured (development mode)
+      console.log("Contact form submission (Resend not configured):", sanitizedData);
+    }
 
     return NextResponse.json(
       {
