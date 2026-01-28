@@ -16,7 +16,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const themeScript = `
   (function() {
     try {
-      var theme = localStorage.getItem('theme') || 'dark';
+      var theme = localStorage.getItem('theme') || 'light';
       document.documentElement.classList.remove('dark', 'light');
       document.documentElement.classList.add(theme);
     } catch (e) {}
@@ -33,8 +33,8 @@ export function ThemeScript() {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Start with "dark" for SSR, then sync from localStorage after hydration
-  const [theme, setThemeState] = useState<Theme>("dark");
+  // Start with "light" for SSR, then sync from localStorage after hydration
+  const [theme, setThemeState] = useState<Theme>("light");
   const [isHydrated, setIsHydrated] = useState(false);
 
   // After hydration, read the actual theme from localStorage

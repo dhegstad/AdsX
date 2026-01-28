@@ -108,7 +108,7 @@ export default function FreeAuditPage() {
             <div className="mx-auto max-w-4xl">
               <AuditResults data={results} brandName={brandName} />
 
-              {/* CTA to upgrade */}
+              {/* CTA to book demo */}
               <div
                 className={cn(
                   "mt-12 rounded-2xl border p-8 text-center",
@@ -117,19 +117,19 @@ export default function FreeAuditPage() {
                     : "border-emerald-200 bg-emerald-50"
                 )}
               >
-                <h3 className="text-2xl font-bold">Want deeper insights?</h3>
+                <h3 className="text-2xl font-bold">Ready to improve your AI visibility?</h3>
                 <p
                   className={cn(
                     "mt-3 text-lg",
                     isDark ? "text-white/60" : "text-neutral-600"
                   )}
                 >
-                  Get continuous monitoring, historical tracking, and competitor analysis
-                  with the full AdsX Visibility Tracker.
+                  Our team can help you get recommended by ChatGPT, Claude, and other AI platforms.
+                  Book a call to discuss your custom strategy.
                 </p>
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="mt-6">
                   <Link
-                    href="/signup"
+                    href="/contact"
                     className={cn(
                       "inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all",
                       isDark
@@ -137,19 +137,8 @@ export default function FreeAuditPage() {
                         : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25"
                     )}
                   >
-                    Start Free Trial
+                    Book a Strategy Call
                     <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className={cn(
-                      "inline-flex items-center gap-2 rounded-lg border px-8 py-4 text-base font-medium transition-all",
-                      isDark
-                        ? "border-white/20 hover:bg-white/5"
-                        : "border-neutral-300 hover:bg-neutral-50"
-                    )}
-                  >
-                    Talk to Our Team
                   </Link>
                 </div>
               </div>
