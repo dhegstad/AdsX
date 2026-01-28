@@ -30,7 +30,7 @@ export async function GET() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
-      <url>${siteUrl}/logo.png</url>
+      <url>${siteUrl}/icon-512</url>
       <title>AdsX Blog</title>
       <link>${siteUrl}/blog</link>
     </image>

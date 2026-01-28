@@ -64,7 +64,7 @@ function ArticleSchema({ post, slug }: { post: NonNullable<ReturnType<typeof get
       name: "AdsX",
       logo: {
         "@type": "ImageObject",
-        url: "https://adsx.com/logo.png",
+        url: "https://adsx.com/icon-512",
       },
     },
     datePublished: post.date,

@@ -5,7 +5,7 @@ export function OrganizationSchema() {
     name: 'AdsX',
     description: 'The first advertising agency built for AI search. We help brands get recommended by ChatGPT, Claude, Perplexity, Gemini, and other AI platforms.',
     url: 'https://adsx.com',
-    logo: 'https://adsx.com/logo.png',
+    logo: 'https://adsx.com/icon-512',
     sameAs: [
       'https://twitter.com/adsx',
       'https://linkedin.com/company/adsx',

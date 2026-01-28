@@ -9,6 +9,16 @@ export const metadata: Metadata = {
     default: "AdsX - AI Search Advertising Agency | ChatGPT, Claude, Perplexity Ads",
     template: "%s | AdsX - AI Search Advertising",
   },
+  icons: {
+    icon: [
+      { url: '/icon', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-192', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [
+      { url: '/apple-icon', type: 'image/png', sizes: '180x180' },
+    ],
+  },
   description: "The first advertising agency built for AI search. Get your brand recommended by ChatGPT, Claude, Perplexity, Gemini & Grok. 340% avg increase in AI mentions. Book your free visibility audit.",
   keywords: [
     "AI advertising",
