@@ -97,6 +97,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <Analytics />
         <ThemeScript />
       </head>
       <body
@@ -105,7 +106,6 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );
