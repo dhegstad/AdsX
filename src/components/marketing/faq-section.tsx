@@ -14,7 +14,7 @@ const faqs = [
   {
     question: "What's the minimum engagement?",
     answer:
-      "We work with brands on 6-month minimum engagements. AI search optimization requires consistent effort and iteration—short-term projects rarely deliver meaningful results in this space.",
+      "We require a 3-month minimum to give our strategies time to take effect. After that, you can continue month-to-month with 30 days notice to cancel.",
   },
   {
     question: "Do you guarantee placements in ChatGPT responses?",
