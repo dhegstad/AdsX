@@ -128,10 +128,10 @@ export default function HomePage() {
             : "bg-gradient-to-b from-white/30 via-white/50 to-white/90"
         )} style={{ zIndex: 2 }} />
 
-        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center lg:px-8" style={{ zIndex: 10 }}>
+        <div className="relative mx-auto max-w-5xl px-6 py-10 text-center lg:px-8" style={{ zIndex: 10 }}>
           {/* Announcement badge */}
           <div className={cn(
-            "mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm",
+            "mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm",
             isDark
               ? "border-emerald-500/30 bg-emerald-500/10"
               : "border-emerald-500/30 bg-emerald-500/10"
@@ -140,7 +140,7 @@ export default function HomePage() {
             <span className={cn(
               "font-medium",
               isDark ? "text-emerald-400" : "text-emerald-600"
-            )}>Limited spots available — book your audit</span>
+            )}>Book your free audit</span>
           </div>
 
           {/* Headline */}
