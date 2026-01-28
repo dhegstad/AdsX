@@ -2,21 +2,24 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Clock, Calendar, Tag, Twitter, Linkedin } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Tag, Twitter, Linkedin, RefreshCw } from "lucide-react";
 import { ThemedLayout } from "@/components/themed-layout";
 import { cn } from "@/lib/utils";
 import { MDXContent } from "@/components/blog/mdx-content";
-import type { BlogPost, BlogPostMeta } from "@/lib/blog";
+import { TableOfContentsInline } from "@/components/blog/table-of-contents";
+import type { BlogPost, BlogPostMeta, Author } from "@/lib/blog";
 
 interface BlogPostContentProps {
   post: BlogPost;
   slug: string;
   relatedPosts: BlogPostMeta[];
+  authorData?: Author | null;
 }
 
-export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentProps) {
+export function BlogPostContent({ post, slug, relatedPosts, authorData }: BlogPostContentProps) {
   const shareUrl = encodeURIComponent(`https://adsx.com/blog/${slug}`);
   const shareTitle = encodeURIComponent(post.title);
+  const categorySlug = post.category.toLowerCase().replace(/\s+/g, "-");
 
   return (
     <ThemedLayout>
@@ -38,9 +41,12 @@ export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentPro
 
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-4 text-sm">
-            <span className="rounded-full border px-3 py-1 bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
+            <Link
+              href={`/blog/category/${categorySlug}`}
+              className="rounded-full border px-3 py-1 transition-colors bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/20"
+            >
               {post.category}
-            </span>
+            </Link>
             <span className="flex items-center gap-1 text-neutral-500 dark:text-white/50">
               <Calendar className="h-4 w-4" />
               {new Date(post.date).toLocaleDateString("en-US", {
@@ -49,6 +55,16 @@ export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentPro
                 year: "numeric",
               })}
             </span>
+            {post.updated && (
+              <span className="flex items-center gap-1 text-neutral-500 dark:text-white/50">
+                <RefreshCw className="h-4 w-4" />
+                Updated {new Date(post.updated).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            )}
             <span className="flex items-center gap-1 text-neutral-500 dark:text-white/50">
               <Clock className="h-4 w-4" />
               {post.readingTime}
@@ -63,20 +79,39 @@ export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentPro
 
           {/* Author */}
           <div className="mt-8 flex items-center justify-between border-t pt-8 border-neutral-200 dark:border-white/10">
-            <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
-                <span className="text-white font-bold">
-                  {post.author.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </span>
+            {authorData ? (
+              <Link href={`/blog/author/${authorData.slug}`} className="flex items-center gap-4 group">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                  <span className="text-white font-bold">
+                    {post.author.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                </div>
+                <div>
+                  <div className="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {post.author.name}
+                  </div>
+                  <div className="text-sm text-neutral-500 dark:text-white/50">{post.author.role}</div>
+                </div>
+              </Link>
+            ) : (
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                  <span className="text-white font-bold">
+                    {post.author.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                </div>
+                <div>
+                  <div className="font-medium">{post.author.name}</div>
+                  <div className="text-sm text-neutral-500 dark:text-white/50">{post.author.role}</div>
+                </div>
               </div>
-              <div>
-                <div className="font-medium">{post.author.name}</div>
-                <div className="text-sm text-neutral-500 dark:text-white/50">{post.author.role}</div>
-              </div>
-            </div>
+            )}
 
             {/* Share */}
             <div className="flex items-center gap-2">
@@ -105,6 +140,9 @@ export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentPro
 
         {/* Content */}
         <div className="mx-auto max-w-3xl px-6 lg:px-8 mt-12">
+          {/* Table of Contents (mobile) */}
+          <TableOfContentsInline content={post.content} />
+
           <div className="prose max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-neutral prose-a:text-emerald-600 prose-strong:text-neutral-900 prose-code:text-emerald-700 prose-code:bg-emerald-50 prose-pre:bg-neutral-50 prose-pre:border prose-pre:border-neutral-200 dark:prose-invert dark:prose-a:text-emerald-400 dark:prose-strong:text-white dark:prose-code:text-emerald-300 dark:prose-code:bg-white/10 dark:prose-pre:bg-white/5 dark:prose-pre:border-white/10">
             <MDXContent content={post.content} />
           </div>
@@ -116,12 +154,13 @@ export function BlogPostContent({ post, slug, relatedPosts }: BlogPostContentPro
             <div className="flex items-center gap-2 flex-wrap">
               <Tag className="h-4 w-4 text-neutral-500 dark:text-white/50" />
               {post.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="rounded-full px-3 py-1 text-sm bg-neutral-100 text-neutral-600 dark:bg-white/5 dark:text-white/60"
+                  href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="rounded-full px-3 py-1 text-sm transition-colors bg-neutral-100 text-neutral-600 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-white/5 dark:text-white/60 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-400"
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           </div>

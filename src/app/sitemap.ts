@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/blog';
+import { getAllPosts, getAllCategories, getAllTags, authors } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://adsx.com';
@@ -11,6 +11,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: 'monthly',
     priority: 0.6,
+  }));
+
+  // Get all categories
+  const categories = getAllCategories();
+  const categoryUrls: MetadataRoute.Sitemap = categories.map((cat) => ({
+    url: `${baseUrl}/blog/category/${cat.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.5,
+  }));
+
+  // Get all tags
+  const tags = getAllTags();
+  const tagUrls: MetadataRoute.Sitemap = tags.map((tag) => ({
+    url: `${baseUrl}/blog/tag/${tag.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.4,
+  }));
+
+  // Get all authors
+  const authorUrls: MetadataRoute.Sitemap = authors.map((author) => ({
+    url: `${baseUrl}/blog/author/${author.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.5,
   }));
 
   return [
@@ -70,5 +96,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Include all blog posts
     ...blogPostUrls,
+    // Include category pages
+    ...categoryUrls,
+    // Include tag pages
+    ...tagUrls,
+    // Include author pages
+    ...authorUrls,
   ];
 }

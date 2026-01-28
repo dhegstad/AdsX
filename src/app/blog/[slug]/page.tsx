@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/lib/blog";
+import { getPostBySlug, getAllSlugs, getRelatedPosts, getAuthorByName } from "@/lib/blog";
 import { BlogPostContent } from "@/components/blog/blog-post-content";
 
 interface PageProps {
@@ -85,6 +85,32 @@ function ArticleSchema({ post, slug }: { post: NonNullable<ReturnType<typeof get
   );
 }
 
+function FAQSchema({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> }) {
+  if (!post.faqs || post.faqs.length === 0) {
+    return null;
+  }
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: post.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 function BreadcrumbSchema({ post, slug }: { post: NonNullable<ReturnType<typeof getPostBySlug>>; slug: string }) {
   const schema = {
     "@context": "https://schema.org",
@@ -128,12 +154,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const relatedPosts = getRelatedPosts(slug, post.category);
+  const authorData = getAuthorByName(post.author.name);
 
   return (
     <>
       <ArticleSchema post={post} slug={slug} />
       <BreadcrumbSchema post={post} slug={slug} />
-      <BlogPostContent post={post} slug={slug} relatedPosts={relatedPosts} />
+      <FAQSchema post={post} />
+      <BlogPostContent post={post} slug={slug} relatedPosts={relatedPosts} authorData={authorData} />
     </>
   );
 }
