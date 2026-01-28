@@ -10,15 +10,15 @@ const navigation = {
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ],
-  services: [
-    { name: "AI Search Strategy", href: "/services" },
-    { name: "ChatGPT Ads", href: "/services" },
-    { name: "Visibility Tracking", href: "/services" },
+  industries: [
+    { name: "SaaS", href: "/industries/saas" },
+    { name: "E-commerce", href: "/industries/ecommerce" },
+    { name: "Fintech", href: "/industries/fintech" },
   ],
   resources: [
     { name: "Case Studies", href: "/case-studies" },
+    { name: "Free Audit", href: "/tools/free-audit" },
     { name: "Pricing", href: "/pricing" },
-    { name: "RSS Feed", href: "/feed.xml" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -80,14 +80,14 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Industries */}
           <div>
             <h3 className={cn(
               "text-sm font-semibold",
               theme === "dark" ? "text-white/80" : "text-neutral-700"
-            )}>Services</h3>
+            )}>Industries</h3>
             <ul className="mt-4 space-y-3">
-              {navigation.services.map((item) => (
+              {navigation.industries.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
