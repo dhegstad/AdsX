@@ -14,6 +14,11 @@ const navigation = {
   resources: [
     { name: "Case Studies", href: "/case-studies" },
     { name: "Pricing", href: "/pricing" },
+    { name: "RSS Feed", href: "/feed.xml" },
+  ],
+  legal: [
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Terms of Service", href: "/terms" },
   ],
 };
 
@@ -87,10 +92,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8">
+        <div className="mt-12 border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-white/30">
             &copy; {new Date().getFullYear()} AdsX. All rights reserved.
           </p>
+          <div className="flex items-center gap-6">
+            {navigation.legal.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-sm text-white/30 transition-colors hover:text-white"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

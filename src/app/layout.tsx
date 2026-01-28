@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://adsx.com"),
   alternates: {
     canonical: "https://adsx.com",
+    types: {
+      "application/rss+xml": "https://adsx.com/feed.xml",
+    },
   },
   openGraph: {
     type: "website",

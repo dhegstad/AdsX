@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Clock, Calendar, Tag, Share2, Linkedin, Twitter } from "lucide-react";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
@@ -258,10 +259,15 @@ export default async function BlogPostPage({ params }: PageProps) {
               {relatedPosts.map((relatedPost) => (
                 <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`} className="group">
                   <article>
-                    <div className="aspect-video rounded-xl bg-white/5 overflow-hidden mb-4">
-                      <div className="h-full w-full bg-gradient-to-br from-emerald-500/10 to-transparent flex items-center justify-center group-hover:from-emerald-500/20 transition-colors">
-                        <span className="text-4xl opacity-30">📝</span>
-                      </div>
+                    <div className="aspect-video rounded-xl bg-white/5 overflow-hidden mb-4 relative">
+                      <Image
+                        src={`/blog/${relatedPost.slug}/opengraph-image`}
+                        alt={relatedPost.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <h3 className="text-lg font-bold group-hover:text-emerald-400 transition-colors">
                       {relatedPost.title}
