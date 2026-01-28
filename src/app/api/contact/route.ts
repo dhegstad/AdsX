@@ -83,9 +83,10 @@ export async function POST(request: NextRequest) {
     // Send email via Resend
     if (resend) {
       const toEmail = process.env.CONTACT_EMAIL || "hello@adsx.com";
+      const fromEmail = process.env.FROM_EMAIL || "noreply@adsx.com";
 
       await resend.emails.send({
-        from: "AdsX Contact Form <onboarding@resend.dev>",
+        from: `AdsX Contact Form <${fromEmail}>`,
         to: toEmail,
         replyTo: sanitizedData.email,
         subject: `New Contact: ${sanitizedData.firstName} ${sanitizedData.lastName} from ${sanitizedData.company}`,
@@ -152,7 +153,7 @@ Submitted: ${sanitizedData.submittedAt}
 
       // Send confirmation email to the user
       await resend.emails.send({
-        from: "AdsX <onboarding@resend.dev>",
+        from: `AdsX <${fromEmail}>`,
         to: sanitizedData.email,
         subject: "Thanks for reaching out to AdsX!",
         html: `
