@@ -40,10 +40,10 @@ export function WebSiteSchema() {
     name: 'AdsX',
     description: 'Advertising for the AI Search Era. Get your brand recommended by ChatGPT, Claude, Perplexity & more.',
     url: 'https://adsx.com',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://adsx.com/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
+    publisher: {
+      '@type': 'Organization',
+      name: 'AdsX',
+      url: 'https://adsx.com',
     },
   };
 

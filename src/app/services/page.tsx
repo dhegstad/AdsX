@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Search, BarChart3, MessageSquare, FileText, Shield, TrendingUp } from "lucide-react";
 import { ThemedLayout } from "@/components/themed-layout";
+import { ServiceSchema } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
 
 const services = [
@@ -47,6 +48,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <ThemedLayout>
+      <ServiceSchema />
       {/* Hero */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-40" />

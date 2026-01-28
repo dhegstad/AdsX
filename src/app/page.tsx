@@ -10,6 +10,7 @@ import { ChatGptAdMock } from "@/components/marketing/chatgpt-ad-mock";
 import { AnimatedStats } from "@/components/marketing/animated-stats";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { OpenAIIcon, ClaudeIcon, PerplexityIcon, GeminiIcon, GrokIcon } from "@/components/marketing/platform-icons";
+import { OrganizationSchema, WebSiteSchema, FAQSchema } from "@/components/seo/structured-data";
 import { useTheme } from "@/context/theme-context";
 import { cn } from "@/lib/utils";
 
@@ -106,6 +107,9 @@ export default function HomePage() {
       "min-h-screen transition-colors duration-300",
       isDark ? "bg-black text-white" : "bg-white text-neutral-900"
     )}>
+      <OrganizationSchema />
+      <WebSiteSchema />
+      <FAQSchema />
       <Header />
 
       {/* Hero Section */}

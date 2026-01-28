@@ -7,6 +7,20 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
       },
+      // Search engine bots
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Yandex',
+        allow: '/',
+      },
+      // AI bots - explicitly allowed for AI visibility
       {
         userAgent: 'GPTBot',
         allow: '/',
@@ -29,6 +43,10 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'PerplexityBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Applebot',
         allow: '/',
       },
     ],
