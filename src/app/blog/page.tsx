@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
@@ -16,6 +17,27 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://adsx.com/blog",
   },
+};
+
+// Category colors for visual distinction
+const categoryColors: Record<string, string> = {
+  Guide: "from-emerald-500/30 to-emerald-600/10",
+  Strategy: "from-violet-500/30 to-violet-600/10",
+  Research: "from-blue-500/30 to-blue-600/10",
+  "How-To": "from-orange-500/30 to-orange-600/10",
+  "Case Studies": "from-pink-500/30 to-pink-600/10",
+  Analysis: "from-cyan-500/30 to-cyan-600/10",
+  Resource: "from-lime-500/30 to-lime-600/10",
+};
+
+const categoryIcons: Record<string, string> = {
+  Guide: "📚",
+  Strategy: "🎯",
+  Research: "🔬",
+  "How-To": "🛠️",
+  "Case Studies": "📊",
+  Analysis: "🔍",
+  Resource: "📋",
 };
 
 export default function BlogPage() {
@@ -51,16 +73,22 @@ export default function BlogPage() {
             </div>
             <Link href={`/blog/${featuredPost.slug}`} className="group block">
               <article className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-                {featuredPost.image && (
-                  <div className="aspect-video rounded-2xl bg-white/5 overflow-hidden">
-                    <div className="h-full w-full bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 flex items-center justify-center">
-                      <span className="text-6xl opacity-50">📊</span>
-                    </div>
-                  </div>
-                )}
-                <div className={featuredPost.image ? "" : "lg:col-span-2"}>
+                <div className="aspect-video rounded-2xl bg-white/5 overflow-hidden relative">
+                  <Image
+                    src={`/blog/${featuredPost.slug}/opengraph-image`}
+                    alt={featuredPost.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+                <div>
                   <div className="flex items-center gap-4 text-sm">
-                    <span className="text-emerald-400">{featuredPost.category}</span>
+                    <span className="inline-flex items-center gap-1.5 text-emerald-400">
+                      <span>{categoryIcons[featuredPost.category] || "📝"}</span>
+                      {featuredPost.category}
+                    </span>
                     <span className="text-white/30">&middot;</span>
                     <time className="text-white/50">
                       {new Date(featuredPost.date).toLocaleDateString("en-US", {
@@ -112,13 +140,21 @@ export default function BlogPage() {
               {otherPosts.map((post) => (
                 <article key={post.slug} className="group">
                   <Link href={`/blog/${post.slug}`} className="block">
-                    <div className="aspect-video rounded-xl bg-white/5 overflow-hidden mb-4">
-                      <div className="h-full w-full bg-gradient-to-br from-emerald-500/10 to-transparent flex items-center justify-center group-hover:from-emerald-500/20 transition-colors">
-                        <span className="text-4xl opacity-30">📝</span>
-                      </div>
+                    <div className="aspect-video rounded-xl overflow-hidden mb-4 relative bg-white/5">
+                      <Image
+                        src={`/blog/${post.slug}/opengraph-image`}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="flex items-center gap-3 text-sm">
-                      <span className="text-emerald-400">{post.category}</span>
+                      <span className="inline-flex items-center gap-1.5 text-emerald-400">
+                        <span>{categoryIcons[post.category] || "📝"}</span>
+                        {post.category}
+                      </span>
                       <span className="text-white/30">&middot;</span>
                       <span className="flex items-center gap-1 text-white/50">
                         <Clock className="h-3 w-3" />
