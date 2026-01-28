@@ -17,6 +17,7 @@ const navigation = {
   ],
   resources: [
     { name: "Case Studies", href: "/case-studies" },
+    { name: "Compare", href: "/compare" },
     { name: "Free Audit", href: "/tools/free-audit" },
     { name: "Pricing", href: "/pricing" },
   ],
