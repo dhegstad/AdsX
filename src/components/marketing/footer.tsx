@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 const navigation = {
   company: [
@@ -23,8 +27,13 @@ const navigation = {
 };
 
 export function Footer() {
+  const { theme } = useTheme();
+
   return (
-    <footer className="border-t border-white/10 bg-black">
+    <footer className={cn(
+      "border-t",
+      theme === "dark" ? "border-white/10 bg-black" : "border-neutral-200 bg-white"
+    )}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           {/* Brand */}
@@ -33,22 +42,36 @@ export function Footer() {
               <div className="h-8 w-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                 <span className="text-emerald-500 font-bold text-sm">X</span>
               </div>
-              <span className="text-xl font-bold tracking-tight">AdsX</span>
+              <span className={cn(
+                "text-xl font-bold tracking-tight",
+                theme === "dark" ? "text-white" : "text-neutral-900"
+              )}>AdsX</span>
             </Link>
-            <p className="mt-4 text-sm text-white/40">
+            <p className={cn(
+              "mt-4 text-sm",
+              theme === "dark" ? "text-white/40" : "text-neutral-500"
+            )}>
               Advertising for the AI search era.
             </p>
           </div>
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white/80">Company</h3>
+            <h3 className={cn(
+              "text-sm font-semibold",
+              theme === "dark" ? "text-white/80" : "text-neutral-700"
+            )}>Company</h3>
             <ul className="mt-4 space-y-3">
               {navigation.company.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-white/40 transition-colors hover:text-white"
+                    className={cn(
+                      "text-sm transition-colors",
+                      theme === "dark"
+                        ? "text-white/40 hover:text-white"
+                        : "text-neutral-500 hover:text-neutral-900"
+                    )}
                   >
                     {item.name}
                   </Link>
@@ -59,13 +82,21 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-sm font-semibold text-white/80">Services</h3>
+            <h3 className={cn(
+              "text-sm font-semibold",
+              theme === "dark" ? "text-white/80" : "text-neutral-700"
+            )}>Services</h3>
             <ul className="mt-4 space-y-3">
               {navigation.services.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-white/40 transition-colors hover:text-white"
+                    className={cn(
+                      "text-sm transition-colors",
+                      theme === "dark"
+                        ? "text-white/40 hover:text-white"
+                        : "text-neutral-500 hover:text-neutral-900"
+                    )}
                   >
                     {item.name}
                   </Link>
@@ -76,13 +107,21 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-sm font-semibold text-white/80">Resources</h3>
+            <h3 className={cn(
+              "text-sm font-semibold",
+              theme === "dark" ? "text-white/80" : "text-neutral-700"
+            )}>Resources</h3>
             <ul className="mt-4 space-y-3">
               {navigation.resources.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-white/40 transition-colors hover:text-white"
+                    className={cn(
+                      "text-sm transition-colors",
+                      theme === "dark"
+                        ? "text-white/40 hover:text-white"
+                        : "text-neutral-500 hover:text-neutral-900"
+                    )}
                   >
                     {item.name}
                   </Link>
@@ -92,8 +131,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-white/30">
+        <div className={cn(
+          "mt-12 border-t pt-8 flex flex-col sm:flex-row justify-between items-center gap-4",
+          theme === "dark" ? "border-white/10" : "border-neutral-200"
+        )}>
+          <p className={cn(
+            "text-sm",
+            theme === "dark" ? "text-white/30" : "text-neutral-400"
+          )}>
             &copy; {new Date().getFullYear()} AdsX. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -101,7 +146,12 @@ export function Footer() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm text-white/30 transition-colors hover:text-white"
+                className={cn(
+                  "text-sm transition-colors",
+                  theme === "dark"
+                    ? "text-white/30 hover:text-white"
+                    : "text-neutral-400 hover:text-neutral-900"
+                )}
               >
                 {item.name}
               </Link>

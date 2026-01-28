@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 const faqs = [
   {
@@ -38,6 +40,8 @@ const faqs = [
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -45,7 +49,12 @@ export function FaqSection() {
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden"
+            className={cn(
+              "rounded-xl border overflow-hidden",
+              isDark
+                ? "border-white/10 bg-white/[0.02]"
+                : "border-neutral-200 bg-white"
+            )}
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
@@ -53,18 +62,24 @@ export function FaqSection() {
             >
               <span className="font-medium">{faq.question}</span>
               <ChevronDown
-                className={`h-5 w-5 text-white/50 transition-transform ${
-                  openIndex === index ? "rotate-180" : ""
-                }`}
+                className={cn(
+                  "h-5 w-5 transition-transform",
+                  isDark ? "text-white/50" : "text-neutral-500",
+                  openIndex === index && "rotate-180"
+                )}
               />
             </button>
             <div
-              className={`grid transition-all duration-300 ${
+              className={cn(
+                "grid transition-all duration-300",
                 openIndex === index ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-              }`}
+              )}
             >
               <div className="overflow-hidden">
-                <p className="px-6 pb-4 text-white/60">{faq.answer}</p>
+                <p className={cn(
+                  "px-6 pb-4",
+                  isDark ? "text-white/60" : "text-neutral-600"
+                )}>{faq.answer}</p>
               </div>
             </div>
           </div>

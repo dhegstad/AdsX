@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 interface FormErrors {
   firstName?: string;
@@ -23,6 +25,9 @@ interface FormData {
 }
 
 export default function ContactPage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -69,7 +74,6 @@ export default function ContactPage() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -121,7 +125,10 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={cn(
+      "min-h-screen transition-colors duration-300",
+      isDark ? "bg-black text-white" : "bg-white text-neutral-900"
+    )}>
       <Header />
 
       {/* Hero */}
@@ -132,7 +139,10 @@ export default function ContactPage() {
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               Let&apos;s talk <span className="gradient-text">AI search</span>
             </h1>
-            <p className="mt-6 text-lg text-white/60 sm:text-xl">
+            <p className={cn(
+              "mt-6 text-lg sm:text-xl",
+              isDark ? "text-white/60" : "text-neutral-600"
+            )}>
               Book a strategy call or send us a message. We typically respond within 24 hours.
             </p>
           </div>
@@ -140,16 +150,32 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form */}
-      <section className="border-t border-white/10 py-24">
+      <section className={cn(
+        "border-t py-24",
+        isDark ? "border-white/10" : "border-neutral-200"
+      )}>
         <div className="mx-auto max-w-2xl px-6 lg:px-8">
           {status === "success" ? (
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-8 text-center">
+            <div className={cn(
+              "rounded-xl border p-8 text-center",
+              isDark
+                ? "border-emerald-500/20 bg-emerald-500/10"
+                : "border-emerald-200 bg-emerald-50"
+            )}>
               <CheckCircle className="mx-auto h-12 w-12 text-emerald-500" />
               <h2 className="mt-4 text-2xl font-bold">Message sent!</h2>
-              <p className="mt-2 text-white/60">{statusMessage}</p>
+              <p className={cn(
+                "mt-2",
+                isDark ? "text-white/60" : "text-neutral-600"
+              )}>{statusMessage}</p>
               <button
                 onClick={() => setStatus("idle")}
-                className="mt-6 rounded-lg border border-white/20 px-6 py-2 text-sm font-medium hover:bg-white/5 transition-colors"
+                className={cn(
+                  "mt-6 rounded-lg border px-6 py-2 text-sm font-medium transition-colors",
+                  isDark
+                    ? "border-white/20 hover:bg-white/5"
+                    : "border-neutral-300 hover:bg-neutral-50"
+                )}
               >
                 Send another message
               </button>
@@ -165,7 +191,10 @@ export default function ContactPage() {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-white/80">
+                  <label htmlFor="firstName" className={cn(
+                    "block text-sm font-medium",
+                    isDark ? "text-white/80" : "text-neutral-700"
+                  )}>
                     First name <span className="text-red-400">*</span>
                   </label>
                   <input
@@ -174,9 +203,13 @@ export default function ContactPage() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleChange}
-                    className={`mt-2 block w-full rounded-lg border ${
-                      errors.firstName ? "border-red-500/50" : "border-white/10"
-                    } bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:outline-none focus:ring-0`}
+                    className={cn(
+                      "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                      errors.firstName ? "border-red-500/50" : (isDark ? "border-white/10" : "border-neutral-300"),
+                      isDark
+                        ? "bg-white/5 text-white placeholder:text-white/30 focus:border-emerald-500/50"
+                        : "bg-white text-neutral-900 placeholder:text-neutral-400 focus:border-emerald-500"
+                    )}
                     placeholder="Jane"
                   />
                   {errors.firstName && (
@@ -184,7 +217,10 @@ export default function ContactPage() {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-white/80">
+                  <label htmlFor="lastName" className={cn(
+                    "block text-sm font-medium",
+                    isDark ? "text-white/80" : "text-neutral-700"
+                  )}>
                     Last name <span className="text-red-400">*</span>
                   </label>
                   <input
@@ -193,9 +229,13 @@ export default function ContactPage() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className={`mt-2 block w-full rounded-lg border ${
-                      errors.lastName ? "border-red-500/50" : "border-white/10"
-                    } bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:outline-none focus:ring-0`}
+                    className={cn(
+                      "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                      errors.lastName ? "border-red-500/50" : (isDark ? "border-white/10" : "border-neutral-300"),
+                      isDark
+                        ? "bg-white/5 text-white placeholder:text-white/30 focus:border-emerald-500/50"
+                        : "bg-white text-neutral-900 placeholder:text-neutral-400 focus:border-emerald-500"
+                    )}
                     placeholder="Smith"
                   />
                   {errors.lastName && (
@@ -204,7 +244,10 @@ export default function ContactPage() {
                 </div>
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-white/80">
+                <label htmlFor="email" className={cn(
+                  "block text-sm font-medium",
+                  isDark ? "text-white/80" : "text-neutral-700"
+                )}>
                   Work email <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -213,15 +256,22 @@ export default function ContactPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`mt-2 block w-full rounded-lg border ${
-                    errors.email ? "border-red-500/50" : "border-white/10"
-                  } bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:outline-none focus:ring-0`}
+                  className={cn(
+                    "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                    errors.email ? "border-red-500/50" : (isDark ? "border-white/10" : "border-neutral-300"),
+                    isDark
+                      ? "bg-white/5 text-white placeholder:text-white/30 focus:border-emerald-500/50"
+                      : "bg-white text-neutral-900 placeholder:text-neutral-400 focus:border-emerald-500"
+                  )}
                   placeholder="jane@company.com"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
               </div>
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-white/80">
+                <label htmlFor="company" className={cn(
+                  "block text-sm font-medium",
+                  isDark ? "text-white/80" : "text-neutral-700"
+                )}>
                   Company <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -230,15 +280,22 @@ export default function ContactPage() {
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className={`mt-2 block w-full rounded-lg border ${
-                    errors.company ? "border-red-500/50" : "border-white/10"
-                  } bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:outline-none focus:ring-0`}
+                  className={cn(
+                    "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                    errors.company ? "border-red-500/50" : (isDark ? "border-white/10" : "border-neutral-300"),
+                    isDark
+                      ? "bg-white/5 text-white placeholder:text-white/30 focus:border-emerald-500/50"
+                      : "bg-white text-neutral-900 placeholder:text-neutral-400 focus:border-emerald-500"
+                  )}
                   placeholder="Acme Inc"
                 />
                 {errors.company && <p className="mt-1 text-sm text-red-400">{errors.company}</p>}
               </div>
               <div>
-                <label htmlFor="budget" className="block text-sm font-medium text-white/80">
+                <label htmlFor="budget" className={cn(
+                  "block text-sm font-medium",
+                  isDark ? "text-white/80" : "text-neutral-700"
+                )}>
                   Monthly budget
                 </label>
                 <select
@@ -246,24 +303,32 @@ export default function ContactPage() {
                   name="budget"
                   value={formData.budget}
                   onChange={handleChange}
-                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-emerald-500/50 focus:outline-none focus:ring-0"
+                  className={cn(
+                    "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                    isDark
+                      ? "border-white/10 bg-white/5 text-white focus:border-emerald-500/50"
+                      : "border-neutral-300 bg-white text-neutral-900 focus:border-emerald-500"
+                  )}
                 >
-                  <option value="" className="bg-black">
+                  <option value="" className={isDark ? "bg-black" : "bg-white"}>
                     Select a range
                   </option>
-                  <option value="5k-10k" className="bg-black">
+                  <option value="5k-10k" className={isDark ? "bg-black" : "bg-white"}>
                     $5,000 - $10,000
                   </option>
-                  <option value="10k-25k" className="bg-black">
+                  <option value="10k-25k" className={isDark ? "bg-black" : "bg-white"}>
                     $10,000 - $25,000
                   </option>
-                  <option value="25k+" className="bg-black">
+                  <option value="25k+" className={isDark ? "bg-black" : "bg-white"}>
                     $25,000+
                   </option>
                 </select>
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-white/80">
+                <label htmlFor="message" className={cn(
+                  "block text-sm font-medium",
+                  isDark ? "text-white/80" : "text-neutral-700"
+                )}>
                   How can we help? <span className="text-red-400">*</span>
                 </label>
                 <textarea
@@ -272,9 +337,13 @@ export default function ContactPage() {
                   rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  className={`mt-2 block w-full rounded-lg border ${
-                    errors.message ? "border-red-500/50" : "border-white/10"
-                  } bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:outline-none focus:ring-0`}
+                  className={cn(
+                    "mt-2 block w-full rounded-lg border px-4 py-3 focus:outline-none focus:ring-0",
+                    errors.message ? "border-red-500/50" : (isDark ? "border-white/10" : "border-neutral-300"),
+                    isDark
+                      ? "bg-white/5 text-white placeholder:text-white/30 focus:border-emerald-500/50"
+                      : "bg-white text-neutral-900 placeholder:text-neutral-400 focus:border-emerald-500"
+                  )}
                   placeholder="Tell us about your goals..."
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-400">{errors.message}</p>}
@@ -282,7 +351,12 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full rounded-lg bg-emerald-500 py-4 text-base font-medium text-black transition-all hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className={cn(
+                  "w-full rounded-lg py-4 text-base font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2",
+                  isDark
+                    ? "bg-emerald-500 text-black hover:bg-emerald-400"
+                    : "bg-emerald-500 text-white hover:bg-emerald-600"
+                )}
               >
                 {status === "loading" ? (
                   <>
@@ -297,9 +371,12 @@ export default function ContactPage() {
           )}
 
           <div className="mt-12 text-center">
-            <p className="text-white/50">
+            <p className={isDark ? "text-white/50" : "text-neutral-500"}>
               Prefer to book directly?{" "}
-              <a href="#" className="text-emerald-400 hover:text-emerald-300">
+              <a href="#" className={cn(
+                "transition-colors",
+                isDark ? "text-emerald-400 hover:text-emerald-300" : "text-emerald-600 hover:text-emerald-700"
+              )}>
                 Schedule a call
               </a>
             </p>

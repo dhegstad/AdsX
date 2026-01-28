@@ -1,19 +1,20 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "AdsX Privacy Policy - How we collect, use, and protect your personal information.",
-  alternates: {
-    canonical: "https://adsx.com/privacy",
-  },
-};
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 export default function PrivacyPage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={cn(
+      "min-h-screen transition-colors duration-300",
+      isDark ? "bg-black text-white" : "bg-white text-neutral-900"
+    )}>
       <Header />
 
       <main className="relative pt-32 pb-24">
@@ -22,9 +23,17 @@ export default function PrivacyPage() {
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Privacy Policy
           </h1>
-          <p className="mt-4 text-white/60">Last updated: January 27, 2026</p>
+          <p className={cn(
+            "mt-4",
+            isDark ? "text-white/60" : "text-neutral-600"
+          )}>Last updated: January 27, 2026</p>
 
-          <div className="mt-12 prose prose-invert prose-emerald max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-400">
+          <div className={cn(
+            "mt-12 prose max-w-none",
+            isDark
+              ? "prose-invert prose-emerald prose-headings:text-white prose-p:text-white/70 prose-li:text-white/70 prose-strong:text-white prose-a:text-emerald-400"
+              : "prose-neutral prose-headings:text-neutral-900 prose-p:text-neutral-600 prose-li:text-neutral-600 prose-strong:text-neutral-900 prose-a:text-emerald-600"
+          )}>
             <h2>Introduction</h2>
             <p>
               AdsX ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website adsx.com or use our services.

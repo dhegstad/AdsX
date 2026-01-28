@@ -1,19 +1,20 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
-
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: "AdsX Terms of Service - Terms and conditions for using our website and services.",
-  alternates: {
-    canonical: "https://adsx.com/terms",
-  },
-};
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 export default function TermsPage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={cn(
+      "min-h-screen transition-colors duration-300",
+      isDark ? "bg-black text-white" : "bg-white text-neutral-900"
+    )}>
       <Header />
 
       <main className="relative pt-32 pb-24">
@@ -22,9 +23,17 @@ export default function TermsPage() {
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Terms of Service
           </h1>
-          <p className="mt-4 text-white/60">Last updated: January 27, 2026</p>
+          <p className={cn(
+            "mt-4",
+            isDark ? "text-white/60" : "text-neutral-600"
+          )}>Last updated: January 27, 2026</p>
 
-          <div className="mt-12 prose prose-invert prose-emerald max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-400">
+          <div className={cn(
+            "mt-12 prose max-w-none",
+            isDark
+              ? "prose-invert prose-emerald prose-headings:text-white prose-p:text-white/70 prose-li:text-white/70 prose-strong:text-white prose-a:text-emerald-400"
+              : "prose-neutral prose-headings:text-neutral-900 prose-p:text-neutral-600 prose-li:text-neutral-600 prose-strong:text-neutral-900 prose-a:text-emerald-600"
+          )}>
             <h2>Agreement to Terms</h2>
             <p>
               By accessing or using the AdsX website (adsx.com) and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.

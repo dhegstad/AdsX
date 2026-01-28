@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* Dark theme (default) */
+  :root,
+  .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
     --card: 0 0% 4%;
@@ -24,6 +26,31 @@
     --input: 0 0% 15%;
     --ring: 142 71% 45%;
     --radius: 0.5rem;
+    color-scheme: dark;
+  }
+
+  /* Light theme */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 142 71% 45%;
+    color-scheme: light;
   }
 }
 
@@ -32,45 +59,92 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Apply theme backgrounds */
+  .dark body,
+  .dark {
+    @apply bg-black text-white;
+  }
+
+  .light body,
+  .light {
+    @apply bg-white text-neutral-900;
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
+/* Custom scrollbar - dark */
+.dark ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-border rounded-full;
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/50;
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-white/40;
 }
 
-/* Selection */
-::selection {
+/* Custom scrollbar - light */
+.light ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.light ::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 rounded-full;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400;
+}
+
+/* Selection - dark */
+.dark ::selection {
   @apply bg-emerald-500/30 text-white;
 }
 
-/* Grid graph pattern */
-.grid-pattern {
+/* Selection - light */
+.light ::selection {
+  @apply bg-emerald-500/30 text-neutral-900;
+}
+
+/* Grid graph pattern - dark */
+.dark .grid-pattern {
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-/* Dot pattern */
-.dot-pattern {
+/* Grid graph pattern - light */
+.light .grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Dot pattern - dark */
+.dark .dot-pattern {
   background-image: radial-gradient(circle, rgba(74, 222, 128, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Dot pattern - light */
+.light .dot-pattern {
+  background-image: radial-gradient(circle, rgba(16, 185, 129, 0.2) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -100,9 +174,11 @@
   bottom: 0;
   overflow: hidden;
   pointer-events: none;
+  z-index: 1;
 }
 
-.matrix-column {
+/* Matrix column - dark */
+.dark .matrix-column {
   position: absolute;
   top: -100%;
   font-family: var(--font-geist-mono), monospace;
@@ -122,6 +198,27 @@
   -webkit-backface-visibility: hidden;
 }
 
+/* Matrix column - light */
+.light .matrix-column {
+  position: absolute;
+  top: -100%;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  color: rgba(16, 185, 129, 0.25);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  animation: matrix-fall linear infinite;
+  user-select: none;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  will-change: transform, opacity;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .matrix-column {
     animation: none;
@@ -131,21 +228,37 @@
 }
 
 @media (max-width: 767px) {
-  .matrix-column {
+  .dark .matrix-column {
     font-size: 10px;
     color: rgba(74, 222, 128, 0.2);
     text-shadow: 0 0 4px rgba(74, 222, 128, 0.2);
   }
+
+  .light .matrix-column {
+    font-size: 10px;
+    color: rgba(16, 185, 129, 0.12);
+    text-shadow: 0 0 4px rgba(16, 185, 129, 0.08);
+  }
 }
 
-/* Gradient text */
-.gradient-text {
+/* Gradient text - dark */
+.dark .gradient-text {
   @apply bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent;
 }
 
-/* Glow effect */
-.glow {
+/* Gradient text - light */
+.light .gradient-text {
+  @apply bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent;
+}
+
+/* Glow effect - dark */
+.dark .glow {
   box-shadow: 0 0 40px rgba(74, 222, 128, 0.15);
+}
+
+/* Glow effect - light */
+.light .glow {
+  box-shadow: 0 0 40px rgba(16, 185, 129, 0.1);
 }
 
 /* Animated gradient border */
@@ -154,13 +267,19 @@
   50% { background-position: 100% 50%; }
 }
 
-.animated-border {
+.dark .animated-border {
   background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.3), transparent);
   background-size: 200% 100%;
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Matrix rain animation - light mode */
+.light .animated-border {
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Legacy support for light page components */
 .matrix-rain-light {
   position: absolute;
   top: 0;
