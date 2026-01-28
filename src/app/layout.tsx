@@ -6,7 +6,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "AdsX - AI Search Advertising Agency | ChatGPT, Claude, Perplexity Ads",
+    default: "AdsX - AI Search Advertising Agency | ChatGPT, Gemini, Claude, Perplexity Ads",
     template: "%s | AdsX - AI Search Advertising",
   },
   icons: {
@@ -27,10 +27,12 @@ export const metadata: Metadata = {
     "ChatGPT advertising",
     "ChatGPT sponsored placements",
     "AI search optimization",
+    "Google Gemini ads",
+    "Google Gemini advertising",
+    "Gemini AI marketing",
     "Perplexity ads",
     "Perplexity advertising",
     "Claude AI advertising",
-    "Gemini ads",
     "Grok advertising",
     "LLM advertising",
     "LLM marketing",
@@ -57,13 +59,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://adsx.com",
     siteName: "AdsX",
-    title: "AdsX - AI Search Advertising Agency | Get Recommended by ChatGPT & Claude",
-    description: "The first advertising agency built for AI search. 340% avg increase in AI mentions. Get your brand recommended by ChatGPT, Claude, Perplexity & more.",
+    title: "AdsX - AI Search Advertising Agency | ChatGPT, Gemini, Claude Ads",
+    description: "The first advertising agency built for AI search. 340% avg increase in AI mentions. Get your brand recommended by ChatGPT, Gemini, Claude, Perplexity & more.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AdsX - AI Search Advertising Agency",
-    description: "Get your brand recommended by ChatGPT, Claude, Perplexity & more. 340% avg increase in AI mentions.",
+    title: "AdsX - AI Search Advertising | ChatGPT, Gemini, Claude Ads",
+    description: "Get your brand recommended by ChatGPT, Gemini, Claude, Perplexity & more. 340% avg increase in AI mentions.",
     creator: "@adsx",
     site: "@adsx",
   },
