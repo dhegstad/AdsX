@@ -1,18 +1,9 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Search, BarChart3, MessageSquare, FileText, Users, Shield, Zap, TrendingUp } from "lucide-react";
-import { Header } from "@/components/marketing/header";
-import { Footer } from "@/components/marketing/footer";
+"use client";
 
-export const metadata: Metadata = {
-  title: "AI Search Advertising Services - ChatGPT Ads, AI Visibility & More",
-  description: "Full-service AI search advertising: ChatGPT ads, AI visibility tracking, content optimization, and brand protection. Get your brand recommended by AI assistants.",
-  keywords: ["ChatGPT advertising services", "AI search services", "AI visibility tracking", "LLM content optimization", "AI brand protection"],
-  openGraph: {
-    title: "AI Search Advertising Services | AdsX",
-    description: "Full-service AI search advertising: ChatGPT ads, AI visibility tracking, content optimization, and brand protection.",
-  },
-};
+import Link from "next/link";
+import { ArrowRight, Search, BarChart3, MessageSquare, FileText, Shield, TrendingUp } from "lucide-react";
+import { ThemedLayout } from "@/components/themed-layout";
+import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -55,9 +46,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Header />
-
+    <ThemedLayout>
       {/* Hero */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-40" />
@@ -68,7 +57,7 @@ export default function ServicesPage() {
               <br />
               <span className="gradient-text">advertising</span>
             </h1>
-            <p className="mt-6 text-lg text-white/60 sm:text-xl">
+            <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
               From strategy to execution, we handle everything you need to capture visibility in the AI search era.
             </p>
           </div>
@@ -76,20 +65,20 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="border-t border-white/10 py-24">
+      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <div
                 key={service.title}
-                className="group rounded-xl border border-white/10 bg-white/[0.02] p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.04]"
+                className="group rounded-xl border p-8 transition-all border-neutral-200 bg-white hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 dark:border-white/10 dark:bg-white/[0.02] dark:hover:bg-white/[0.04]"
               >
-                <service.icon className="h-10 w-10 text-emerald-500/70" />
+                <service.icon className="h-10 w-10 text-emerald-600 dark:text-emerald-500/70" />
                 <h3 className="mt-6 text-xl font-semibold">{service.title}</h3>
-                <p className="mt-3 text-white/60">{service.description}</p>
+                <p className="mt-3 text-neutral-600 dark:text-white/60">{service.description}</p>
                 <ul className="mt-6 space-y-2">
                   {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-white/50">
+                    <li key={feature} className="flex items-center gap-2 text-sm text-neutral-500 dark:text-white/50">
                       <span className="h-1 w-1 rounded-full bg-emerald-500/50" />
                       {feature}
                     </li>
@@ -102,18 +91,18 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-white/10 py-24">
+      <section className="border-t py-24 border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-transparent">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Not sure where to start?
           </h2>
-          <p className="mt-6 text-lg text-white/60">
+          <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
             Book a free strategy call and we&apos;ll help you understand your options.
           </p>
           <div className="mt-10">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-black transition-all hover:bg-emerald-400"
+              className="inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 dark:text-black dark:hover:bg-emerald-400 dark:shadow-none"
             >
               Book a Strategy Call
               <ArrowRight className="h-4 w-4" />
@@ -121,8 +110,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </ThemedLayout>
   );
 }

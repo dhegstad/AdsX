@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 type Theme = "dark" | "light";
 
@@ -12,54 +12,71 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
+// Script to inject in head to prevent flash - reads theme before React hydrates
+const themeScript = `
+  (function() {
+    try {
+      var theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.remove('dark', 'light');
+      document.documentElement.classList.add(theme);
+    } catch (e) {}
+  })();
+`;
 
+export function ThemeScript() {
+  return (
+    <script
+      dangerouslySetInnerHTML={{ __html: themeScript }}
+      suppressHydrationWarning
+    />
+  );
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // Start with "dark" for SSR, then sync from localStorage after hydration
+  const [theme, setThemeState] = useState<Theme>("dark");
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // After hydration, read the actual theme from localStorage
+  // This is the critical fix - must run after component mounts on client
   useEffect(() => {
-    setMounted(true);
-    // Check localStorage first
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme) {
+    const savedTheme = localStorage.getItem("theme") as Theme;
+    if (savedTheme && savedTheme !== theme) {
       setThemeState(savedTheme);
-      updateDocumentClass(savedTheme);
-    } else {
-      // Default to dark
-      setThemeState("dark");
-      updateDocumentClass("dark");
     }
+    setIsHydrated(true);
+  }, []); // Empty deps - only run once after mount
+
+  // Sync document class whenever theme changes
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("dark", "light");
+    root.classList.add(theme);
+  }, [theme]);
+
+  // Listen for theme changes from other tabs
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "theme" && e.newValue) {
+        setThemeState(e.newValue as Theme);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  const updateDocumentClass = (newTheme: Theme) => {
-    const root = document.documentElement;
-    if (newTheme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-    } else {
-      root.classList.add("light");
-      root.classList.remove("dark");
-    }
-  };
-
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem("theme", newTheme);
-    updateDocumentClass(newTheme);
-  };
+  }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-  };
-
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={{ theme: "dark", toggleTheme, setTheme }}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
+  const toggleTheme = useCallback(() => {
+    setThemeState((current) => {
+      const newTheme = current === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      return newTheme;
+    });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
