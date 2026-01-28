@@ -1,60 +1,56 @@
 "use client";
 
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, ArrowRight, Zap, Users, BarChart3, Shield, MessageSquare, Clock } from "lucide-react";
 import { ThemedLayout } from "@/components/themed-layout";
 import { cn } from "@/lib/utils";
 
-const plans = [
+const features = [
   {
-    name: "Starter",
-    price: "$5,000",
-    period: "/month",
-    description: "For brands ready to establish AI search presence",
-    features: [
-      "AI search audit",
-      "1 platform focus",
-      "Monthly optimization",
-      "Basic visibility tracking",
-      "Email support",
+    category: "Strategy & Audit",
+    items: [
+      "Comprehensive AI visibility audit across all platforms",
+      "Competitive analysis and benchmarking",
+      "Custom AI search strategy development",
+      "Monthly strategy reviews and optimization",
     ],
-    cta: "Get Started",
-    featured: false,
   },
   {
-    name: "Growth",
-    price: "$12,000",
-    period: "/month",
-    description: "For brands scaling their AI search strategy",
-    features: [
-      "Everything in Starter",
-      "3 platform coverage",
-      "ChatGPT Ads management",
-      "Weekly optimization",
-      "Advanced analytics",
-      "Dedicated strategist",
-      "Slack support",
+    category: "Platform Coverage",
+    items: [
+      "ChatGPT optimization and monitoring",
+      "Google Gemini / AI Mode visibility",
+      "Claude (Anthropic) brand positioning",
+      "Perplexity answer optimization",
     ],
-    cta: "Get Started",
-    featured: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    description: "For large brands with complex needs",
-    features: [
-      "Everything in Growth",
-      "All platform coverage",
-      "Custom integrations",
-      "Dedicated team",
-      "24/7 support",
-      "Quarterly strategy reviews",
-      "Brand protection suite",
+    category: "Execution & Support",
+    items: [
+      "Content optimization for LLM retrieval",
+      "Sponsored placement management",
+      "Dedicated account strategist",
+      "Slack or email support",
     ],
-    cta: "Contact Sales",
-    featured: false,
   },
+  {
+    category: "Analytics & Reporting",
+    items: [
+      "Real-time visibility tracking dashboard",
+      "Share of voice monitoring",
+      "Monthly performance reports",
+      "Competitor tracking",
+    ],
+  },
+];
+
+const highlights = [
+  { icon: Zap, text: "Full platform coverage" },
+  { icon: Users, text: "Dedicated strategist" },
+  { icon: BarChart3, text: "Real-time analytics" },
+  { icon: Shield, text: "Brand protection" },
+  { icon: MessageSquare, text: "Slack support" },
+  { icon: Clock, text: "24hr response time" },
 ];
 
 export default function PricingPage() {
@@ -66,61 +62,139 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Transparent <span className="gradient-text">pricing</span>
+              Simple, transparent <span className="gradient-text">pricing</span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
-              Choose the plan that matches your growth stage. All plans include strategy, execution, and reporting.
+              One plan. Everything included. No hidden fees or surprise charges.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Pricing Cards */}
+      {/* Pricing Card */}
       <section className="border-t py-24 border-neutral-200 dark:border-white/10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-3">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className={cn(
-                  "rounded-2xl border p-8",
-                  plan.featured
-                    ? "border-emerald-500/30 bg-emerald-500/5"
-                    : "border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.02]"
-                )}
-              >
-                {plan.featured && (
-                  <div className="mb-4 inline-block rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-400">
-                    Most popular
-                  </div>
-                )}
-                <h3 className="text-xl font-semibold">{plan.name}</h3>
-                <div className="mt-4 flex items-baseline">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="ml-1 text-neutral-500 dark:text-white/50">{plan.period}</span>
-                </div>
-                <p className="mt-4 text-neutral-600 dark:text-white/60">{plan.description}</p>
-                <ul className="mt-8 space-y-4">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <Check className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-500/70" />
-                      <span className="text-neutral-700 dark:text-white/70">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/contact"
-                  className={cn(
-                    "mt-8 block rounded-lg py-3 text-center font-medium transition-all",
-                    plan.featured
-                      ? "bg-emerald-500 text-white hover:bg-emerald-600 dark:text-black dark:hover:bg-emerald-400"
-                      : "border border-neutral-300 hover:bg-neutral-50 dark:border-white/20 dark:hover:bg-white/5 dark:hover:border-white/30"
-                  )}
-                >
-                  {plan.cta}
-                </Link>
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+          <div className="rounded-3xl border-2 border-emerald-500/30 bg-gradient-to-b from-emerald-500/5 to-transparent p-8 md:p-12">
+            {/* Price Header */}
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-4 py-1.5 text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-6">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                Everything you need
               </div>
-            ))}
+
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-6xl md:text-7xl font-bold">$4,500</span>
+                <span className="text-xl text-neutral-500 dark:text-white/50">/month</span>
+              </div>
+
+              <p className="mt-4 text-lg text-neutral-600 dark:text-white/60">
+                Full-service AI search advertising for growth-focused brands
+              </p>
+
+              <Link
+                href="/contact"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 text-lg font-medium text-white hover:bg-emerald-600 dark:text-black dark:hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25"
+              >
+                Get Started
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+
+              <p className="mt-4 text-sm text-neutral-500 dark:text-white/40">
+                3-month minimum commitment, then month-to-month
+              </p>
+            </div>
+
+            {/* Highlights */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4">
+              {highlights.map((item) => (
+                <div
+                  key={item.text}
+                  className="flex items-center gap-3 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.02] px-4 py-3"
+                >
+                  <item.icon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-sm font-medium">{item.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Features Grid */}
+            <div className="mt-12 grid md:grid-cols-2 gap-8">
+              {features.map((section) => (
+                <div key={section.category}>
+                  <h3 className="font-semibold text-lg mb-4">{section.category}</h3>
+                  <ul className="space-y-3">
+                    {section.items.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-500 mt-0.5" />
+                        <span className="text-neutral-700 dark:text-white/70">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Enterprise Note */}
+          <div className="mt-8 text-center">
+            <p className="text-neutral-600 dark:text-white/60">
+              Need custom solutions for enterprise?{" "}
+              <Link href="/contact" className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline">
+                Let&apos;s talk
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* What's Included Comparison */}
+      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-bold tracking-tight mb-12">
+            What&apos;s included vs. doing it yourself
+          </h2>
+
+          <div className="rounded-2xl border border-neutral-200 dark:border-white/10 overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-neutral-200 dark:border-white/10">
+                  <th className="text-left p-4 font-medium">Capability</th>
+                  <th className="text-center p-4 font-medium text-emerald-600 dark:text-emerald-400">With AdsX</th>
+                  <th className="text-center p-4 font-medium text-neutral-500 dark:text-white/50">DIY</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-200 dark:divide-white/10">
+                {[
+                  { item: "Multi-platform AI visibility tracking", adsx: true, diy: false },
+                  { item: "ChatGPT Ads early access", adsx: true, diy: false },
+                  { item: "LLM-optimized content strategy", adsx: true, diy: "Partial" },
+                  { item: "Competitive share of voice data", adsx: true, diy: false },
+                  { item: "Dedicated strategist", adsx: true, diy: false },
+                  { item: "Brand mention monitoring", adsx: true, diy: "Manual" },
+                  { item: "Monthly strategy reviews", adsx: true, diy: false },
+                ].map((row) => (
+                  <tr key={row.item} className="bg-white dark:bg-transparent">
+                    <td className="p-4 text-neutral-700 dark:text-white/70">{row.item}</td>
+                    <td className="p-4 text-center">
+                      {row.adsx === true ? (
+                        <Check className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mx-auto" />
+                      ) : (
+                        <span className="text-neutral-500">{row.adsx}</span>
+                      )}
+                    </td>
+                    <td className="p-4 text-center">
+                      {row.diy === true ? (
+                        <Check className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mx-auto" />
+                      ) : row.diy === false ? (
+                        <span className="text-neutral-400 dark:text-white/30">—</span>
+                      ) : (
+                        <span className="text-neutral-500 dark:text-white/50 text-sm">{row.diy}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -133,7 +207,7 @@ export default function PricingPage() {
             {[
               {
                 q: "What's included in the monthly fee?",
-                a: "Everything: strategy, execution, content optimization, campaign management, and reporting. No hidden fees or surprise charges.",
+                a: "Everything: strategy, execution, content optimization, campaign management, visibility tracking, and reporting. No hidden fees or surprise charges.",
               },
               {
                 q: "How long until we see results?",
@@ -141,11 +215,15 @@ export default function PricingPage() {
               },
               {
                 q: "What's the minimum commitment?",
-                a: "We require a 3-month minimum to give our strategies time to take effect. After that, you can cancel anytime with 30 days notice.",
+                a: "We require a 3-month minimum to give our strategies time to take effect. After that, you can continue month-to-month with 30 days notice to cancel.",
               },
               {
                 q: "Do you work with competitors in the same space?",
                 a: "We limit engagements to one client per direct competitive category to avoid conflicts of interest.",
+              },
+              {
+                q: "What if I need more than what's included?",
+                a: "For enterprise needs like custom integrations, dedicated teams, or 24/7 support, contact us to discuss a custom engagement.",
               },
             ].map((faq) => (
               <div key={faq.q}>
@@ -153,6 +231,27 @@ export default function PricingPage() {
                 <p className="mt-2 text-neutral-600 dark:text-white/60">{faq.a}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
+        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            Ready to capture the AI search channel?
+          </h2>
+          <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
+            Book a call to get your free AI visibility audit and see how your brand appears across AI platforms.
+          </p>
+          <div className="mt-10">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 dark:text-black dark:hover:bg-emerald-400 dark:shadow-none"
+            >
+              Get Your Free Audit
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
