@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "@/context/theme-context";
+import { cn } from "@/lib/utils";
 
 interface Stat {
   value: string;
@@ -65,6 +67,8 @@ function AnimatedNumber({ value, isVisible }: { value: string; isVisible: boolea
 }
 
 export function AnimatedStats({ stats }: AnimatedStatsProps) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -90,10 +94,16 @@ export function AnimatedStats({ stats }: AnimatedStatsProps) {
     <div ref={ref} className="grid grid-cols-2 gap-8 lg:grid-cols-4">
       {stats.map((stat) => (
         <div key={stat.label} className="text-center">
-          <div className="text-4xl font-bold text-emerald-400 lg:text-5xl">
+          <div className={cn(
+            "text-4xl font-bold lg:text-5xl",
+            isDark ? "text-emerald-400" : "text-emerald-600"
+          )}>
             <AnimatedNumber value={stat.value} isVisible={isVisible} />
           </div>
-          <div className="mt-2 text-sm text-white/50">{stat.label}</div>
+          <div className={cn(
+            "mt-2 text-sm",
+            isDark ? "text-white/50" : "text-neutral-600"
+          )}>{stat.label}</div>
         </div>
       ))}
     </div>
