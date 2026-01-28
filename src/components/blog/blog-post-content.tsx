@@ -143,7 +143,7 @@ export function BlogPostContent({ post, slug, relatedPosts, authorData }: BlogPo
           {/* Table of Contents (mobile) */}
           <TableOfContentsInline content={post.content} />
 
-          <div className="prose max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-neutral prose-a:text-emerald-600 prose-strong:text-neutral-900 prose-code:text-emerald-700 prose-code:bg-emerald-50 prose-pre:bg-neutral-50 prose-pre:border prose-pre:border-neutral-200 dark:prose-invert dark:prose-a:text-emerald-400 dark:prose-strong:text-white dark:prose-code:text-emerald-300 dark:prose-code:bg-white/10 dark:prose-pre:bg-white/5 dark:prose-pre:border-white/10">
+          <div className="prose max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-neutral prose-p:text-neutral-700 prose-li:text-neutral-700 prose-td:text-neutral-700 prose-th:text-neutral-700 prose-a:text-emerald-600 prose-strong:text-neutral-900 prose-code:text-emerald-700 prose-code:bg-emerald-50 prose-pre:bg-neutral-50 prose-pre:border prose-pre:border-neutral-200 prose-blockquote:text-neutral-600 prose-blockquote:border-emerald-500 dark:prose-invert dark:prose-p:text-white/80 dark:prose-li:text-white/80 dark:prose-td:text-white/80 dark:prose-th:text-white/80 dark:prose-a:text-emerald-400 dark:prose-strong:text-white dark:prose-code:text-emerald-300 dark:prose-code:bg-white/10 dark:prose-pre:bg-white/5 dark:prose-pre:border-white/10 dark:prose-blockquote:text-white/60">
             <MDXContent content={post.content} />
           </div>
         </div>
