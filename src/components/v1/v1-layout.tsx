@@ -141,6 +141,7 @@ export function V1Layout({ children }: V1LayoutProps) {
               <nav className="hidden md:flex items-center gap-6">
                 {[
                   { label: "HOME", href: "/v1" },
+                  { label: "BLOG", href: "/v1/blog" },
                   { label: "ABOUT", href: "/v1/about" },
                   { label: "PRICING", href: "/v1/pricing" },
                   { label: "CONTACT", href: "/v1/contact" },
