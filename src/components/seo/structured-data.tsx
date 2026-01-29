@@ -56,21 +56,14 @@ export function WebSiteSchema() {
 }
 
 export function FAQSchema() {
+  // These must match exactly what's displayed in FaqSection component
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'What is AI search advertising?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'AI search advertising is the practice of optimizing your brand to appear in AI-generated responses from platforms like ChatGPT, Claude, Perplexity, and Gemini. This includes sponsored placements, content optimization, and strategic positioning to ensure AI assistants recommend your products or services.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How long until we see results from AI advertising?',
+        name: 'How long until we see results?',
         acceptedAnswer: {
           '@type': 'Answer',
           text: 'Most clients see measurable improvements in AI visibility within 4-6 weeks. Sponsored placements can drive traffic immediately, while organic AI optimization compounds over time as models update their training data.',
@@ -78,7 +71,15 @@ export function FAQSchema() {
       },
       {
         '@type': 'Question',
-        name: 'Can you guarantee placements in ChatGPT responses?',
+        name: "What's the minimum engagement?",
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We require a 3-month minimum to give our strategies time to take effect. After that, you can continue month-to-month with 30 days notice to cancel.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you guarantee placements in ChatGPT responses?',
         acceptedAnswer: {
           '@type': 'Answer',
           text: 'We can guarantee sponsored ad placements through official channels. For organic mentions, we optimize your content and digital presence to maximize the likelihood of being recommended, but no one can guarantee specific AI outputs.',
@@ -94,15 +95,15 @@ export function FAQSchema() {
       },
       {
         '@type': 'Question',
-        name: 'What industries does AdsX work with?',
+        name: 'What industries do you work with?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'We work primarily with B2B SaaS, fintech, e-commerce, and professional services. Any brand where customers research solutions through AI assistants is a good fit for our services.',
+          text: 'We work primarily with B2B SaaS, fintech, e-commerce, and professional services. Any brand where customers research solutions through AI assistants is a good fit.',
         },
       },
       {
         '@type': 'Question',
-        name: 'How is AI advertising different from traditional SEO?',
+        name: 'How is this different from traditional SEO?',
         acceptedAnswer: {
           '@type': 'Answer',
           text: 'Traditional SEO optimizes for search engine crawlers and ranking algorithms. AI optimization focuses on how LLMs understand, categorize, and recommend your brand. The tactics overlap but the strategies are fundamentally different.',

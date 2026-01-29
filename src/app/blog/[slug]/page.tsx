@@ -85,31 +85,8 @@ function ArticleSchema({ post, slug }: { post: NonNullable<ReturnType<typeof get
   );
 }
 
-function FAQSchema({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> }) {
-  if (!post.faqs || post.faqs.length === 0) {
-    return null;
-  }
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: post.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
+// Note: FAQSchema removed - Google requires FAQPage schema only when FAQs are visually displayed on the page.
+// The faqs frontmatter field is preserved for potential future use if we add visible FAQ sections to blog posts.
 
 function BreadcrumbSchema({ post, slug }: { post: NonNullable<ReturnType<typeof getPostBySlug>>; slug: string }) {
   const schema = {
@@ -160,7 +137,6 @@ export default async function BlogPostPage({ params }: PageProps) {
     <>
       <ArticleSchema post={post} slug={slug} />
       <BreadcrumbSchema post={post} slug={slug} />
-      <FAQSchema post={post} />
       <BlogPostContent post={post} slug={slug} relatedPosts={relatedPosts} authorData={authorData} />
     </>
   );
