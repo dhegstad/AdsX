@@ -1,0 +1,562 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID_STRUCT // SYSTEM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@100;400;700;800&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080808;
+            --text-main: #EAEAEA;
+            --text-dim: #888888;
+            --border-color: #333333;
+            --border-heavy: #EAEAEA;
+            --accent: #FF3B30; 
+            --font-display: 'Archivo Black', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: crosshair; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            font-size: 14px;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        
+        .uppercase { text-transform: uppercase; }
+        .mono { font-family: var(--font-mono); }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.08;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        
+        .page-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            border: 12px solid var(--bg-color); 
+            display: flex;
+            flex-direction: column;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        
+        .content-frame {
+            border: 1px solid var(--border-color);
+            background: #0a0a0a;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+        header {
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .brand {
+            font-family: var(--font-display);
+            font-size: 24px;
+            letter-spacing: -1px;
+        }
+
+        .status-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            border: 1px solid var(--text-main);
+            padding: 4px 8px;
+            background: var(--text-main);
+            color: var(--bg-color);
+            font-weight: 700;
+        }
+
+        
+        .hero-section {
+            position: relative;
+            height: 60vh;
+            width: 100%;
+            border-bottom: 2px solid var(--text-main); 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(140%) brightness(0.8);
+            z-index: 0;
+            transition: transform 0.2s ease-out;
+        }
+
+        .hero-overlay {
+            z-index: 1;
+            text-align: center;
+            mix-blend-mode: exclusion;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(60px, 12vw, 180px);
+            line-height: 0.8;
+            letter-spacing: -0.04em;
+            transform: scaleX(1.1); 
+            color: white;
+            white-space: nowrap;
+        }
+        
+        .hero-subtitle {
+            background: white;
+            color: black;
+            display: inline-block;
+            padding: 2px 12px;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            font-size: 12px;
+            margin-top: 24px;
+            letter-spacing: 0.2em;
+        }
+
+        
+        .title-strip {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .big-label {
+            padding: 20px 24px;
+            font-family: var(--font-display);
+            font-size: clamp(32px, 5vw, 64px);
+            text-transform: uppercase;
+            line-height: 0.9;
+            letter-spacing: -2px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .meta-box {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            background: #111;
+        }
+        
+        .meta-box strong {
+            color: var(--text-main);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 400px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 900px) {
+            .data-grid { grid-template-columns: 1fr; }
+            .left-col { display: none; }
+        }
+
+        
+        .left-col {
+            border-right: 1px solid var(--border-color);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .vol-tag {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--text-dim);
+        }
+
+        .outline-number {
+            font-family: var(--font-display);
+            font-size: 160px;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            position: absolute;
+            bottom: 20px;
+            left: -10px;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        
+        .globe-icon {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            z-index: 1;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        
+        .globe-grid {
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 4px, #fff 5px),
+                        repeating-linear-gradient(90deg, transparent, transparent 4px, #fff 5px);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            padding: 0;
+        }
+
+        .service-item {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.1s, color 0.1s;
+        }
+
+        .service-item:hover {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+        
+        .service-item:hover .idx {
+            color: var(--bg-color);
+        }
+        
+        .service-item:hover .desc {
+            color: #333;
+        }
+
+        .idx {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .svc-name {
+            font-family: var(--font-display);
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .desc {
+            font-size: 12px;
+            color: var(--text-dim);
+            max-width: 90%;
+        }
+
+        
+        .footer-strip {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            background: #050505;
+        }
+
+        .logos-area {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .logo-block {
+            font-family: var(--font-display);
+            font-size: 24px;
+            letter-spacing: -1px;
+        }
+        
+        .tech-badge {
+            border: 1px solid var(--text-main);
+            padding: 4px 8px;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tech-box {
+            width: 10px;
+            height: 10px;
+            background: var(--text-main);
+        }
+
+        .barcode-area {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .warning-box {
+            border: 1px solid var(--text-main);
+            padding: 6px;
+            width: 120px;
+            font-family: var(--font-mono);
+            font-size: 8px;
+            line-height: 1.1;
+            text-align: justify;
+        }
+        
+        .barcode {
+            height: 40px;
+            width: 80px;
+            background: repeating-linear-gradient(
+                90deg,
+                #fff,
+                #fff 2px,
+                #000 2px,
+                #000 4px
+            );
+        }
+
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            animation: scanline 4s linear infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        
+        .cta-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+            padding: 12px 32px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 12px;
+            transition: all 0.2s;
+            margin-top: 24px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .cta-btn:hover {
+            background: var(--text-main);
+            color: black;
+            box-shadow: 4px 4px 0px white;
+            transform: translate(-2px, -2px);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay"></div>
+
+    <div class="page-wrapper">
+        <div class="content-frame">
+            
+            
+            <header>
+                <div class="brand">VOID_STRUCT</div>
+                <div class="flex" style="gap: 20px;">
+                    <div class="status-badge">SYS: ONLINE</div>
+                    <div class="status-badge" style="background:transparent; color:white;">LOC: NULL</div>
+                </div>
+            </header>
+
+            
+            <div class="hero-section">
+                <div class="scan-line"></div>
+                
+                <img src="https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2560&auto=format&fit=crop" class="hero-img" alt="Brutalist Architecture">
+                
+                <div class="hero-overlay">
+                    <div class="hero-title">MONOLITH</div>
+                    <div class="hero-subtitle">SPECULATIVE ENGINEERING CORP.</div>
+                </div>
+            </div>
+
+            
+            <div class="title-strip">
+                <div class="big-label">
+                    Architectures<br>of the future
+                </div>
+                <div class="meta-box">
+                    <div><strong>ESTABLISHED</strong> 2024</div>
+                    <div style="margin-top: 8px;"><strong>SECTOR</strong> INDUSTRIAL</div>
+                    <div style="margin-top: 8px;"><strong>LICENSE</strong> CC-BY-NC</div>
+                </div>
+            </div>
+
+            
+            <div class="data-grid">
+                
+                <div class="left-col">
+                    <div class="vol-tag">VOL/1</div>
+                    
+                    <div class="globe-icon">
+                        <div class="globe-grid"></div>
+                    </div>
+                    
+                    <div class="outline-number">04</div>
+                    
+                    <div style="z-index: 2; margin-top: auto;">
+                        <img src="https://raw.githubusercontent.com/bwap/barcode/master/barcode.png" alt="barcode" style="height: 40px; opacity: 0.8; mix-blend-mode: screen;">
+                    </div>
+                </div>
+
+                
+                <div class="services-list">
+                    
+                    <div class="service-item">
+                        <span class="idx">01. PRE-VISUALIZATION</span>
+                        <div class="svc-name">Entropy Design</div>
+                        <div class="desc">Algorithmic decay simulation for sustainable mega-structures.</div>
+                    </div>
+
+                    
+                    <div class="service-item">
+                        <span class="idx">02. FABRICATION</span>
+                        <div class="svc-name">Heavy Concrete</div>
+                        <div class="desc">Raw material sourcing and brutalist casting methods.</div>
+                    </div>
+
+                    
+                    <div class="service-item">
+                        <span class="idx">03. ACOUSTICS</span>
+                        <div class="svc-name">Echo Chambers</div>
+                        <div class="desc">Soundscape engineering for large-scale industrial halls.</div>
+                    </div>
+
+                    
+                    <div class="service-item">
+                        <span class="idx">04. TERRAFORMING</span>
+                        <div class="svc-name">Urban Geology</div>
+                        <div class="desc">Reclaiming subterranean spaces for habitation.</div>
+                    </div>
+
+                     
+                     <div class="service-item">
+                        <span class="idx">05. LOGISTICS</span>
+                        <div class="svc-name">Deep Storage</div>
+                        <div class="desc">Secure data vaults within reinforced ferro-cement.</div>
+                    </div>
+
+                     
+                     <div class="service-item">
+                        <span class="idx">06. R&D</span>
+                        <div class="svc-name">Obelisk Lab</div>
+                        <div class="desc">Experimental monolithic form factors.</div>
+                        <a href="#" class="cta-btn">Initiate Project</a>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="footer-strip">
+                <div class="logos-area">
+                    <div class="logo-block" style="font-size: 32px;">VS</div>
+                    
+                    <div class="tech-badge">
+                        <div class="tech-box"></div> WEBGL
+                    </div>
+                    
+                    <div class="tech-badge">
+                        <div class="tech-box"></div> REACT
+                    </div>
+                    
+                    <div class="tech-badge">
+                        <div class="tech-box"></div> THREE
+                    </div>
+                </div>
+
+                <div class="barcode-area">
+                    <div class="warning-box">
+                        RESTRICTED ACCESS. UNAUTHORIZED PERSONNEL WILL BE LIQUIDATED. CLASS-A SECURITY CLEARANCE REQUIRED.
+                    </div>
+                    <div class="barcode"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        
+        const hero = document.querySelector('.hero-section');
+        const img = document.querySelector('.hero-img');
+        
+        hero.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            
+            img.style.transform = `scale(1.05) translate(${(x - 0.5) * -20}px, ${(y - 0.5) * -20}px)`;
+        });
+    </script>
+</body>
+</html>

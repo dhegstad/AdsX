@@ -357,18 +357,18 @@ export default function HomePage() {
                     className="service-item border-r border-b border-[#333] p-5 flex flex-col"
                   >
                     <span
-                      className="idx text-[11px] text-[#888] mb-2 block"
+                      className="idx text-xs text-[#888] mb-3 block"
                       style={{ fontFamily: "var(--font-mono)" }}
                     >
                       {service.idx}
                     </span>
                     <div
-                      className="text-lg uppercase mb-2"
+                      className="text-xl uppercase mb-3"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {service.name}
                     </div>
-                    <div className="desc text-xs text-[#888] max-w-[90%]">
+                    <div className="desc text-sm text-[#888] max-w-[90%]">
                       {service.desc}
                     </div>
                     {service.cta && (
