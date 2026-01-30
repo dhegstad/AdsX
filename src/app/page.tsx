@@ -256,7 +256,7 @@ export default function HomePage() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-[10px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
+                    className="text-[12px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {item.label}
@@ -318,13 +318,13 @@ export default function HomePage() {
                 Get recommended<br />by AI platforms
               </div>
               <div
-                className="p-5 flex flex-col justify-center bg-[#111] text-[10px] text-[#888]"
+                className="p-5 flex flex-col justify-center bg-[#111] text-[#888]"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 {stats.map((stat) => (
-                  <div key={stat.label} className="mb-2 last:mb-0">
-                    <strong className="text-[#EAEAEA] text-xs block mb-1">{stat.label}</strong>
-                    <span className="text-[#10b981]">{stat.value}</span>
+                  <div key={stat.label} className="mb-3 last:mb-0">
+                    <strong className="text-[#EAEAEA] text-sm block mb-1">{stat.label}</strong>
+                    <span className="text-[#10b981] text-xl font-bold">{stat.value}</span>
                   </div>
                 ))}
               </div>

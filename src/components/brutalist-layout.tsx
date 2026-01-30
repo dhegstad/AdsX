@@ -149,7 +149,7 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-[10px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
+                    className="text-[12px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {item.label}
