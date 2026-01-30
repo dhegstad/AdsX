@@ -74,7 +74,7 @@ export default function PricingPage() {
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
         <div
-          className="text-[10px] tracking-widest text-[#888] mb-4"
+          className="text-xs tracking-widest text-[#888] mb-4"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           SECTION: PRICING
@@ -100,7 +100,7 @@ export default function PricingPage() {
         <div className="max-w-3xl mx-auto">
           <div className="border border-[#10b981] bg-[#10b981]/5 p-8 md:p-12">
             <div
-              className="text-[10px] tracking-widest text-[#10b981] mb-4"
+              className="text-xs tracking-widest text-[#10b981] mb-4"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               FULL SERVICE PLAN
@@ -123,7 +123,7 @@ export default function PricingPage() {
               Get Started
             </Link>
             <p
-              className="mt-6 text-[10px] text-[#888]"
+              className="mt-6 text-xs text-[#888]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               3-MONTH MINIMUM, THEN MONTH-TO-MONTH
@@ -146,14 +146,14 @@ export default function PricingPage() {
           {features.map((section) => (
             <div key={section.category} className="border-r border-b border-[#333] p-6">
               <div
-                className="text-[10px] tracking-widest text-[#10b981] mb-4"
+                className="text-xs tracking-widest text-[#10b981] mb-4"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 {section.category}
               </div>
               <ul className="space-y-3">
                 {section.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-[#888]">
+                  <li key={item} className="flex items-start gap-2 text-base text-[#888]">
                     <span className="text-[#10b981]">+</span>
                     {item}
                   </li>
@@ -179,19 +179,19 @@ export default function PricingPage() {
             <thead>
               <tr className="border-b border-[#333]">
                 <th
-                  className="text-left p-4 text-[10px] tracking-widest text-[#888]"
+                  className="text-left p-4 text-xs tracking-widest text-[#888]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   CAPABILITY
                 </th>
                 <th
-                  className="text-center p-4 text-[10px] tracking-widest text-[#10b981]"
+                  className="text-center p-4 text-xs tracking-widest text-[#10b981]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   WITH ADSX
                 </th>
                 <th
-                  className="text-center p-4 text-[10px] tracking-widest text-[#888]"
+                  className="text-center p-4 text-xs tracking-widest text-[#888]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   DIY
@@ -201,7 +201,7 @@ export default function PricingPage() {
             <tbody>
               {comparison.map((row) => (
                 <tr key={row.item} className="border-b border-[#333]">
-                  <td className="p-4 text-sm text-[#888]">{row.item}</td>
+                  <td className="p-4 text-base text-[#888]">{row.item}</td>
                   <td className="p-4 text-center">
                     {row.adsx === true ? (
                       <span className="text-[#10b981]">&#10003;</span>
@@ -215,7 +215,7 @@ export default function PricingPage() {
                     ) : row.diy === false ? (
                       <span className="text-[#333]">—</span>
                     ) : (
-                      <span className="text-[#888] text-[10px]" style={{ fontFamily: "var(--font-mono)" }}>
+                      <span className="text-[#888] text-xs" style={{ fontFamily: "var(--font-mono)" }}>
                         {row.diy}
                       </span>
                     )}
@@ -241,13 +241,13 @@ export default function PricingPage() {
           {faqs.map((faq, i) => (
             <div key={faq.q} className="p-6 border-r border-b border-[#333]">
               <div
-                className="text-[10px] tracking-widest text-[#888] mb-2"
+                className="text-xs tracking-widest text-[#888] mb-2"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 Q{String(i + 1).padStart(2, "0")}
               </div>
-              <h3 className="font-semibold mb-2">{faq.q}</h3>
-              <p className="text-sm text-[#888]">{faq.a}</p>
+              <h3 className="font-semibold mb-2 text-lg">{faq.q}</h3>
+              <p className="text-base text-[#888]">{faq.a}</p>
             </div>
           ))}
         </div>

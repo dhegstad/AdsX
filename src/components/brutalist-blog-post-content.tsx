@@ -20,14 +20,14 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
       <div className="border-b border-[#333] p-4 flex items-center gap-2">
         <Link
           href="/blog"
-          className="text-[10px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
+          className="text-xs tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           TRANSMISSIONS
         </Link>
         <span className="text-[#333]">/</span>
         <span
-          className="text-[10px] tracking-widest text-[#10b981]"
+          className="text-xs tracking-widest text-[#10b981]"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           {post.category.toUpperCase()}
@@ -40,7 +40,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
           {/* Main Title Area */}
           <div className="lg:col-span-2 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#333]">
             <div
-              className="text-[10px] tracking-widest text-[#888] mb-6"
+              className="text-xs tracking-widest text-[#888] mb-6"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               {new Date(post.date).toLocaleDateString("en-US", {
@@ -78,7 +78,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
             {/* Author */}
             <div className="mb-8">
               <div
-                className="text-[10px] tracking-widest text-[#10b981] mb-4"
+                className="text-xs tracking-widest text-[#10b981] mb-4"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 AUTHOR
@@ -98,7 +98,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                 <div>
                   <div className="font-semibold">{post.author.name}</div>
                   <div
-                    className="text-[10px] text-[#888]"
+                    className="text-xs text-[#888]"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {post.author.role.toUpperCase()}
@@ -110,7 +110,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
             {/* Reading Time */}
             <div className="mb-8">
               <div
-                className="text-[10px] tracking-widest text-[#888] mb-2"
+                className="text-xs tracking-widest text-[#888] mb-2"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 READ TIME
@@ -127,7 +127,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
             {post.tags && post.tags.length > 0 && (
               <div>
                 <div
-                  className="text-[10px] tracking-widest text-[#888] mb-3"
+                  className="text-xs tracking-widest text-[#888] mb-3"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   TAGS
@@ -136,7 +136,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2 py-1 border border-[#333] text-[9px] text-[#888]"
+                      className="px-2 py-1 border border-[#333] text-xs text-[#888]"
                       style={{ fontFamily: "var(--font-mono)" }}
                     >
                       {tag.toUpperCase()}
@@ -155,26 +155,26 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
           {/* Table of Contents Sidebar */}
           <div className="hidden lg:block p-8 border-r border-[#333] sticky top-0 self-start">
             <div
-              className="text-[10px] tracking-widest text-[#10b981] mb-4"
+              className="text-xs tracking-widest text-[#10b981] mb-4"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               CONTENTS
             </div>
             <nav className="space-y-2">
               <div
-                className="text-[11px] text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 → INTRODUCTION
               </div>
               <div
-                className="text-[11px] text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 → KEY INSIGHTS
               </div>
               <div
-                className="text-[11px] text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 → CONCLUSION
@@ -237,7 +237,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                     );
                   },
                   p: ({ children, ...props }) => (
-                    <p className="mb-6 text-[#ccc] leading-relaxed" style={{ fontFamily: "var(--font-body)" }} {...props}>
+                    <p className="mb-6 text-[#ccc] leading-relaxed text-base" style={{ fontFamily: "var(--font-body)" }} {...props}>
                       {children}
                     </p>
                   ),
@@ -257,13 +257,13 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                     </ol>
                   ),
                   li: ({ children, ...props }) => (
-                    <li className="text-[#ccc] before:content-['+'] before:text-[#10b981] before:mr-2" {...props}>
+                    <li className="text-[#ccc] text-base before:content-['+'] before:text-[#10b981] before:mr-2" {...props}>
                       {children}
                     </li>
                   ),
                   blockquote: ({ children, ...props }) => (
                     <blockquote
-                      className="my-8 border-l-[3px] border-[#10b981] pl-6 italic text-[#888]"
+                      className="my-8 border-l-[3px] border-[#10b981] pl-6 italic text-[#888] text-base"
                       {...props}
                     >
                       {children}
@@ -313,7 +313,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                           </div>
                           {alt && (
                             <figcaption
-                              className="mt-3 text-center text-[10px] text-[#888]"
+                              className="mt-3 text-center text-xs text-[#888]"
                               style={{ fontFamily: "var(--font-mono)" }}
                             >
                               {alt.toUpperCase()}
@@ -335,7 +335,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                         </div>
                         {alt && (
                           <figcaption
-                            className="mt-3 text-center text-[10px] text-[#888]"
+                            className="mt-3 text-center text-xs text-[#888]"
                             style={{ fontFamily: "var(--font-mono)" }}
                           >
                             {alt.toUpperCase()}
@@ -358,7 +358,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                   ),
                   th: ({ children, ...props }) => (
                     <th
-                      className="border-b border-[#333] px-4 py-3 text-left text-[10px] tracking-wider text-[#10b981]"
+                      className="border-b border-[#333] px-4 py-3 text-left text-xs tracking-wider text-[#10b981]"
                       style={{ fontFamily: "var(--font-mono)" }}
                       {...props}
                     >
@@ -366,7 +366,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                     </th>
                   ),
                   td: ({ children, ...props }) => (
-                    <td className="border-b border-[#333] px-4 py-3 text-sm text-[#888]" {...props}>
+                    <td className="border-b border-[#333] px-4 py-3 text-base text-[#888]" {...props}>
                       {children}
                     </td>
                   ),
@@ -386,14 +386,14 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://adsx.com/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 border border-[#333] text-[10px] tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
+            className="px-4 py-2 border border-[#333] text-xs tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             SHARE ON X
           </a>
           <button
             onClick={() => navigator.clipboard.writeText(`https://adsx.com/blog/${slug}`)}
-            className="px-4 py-2 border border-[#333] text-[10px] tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
+            className="px-4 py-2 border border-[#333] text-xs tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             COPY LINK
@@ -401,7 +401,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
         </div>
         <Link
           href="/blog"
-          className="text-[10px] tracking-wider text-[#10b981] hover:text-[#EAEAEA] transition-colors"
+          className="text-xs tracking-wider text-[#10b981] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           ← BACK TO TRANSMISSIONS
@@ -413,7 +413,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
         <div className="border-b border-[#333]">
           <div className="p-4 border-b border-[#333]">
             <span
-              className="text-[10px] tracking-widest text-[#10b981]"
+              className="text-xs tracking-widest text-[#10b981]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               RELATED TRANSMISSIONS
@@ -428,13 +428,13 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
               >
                 <div className="flex justify-between items-start mb-4">
                   <span
-                    className="text-[11px] text-[#888]"
+                    className="text-xs text-[#888]"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                   <span
-                    className="text-[9px] text-[#888]"
+                    className="text-xs text-[#888]"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     {relatedPost.readingTime.toUpperCase()}
@@ -446,7 +446,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                 >
                   {relatedPost.title}
                 </h3>
-                <p className="text-sm text-[#888] line-clamp-2">{relatedPost.excerpt}</p>
+                <p className="text-base text-[#888] line-clamp-2">{relatedPost.excerpt}</p>
               </Link>
             ))}
           </div>

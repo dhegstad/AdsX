@@ -40,7 +40,7 @@ export default function AboutPage() {
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
         <div
-          className="text-[10px] tracking-widest text-[#888] mb-4"
+          className="text-xs tracking-widest text-[#888] mb-4"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           SECTION: ABOUT
@@ -65,7 +65,7 @@ export default function AboutPage() {
       <div className="grid md:grid-cols-2 border-b border-[#333]">
         <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#333]">
           <div
-            className="text-[10px] tracking-widest text-[#10b981] mb-4"
+            className="text-xs tracking-widest text-[#10b981] mb-4"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             01. MISSION
@@ -76,7 +76,7 @@ export default function AboutPage() {
           >
             Our Mission
           </h2>
-          <div className="space-y-4 text-[#888]">
+          <div className="space-y-4 text-[#888] text-base">
             <p>
               Search is being reinvented. ChatGPT, Perplexity, Claude, and a wave of AI assistants are changing how people find information, products, and services.
             </p>
@@ -87,7 +87,7 @@ export default function AboutPage() {
         </div>
         <div className="p-8 md:p-12">
           <div
-            className="text-[10px] tracking-widest text-[#10b981] mb-4"
+            className="text-xs tracking-widest text-[#10b981] mb-4"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             02. APPROACH
@@ -98,7 +98,7 @@ export default function AboutPage() {
           >
             Our Approach
           </h2>
-          <div className="space-y-4 text-[#888]">
+          <div className="space-y-4 text-[#888] text-base">
             <p>
               We combine deep expertise in AI systems with proven marketing fundamentals. We understand how large language models retrieve and surface information.
             </p>
@@ -126,18 +126,18 @@ export default function AboutPage() {
               className="service-item border-r border-b border-[#333] p-6 flex flex-col"
             >
               <span
-                className="idx text-[11px] text-[#888] mb-2 block"
+                className="idx text-xs text-[#888] mb-3 block"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 {value.idx}
               </span>
               <div
-                className="text-lg uppercase mb-2"
+                className="text-xl uppercase mb-3"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {value.title}
               </div>
-              <div className="desc text-sm text-[#888]">
+              <div className="desc text-base text-[#888]">
                 {value.desc}
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function AboutPage() {
               {stat.value}
             </div>
             <div
-              className="text-[9px] tracking-widest text-[#888] mt-2"
+              className="text-xs tracking-widest text-[#888] mt-2"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               {stat.label}

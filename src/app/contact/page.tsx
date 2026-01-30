@@ -59,7 +59,7 @@ export default function ContactPage() {
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
         <div
-          className="text-[10px] tracking-widest text-[#888] mb-4"
+          className="text-xs tracking-widest text-[#888] mb-4"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           SECTION: CONTACT
@@ -94,7 +94,7 @@ export default function ContactPage() {
               {stat.value}
             </div>
             <div
-              className="text-[8px] md:text-[9px] tracking-widest text-[#888] mt-1"
+              className="text-[10px] md:text-xs tracking-widest text-[#888] mt-1"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               {stat.label}
@@ -108,7 +108,7 @@ export default function ContactPage() {
         {/* Left - Info */}
         <div className="p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#333]">
           <div
-            className="text-[10px] tracking-widest text-[#10b981] mb-6"
+            className="text-xs tracking-widest text-[#10b981] mb-6"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             WHAT YOU&apos;LL GET
@@ -134,19 +134,19 @@ export default function ContactPage() {
             ].map((item) => (
               <div key={item.idx} className="flex gap-4">
                 <div
-                  className="text-[11px] text-[#888] shrink-0"
+                  className="text-xs text-[#888] shrink-0"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   {item.idx}
                 </div>
                 <div>
                   <h3
-                    className="uppercase text-sm mb-1"
+                    className="uppercase text-base mb-1"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-sm text-[#888]">{item.desc}</p>
+                  <p className="text-base text-[#888]">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -154,7 +154,7 @@ export default function ContactPage() {
 
           {/* Testimonial */}
           <div className="mt-12 border border-[#333] p-6">
-            <p className="text-[#888] italic mb-4">
+            <p className="text-[#888] italic mb-4 text-base">
               &quot;Within 4 months of working with AdsX, we went from invisible to the #1 recommended solution in our category.&quot;
             </p>
             <div className="flex items-center gap-3">
@@ -169,7 +169,7 @@ export default function ContactPage() {
               <div>
                 <div className="text-sm">Jordan Mitchell</div>
                 <div
-                  className="text-[10px] text-[#888]"
+                  className="text-xs text-[#888]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   VP MARKETING, NEXUS
@@ -182,7 +182,7 @@ export default function ContactPage() {
         {/* Right - Form */}
         <div className="p-8 md:p-12 bg-[#111]">
           <div
-            className="text-[10px] tracking-widest text-[#10b981] mb-6"
+            className="text-xs tracking-widest text-[#10b981] mb-6"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             TRANSMISSION FORM
@@ -223,7 +223,7 @@ export default function ContactPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label
-                    className="block text-[10px] tracking-widest text-[#888] mb-2"
+                    className="block text-xs tracking-widest text-[#888] mb-2"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     FIRST NAME *
@@ -240,7 +240,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label
-                    className="block text-[10px] tracking-widest text-[#888] mb-2"
+                    className="block text-xs tracking-widest text-[#888] mb-2"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
                     LAST NAME *
@@ -259,7 +259,7 @@ export default function ContactPage() {
 
               <div>
                 <label
-                  className="block text-[10px] tracking-widest text-[#888] mb-2"
+                  className="block text-xs tracking-widest text-[#888] mb-2"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   WORK EMAIL *
@@ -277,7 +277,7 @@ export default function ContactPage() {
 
               <div>
                 <label
-                  className="block text-[10px] tracking-widest text-[#888] mb-2"
+                  className="block text-xs tracking-widest text-[#888] mb-2"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   COMPANY *
@@ -295,7 +295,7 @@ export default function ContactPage() {
 
               <div>
                 <label
-                  className="block text-[10px] tracking-widest text-[#888] mb-2"
+                  className="block text-xs tracking-widest text-[#888] mb-2"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   MESSAGE *
@@ -320,7 +320,7 @@ export default function ContactPage() {
               </button>
 
               <div
-                className="text-[9px] text-[#888] text-center"
+                className="text-xs text-[#888] text-center"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
                 NO SPAM // 24HR RESPONSE // FREE AUDIT INCLUDED
