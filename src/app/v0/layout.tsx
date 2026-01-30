@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AdsX V1 - Design Preview",
-  description: "Design preview for AdsX homepage redesign",
+  title: "AdsX V0 - Original Design Backup",
+  description: "Original design backup for AdsX website",
   robots: {
     index: false,
     follow: false,
   },
 };
 
-export default function V1Layout({
+export default function V0Layout({
   children,
 }: {
   children: React.ReactNode;

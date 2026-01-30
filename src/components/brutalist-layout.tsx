@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
-interface V1LayoutProps {
+interface BrutalistLayoutProps {
   children: ReactNode;
 }
 
-export function V1Layout({ children }: V1LayoutProps) {
+export function BrutalistLayout({ children }: BrutalistLayoutProps) {
   return (
     <>
       <style jsx global>{`
@@ -135,16 +135,16 @@ export function V1Layout({ children }: V1LayoutProps) {
 
             {/* Header */}
             <header className="border-b border-[#333] h-[60px] flex justify-between items-center px-6">
-              <Link href="/v1" className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+              <Link href="/" className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                 ADSX
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 {[
-                  { label: "HOME", href: "/v1" },
-                  { label: "BLOG", href: "/v1/blog" },
-                  { label: "ABOUT", href: "/v1/about" },
-                  { label: "PRICING", href: "/v1/pricing" },
-                  { label: "CONTACT", href: "/v1/contact" },
+                  { label: "HOME", href: "/" },
+                  { label: "BLOG", href: "/blog" },
+                  { label: "ABOUT", href: "/about" },
+                  { label: "PRICING", href: "/pricing" },
+                  { label: "CONTACT", href: "/contact" },
                 ].map((item) => (
                   <Link
                     key={item.href}

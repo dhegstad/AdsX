@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAllPosts } from "@/lib/blog";
-import { BlogListingContent } from "@/components/blog/blog-listing-content";
+import { getAllPosts, getAllCategories } from "@/lib/blog";
+import { BrutalistBlogListing } from "@/components/blog/brutalist-blog-listing";
 
 export const metadata: Metadata = {
   title: "Blog | AI Search Advertising Insights",
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const categories = getAllCategories();
 
-  return <BlogListingContent posts={posts} />;
+  return <BrutalistBlogListing posts={posts} categories={categories} />;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getAllSlugs, getRelatedPosts, getAuthorByName } from "@/lib/blog";
-import { BlogPostContent } from "@/components/blog/blog-post-content";
+import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/lib/blog";
+import { BrutalistBlogPostContent } from "@/components/brutalist-blog-post-content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -85,9 +85,6 @@ function ArticleSchema({ post, slug }: { post: NonNullable<ReturnType<typeof get
   );
 }
 
-// Note: FAQSchema removed - Google requires FAQPage schema only when FAQs are visually displayed on the page.
-// The faqs frontmatter field is preserved for potential future use if we add visible FAQ sections to blog posts.
-
 function BreadcrumbSchema({ post, slug }: { post: NonNullable<ReturnType<typeof getPostBySlug>>; slug: string }) {
   const schema = {
     "@context": "https://schema.org",
@@ -131,13 +128,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const relatedPosts = getRelatedPosts(slug, post.category);
-  const authorData = getAuthorByName(post.author.name);
 
   return (
     <>
       <ArticleSchema post={post} slug={slug} />
       <BreadcrumbSchema post={post} slug={slug} />
-      <BlogPostContent post={post} slug={slug} relatedPosts={relatedPosts} authorData={authorData} />
+      <BrutalistBlogPostContent post={post} slug={slug} relatedPosts={relatedPosts} />
     </>
   );
 }

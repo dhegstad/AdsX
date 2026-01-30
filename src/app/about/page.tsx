@@ -1,117 +1,192 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
-import { cn } from "@/lib/utils";
+import { BrutalistLayout } from "@/components/brutalist-layout";
+
+const values = [
+  {
+    idx: "01",
+    title: "First-Mover Wins",
+    desc: "The brands that establish AI search presence now will have compounding advantages for years.",
+  },
+  {
+    idx: "02",
+    title: "Quality Over Hacks",
+    desc: "We don't chase shortcuts. We build sustainable visibility through genuine value.",
+  },
+  {
+    idx: "03",
+    title: "Transparency Always",
+    desc: "You'll always know what we're doing, why we're doing it, and how it's performing.",
+  },
+  {
+    idx: "04",
+    title: "Results Matter",
+    desc: "Visibility is a means to an end. We measure success by business outcomes.",
+  },
+  {
+    idx: "05",
+    title: "Stay Curious",
+    desc: "AI search is evolving rapidly. We're constantly experimenting to stay ahead.",
+  },
+  {
+    idx: "06",
+    title: "Partnership Mindset",
+    desc: "We work as an extension of your team. Your success is our success.",
+  },
+];
 
 export default function AboutPage() {
   return (
-    <ThemedLayout>
+    <BrutalistLayout>
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 dot-pattern opacity-40" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Built for the <span className="gradient-text">AI search era</span>
-            </h1>
-            <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
-              We started AdsX because we saw the future of search changing—and realized most brands weren&apos;t ready.
+      <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+        <div
+          className="text-[10px] tracking-widest text-[#888] mb-4"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          SECTION: ABOUT
+        </div>
+        <h1
+          className="uppercase"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(32px, 6vw, 72px)",
+            lineHeight: 0.9,
+            letterSpacing: "-2px",
+          }}
+        >
+          Built for the<br />AI search era
+        </h1>
+        <p className="mt-6 max-w-2xl text-[#888] text-lg">
+          We started AdsX because we saw the future of search changing—and realized most brands weren&apos;t ready.
+        </p>
+      </div>
+
+      {/* Mission & Approach Grid */}
+      <div className="grid md:grid-cols-2 border-b border-[#333]">
+        <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#333]">
+          <div
+            className="text-[10px] tracking-widest text-[#10b981] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            01. MISSION
+          </div>
+          <h2
+            className="text-2xl uppercase mb-6"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Our Mission
+          </h2>
+          <div className="space-y-4 text-[#888]">
+            <p>
+              Search is being reinvented. ChatGPT, Perplexity, Claude, and a wave of AI assistants are changing how people find information, products, and services.
+            </p>
+            <p>
+              Traditional SEO and paid search strategies don&apos;t work in this new paradigm. We exist to help forward-thinking brands navigate this shift.
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Mission */}
-      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-24">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">Our mission</h2>
-              <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-                Search is being reinvented. ChatGPT, Perplexity, Claude, and a wave of AI assistants are changing how people find information, products, and services.
-              </p>
-              <p className="mt-4 text-lg text-neutral-600 dark:text-white/60">
-                Traditional SEO and paid search strategies don&apos;t work in this new paradigm. We exist to help forward-thinking brands navigate this shift and capture visibility where their customers are actually searching.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">Our approach</h2>
-              <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-                We combine deep expertise in AI systems with proven marketing fundamentals. We understand how large language models retrieve and surface information—and we use that knowledge to position your brand effectively.
-              </p>
-              <p className="mt-4 text-lg text-neutral-600 dark:text-white/60">
-                This isn&apos;t about gaming algorithms. It&apos;s about ensuring your brand is genuinely the best answer when AI platforms help customers make decisions.
-              </p>
-            </div>
+        <div className="p-8 md:p-12">
+          <div
+            className="text-[10px] tracking-widest text-[#10b981] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            02. APPROACH
+          </div>
+          <h2
+            className="text-2xl uppercase mb-6"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Our Approach
+          </h2>
+          <div className="space-y-4 text-[#888]">
+            <p>
+              We combine deep expertise in AI systems with proven marketing fundamentals. We understand how large language models retrieve and surface information.
+            </p>
+            <p>
+              This isn&apos;t about gaming algorithms. It&apos;s about ensuring your brand is genuinely the best answer when AI helps customers decide.
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Values */}
-      <section className="border-t py-24 border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-transparent">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold tracking-tight">What we believe</h2>
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "First-mover wins",
-                description: "The brands that establish AI search presence now will have compounding advantages for years to come.",
-              },
-              {
-                title: "Quality over hacks",
-                description: "We don't chase shortcuts. We build sustainable visibility through genuine value and authority.",
-              },
-              {
-                title: "Transparency always",
-                description: "You'll always know what we're doing, why we're doing it, and how it's performing.",
-              },
-              {
-                title: "Results matter",
-                description: "Visibility is a means to an end. We measure success by business outcomes, not vanity metrics.",
-              },
-              {
-                title: "Stay curious",
-                description: "AI search is evolving rapidly. We're constantly experimenting and learning to stay ahead.",
-              },
-              {
-                title: "Partnership mindset",
-                description: "We work as an extension of your team, not a vendor. Your success is our success.",
-              },
-            ].map((value) => (
-              <div
-                key={value.title}
-                className="rounded-xl border p-6 border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.02]"
+      {/* Values Section */}
+      <div className="border-b border-[#333]">
+        <div className="p-8 border-b border-[#333]">
+          <h2
+            className="text-2xl uppercase"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What We Believe
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3">
+          {values.map((value) => (
+            <div
+              key={value.idx}
+              className="service-item border-r border-b border-[#333] p-6 flex flex-col"
+            >
+              <span
+                className="idx text-[11px] text-[#888] mb-2 block"
+                style={{ fontFamily: "var(--font-mono)" }}
               >
-                <h3 className="text-lg font-semibold">{value.title}</h3>
-                <p className="mt-3 text-neutral-600 dark:text-white/60">{value.description}</p>
+                {value.idx}
+              </span>
+              <div
+                className="text-lg uppercase mb-2"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {value.title}
               </div>
-            ))}
-          </div>
+              <div className="desc text-sm text-[#888]">
+                {value.desc}
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
+
+      {/* Stats Strip */}
+      <div className="grid grid-cols-3 border-b border-[#333]">
+        {[
+          { label: "BRANDS LAUNCHED", value: "52" },
+          { label: "AVG. VISIBILITY INCREASE", value: "340%" },
+          { label: "PLATFORMS COVERED", value: "5" },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="p-6 border-r last:border-r-0 border-[#333] text-center"
+          >
+            <div
+              className="text-3xl md:text-4xl text-[#10b981]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {stat.value}
+            </div>
+            <div
+              className="text-[9px] tracking-widest text-[#888] mt-2"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* CTA */}
-      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Let&apos;s work together
-          </h2>
-          <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-            Ready to capture the AI search opportunity? Let&apos;s talk.
-          </p>
-          <div className="mt-10">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 dark:text-black dark:hover:bg-emerald-400 dark:shadow-none"
-            >
-              Get in Touch
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-    </ThemedLayout>
+      <div className="p-8 md:p-16 text-center">
+        <h2
+          className="text-2xl md:text-3xl uppercase mb-4"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Let&apos;s Work Together
+        </h2>
+        <p className="text-[#888] mb-8 max-w-lg mx-auto">
+          Ready to capture the AI search opportunity? Let&apos;s talk.
+        </p>
+        <Link href="/contact" className="cta-btn cta-btn-primary">
+          Get In Touch
+        </Link>
+      </div>
+    </BrutalistLayout>
   );
 }

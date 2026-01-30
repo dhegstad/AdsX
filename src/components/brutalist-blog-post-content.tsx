@@ -4,22 +4,22 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
-import { V1Layout } from "@/components/v1/v1-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
 
-interface V1BlogPostContentProps {
+interface BrutalistBlogPostContentProps {
   post: BlogPost;
   slug: string;
   relatedPosts: BlogPostMeta[];
 }
 
-export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostContentProps) {
+export function BrutalistBlogPostContent({ post, slug, relatedPosts }: BrutalistBlogPostContentProps) {
   return (
-    <V1Layout>
+    <BrutalistLayout>
       {/* Breadcrumb */}
       <div className="border-b border-[#333] p-4 flex items-center gap-2">
         <Link
-          href="/v1/blog"
+          href="/blog"
           className="text-[10px] tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
@@ -383,7 +383,7 @@ export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostConten
       <div className="border-b border-[#333] p-6 flex flex-wrap gap-4 justify-between items-center">
         <div className="flex gap-4">
           <a
-            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://adsx.com/v1/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://adsx.com/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 border border-[#333] text-[10px] tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
@@ -392,7 +392,7 @@ export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostConten
             SHARE ON X
           </a>
           <button
-            onClick={() => navigator.clipboard.writeText(`https://adsx.com/v1/blog/${slug}`)}
+            onClick={() => navigator.clipboard.writeText(`https://adsx.com/blog/${slug}`)}
             className="px-4 py-2 border border-[#333] text-[10px] tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
@@ -400,7 +400,7 @@ export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostConten
           </button>
         </div>
         <Link
-          href="/v1/blog"
+          href="/blog"
           className="text-[10px] tracking-wider text-[#10b981] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
@@ -423,7 +423,7 @@ export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostConten
             {relatedPosts.map((relatedPost, idx) => (
               <Link
                 key={relatedPost.slug}
-                href={`/v1/blog/${relatedPost.slug}`}
+                href={`/blog/${relatedPost.slug}`}
                 className="border-r border-b border-[#333] p-6 group hover:bg-[#111] transition-colors"
               >
                 <div className="flex justify-between items-start mb-4">
@@ -464,10 +464,10 @@ export function V1BlogPostContent({ post, slug, relatedPosts }: V1BlogPostConten
         <p className="text-[#888] mb-8 max-w-lg mx-auto">
           Get your free AI visibility audit and see how your brand appears across ChatGPT, Claude, and more.
         </p>
-        <Link href="/v1/contact" className="cta-btn cta-btn-primary">
+        <Link href="/contact" className="cta-btn cta-btn-primary">
           Get Your Free Audit
         </Link>
       </div>
-    </V1Layout>
+    </BrutalistLayout>
   );
 }

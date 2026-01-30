@@ -1,15 +1,26 @@
-import Link from "next/link";
-import { V1Layout } from "@/components/v1/v1-layout";
-import { getAllPosts, getAllCategories } from "@/lib/blog";
+"use client";
 
-export default function V1BlogPage() {
-  const posts = getAllPosts();
-  const categories = getAllCategories();
+import Link from "next/link";
+import { BrutalistLayout } from "@/components/brutalist-layout";
+import type { BlogPostMeta } from "@/lib/blog";
+
+interface Category {
+  category: string;
+  slug: string;
+  count: number;
+}
+
+interface BrutalistBlogListingProps {
+  posts: BlogPostMeta[];
+  categories: Category[];
+}
+
+export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListingProps) {
   const featuredPost = posts.find((p) => p.featured) || posts[0];
   const otherPosts = posts.filter((p) => p.slug !== featuredPost?.slug);
 
   return (
-    <V1Layout>
+    <BrutalistLayout>
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
         <div
@@ -70,7 +81,7 @@ export default function V1BlogPage() {
           FILTER:
         </span>
         <Link
-          href="/v1/blog"
+          href="/blog"
           className="px-3 py-1 border border-[#10b981] text-[#10b981] text-[10px] tracking-wider hover:bg-[#10b981] hover:text-black transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
@@ -79,7 +90,7 @@ export default function V1BlogPage() {
         {categories.slice(0, 5).map((cat) => (
           <Link
             key={cat.slug}
-            href={`/v1/blog/category/${cat.slug}`}
+            href={`/blog/category/${cat.slug}`}
             className="px-3 py-1 border border-[#333] text-[#888] text-[10px] tracking-wider hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
@@ -99,7 +110,7 @@ export default function V1BlogPage() {
               FEATURED TRANSMISSION
             </span>
           </div>
-          <Link href={`/v1/blog/${featuredPost.slug}`} className="block group">
+          <Link href={`/blog/${featuredPost.slug}`} className="block group">
             <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#333] bg-[#111] group-hover:bg-[#1a1a1a] transition-colors">
                 <div
@@ -203,7 +214,7 @@ export default function V1BlogPage() {
           {otherPosts.map((post, idx) => (
             <Link
               key={post.slug}
-              href={`/v1/blog/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="blog-card border-r border-b border-[#333] p-6 flex flex-col group hover:bg-[#EAEAEA] transition-colors"
             >
               <div className="flex justify-between items-start mb-4">
@@ -279,6 +290,6 @@ export default function V1BlogPage() {
           </button>
         </div>
       </div>
-    </V1Layout>
+    </BrutalistLayout>
   );
 }
