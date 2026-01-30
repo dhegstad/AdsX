@@ -368,7 +368,7 @@ export default function HomePage() {
                     >
                       {service.name}
                     </div>
-                    <div className="desc text-sm text-[#888] max-w-[90%]">
+                    <div className="desc text-base text-[#888] max-w-[90%]">
                       {service.desc}
                     </div>
                     {service.cta && (
