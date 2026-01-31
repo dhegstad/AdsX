@@ -1,8 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { OrganizationSchema, WebSiteSchema, FAQSchema } from "@/components/seo/structured-data";
+
+const navLinks = [
+  { label: "HOME", href: "/" },
+  { label: "BLOG", href: "/blog" },
+  { label: "ABOUT", href: "/about" },
+  { label: "PRICING", href: "/pricing" },
+  { label: "CONTACT", href: "/contact" },
+];
+
+const footerLinks = {
+  company: [
+    { label: "About", href: "/about" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Contact", href: "/contact" },
+    { label: "Blog", href: "/blog" },
+  ],
+  resources: [
+    { label: "Free Audit", href: "/tools/free-audit" },
+    { label: "Case Studies", href: "/case-studies" },
+    { label: "Services", href: "/services" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+  ],
+};
 
 const services = [
   {
@@ -47,6 +73,7 @@ const stats = [
 export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -241,18 +268,14 @@ export default function HomePage() {
           <div className="border border-[#333] bg-[#0a0a0a] flex-grow flex flex-col">
 
             {/* Header */}
-            <header className="border-b border-[#333] h-[60px] flex justify-between items-center px-6">
+            <header className="border-b border-[#333] h-[60px] flex justify-between items-center px-4 md:px-6">
               <Link href="/" className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                 ADSX
               </Link>
+
+              {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center gap-6">
-                {[
-                  { label: "HOME", href: "/" },
-                  { label: "BLOG", href: "/blog" },
-                  { label: "ABOUT", href: "/about" },
-                  { label: "PRICING", href: "/pricing" },
-                  { label: "CONTACT", href: "/contact" },
-                ].map((item) => (
+                {navLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -263,15 +286,52 @@ export default function HomePage() {
                   </Link>
                 ))}
               </nav>
-              <div className="flex gap-5">
+
+              <div className="flex gap-3 items-center">
                 <div
-                  className="border border-[#EAEAEA] bg-[#EAEAEA] text-[#080808] px-2 py-1 text-[10px] font-bold"
+                  className="hidden sm:block border border-[#EAEAEA] bg-[#EAEAEA] text-[#080808] px-2 py-1 text-[10px] font-bold"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   SYS: ONLINE
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 border border-[#333] hover:border-[#EAEAEA] transition-colors"
+                  aria-label="Toggle menu"
+                >
+                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-transform ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-transform ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+                </button>
               </div>
             </header>
+
+            {/* Mobile Navigation */}
+            {mobileMenuOpen && (
+              <nav className="md:hidden border-b border-[#333] bg-[#0a0a0a]">
+                {navLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-6 py-4 text-sm tracking-widest text-[#888] hover:text-[#EAEAEA] hover:bg-[#111] transition-colors border-b border-[#222] last:border-b-0"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block mx-6 my-4 text-center py-3 bg-[#10b981] text-black text-sm font-bold tracking-widest"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  GET STARTED
+                </Link>
+              </nav>
+            )}
 
             {/* Hero Section */}
             <div
@@ -403,34 +463,134 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Footer Strip */}
-            <div className="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 bg-[#050505]">
-              <div className="flex gap-6 items-center">
-                <div
-                  className="text-3xl"
-                  style={{ fontFamily: "var(--font-display)", letterSpacing: "-1px" }}
-                >
-                  AX
+            {/* Footer */}
+            <footer className="bg-[#050505] border-t border-[#333]">
+              {/* Main Footer Content */}
+              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+                {/* Brand Column */}
+                <div className="col-span-2 md:col-span-1">
+                  <Link
+                    href="/"
+                    className="text-2xl tracking-tight inline-block mb-4"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    ADSX
+                  </Link>
+                  <p className="text-sm text-[#888] mb-6">
+                    AI search advertising for forward-thinking brands.
+                  </p>
+                  <div
+                    className="border border-[#EAEAEA] p-2 w-fit text-[10px] leading-tight"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    AI SEARCH IS THE NEW FRONTIER
+                  </div>
                 </div>
 
-                <div
-                  className="text-[9px] text-[#888]"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  &copy; {new Date().getFullYear()} ADSX
+                {/* Company Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    COMPANY
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.company.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Resources Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    RESOURCES
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.resources.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Legal Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    LEGAL
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.legal.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
-              <div className="flex gap-3 items-center">
+              {/* Bottom Bar */}
+              <div className="px-6 md:px-10 py-4 border-t border-[#222] flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div
-                  className="border border-[#EAEAEA] p-1.5 w-[120px] text-[8px] leading-tight text-justify"
+                  className="text-xs text-[#888]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  AI SEARCH IS THE NEW FRONTIER. YOUR COMPETITORS ARE ALREADY OPTIMIZING.
+                  &copy; {new Date().getFullYear()} ADSX. All rights reserved.
                 </div>
-                <div className="barcode" />
+                <div className="flex items-center gap-4">
+                  <a
+                    href="https://twitter.com/adsx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    X/TWITTER
+                  </a>
+                  <a
+                    href="https://linkedin.com/company/adsx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    LINKEDIN
+                  </a>
+                  <a
+                    href="mailto:hello@adsx.com"
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    EMAIL
+                  </a>
+                </div>
               </div>
-            </div>
+            </footer>
 
           </div>
         </div>
