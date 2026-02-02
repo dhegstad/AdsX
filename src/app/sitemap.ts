@@ -22,14 +22,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  // Get all tags
+  // Get only tags with 2+ posts to avoid thin content pages
   const tags = getAllTags();
-  const tagUrls: MetadataRoute.Sitemap = tags.map((tag) => ({
-    url: `${baseUrl}/blog/tag/${tag.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.4,
-  }));
+  const tagUrls: MetadataRoute.Sitemap = tags
+    .filter((tag) => tag.count >= 2)
+    .map((tag) => ({
+      url: `${baseUrl}/blog/tag/${tag.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.4,
+    }));
 
   // Get all authors
   const authorUrls: MetadataRoute.Sitemap = authors.map((author) => ({
@@ -40,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
+    // Core pages
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -47,28 +50,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/case-studies`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/pricing`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
@@ -77,11 +68,76 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/case-studies`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    // Tools
+    {
+      url: `${baseUrl}/tools/free-audit`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    // Blog
+    {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.8,
     },
+    // Comparison pages
+    {
+      url: `${baseUrl}/compare`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/compare/ai-visibility-vs-seo`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/compare/ai-visibility-vs-pr`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/compare/ai-visibility-vs-diy`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    // Industry pages
+    {
+      url: `${baseUrl}/industries/saas`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/industries/ecommerce`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/industries/fintech`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    // Legal
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
@@ -94,13 +150,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
-    // Include all blog posts
+    // Blog posts
     ...blogPostUrls,
-    // Include category pages
+    // Category pages
     ...categoryUrls,
-    // Include tag pages
+    // Tag pages (only those with 2+ posts)
     ...tagUrls,
-    // Include author pages
+    // Author pages
     ...authorUrls,
   ];
 }
