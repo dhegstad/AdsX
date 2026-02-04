@@ -9,6 +9,15 @@ author:
   role: "AI Research Lead"
 featured: false
 updated: "2026-01-27"
+faqs:
+  - question: "How does ChatGPT decide what to recommend?"
+    answer: "ChatGPT generates recommendations based on patterns learned during training, including how frequently a brand appears in training data, the sentiment of mentions, association strength with category terms, and consensus across multiple sources. It doesn't search a database—it predicts likely responses."
+  - question: "What is training data in LLMs?"
+    answer: "Training data is the massive collection of text (websites, books, articles, forums) that large language models learn from. Brands that appear frequently and positively in this training data are more likely to be recommended. More web presence generally means stronger AI recommendations."
+  - question: "Why does AI recommend some brands more than others?"
+    answer: "AI recommends brands based on training data frequency, positive sentiment associations, strong category connections, consensus across authoritative sources, and content specificity matching user queries. Established brands with extensive web presence have natural advantages."
+  - question: "What is RAG and how does it affect AI recommendations?"
+    answer: "RAG (Retrieval-Augmented Generation) is a technique where AI retrieves current information before generating responses, used by platforms like Perplexity. With RAG, your current website content directly influences responses, making fresh content and strong domain authority more important."
 ---
 
 When you ask ChatGPT "What's the best project management tool?", it doesn't search a database or run an algorithm. Instead, it generates a response based on patterns learned during training. Understanding how this works is crucial for anyone trying to influence AI recommendations.
@@ -178,11 +187,12 @@ Understanding limitations helps set realistic expectations:
 
 ### Training Data Cutoffs
 
-Models without web access have knowledge cutoffs:
-- GPT-4: Training data up to April 2024
-- Claude: Training data up to early 2024
+Models without web access have knowledge cutoffs that are regularly updated:
+- GPT-4o: Training data up to October 2023, with browsing for current info
+- Claude 3.5: Training data up to April 2024
+- Gemini: Continuously updated with Google Search integration
 
-New products launched after cutoffs won't appear in recommendations unless the model has web access.
+New products launched after cutoffs may not appear in base model recommendations, but most production AI assistants now have web access for current information. The trend is toward real-time retrieval augmented generation (RAG) that reduces reliance on static training data.
 
 ### Hallucination Risk
 
@@ -255,4 +265,4 @@ Models increasingly understand images, video, and audio, expanding how brand inf
 
 ---
 
-*Understanding how LLMs work is the first step to influencing their recommendations. [Contact AdsX](/contact) to learn how we can help improve your brand's AI visibility based on these technical foundations.*
+*Understanding how LLMs work is the first step to influencing their recommendations. [Check your current AI visibility](/tools/free-audit) to see how LLMs represent your brand today, or [talk to our AI specialists](/contact) to develop a data-driven optimization strategy.*
