@@ -220,12 +220,12 @@ export default function FreeAuditPage() {
                 >
                   <p
                     className={cn(
-                      "text-sm italic",
+                      "text-sm",
                       isDark ? "text-white/60" : "text-neutral-600"
                     )}
                   >
-                    &quot;We had no idea we were invisible in ChatGPT. AdsX helped us go from not
-                    mentioned to #1 recommended in our category.&quot;
+                    <span className={isDark ? "text-emerald-400" : "text-emerald-600"}>800M+ people</span> now use ChatGPT weekly.
+                    Many of them are asking for product recommendations in your category.
                   </p>
                   <p
                     className={cn(
@@ -233,7 +233,7 @@ export default function FreeAuditPage() {
                       isDark ? "text-white/40" : "text-neutral-500"
                     )}
                   >
-                    — VP Marketing, B2B SaaS Company
+                    Source: OpenAI, 2024
                   </p>
                 </div>
               </div>

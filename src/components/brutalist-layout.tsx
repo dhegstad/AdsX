@@ -39,17 +39,15 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@300;400;700&display=swap');
-
         .v1-page {
           --bg-color: #080808;
           --text-main: #EAEAEA;
           --text-dim: #888888;
           --border-color: #333333;
           --accent: #10b981;
-          --font-display: 'Archivo Black', sans-serif;
-          --font-mono: 'JetBrains Mono', monospace;
-          --font-body: 'Space Grotesk', sans-serif;
+          --font-display: var(--font-display), 'Archivo Black', sans-serif;
+          --font-mono: var(--font-mono-brutal), 'JetBrains Mono', monospace;
+          --font-body: var(--font-body-brutal), 'Space Grotesk', sans-serif;
         }
 
         .v1-page * {

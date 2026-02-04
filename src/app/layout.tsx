@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { ThemeProvider, ThemeScript } from "@/context/theme-context";
 import { Analytics } from "@/components/analytics";
+import { brutalFontVariables } from "@/lib/fonts";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -104,7 +105,7 @@ export default function RootLayout({
         <ThemeScript />
       </head>
       <body
-        className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
+        className={`${GeistSans.variable} ${GeistMono.variable} ${brutalFontVariables} font-sans antialiased`}
       >
         <ThemeProvider>
           {children}
