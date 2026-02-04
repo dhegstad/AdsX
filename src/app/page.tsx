@@ -32,42 +32,42 @@ const footerLinks = {
 
 const services = [
   {
-    idx: "01. VISIBILITY",
-    name: "AI Search Audit",
-    desc: "Deep analysis of your brand presence across ChatGPT, Claude, Perplexity, and Gemini.",
+    idx: "01. AUDIT",
+    name: "Visibility Scan",
+    desc: "See exactly how ChatGPT, Claude, and Perplexity describe your brand today.",
   },
   {
-    idx: "02. OPTIMIZATION",
-    name: "Content Strategy",
-    desc: "Restructure your digital presence for maximum AI recommendation rates.",
+    idx: "02. OPTIMIZE",
+    name: "Content Engineering",
+    desc: "Restructure your content so AI systems understand and recommend you.",
   },
   {
-    idx: "03. PLACEMENT",
-    name: "Sponsored Ads",
-    desc: "Direct placement within AI-generated responses and recommendations.",
+    idx: "03. AMPLIFY",
+    name: "Third-Party Signals",
+    desc: "Build the external citations and authority that AI trusts.",
   },
   {
-    idx: "04. MONITORING",
-    name: "Real-Time Tracking",
-    desc: "Continuous monitoring of brand mentions across all major AI platforms.",
+    idx: "04. TRACK",
+    name: "Live Monitoring",
+    desc: "Real-time alerts when AI mentions change. Know before your competitors do.",
   },
   {
-    idx: "05. ANALYSIS",
-    name: "Competitor Intel",
-    desc: "Track competitor visibility and identify positioning opportunities.",
+    idx: "05. COMPARE",
+    name: "Share of Voice",
+    desc: "Track how often AI recommends you vs. competitors in your category.",
   },
   {
-    idx: "06. GROWTH",
-    name: "Scale Program",
-    desc: "Full-stack AI visibility management for enterprise brands.",
+    idx: "06. SCALE",
+    name: "Full Protocol",
+    desc: "End-to-end AI visibility management. Strategy, execution, and ongoing optimization.",
     cta: true,
   },
 ];
 
 const stats = [
-  { label: "AI MENTIONS", value: "+340%" },
+  { label: "AI QUERIES/DAY", value: "2.5B+" },
   { label: "PLATFORMS", value: "5" },
-  { label: "BRANDS LIVE", value: "52" },
+  { label: "ZERO-CLICK", value: "60%" },
 ];
 
 export default function HomePage() {
@@ -359,8 +359,14 @@ export default function HomePage() {
                   className="bg-white text-black inline-block px-3 py-1 mt-6 font-extrabold text-xs tracking-[0.2em]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  ADVERTISING PROTOCOL
+                  VISIBILITY PROTOCOL
                 </div>
+                <p
+                  className="mt-6 text-white/70 text-sm md:text-base max-w-md mx-auto"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  When customers ask ChatGPT for recommendations, is your brand in the answer?
+                </p>
               </div>
             </div>
 
@@ -390,6 +396,63 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Problem/Value Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 border-b border-[#333]">
+              <div className="p-6 lg:p-10 lg:border-r border-[#333]">
+                <div
+                  className="text-[10px] text-[#10b981] mb-4 uppercase tracking-widest"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  STATUS: CRITICAL
+                </div>
+                <h2
+                  className="text-2xl md:text-3xl uppercase mb-4"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  The new search is here
+                </h2>
+                <p className="text-[#888] text-base mb-4">
+                  800M+ users now ask AI for product recommendations instead of Googling.
+                  ChatGPT, Claude, and Perplexity are the new gatekeepers.
+                </p>
+                <p className="text-[#888] text-base">
+                  <span className="text-[#EAEAEA]">The problem:</span> Ranking #1 on Google doesn&apos;t mean AI will recommend you.
+                  Fewer than 10% of AI-cited sources rank in Google&apos;s top 10.
+                </p>
+              </div>
+              <div className="p-6 lg:p-10 bg-[#0c0c0c] flex flex-col justify-center">
+                <div
+                  className="text-[10px] text-[#10b981] mb-4 uppercase tracking-widest"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  DIAGNOSTIC AVAILABLE
+                </div>
+                <h3
+                  className="text-xl md:text-2xl uppercase mb-4"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  Check your visibility
+                </h3>
+                <p className="text-[#888] text-base mb-6">
+                  Run a free audit to see how ChatGPT and Claude currently describe your brand.
+                  Real queries. Real answers. 30 seconds.
+                </p>
+                <Link href="/tools/free-audit" className="cta-btn inline-block text-center">
+                  Run Free Audit →
+                </Link>
+              </div>
+            </div>
+
+            {/* Services Header */}
+            <div className="border-b border-[#333] p-5">
+              <div
+                className="text-[10px] text-[#888] uppercase tracking-widest"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                SERVICE MODULES
+              </div>
+            </div>
+
             {/* Data Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] min-h-[400px] border-b border-[#333]">
 
@@ -399,7 +462,7 @@ export default function HomePage() {
                   className="text-[#888] text-lg"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  VOL/1
+                  v2.0
                 </div>
 
                 <div className="globe-icon absolute bottom-10 left-10 z-10">
@@ -441,13 +504,41 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Process Strip */}
+            <div className="grid grid-cols-1 md:grid-cols-3 border-b border-[#333]">
+              {[
+                { step: "01", title: "SCAN", desc: "We audit how AI platforms currently see your brand" },
+                { step: "02", title: "OPTIMIZE", desc: "Restructure content and build authority signals" },
+                { step: "03", title: "MONITOR", desc: "Track visibility and outpace competitors" },
+              ].map((item, i) => (
+                <div
+                  key={item.step}
+                  className={`p-6 ${i < 2 ? "md:border-r" : ""} border-b md:border-b-0 border-[#333]`}
+                >
+                  <div
+                    className="text-[#10b981] text-xs mb-2"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    STEP {item.step}
+                  </div>
+                  <div
+                    className="text-xl uppercase mb-2"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {item.title}
+                  </div>
+                  <p className="text-[#888] text-sm">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
             {/* Platform Strip */}
             <div className="border-b border-[#333] p-6">
               <div
                 className="text-[10px] text-[#888] mb-4 uppercase tracking-widest"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                Supported Platforms
+                Target Platforms
               </div>
               <div className="flex flex-wrap gap-4">
                 {["ChatGPT", "Claude", "Perplexity", "Gemini", "Grok"].map((platform) => (
@@ -461,6 +552,22 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Final CTA */}
+            <div className="border-b border-[#333] p-8 md:p-12 text-center bg-[#0c0c0c]">
+              <h2
+                className="text-2xl md:text-3xl uppercase mb-4"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Initialize visibility scan
+              </h2>
+              <p className="text-[#888] max-w-lg mx-auto mb-6">
+                Find out if AI is recommending your brand—or sending customers to competitors.
+              </p>
+              <Link href="/tools/free-audit" className="cta-btn">
+                Run Free Audit →
+              </Link>
             </div>
 
             {/* Footer */}
