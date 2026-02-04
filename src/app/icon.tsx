@@ -18,18 +18,19 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#10b981',
-          borderRadius: '6px',
+          backgroundColor: '#080808',
+          border: '2px solid #10b981',
         }}
       >
         <span
           style={{
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: '#000000',
+            fontSize: '14px',
+            fontWeight: 900,
+            color: '#EAEAEA',
+            letterSpacing: '-1px',
           }}
         >
-          X
+          AX
         </span>
       </div>
     ),

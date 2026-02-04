@@ -18,18 +18,20 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#10b981',
+          backgroundColor: '#080808',
           borderRadius: '40px',
+          border: '6px solid #10b981',
         }}
       >
         <span
           style={{
-            fontSize: '100px',
-            fontWeight: 'bold',
-            color: '#000000',
+            fontSize: '80px',
+            fontWeight: 900,
+            color: '#EAEAEA',
+            letterSpacing: '-4px',
           }}
         >
-          X
+          AX
         </span>
       </div>
     ),

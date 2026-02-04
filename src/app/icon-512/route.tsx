@@ -12,18 +12,20 @@ export async function GET() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#10b981',
+          backgroundColor: '#080808',
           borderRadius: '96px',
+          border: '16px solid #10b981',
         }}
       >
         <span
           style={{
-            fontSize: '280px',
-            fontWeight: 'bold',
-            color: '#000000',
+            fontSize: '240px',
+            fontWeight: 900,
+            color: '#EAEAEA',
+            letterSpacing: '-12px',
           }}
         >
-          X
+          AX
         </span>
       </div>
     ),
