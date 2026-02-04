@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon', type: 'image/png', sizes: '32x32' },
+      { url: '/icon', type: 'image/png', sizes: '48x48' },
+      { url: '/icon-48', type: 'image/png', sizes: '48x48' },
+      { url: '/icon-96', type: 'image/png', sizes: '96x96' },
+      { url: '/icon-144', type: 'image/png', sizes: '144x144' },
       { url: '/icon-192', type: 'image/png', sizes: '192x192' },
       { url: '/icon-512', type: 'image/png', sizes: '512x512' },
     ],

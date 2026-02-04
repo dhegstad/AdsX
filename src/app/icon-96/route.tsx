@@ -2,13 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const size = {
-  width: 48,
-  height: 48,
-};
-export const contentType = 'image/png';
-
-export default function Icon() {
+export async function GET() {
   return new ImageResponse(
     (
       <div
@@ -19,16 +13,16 @@ export default function Icon() {
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: '#080808',
-          borderRadius: '8px',
-          border: '3px solid #10b981',
+          borderRadius: '16px',
+          border: '4px solid #10b981',
         }}
       >
         <span
           style={{
-            fontSize: '22px',
+            fontSize: '44px',
             fontWeight: 900,
             color: '#EAEAEA',
-            letterSpacing: '-1px',
+            letterSpacing: '-2px',
           }}
         >
           AX
@@ -36,7 +30,8 @@ export default function Icon() {
       </div>
     ),
     {
-      ...size,
+      width: 96,
+      height: 96,
     }
   );
 }
