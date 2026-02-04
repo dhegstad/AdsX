@@ -52,7 +52,7 @@ const comparison = [
 const faqs = [
   {
     q: "What's included in the monthly fee?",
-    a: "Everything: strategy, execution, content optimization, campaign management, visibility tracking, and reporting.",
+    a: "Everything: strategy, execution, content optimization, campaign management, visibility tracking, and reporting. Ad spend for sponsored placements is billed separately at cost with no markup.",
   },
   {
     q: "How long until we see results?",
@@ -65,6 +65,37 @@ const faqs = [
   {
     q: "Do you work with competitors?",
     a: "We limit engagements to one client per direct competitive category to avoid conflicts.",
+  },
+  {
+    q: "What determines final pricing?",
+    a: "Pricing is based on scope, number of AI platforms, content volume, and whether you need sponsored placement management. We'll provide a custom quote after your free audit.",
+  },
+  {
+    q: "What's the onboarding process?",
+    a: "Week 1: Comprehensive AI visibility audit and strategy development. Week 2: Content optimization begins and tracking is configured. Week 3+: Ongoing optimization, reporting, and campaign management.",
+  },
+];
+
+const process = [
+  {
+    step: "01",
+    title: "Free Audit",
+    description: "We analyze how AI platforms currently represent your brand and identify opportunities.",
+  },
+  {
+    step: "02",
+    title: "Strategy Call",
+    description: "Review findings together and align on goals, priorities, and success metrics.",
+  },
+  {
+    step: "03",
+    title: "Custom Proposal",
+    description: "Receive a tailored plan with specific recommendations and pricing for your needs.",
+  },
+  {
+    step: "04",
+    title: "Launch",
+    description: "Onboarding complete within 2 weeks. See initial results within 4-6 weeks.",
   },
 ];
 
@@ -105,28 +136,46 @@ export default function PricingPage() {
             >
               FULL SERVICE PLAN
             </div>
+            <div className="flex items-baseline gap-3 mb-2">
+              <span className="text-[#888] text-lg" style={{ fontFamily: "var(--font-mono)" }}>
+                Starting at
+              </span>
+            </div>
             <div className="flex items-baseline gap-3 mb-6">
               <span
                 className="text-5xl md:text-7xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                $4,500
+                $4,250
               </span>
               <span className="text-[#888]" style={{ fontFamily: "var(--font-mono)" }}>
-                /MONTH
+                /MONTH*
               </span>
             </div>
             <p className="text-[#888] mb-8">
-              Full-service AI search advertising for growth-focused brands.
+              Full-service AI visibility and advertising for brands that want to be recommended by ChatGPT, Perplexity, Claude, and Google AI.
             </p>
             <Link href="/contact" className="cta-btn cta-btn-primary">
-              Get Started
+              Get Your Free Audit
             </Link>
             <p
               className="mt-6 text-xs text-[#888]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
               3-MONTH MINIMUM, THEN MONTH-TO-MONTH
+            </p>
+            <p
+              className="mt-4 text-xs text-[#666]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              *Final pricing based on scope and number of platforms. Ad spend billed separately.
+            </p>
+          </div>
+
+          {/* Limited Capacity Notice */}
+          <div className="mt-6 p-4 border border-[#333] bg-[#111]">
+            <p className="text-sm text-[#888] text-center">
+              <span className="text-[#10b981]">Limited availability:</span> We only work with one client per competitive category to avoid conflicts of interest.
             </p>
           </div>
         </div>
@@ -224,6 +273,32 @@ export default function PricingPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Process */}
+      <div className="border-b border-[#333]">
+        <div className="p-8 border-b border-[#333]">
+          <h2
+            className="text-2xl uppercase"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            How It Works
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-4">
+          {process.map((item) => (
+            <div key={item.step} className="border-r border-b border-[#333] p-6">
+              <div
+                className="text-3xl text-[#10b981] mb-4"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {item.step}
+              </div>
+              <h3 className="font-semibold mb-2 text-lg">{item.title}</h3>
+              <p className="text-base text-[#888]">{item.description}</p>
+            </div>
+          ))}
         </div>
       </div>
 
