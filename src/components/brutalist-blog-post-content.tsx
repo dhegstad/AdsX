@@ -23,7 +23,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
           className="text-xs tracking-widest text-[#888] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          TRANSMISSIONS
+          BLOG
         </Link>
         <span className="text-[#333]">/</span>
         <span
@@ -404,7 +404,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
           className="text-xs tracking-wider text-[#10b981] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          ← BACK TO TRANSMISSIONS
+          ← BACK TO BLOG
         </Link>
       </div>
 
@@ -416,7 +416,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
               className="text-xs tracking-widest text-[#10b981]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
-              RELATED TRANSMISSIONS
+              RELATED POSTS
             </span>
           </div>
           <div className="grid md:grid-cols-3">

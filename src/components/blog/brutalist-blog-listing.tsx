@@ -27,7 +27,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
           className="text-xs tracking-widest text-[#888] mb-4"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          SECTION: TRANSMISSIONS
+          SECTION: BLOG
         </div>
         <h1
           className="uppercase"
@@ -48,7 +48,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
       {/* Stats Strip */}
       <div className="grid grid-cols-3 border-b border-[#333]">
         {[
-          { label: "TOTAL TRANSMISSIONS", value: String(posts.length).padStart(2, "0") },
+          { label: "TOTAL POSTS", value: String(posts.length).padStart(2, "0") },
           { label: "CATEGORIES", value: String(categories.length).padStart(2, "0") },
           { label: "AVG READ TIME", value: "8M" },
         ].map((stat) => (
@@ -107,7 +107,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
               className="text-xs tracking-widest text-[#10b981]"
               style={{ fontFamily: "var(--font-mono)" }}
             >
-              FEATURED TRANSMISSION
+              FEATURED POST
             </span>
           </div>
           <Link href={`/blog/${featuredPost.slug}`} className="block group">
@@ -191,7 +191,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
                 )}
                 <div className="mt-8">
                   <span className="cta-btn group-hover:bg-[#10b981] group-hover:text-black group-hover:border-[#10b981]">
-                    READ TRANSMISSION →
+                    READ POST →
                   </span>
                 </div>
               </div>
@@ -207,7 +207,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
             className="text-xs tracking-widest text-[#888]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            ALL TRANSMISSIONS
+            ALL POSTS
           </span>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3">
