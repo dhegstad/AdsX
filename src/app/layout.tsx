@@ -52,17 +52,17 @@ export const metadata: Metadata = {
   authors: [{ name: "AdsX" }],
   creator: "AdsX",
   publisher: "AdsX",
-  metadataBase: new URL("https://adsx.com"),
+  metadataBase: new URL("https://www.adsx.com"),
   alternates: {
-    canonical: "https://adsx.com",
+    canonical: "https://www.adsx.com",
     types: {
-      "application/rss+xml": "https://adsx.com/feed.xml",
+      "application/rss+xml": "https://www.adsx.com/feed.xml",
     },
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://adsx.com",
+    url: "https://www.adsx.com",
     siteName: "AdsX",
     title: "AdsX - AI Search Advertising Agency | ChatGPT, Gemini, Claude Ads",
     description: "The first advertising agency built for AI search. 340% avg increase in AI mentions. Get your brand recommended by ChatGPT, Gemini, Claude, Perplexity & more.",

@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/blog";
 
 export async function GET() {
   const posts = getAllPosts();
-  const siteUrl = "https://adsx.com";
+  const siteUrl = "https://www.adsx.com";
 
   const rssItems = posts
     .map(

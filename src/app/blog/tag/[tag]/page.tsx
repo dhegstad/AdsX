@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `Articles Tagged "${tag}"`,
     description: `Browse all articles tagged with "${tag}" - insights on AI search advertising, ChatGPT optimization, and AI visibility.`,
     alternates: {
-      canonical: `https://adsx.com/blog/tag/${tagSlug}`,
+      canonical: `https://www.adsx.com/blog/tag/${tagSlug}`,
     },
     openGraph: {
       title: `${tag} | AdsX Blog`,
       description: `Browse all articles tagged with "${tag}".`,
-      url: `https://adsx.com/blog/tag/${tagSlug}`,
+      url: `https://www.adsx.com/blog/tag/${tagSlug}`,
     },
     robots: shouldIndex
       ? { index: true, follow: true }

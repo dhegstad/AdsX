@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     follow: false,
   },
   alternates: {
-    canonical: "https://adsx.com/about",
+    canonical: "https://www.adsx.com/about",
   },
 };
 

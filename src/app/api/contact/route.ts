@@ -174,7 +174,7 @@ Submitted: ${sanitizedData.submittedAt}
                 <p style="color: #6b7280; font-size: 14px; margin: 0;"><strong>Message:</strong> ${sanitizedData.message.slice(0, 200)}${sanitizedData.message.length > 200 ? "..." : ""}</p>
               </div>
               <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 24px;">
-                While you wait, check out our <a href="https://adsx.com/blog" style="color: #10b981; text-decoration: none;">latest blog posts</a> on AI search advertising.
+                While you wait, check out our <a href="https://www.adsx.com/blog" style="color: #10b981; text-decoration: none;">latest blog posts</a> on AI search advertising.
               </p>
               <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0;">
                 Best,<br>
@@ -193,7 +193,7 @@ Here's what you shared with us:
 - Budget: ${sanitizedData.budget}
 - Message: ${sanitizedData.message}
 
-While you wait, check out our latest blog posts on AI search advertising: https://adsx.com/blog
+While you wait, check out our latest blog posts on AI search advertising: https://www.adsx.com/blog
 
 Best,
 The AdsX Team

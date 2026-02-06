@@ -17,7 +17,7 @@ interface BlogPostContentProps {
 }
 
 export function BlogPostContent({ post, slug, relatedPosts, authorData }: BlogPostContentProps) {
-  const shareUrl = encodeURIComponent(`https://adsx.com/blog/${slug}`);
+  const shareUrl = encodeURIComponent(`https://www.adsx.com/blog/${slug}`);
   const shareTitle = encodeURIComponent(post.title);
   const categorySlug = post.category.toLowerCase().replace(/\s+/g, "-");
 

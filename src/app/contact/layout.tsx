@@ -1,17 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Get in touch with AdsX for a free AI search visibility audit. Book a strategy call or send us a message about your AI advertising needs.",
-  alternates: {
-    canonical: "https://adsx.com/contact",
-  },
-  openGraph: {
-    title: "Contact AdsX - Get Your Free AI Visibility Audit",
-    description: "Book a strategy call or send us a message. We typically respond within 24 hours.",
-    url: "https://adsx.com/contact",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Contact AdsX - Get Your Free AI Visibility Audit",
+  description:
+    "Get in touch with AdsX for a free AI search visibility audit. Book a strategy call or send us a message about your AI advertising needs.",
+  path: "/contact",
+});
 
 export default function ContactLayout({
   children,

@@ -46,6 +46,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
       },
     ],
-    sitemap: 'https://adsx.com/sitemap.xml',
+    sitemap: 'https://www.adsx.com/sitemap.xml',
   };
 }

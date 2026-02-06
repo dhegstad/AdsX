@@ -39,12 +39,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${author.name} - ${author.role}`,
     description: author.bio,
     alternates: {
-      canonical: `https://adsx.com/blog/author/${authorSlug}`,
+      canonical: `https://www.adsx.com/blog/author/${authorSlug}`,
     },
     openGraph: {
       title: `${author.name} | AdsX Blog`,
       description: author.bio,
-      url: `https://adsx.com/blog/author/${authorSlug}`,
+      url: `https://www.adsx.com/blog/author/${authorSlug}`,
     },
     // Noindex author pages - content lives on blog posts
     robots: { index: false, follow: true },
@@ -58,11 +58,11 @@ function AuthorSchema({ author }: { author: NonNullable<ReturnType<typeof getAut
     "@type": "Organization",
     name: author.name,
     description: author.bio,
-    url: "https://adsx.com",
+    url: "https://www.adsx.com",
     parentOrganization: {
       "@type": "Organization",
       name: "AdsX",
-      url: "https://adsx.com",
+      url: "https://www.adsx.com",
     },
   };
 

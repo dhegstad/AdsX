@@ -4,8 +4,8 @@ export function OrganizationSchema() {
     '@type': 'Organization',
     name: 'AdsX',
     description: 'The first advertising agency built for AI search. We help brands get recommended by ChatGPT, Claude, Perplexity, Gemini, and other AI platforms.',
-    url: 'https://adsx.com',
-    logo: 'https://adsx.com/icon-512',
+    url: 'https://www.adsx.com',
+    logo: 'https://www.adsx.com/icon-512',
     sameAs: [
       'https://twitter.com/adsx',
       'https://linkedin.com/company/adsx',
@@ -13,7 +13,7 @@ export function OrganizationSchema() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'sales',
-      url: 'https://adsx.com/contact',
+      url: 'https://www.adsx.com/contact',
     },
     areaServed: 'Worldwide',
     serviceType: [
@@ -39,11 +39,11 @@ export function WebSiteSchema() {
     '@type': 'WebSite',
     name: 'AdsX',
     description: 'Advertising for the AI Search Era. Get your brand recommended by ChatGPT, Claude, Perplexity & more.',
-    url: 'https://adsx.com',
+    url: 'https://www.adsx.com',
     publisher: {
       '@type': 'Organization',
       name: 'AdsX',
-      url: 'https://adsx.com',
+      url: 'https://www.adsx.com',
     },
   };
 
@@ -128,7 +128,7 @@ export function ServiceSchema() {
     provider: {
       '@type': 'Organization',
       name: 'AdsX',
-      url: 'https://adsx.com',
+      url: 'https://www.adsx.com',
     },
     description: 'Full-stack AI search advertising services including ChatGPT ads, AI visibility optimization, content strategy, and performance analytics.',
     areaServed: 'Worldwide',

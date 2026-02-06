@@ -6,14 +6,16 @@ import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
+import type { RelatedPage } from "@/lib/seo/internal-linking";
 
 interface BrutalistBlogPostContentProps {
   post: BlogPost;
   slug: string;
   relatedPosts: BlogPostMeta[];
+  relatedPages?: RelatedPage[];
 }
 
-export function BrutalistBlogPostContent({ post, slug, relatedPosts }: BrutalistBlogPostContentProps) {
+export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPages = [] }: BrutalistBlogPostContentProps) {
   return (
     <BrutalistLayout>
       {/* Breadcrumb */}
@@ -383,7 +385,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
       <div className="border-b border-[#333] p-6 flex flex-wrap gap-4 justify-between items-center">
         <div className="flex gap-4">
           <a
-            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://adsx.com/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.adsx.com/blog/${slug}`)}&text=${encodeURIComponent(post.title)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 border border-[#333] text-xs tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
@@ -392,7 +394,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
             SHARE ON X
           </a>
           <button
-            onClick={() => navigator.clipboard.writeText(`https://adsx.com/blog/${slug}`)}
+            onClick={() => navigator.clipboard.writeText(`https://www.adsx.com/blog/${slug}`)}
             className="px-4 py-2 border border-[#333] text-xs tracking-wider text-[#888] hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
@@ -447,6 +449,32 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts }: Brutalist
                   {relatedPost.title}
                 </h3>
                 <p className="text-base text-[#888] line-clamp-2">{relatedPost.excerpt}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related Pages (Internal Links) */}
+      {relatedPages.length > 0 && (
+        <div className="border-b border-[#333]">
+          <div className="p-4 border-b border-[#333]">
+            <span
+              className="text-xs tracking-widest text-[#10b981]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              EXPLORE MORE
+            </span>
+          </div>
+          <div className="p-6 flex flex-wrap gap-3">
+            {relatedPages.map((page) => (
+              <Link
+                key={page.path}
+                href={page.path}
+                className="px-4 py-2 border border-[#333] text-sm text-[#888] hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {page.title}
               </Link>
             ))}
           </div>

@@ -1,16 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "AdsX privacy policy. Learn how we collect, use, and protect your personal information.",
-  alternates: {
-    canonical: "https://adsx.com/privacy",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Privacy Policy | AdsX",
+  description:
+    "AdsX privacy policy. Learn how we collect, use, and protect your personal information.",
+  path: "/privacy",
+});
 
 export default function PrivacyLayout({
   children,

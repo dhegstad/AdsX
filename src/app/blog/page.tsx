@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   alternates: {
-    canonical: "https://adsx.com/blog",
+    canonical: "https://www.adsx.com/blog",
   },
 };
 

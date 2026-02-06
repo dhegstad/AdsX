@@ -1,17 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Pricing",
-  description: "Transparent pricing for AI search advertising services. Choose from Starter, Growth, or Enterprise plans to match your brand's growth stage.",
-  alternates: {
-    canonical: "https://adsx.com/pricing",
-  },
-  openGraph: {
-    title: "Pricing | AdsX - AI Search Advertising",
-    description: "Transparent pricing for AI search advertising. Plans starting at $5,000/month.",
-    url: "https://adsx.com/pricing",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Pricing - AI Search Advertising Services | AdsX",
+  description:
+    "Transparent pricing for AI search advertising services. Starting at $4,250/month with a 3-month minimum. Get your brand recommended by ChatGPT, Claude, and more.",
+  path: "/pricing",
+});
 
 export default function PricingLayout({
   children,

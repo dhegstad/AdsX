@@ -1,17 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description: "Full-stack AI search advertising services including ChatGPT ads, AI visibility optimization, content strategy for LLMs, and performance analytics.",
-  alternates: {
-    canonical: "https://adsx.com/services",
-  },
-  openGraph: {
-    title: "AI Search Advertising Services | AdsX",
-    description: "ChatGPT ads, AI visibility optimization, content strategy, and performance analytics for the AI search era.",
-    url: "https://adsx.com/services",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "AI Search Advertising Services | AdsX",
+  description:
+    "Full-stack AI search advertising services including ChatGPT ads, AI visibility optimization, content strategy for LLMs, and multi-platform monitoring.",
+  path: "/services",
+});
 
 export default function ServicesLayout({
   children,

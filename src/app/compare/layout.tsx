@@ -1,20 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | AdsX Comparisons",
-    default: "Compare AI Visibility to Other Marketing Approaches",
-  },
-  description: "Compare AI visibility optimization to SEO, PR, and DIY approaches. Make informed decisions about where to invest your marketing resources.",
-  alternates: {
-    canonical: "https://adsx.com/compare",
-  },
-  openGraph: {
-    title: "Compare AI Visibility | AdsX",
-    description: "How does AI visibility compare to SEO, PR, and doing it yourself? Find out.",
-    url: "https://adsx.com/compare",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Compare AI Visibility to SEO, PR & DIY | AdsX",
+  description:
+    "Compare AI visibility optimization to SEO, PR, and DIY approaches. Make informed decisions about where to invest your marketing resources.",
+  path: "/compare",
+});
 
 export default function CompareLayout({
   children,
