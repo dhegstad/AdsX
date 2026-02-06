@@ -1,17 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Redirect www to non-www for canonical consistency
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.adsx.com" }],
-        destination: "https://adsx.com/:path*",
-        permanent: true,
-      },
-    ];
-  },
   experimental: {
     optimizePackageImports: ["lucide-react", "@anthropic-ai/sdk", "openai"],
   },
