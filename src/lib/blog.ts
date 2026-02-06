@@ -193,6 +193,10 @@ export function getTagBySlug(slug: string): string | null {
   return found ? found.tag : null;
 }
 
+export function getPostsByTagCount(tagSlug: string): number {
+  return getPostsByTag(tagSlug).length;
+}
+
 // Author functions
 export interface Author {
   slug: string;
@@ -206,28 +210,10 @@ export interface Author {
 
 export const authors: Author[] = [
   {
-    slug: "sarah-chen",
-    name: "Sarah Chen",
-    role: "Head of AI Strategy",
-    bio: "Sarah leads AI strategy at AdsX, helping brands navigate the shift to AI-powered search. With 10+ years in digital marketing and a background in machine learning, she bridges the gap between technical AI capabilities and practical marketing applications.",
-    twitter: "sarahchen",
-    linkedin: "sarahchen",
-  },
-  {
-    slug: "marcus-rodriguez",
-    name: "Marcus Rodriguez",
-    role: "Director of Paid Media",
-    bio: "Marcus oversees paid media strategy at AdsX, specializing in emerging ad platforms including ChatGPT Ads and Perplexity Sponsored Answers. Previously led performance marketing at two Fortune 500 companies.",
-    twitter: "marcusrodriguez",
-    linkedin: "marcusrodriguez",
-  },
-  {
-    slug: "dr-james-liu",
-    name: "Dr. James Liu",
-    role: "AI Research Lead",
-    bio: "James leads AI research at AdsX, focusing on how large language models process and recommend brands. He holds a PhD in Machine Learning from Stanford and previously worked on recommendation systems at Google.",
-    twitter: "drjamesliu",
-    linkedin: "drjamesliu",
+    slug: "adsx-team",
+    name: "AdsX Team",
+    role: "AI Search Specialists",
+    bio: "The AdsX team helps brands navigate AI-powered search and get recommended by ChatGPT, Claude, Perplexity, and other AI platforms.",
   },
 ];
 

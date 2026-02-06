@@ -4,7 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 import { ThemedLayout } from "@/components/themed-layout";
-import { getAllTags, getPostsByTag, getTagBySlug } from "@/lib/blog";
+import { getAllTags, getPostsByTag, getTagBySlug, getPostsByTagCount } from "@/lib/blog";
 
 interface PageProps {
   params: Promise<{ tag: string }>;
@@ -18,10 +18,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tag: tagSlug } = await params;
   const tag = getTagBySlug(tagSlug);
+  const postCount = getPostsByTagCount(tagSlug);
 
   if (!tag) {
     return { title: "Tag Not Found" };
   }
+
+  // Noindex thin content pages (tags with only 1 post)
+  const shouldIndex = postCount >= 2;
 
   return {
     title: `Articles Tagged "${tag}"`,
@@ -34,6 +38,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: `Browse all articles tagged with "${tag}".`,
       url: `https://adsx.com/blog/tag/${tagSlug}`,
     },
+    robots: shouldIndex
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
   };
 }
 

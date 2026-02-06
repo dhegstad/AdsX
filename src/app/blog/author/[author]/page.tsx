@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Twitter, Linkedin } from "lucide-react";
 import { ThemedLayout } from "@/components/themed-layout";
 import { authors, getAuthorBySlug, getPostsByAuthor } from "@/lib/blog";
@@ -10,12 +10,25 @@ interface PageProps {
   params: Promise<{ author: string }>;
 }
 
+// Old fake author slugs - redirect to team page
+const deprecatedAuthors = ["sarah-chen", "marcus-rodriguez", "dr-james-liu"];
+
 export async function generateStaticParams() {
-  return authors.map((a) => ({ author: a.slug }));
+  // Include both current and deprecated authors for static generation
+  return [...authors.map((a) => ({ author: a.slug })), ...deprecatedAuthors.map((a) => ({ author: a }))];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { author: authorSlug } = await params;
+
+  // Redirect deprecated authors
+  if (deprecatedAuthors.includes(authorSlug)) {
+    return {
+      title: "Redirecting...",
+      robots: { index: false, follow: false },
+    };
+  }
+
   const author = getAuthorBySlug(authorSlug);
 
   if (!author) {
@@ -33,26 +46,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: author.bio,
       url: `https://adsx.com/blog/author/${authorSlug}`,
     },
+    // Noindex author pages - content lives on blog posts
+    robots: { index: false, follow: true },
   };
 }
 
 function AuthorSchema({ author }: { author: NonNullable<ReturnType<typeof getAuthorBySlug>> }) {
+  // Use Organization schema for team author
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Person",
+    "@type": "Organization",
     name: author.name,
-    jobTitle: author.role,
     description: author.bio,
-    url: `https://adsx.com/blog/author/${author.slug}`,
-    worksFor: {
+    url: "https://adsx.com",
+    parentOrganization: {
       "@type": "Organization",
       name: "AdsX",
       url: "https://adsx.com",
     },
-    sameAs: [
-      author.twitter ? `https://twitter.com/${author.twitter}` : null,
-      author.linkedin ? `https://linkedin.com/in/${author.linkedin}` : null,
-    ].filter(Boolean),
   };
 
   return (
@@ -65,6 +76,12 @@ function AuthorSchema({ author }: { author: NonNullable<ReturnType<typeof getAut
 
 export default async function AuthorPage({ params }: PageProps) {
   const { author: authorSlug } = await params;
+
+  // Redirect deprecated fake author pages to the team author
+  if (deprecatedAuthors.includes(authorSlug)) {
+    redirect("/blog/author/adsx-team");
+  }
+
   const author = getAuthorBySlug(authorSlug);
 
   if (!author) {

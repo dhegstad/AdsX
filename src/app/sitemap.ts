@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts, getAllCategories, getAllTags, authors } from '@/lib/blog';
+import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://adsx.com';
@@ -33,13 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     }));
 
-  // Get all authors
-  const authorUrls: MetadataRoute.Sitemap = authors.map((author) => ({
-    url: `${baseUrl}/blog/author/${author.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.5,
-  }));
+  // Author pages excluded - using single team author
 
   return [
     // Core pages
@@ -156,7 +150,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...categoryUrls,
     // Tag pages (only those with 2+ posts)
     ...tagUrls,
-    // Author pages
-    ...authorUrls,
   ];
 }

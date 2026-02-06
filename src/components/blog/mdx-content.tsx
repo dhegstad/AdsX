@@ -118,12 +118,12 @@ export function MDXContent({ content }: MDXContentProps) {
             return (
               <figure className="my-8">
                 <div className="relative aspect-video rounded-xl overflow-hidden bg-white/5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={src}
                     alt={alt || ""}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 800px"
                   />
                 </div>
                 {alt && (

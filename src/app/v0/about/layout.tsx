@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AdsX V0 - Original Design Backup",
-  description: "Original design backup for AdsX website",
   robots: {
     index: false,
     follow: false,
   },
   alternates: {
-    canonical: "https://adsx.com",
+    canonical: "https://adsx.com/about",
   },
 };
 
-export default function V0Layout({
+export default function V0AboutLayout({
   children,
 }: {
   children: React.ReactNode;
