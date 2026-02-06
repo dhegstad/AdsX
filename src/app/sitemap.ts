@@ -1,8 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog';
+import { getAllIndustries } from '@/lib/industries';
+import { getAllComparisons } from '@/lib/comparisons';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://adsx.com';
+  const baseUrl = 'https://www.adsx.com';
 
   // Get all blog posts
   const posts = getAllPosts();
@@ -87,50 +89,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 0.8,
     },
-    // Comparison pages
+    // Comparison pages (programmatic)
     {
       url: `${baseUrl}/compare`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    {
-      url: `${baseUrl}/compare/ai-visibility-vs-seo`,
+    ...getAllComparisons().map((comparison) => ({
+      url: `${baseUrl}/compare/ai-visibility-vs-${comparison.slug}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/ai-visibility-vs-pr`,
+    })),
+    // Industry pages (programmatic)
+    ...getAllIndustries().map((industry) => ({
+      url: `${baseUrl}/industries/${industry.slug}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/ai-visibility-vs-diy`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    // Industry pages
-    {
-      url: `${baseUrl}/industries/saas`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/industries/ecommerce`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/industries/fintech`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
+    })),
     // Legal
     {
       url: `${baseUrl}/privacy`,
