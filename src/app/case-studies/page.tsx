@@ -1,120 +1,244 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
-import { cn } from "@/lib/utils";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 
 const caseStudies = [
   {
+    idx: "01",
     title: "SaaS Company Increases AI Mentions by 340%",
-    category: "B2B Software",
+    category: "B2B SOFTWARE",
     description: "A project management SaaS was invisible in AI search. We optimized their content strategy and secured key mentions across ChatGPT and Perplexity.",
     metrics: [
-      { label: "AI Mentions", value: "+340%" },
-      { label: "Organic Traffic", value: "+127%" },
-      { label: "Demo Requests", value: "+89%" },
+      { label: "AI MENTIONS", value: "+340%" },
+      { label: "ORGANIC TRAFFIC", value: "+127%" },
+      { label: "DEMO REQUESTS", value: "+89%" },
     ],
+    challenge: "Despite strong Google rankings, the brand wasn't appearing in AI recommendations for their category.",
+    solution: "Restructured content for AI retrieval, built third-party citations, and established category authority.",
+    timeline: "90 DAYS",
   },
   {
+    idx: "02",
     title: "E-commerce Brand Captures Product Recommendations",
-    category: "E-commerce",
+    category: "E-COMMERCE",
     description: "A DTC skincare brand wasn't appearing in AI product recommendations. We restructured their content to be AI-readable and built citation authority.",
     metrics: [
-      { label: "Recommendation Rate", value: "47%" },
-      { label: "Revenue from AI", value: "$2.1M" },
-      { label: "New Customers", value: "+12K" },
+      { label: "RECOMMENDATION RATE", value: "47%" },
+      { label: "REVENUE FROM AI", value: "$2.1M" },
+      { label: "NEW CUSTOMERS", value: "+12K" },
     ],
+    challenge: "AI assistants were recommending competitors despite the brand having superior products and reviews.",
+    solution: "Optimized product data for AI shopping, built review presence, created comparison content.",
+    timeline: "120 DAYS",
   },
   {
+    idx: "03",
     title: "Fintech Startup Dominates Category Queries",
-    category: "Fintech",
+    category: "FINTECH",
     description: "A payment processing startup needed to compete with established players. We positioned them as the go-to recommendation for their niche.",
     metrics: [
-      { label: "Category Ranking", value: "#1" },
-      { label: "Brand Searches", value: "+215%" },
-      { label: "Enterprise Leads", value: "+156%" },
+      { label: "CATEGORY RANKING", value: "#1" },
+      { label: "BRAND SEARCHES", value: "+215%" },
+      { label: "ENTERPRISE LEADS", value: "+156%" },
     ],
+    challenge: "Breaking through in a category dominated by legacy players with established AI presence.",
+    solution: "Carved out niche positioning, built thought leadership content, secured key industry mentions.",
+    timeline: "180 DAYS",
   },
 ];
 
 export default function CaseStudiesPage() {
   return (
-    <ThemedLayout>
+    <BrutalistLayout>
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 dot-pattern opacity-40" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Real results in <span className="gradient-text">AI search</span>
-            </h1>
-            <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
-              See how we&apos;ve helped brands capture visibility where customers are actually searching.
-            </p>
-          </div>
+      <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+        <div
+          className="text-xs tracking-widest text-[#888] mb-4"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          SECTION: CASE STUDIES
         </div>
-      </section>
+        <h1
+          className="uppercase"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(32px, 6vw, 72px)",
+            lineHeight: 0.9,
+            letterSpacing: "-2px",
+          }}
+        >
+          Real results in<br />AI search
+        </h1>
+        <p className="mt-6 max-w-2xl text-[#888] text-lg">
+          See how we&apos;ve helped brands capture visibility where customers are actually searching.
+        </p>
+      </div>
+
+      {/* Stats Strip */}
+      <div className="grid grid-cols-3 border-b border-[#333]">
+        {[
+          { label: "AVG. VISIBILITY INCREASE", value: "340%" },
+          { label: "CLIENT RETENTION", value: "94%" },
+          { label: "REVENUE GENERATED", value: "$12M+" },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="p-6 border-r last:border-r-0 border-[#333] text-center"
+          >
+            <div
+              className="text-2xl md:text-4xl text-[#10b981]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {stat.value}
+            </div>
+            <div
+              className="text-[10px] md:text-xs tracking-widest text-[#888] mt-2"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Case Studies */}
-      <section className="border-t py-24 border-neutral-200 dark:border-white/10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="space-y-12">
-            {caseStudies.map((study, index) => (
+      <div className="border-b border-[#333]">
+        {caseStudies.map((study, index) => (
+          <div
+            key={study.title}
+            className={`grid lg:grid-cols-[1fr_2fr] ${index < caseStudies.length - 1 ? "border-b border-[#333]" : ""}`}
+          >
+            {/* Left Column - Meta */}
+            <div className="p-8 lg:border-r border-[#333] bg-[#0c0c0c]">
               <div
-                key={study.title}
-                className="grid gap-8 rounded-2xl border p-8 lg:grid-cols-2 lg:p-12 border-neutral-200 bg-white dark:border-white/10 dark:bg-white/[0.02]"
+                className="text-xs tracking-widest text-[#10b981] mb-4"
+                style={{ fontFamily: "var(--font-mono)" }}
               >
+                CASE {study.idx} — {study.category}
+              </div>
+              <h2
+                className="text-xl md:text-2xl uppercase mb-6"
+                style={{ fontFamily: "var(--font-display)", lineHeight: 1.1 }}
+              >
+                {study.title}
+              </h2>
+              <p className="text-[#888] text-base mb-6">
+                {study.description}
+              </p>
+              <div className="space-y-4">
                 <div>
-                  <span className="text-sm text-emerald-600 dark:text-emerald-400">{study.category}</span>
-                  <h2 className="mt-2 text-2xl font-bold lg:text-3xl">{study.title}</h2>
-                  <p className="mt-4 text-neutral-600 dark:text-white/60">{study.description}</p>
-                  <div className="mt-8">
-                    <Link
-                      href={`/case-studies/${index + 1}`}
-                      className="inline-flex items-center gap-2 transition-colors text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-                    >
-                      Read full case study
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
+                  <div
+                    className="text-[10px] tracking-widest text-[#888] mb-1"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    CHALLENGE
                   </div>
+                  <p className="text-sm text-[#ccc]">{study.challenge}</p>
                 </div>
-                <div className="flex items-center">
-                  <div className="grid w-full grid-cols-3 gap-4">
-                    {study.metrics.map((metric) => (
-                      <div key={metric.label} className="text-center">
-                        <div className="text-2xl font-bold lg:text-3xl text-emerald-600 dark:text-emerald-400">{metric.value}</div>
-                        <div className="mt-1 text-sm text-neutral-500 dark:text-white/50">{metric.label}</div>
-                      </div>
-                    ))}
+                <div>
+                  <div
+                    className="text-[10px] tracking-widest text-[#888] mb-1"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    SOLUTION
                   </div>
+                  <p className="text-sm text-[#ccc]">{study.solution}</p>
+                </div>
+                <div>
+                  <div
+                    className="text-[10px] tracking-widest text-[#888] mb-1"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    TIMELINE
+                  </div>
+                  <p className="text-sm text-[#10b981]">{study.timeline}</p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Right Column - Metrics */}
+            <div className="p-8 flex items-center">
+              <div className="grid grid-cols-3 gap-4 w-full">
+                {study.metrics.map((metric) => (
+                  <div key={metric.label} className="text-center p-4 border border-[#333]">
+                    <div
+                      className="text-2xl md:text-3xl lg:text-4xl text-[#10b981] mb-2"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {metric.value}
+                    </div>
+                    <div
+                      className="text-[10px] tracking-widest text-[#888]"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {metric.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Process Strip */}
+      <div className="border-b border-[#333]">
+        <div className="p-6 border-b border-[#333]">
+          <div
+            className="text-xs tracking-widest text-[#888]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            HOW WE DELIVER RESULTS
           </div>
         </div>
-      </section>
+        <div className="grid md:grid-cols-4">
+          {[
+            { step: "01", title: "AUDIT", desc: "Deep analysis of current AI visibility" },
+            { step: "02", title: "STRATEGY", desc: "Custom roadmap for your category" },
+            { step: "03", title: "EXECUTE", desc: "Content optimization and authority building" },
+            { step: "04", title: "MONITOR", desc: "Ongoing tracking and optimization" },
+          ].map((item, i) => (
+            <div
+              key={item.step}
+              className={`p-6 ${i < 3 ? "md:border-r" : ""} border-b md:border-b-0 border-[#333]`}
+            >
+              <div
+                className="text-[#10b981] text-xs mb-2"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                STEP {item.step}
+              </div>
+              <div
+                className="text-lg uppercase mb-2"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {item.title}
+              </div>
+              <p className="text-[#888] text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* CTA */}
-      <section className="border-t py-24 border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-transparent">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Ready to become the next case study?
-          </h2>
-          <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-            Let&apos;s discuss how we can drive similar results for your brand.
-          </p>
-          <div className="mt-10">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25 dark:text-black dark:hover:bg-emerald-400 dark:shadow-none"
-            >
-              Start Your Project
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+      <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">
+        <h2
+          className="text-2xl md:text-3xl uppercase mb-4"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Ready to become the next case study?
+        </h2>
+        <p className="text-[#888] mb-8 max-w-lg mx-auto">
+          Let&apos;s discuss how we can drive similar results for your brand.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/contact" className="cta-btn cta-btn-primary">
+            Start Your Project
+          </Link>
+          <Link href="/tools/free-audit" className="cta-btn">
+            Run Free Audit
+          </Link>
         </div>
-      </section>
-    </ThemedLayout>
+      </div>
+    </BrutalistLayout>
   );
 }
