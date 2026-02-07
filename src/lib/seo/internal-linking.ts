@@ -1,11 +1,14 @@
 import { getAllIndustries } from "@/lib/industries";
 import { getAllComparisons } from "@/lib/comparisons";
+import { getAllLocations } from "@/lib/locations";
+import { getAllPersonas } from "@/lib/personas";
+import { getAllIntegrations } from "@/lib/integrations";
 import type { BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
   title: string;
   path: string;
-  type: "industry" | "comparison" | "service" | "tool";
+  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration";
   relevance: number; // 0-1 score for sorting
 }
 
@@ -141,6 +144,102 @@ export function getRelatedPages(
     });
   }
 
+  // Check location pages for local/regional content
+  const locations = getAllLocations();
+  const cityKeywords = ["new york", "nyc", "san francisco", "sf", "los angeles", "la", "chicago", "austin", "seattle", "boston", "miami", "denver", "atlanta"];
+  for (const location of locations) {
+    let relevance = 0;
+    const cityLower = location.city.toLowerCase();
+
+    if (title.includes(cityLower) || title.includes(location.state.toLowerCase())) {
+      relevance += 0.4;
+    }
+
+    for (const tag of tags) {
+      if (tag.includes(cityLower) || cityKeywords.some(k => tag.includes(k) && location.city.toLowerCase().includes(k.split(" ")[0]))) {
+        relevance += 0.3;
+      }
+    }
+
+    if (relevance > 0) {
+      relatedPages.push({
+        title: `AI Visibility in ${location.city}`,
+        path: `/locations/${location.slug}`,
+        type: "location",
+        relevance: Math.min(relevance, 1),
+      });
+    }
+  }
+
+  // Check persona pages for role-specific content
+  const personas = getAllPersonas();
+  const roleKeywords = {
+    "cmo": ["cmo", "chief marketing", "marketing executive"],
+    "vp-marketing": ["vp marketing", "vice president marketing"],
+    "head-of-growth": ["growth", "acquisition", "growth marketing"],
+    "marketing-director": ["marketing director", "director of marketing"],
+    "ecommerce-manager": ["ecommerce", "e-commerce", "online store"],
+    "brand-manager": ["brand", "branding"],
+    "content-director": ["content", "content marketing", "editorial"],
+    "digital-marketing-manager": ["digital marketing", "digital marketer"],
+  };
+
+  for (const persona of personas) {
+    let relevance = 0;
+    const keywords = roleKeywords[persona.slug as keyof typeof roleKeywords] || [];
+
+    for (const keyword of keywords) {
+      if (title.includes(keyword)) {
+        relevance += 0.35;
+      }
+      for (const tag of tags) {
+        if (tag.includes(keyword)) {
+          relevance += 0.25;
+        }
+      }
+    }
+
+    if (relevance > 0) {
+      relatedPages.push({
+        title: `AI Visibility for ${persona.title}s`,
+        path: `/for/${persona.slug}`,
+        type: "persona",
+        relevance: Math.min(relevance, 1),
+      });
+    }
+  }
+
+  // Check integration pages for platform-specific content
+  const integrations = getAllIntegrations();
+  for (const integration of integrations) {
+    let relevance = 0;
+    const platformLower = integration.name.toLowerCase();
+
+    if (title.includes(platformLower)) {
+      relevance += 0.4;
+    }
+
+    for (const tag of tags) {
+      if (tag.includes(platformLower)) {
+        relevance += 0.3;
+      }
+    }
+
+    // Category matching
+    if (integration.category === "ecommerce" && (tags.includes("e-commerce") || tags.includes("ecommerce") || tags.includes("shopping"))) {
+      relevance += 0.2;
+    }
+
+    if (relevance > 0) {
+      relatedPages.push({
+        title: `AI Visibility for ${integration.name}`,
+        path: `/integrations/${integration.slug}`,
+        type: "integration",
+        relevance: Math.min(relevance, 1),
+      });
+    }
+  }
+
   // Sort by relevance and limit
   return relatedPages
     .sort((a, b) => b.relevance - a.relevance)
@@ -181,6 +280,21 @@ export function getBreadcrumbs(
     breadcrumbs.push({ name: pageTitle, path });
   } else if (segments[0] === "compare") {
     breadcrumbs.push({ name: "Comparisons", path: "/compare" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "locations") {
+    breadcrumbs.push({ name: "Locations", path: "/locations" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "for") {
+    breadcrumbs.push({ name: "Solutions", path: "/for" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "integrations") {
+    breadcrumbs.push({ name: "Integrations", path: "/integrations" });
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }

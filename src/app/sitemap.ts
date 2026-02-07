@@ -2,6 +2,9 @@ import { MetadataRoute } from 'next';
 import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog';
 import { getAllIndustries } from '@/lib/industries';
 import { getAllComparisons } from '@/lib/comparisons';
+import { getAllLocations } from '@/lib/locations';
+import { getAllPersonas } from '@/lib/personas';
+import { getAllIntegrations } from '@/lib/integrations';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.adsx.com';
@@ -108,6 +111,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+    })),
+    // Location pages (programmatic)
+    {
+      url: `${baseUrl}/locations`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllLocations().map((location) => ({
+      url: `${baseUrl}/locations/${location.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    // Persona pages (programmatic)
+    ...getAllPersonas().map((persona) => ({
+      url: `${baseUrl}/for/${persona.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    // Integration pages (programmatic)
+    {
+      url: `${baseUrl}/integrations`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllIntegrations().map((integration) => ({
+      url: `${baseUrl}/integrations/${integration.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
     })),
     // Legal
     {
