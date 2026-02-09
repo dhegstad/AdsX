@@ -5,6 +5,8 @@ import { getAllComparisons } from '@/lib/comparisons';
 import { getAllLocations } from '@/lib/locations';
 import { getAllPersonas } from '@/lib/personas';
 import { getAllIntegrations } from '@/lib/integrations';
+import { getAllTerms } from '@/lib/glossary';
+import { getAllPlatforms } from '@/lib/platforms';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.adsx.com';
@@ -141,6 +143,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...getAllIntegrations().map((integration) => ({
       url: `${baseUrl}/integrations/${integration.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    // Glossary pages (programmatic)
+    {
+      url: `${baseUrl}/glossary`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllTerms().map((term) => ({
+      url: `${baseUrl}/glossary/${term.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
+    // AI Platform pages (programmatic)
+    {
+      url: `${baseUrl}/platforms`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllPlatforms().map((platform) => ({
+      url: `${baseUrl}/platforms/${platform.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.6,

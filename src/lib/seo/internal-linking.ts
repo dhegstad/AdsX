@@ -3,12 +3,14 @@ import { getAllComparisons } from "@/lib/comparisons";
 import { getAllLocations } from "@/lib/locations";
 import { getAllPersonas } from "@/lib/personas";
 import { getAllIntegrations } from "@/lib/integrations";
+import { getAllTerms } from "@/lib/glossary";
+import { getAllPlatforms } from "@/lib/platforms";
 import type { BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
   title: string;
   path: string;
-  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration";
+  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform";
   relevance: number; // 0-1 score for sorting
 }
 
@@ -240,6 +242,68 @@ export function getRelatedPages(
     }
   }
 
+  // Check glossary terms for technical/educational content
+  const glossaryTerms = getAllTerms();
+  const technicalKeywords = ["llm", "ai", "chatgpt", "claude", "perplexity", "optimization", "training", "model", "natural language", "nlp"];
+  const isTechnicalContent = technicalKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
+
+  if (isTechnicalContent) {
+    for (const term of glossaryTerms.slice(0, 10)) {
+      let relevance = 0;
+      const termLower = term.term.toLowerCase();
+
+      if (title.includes(termLower) || title.includes(term.slug.replace(/-/g, " "))) {
+        relevance += 0.35;
+      }
+
+      for (const tag of tags) {
+        if (tag.includes(term.slug.replace(/-/g, " ")) || term.keywords.some(k => k.toLowerCase().includes(tag))) {
+          relevance += 0.25;
+        }
+      }
+
+      if (relevance > 0) {
+        relatedPages.push({
+          title: `What is ${term.term}?`,
+          path: `/glossary/${term.slug}`,
+          type: "glossary",
+          relevance: Math.min(relevance, 1),
+        });
+      }
+    }
+  }
+
+  // Check AI platform pages for platform-specific content
+  const aiPlatforms = getAllPlatforms();
+  const platformKeywords = ["chatgpt", "claude", "perplexity", "gemini", "copilot", "ai assistant", "ai platform"];
+  const isPlatformContent = platformKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
+
+  if (isPlatformContent) {
+    for (const platform of aiPlatforms) {
+      let relevance = 0;
+      const platformLower = platform.name.toLowerCase();
+
+      if (title.includes(platformLower)) {
+        relevance += 0.45;
+      }
+
+      for (const tag of tags) {
+        if (tag.includes(platformLower)) {
+          relevance += 0.3;
+        }
+      }
+
+      if (relevance > 0) {
+        relatedPages.push({
+          title: `AI Visibility for ${platform.name}`,
+          path: `/platforms/${platform.slug}`,
+          type: "platform",
+          relevance: Math.min(relevance, 1),
+        });
+      }
+    }
+  }
+
   // Sort by relevance and limit
   return relatedPages
     .sort((a, b) => b.relevance - a.relevance)
@@ -295,6 +359,16 @@ export function getBreadcrumbs(
     }
   } else if (segments[0] === "integrations") {
     breadcrumbs.push({ name: "Integrations", path: "/integrations" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "glossary") {
+    breadcrumbs.push({ name: "Glossary", path: "/glossary" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "platforms") {
+    breadcrumbs.push({ name: "AI Platforms", path: "/platforms" });
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }
