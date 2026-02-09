@@ -5,12 +5,14 @@ import { getAllPersonas } from "@/lib/personas";
 import { getAllIntegrations } from "@/lib/integrations";
 import { getAllTerms } from "@/lib/glossary";
 import { getAllPlatforms } from "@/lib/platforms";
+import { getAllExamples } from "@/lib/examples";
+import { getAllLists } from "@/lib/curated-lists";
 import type { BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
   title: string;
   path: string;
-  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform";
+  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform" | "example" | "guide";
   relevance: number; // 0-1 score for sorting
 }
 
@@ -304,6 +306,68 @@ export function getRelatedPages(
     }
   }
 
+  // Check brand examples for case study content
+  const examples = getAllExamples();
+  const caseStudyKeywords = ["case study", "example", "success story", "how", "brand"];
+  const isCaseStudyContent = caseStudyKeywords.some(k => title.includes(k) || category === "case-study");
+
+  if (isCaseStudyContent) {
+    for (const example of examples.slice(0, 5)) {
+      let relevance = 0;
+      const brandLower = example.brand.toLowerCase();
+      const industryLower = example.industry.toLowerCase();
+
+      if (title.includes(brandLower)) {
+        relevance += 0.5;
+      }
+
+      if (title.includes(industryLower) || tags.some(t => t.includes(industryLower))) {
+        relevance += 0.3;
+      }
+
+      if (relevance > 0) {
+        relatedPages.push({
+          title: `${example.brand} AI Visibility Case Study`,
+          path: `/examples/${example.slug}`,
+          type: "example",
+          relevance: Math.min(relevance, 1),
+        });
+      }
+    }
+  }
+
+  // Check curated lists for guide/resource content
+  const curatedLists = getAllLists();
+  const guideKeywords = ["best", "top", "guide", "how to", "tools", "resources"];
+  const isGuideContent = guideKeywords.some(k => title.includes(k) || category === "guide");
+
+  if (isGuideContent) {
+    for (const list of curatedLists.slice(0, 5)) {
+      let relevance = 0;
+
+      // Check if list keywords match post content
+      for (const keyword of list.keywords) {
+        if (title.includes(keyword.toLowerCase())) {
+          relevance += 0.35;
+        }
+        for (const tag of tags) {
+          if (keyword.toLowerCase().includes(tag)) {
+            relevance += 0.2;
+          }
+        }
+      }
+
+      if (relevance > 0) {
+        relatedPages.push({
+          title: list.title,
+          path: `/best/${list.slug}`,
+          type: "guide",
+          relevance: Math.min(relevance, 1),
+        });
+      }
+    }
+  }
+
   // Sort by relevance and limit
   return relatedPages
     .sort((a, b) => b.relevance - a.relevance)
@@ -369,6 +433,16 @@ export function getBreadcrumbs(
     }
   } else if (segments[0] === "platforms") {
     breadcrumbs.push({ name: "AI Platforms", path: "/platforms" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "examples") {
+    breadcrumbs.push({ name: "Examples", path: "/examples" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "best") {
+    breadcrumbs.push({ name: "Best Of", path: "/best" });
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }

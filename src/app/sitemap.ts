@@ -7,6 +7,8 @@ import { getAllPersonas } from '@/lib/personas';
 import { getAllIntegrations } from '@/lib/integrations';
 import { getAllTerms } from '@/lib/glossary';
 import { getAllPlatforms } from '@/lib/platforms';
+import { getAllExamples } from '@/lib/examples';
+import { getAllLists } from '@/lib/curated-lists';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.adsx.com';
@@ -169,6 +171,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...getAllPlatforms().map((platform) => ({
       url: `${baseUrl}/platforms/${platform.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    // Brand Examples (programmatic)
+    {
+      url: `${baseUrl}/examples`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllExamples().map((example) => ({
+      url: `${baseUrl}/examples/${example.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    // Curated Lists / Best Of (programmatic)
+    {
+      url: `${baseUrl}/best`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...getAllLists().map((list) => ({
+      url: `${baseUrl}/best/${list.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
