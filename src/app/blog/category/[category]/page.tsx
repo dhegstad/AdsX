@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import {
   getAllCategories,
   getPostsByCategory,
@@ -13,16 +12,6 @@ import {
 interface PageProps {
   params: Promise<{ category: string }>;
 }
-
-const categoryIcons: Record<string, string> = {
-  Guide: "📚",
-  Strategy: "🎯",
-  Research: "🔬",
-  "How-To": "🛠️",
-  "Case Studies": "📊",
-  Analysis: "🔍",
-  Resource: "📋",
-};
 
 export async function generateStaticParams() {
   const categories = getAllCategories();
@@ -63,76 +52,91 @@ export default async function CategoryPage({ params }: PageProps) {
   const allCategories = getAllCategories();
 
   return (
-    <ThemedLayout>
+    <BrutalistLayout>
       {/* Header */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 dot-pattern opacity-40" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <nav className="mb-8">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-sm transition-colors text-neutral-600 hover:text-emerald-600 dark:text-white/60 dark:hover:text-emerald-400"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Blog
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-4xl">{categoryIcons[category] || "📝"}</span>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              {category}
-            </h1>
-          </div>
-          <p className="text-lg text-neutral-600 dark:text-white/60">
-            {posts.length} article{posts.length !== 1 ? "s" : ""} in this category
-          </p>
+      <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+        <div
+          className="text-xs tracking-widest text-[#888] mb-4"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+          <span className="mx-2">/</span>
+          <Link href="/blog" className="hover:text-[#EAEAEA]">BLOG</Link>
+          <span className="mx-2">/</span>
+          <span className="text-[#10b981]">{category.toUpperCase()}</span>
         </div>
-      </section>
+        <h1
+          className="uppercase"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(28px, 5vw, 60px)",
+            lineHeight: 0.95,
+            letterSpacing: "-1px",
+          }}
+        >
+          {category}
+        </h1>
+        <p className="mt-4 text-[#888]">
+          {posts.length} article{posts.length !== 1 ? "s" : ""} in this category
+        </p>
+      </div>
 
       {/* Posts Grid */}
-      <section className="border-t py-16 border-neutral-200 dark:border-white/10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <article key={post.slug} className="group">
-                <Link href={`/blog/${post.slug}`} className="block">
-                  <div className="aspect-video rounded-xl overflow-hidden mb-4 relative bg-neutral-100 dark:bg-white/5">
-                    <Image
-                      src={`/blog/${post.slug}/opengraph-image`}
-                      alt={post.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="flex items-center gap-1 text-neutral-500 dark:text-white/50">
-                      <Clock className="h-3 w-3" />
-                      {post.readingTime}
-                    </span>
-                  </div>
-                  <h2 className="mt-3 text-xl font-bold transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                    {post.title}
-                  </h2>
-                  <p className="mt-2 line-clamp-2 text-neutral-600 dark:text-white/60">
-                    {post.excerpt}
-                  </p>
-                  <div className="mt-4 inline-flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
-                    Read article
-                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              </article>
-            ))}
+      <div className="border-b border-[#333]">
+        <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+          <div
+            className="text-xs tracking-widest text-[#10b981]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            ARTICLES
           </div>
         </div>
-      </section>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, idx) => (
+            <article
+              key={post.slug}
+              className={`group p-6 ${idx % 3 !== 2 ? "lg:border-r" : ""} ${idx % 2 !== 1 ? "md:border-r lg:border-r-0" : ""} border-[#333] border-b`}
+            >
+              <Link href={`/blog/${post.slug}`} className="block">
+                <div className="aspect-video overflow-hidden mb-4 relative bg-[#111]">
+                  <Image
+                    src={`/blog/${post.slug}/opengraph-image`}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <span className="text-[#888]">{post.readingTime}</span>
+                </div>
+                <h2 className="mt-3 text-xl font-bold transition-colors group-hover:text-[#10b981]">
+                  {post.title}
+                </h2>
+                <p className="mt-2 line-clamp-2 text-[#888]">
+                  {post.excerpt}
+                </p>
+                <div className="mt-4 inline-flex items-center gap-2 text-sm text-[#10b981]">
+                  Read article
+                  <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
+      </div>
 
       {/* Other Categories */}
-      <section className="border-t py-16 border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-transparent">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">Browse Other Categories</h2>
+      <div className="border-b border-[#333]">
+        <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+          <div
+            className="text-xs tracking-widest text-[#888]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            BROWSE OTHER CATEGORIES
+          </div>
+        </div>
+        <div className="p-6">
           <div className="flex flex-wrap gap-3">
             {allCategories
               .filter((c) => c.slug !== categorySlug)
@@ -140,18 +144,15 @@ export default async function CategoryPage({ params }: PageProps) {
                 <Link
                   key={c.slug}
                   href={`/blog/category/${c.slug}`}
-                  className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors border-neutral-200 hover:border-emerald-500 hover:bg-emerald-50 dark:border-white/10 dark:hover:border-emerald-500/50 dark:hover:bg-emerald-500/10"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm border border-[#333] text-[#888] hover:border-[#10b981] hover:text-[#10b981] transition-colors"
                 >
-                  <span>{categoryIcons[c.category] || "📝"}</span>
                   {c.category}
-                  <span className="text-neutral-400 dark:text-white/40">
-                    ({c.count})
-                  </span>
+                  <span className="text-[#555]">({c.count})</span>
                 </Link>
               ))}
           </div>
         </div>
-      </section>
-    </ThemedLayout>
+      </div>
+    </BrutalistLayout>
   );
 }

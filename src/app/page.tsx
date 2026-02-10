@@ -1,8 +1,8 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { OrganizationSchema, WebSiteSchema, FAQSchema } from "@/components/seo/structured-data";
+import { MobileMenuButton } from "@/components/home/mobile-menu";
+import { ParallaxHero } from "@/components/home/parallax-hero";
+import styles from "./home.module.css";
 
 const navLinks = [
   { label: "HOME", href: "/" },
@@ -23,6 +23,11 @@ const footerLinks = {
     { label: "Free Audit", href: "/tools/free-audit" },
     { label: "Case Studies", href: "/case-studies" },
     { label: "Services", href: "/services" },
+  ],
+  industries: [
+    { label: "SaaS", href: "/industries/saas" },
+    { label: "E-commerce", href: "/industries/ecommerce" },
+    { label: "Fintech", href: "/industries/fintech" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -71,202 +76,20 @@ const stats = [
 ];
 
 export default function HomePage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLDivElement>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const hero = heroRef.current;
-    const img = imgRef.current;
-    if (!hero || !img) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = e.clientX / window.innerWidth;
-      const y = e.clientY / window.innerHeight;
-      img.style.transform = `scale(1.05) translate(${(x - 0.5) * -20}px, ${(y - 0.5) * -20}px)`;
-    };
-
-    hero.addEventListener("mousemove", handleMouseMove);
-    return () => hero.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
     <>
       <OrganizationSchema />
       <WebSiteSchema />
       <FAQSchema />
 
-      <style jsx global>{`
-        .v1-page {
-          --bg-color: #080808;
-          --text-main: #EAEAEA;
-          --text-dim: #888888;
-          --border-color: #333333;
-          --accent: #10b981;
-          --font-display: var(--font-display), 'Archivo Black', sans-serif;
-          --font-mono: var(--font-mono-brutal), 'JetBrains Mono', monospace;
-          --font-body: var(--font-body-brutal), 'Space Grotesk', sans-serif;
-        }
-
-        .v1-page * {
-          cursor: crosshair;
-        }
-
-        .v1-page a, .v1-page button {
-          cursor: pointer;
-        }
-
-        .noise-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          pointer-events: none;
-          z-index: 9999;
-          opacity: 0.06;
-          background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-        }
-
-        .scan-line {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 4px;
-          background: rgba(16, 185, 129, 0.3);
-          animation: scanline 4s linear infinite;
-          z-index: 2;
-          pointer-events: none;
-        }
-
-        @keyframes scanline {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(60vh); }
-        }
-
-        .hero-img-bg {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-          z-index: 0;
-          transition: transform 0.2s ease-out;
-        }
-
-        .hero-img-bg::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-        }
-
-        .grid-pattern {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
-          z-index: 1;
-        }
-
-        .outline-number {
-          font-family: var(--font-display);
-          font-size: 160px;
-          line-height: 0.8;
-          color: transparent;
-          -webkit-text-stroke: 1px var(--text-main);
-          position: absolute;
-          bottom: 20px;
-          left: -10px;
-          z-index: 0;
-          opacity: 0.3;
-        }
-
-        .service-item {
-          transition: background 0.15s, color 0.15s;
-        }
-
-        .service-item:hover {
-          background: var(--text-main);
-          color: var(--bg-color);
-        }
-
-        .service-item:hover .idx {
-          color: var(--bg-color);
-        }
-
-        .service-item:hover .desc {
-          color: #333;
-        }
-
-        .cta-btn {
-          background: transparent;
-          color: var(--text-main);
-          border: 1px solid var(--text-main);
-          padding: 12px 32px;
-          font-family: var(--font-mono);
-          font-weight: 700;
-          text-transform: uppercase;
-          font-size: 12px;
-          transition: all 0.2s;
-          margin-top: 16px;
-          display: inline-block;
-          text-decoration: none;
-        }
-
-        .cta-btn:hover {
-          background: var(--accent);
-          color: black;
-          border-color: var(--accent);
-          box-shadow: 4px 4px 0px var(--accent);
-          transform: translate(-2px, -2px);
-        }
-
-        .barcode {
-          height: 40px;
-          width: 80px;
-          background: repeating-linear-gradient(
-            90deg,
-            #fff,
-            #fff 2px,
-            #000 2px,
-            #000 4px
-          );
-        }
-
-        .globe-icon {
-          width: 60px;
-          height: 60px;
-          border: 1px solid var(--text-main);
-          border-radius: 50%;
-          background: black;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .globe-grid {
-          width: 100%;
-          height: 100%;
-          background: repeating-linear-gradient(0deg, transparent, transparent 4px, var(--accent) 5px),
-                      repeating-linear-gradient(90deg, transparent, transparent 4px, var(--accent) 5px);
-          border-radius: 50%;
-          opacity: 0.4;
-        }
-      `}</style>
-
-      <div className="v1-page min-h-screen bg-[#080808] text-[#EAEAEA]" style={{ fontFamily: "var(--font-body)" }}>
-        <div className="noise-overlay" />
+      <div className={`${styles.vPage} min-h-screen bg-[#080808] text-[#EAEAEA]`} style={{ fontFamily: "var(--font-body)" }}>
+        <div className={styles.noiseOverlay} />
 
         <div className="w-full min-h-screen flex flex-col max-w-[1600px] mx-auto p-3">
           <div className="border border-[#333] bg-[#0a0a0a] flex-grow flex flex-col">
 
             {/* Header */}
-            <header className="border-b border-[#333] h-[60px] flex justify-between items-center px-4 md:px-6">
+            <header className="relative border-b border-[#333] h-[60px] flex justify-between items-center px-4 md:px-6">
               <Link href="/" className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                 ADSX
               </Link>
@@ -293,80 +116,12 @@ export default function HomePage() {
                   SYS: ONLINE
                 </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 border border-[#333] hover:border-[#EAEAEA] transition-colors"
-                  aria-label="Toggle menu"
-                >
-                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-transform ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-opacity ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                  <span className={`w-5 h-0.5 bg-[#EAEAEA] transition-transform ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-                </button>
+                <MobileMenuButton />
               </div>
             </header>
 
-            {/* Mobile Navigation */}
-            {mobileMenuOpen && (
-              <nav className="md:hidden border-b border-[#333] bg-[#0a0a0a]">
-                {navLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block px-6 py-4 text-sm tracking-widest text-[#888] hover:text-[#EAEAEA] hover:bg-[#111] transition-colors border-b border-[#222] last:border-b-0"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block mx-6 my-4 text-center py-3 bg-[#10b981] text-black text-sm font-bold tracking-widest"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  GET STARTED
-                </Link>
-              </nav>
-            )}
-
             {/* Hero Section */}
-            <div
-              ref={heroRef}
-              className="relative h-[60vh] w-full border-b-2 border-[#EAEAEA] overflow-hidden flex items-center justify-center"
-            >
-              <div className="scan-line" />
-              <div ref={imgRef} className="hero-img-bg" />
-              <div className="grid-pattern" />
-
-              <div className="relative z-10 text-center" style={{ mixBlendMode: "exclusion" }}>
-                <h1
-                  className="text-white whitespace-nowrap"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(48px, 10vw, 140px)",
-                    lineHeight: 0.85,
-                    letterSpacing: "-0.04em",
-                    transform: "scaleX(1.05)"
-                  }}
-                >
-                  AI_SEARCH
-                </h1>
-                <div
-                  className="bg-white text-black inline-block px-3 py-1 mt-6 font-extrabold text-xs tracking-[0.2em]"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  VISIBILITY PROTOCOL
-                </div>
-                <p
-                  className="mt-6 text-white/70 text-sm md:text-base max-w-md mx-auto"
-                  style={{ fontFamily: "var(--font-body)" }}
-                >
-                  When customers ask ChatGPT for recommendations, is your brand in the answer?
-                </p>
-              </div>
-            </div>
+            <ParallaxHero />
 
             {/* Title Strip */}
             <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] border-b border-[#333]">
@@ -435,7 +190,7 @@ export default function HomePage() {
                   Run a free audit to see how ChatGPT and Claude currently describe your brand.
                   Real queries. Real answers. 30 seconds.
                 </p>
-                <Link href="/tools/free-audit" className="cta-btn inline-block text-center">
+                <Link href="/tools/free-audit" className={styles.ctaBtn}>
                   Run Free Audit →
                 </Link>
               </div>
@@ -463,11 +218,11 @@ export default function HomePage() {
                   v2.0
                 </div>
 
-                <div className="globe-icon absolute bottom-10 left-10 z-10">
-                  <div className="globe-grid" />
+                <div className={`${styles.globeIcon} absolute bottom-10 left-10 z-10`}>
+                  <div className={styles.globeGrid} />
                 </div>
 
-                <div className="outline-number">AI</div>
+                <div className={styles.outlineNumber}>AI</div>
               </div>
 
               {/* Services Grid */}
@@ -475,7 +230,7 @@ export default function HomePage() {
                 {services.map((service) => (
                   <div
                     key={service.idx}
-                    className="service-item border-r border-b border-[#333] p-5 flex flex-col"
+                    className={`${styles.serviceItem} border-r border-b border-[#333] p-5 flex flex-col`}
                   >
                     <span
                       className="idx text-xs text-[#888] mb-3 block"
@@ -493,7 +248,7 @@ export default function HomePage() {
                       {service.desc}
                     </div>
                     {service.cta && (
-                      <Link href="/contact" className="cta-btn">
+                      <Link href="/contact" className={styles.ctaBtn}>
                         Start Project
                       </Link>
                     )}
@@ -563,7 +318,7 @@ export default function HomePage() {
               <p className="text-[#888] max-w-lg mx-auto mb-6">
                 Find out if AI is recommending your brand—or sending customers to competitors.
               </p>
-              <Link href="/tools/free-audit" className="cta-btn">
+              <Link href="/tools/free-audit" className={styles.ctaBtn}>
                 Run Free Audit →
               </Link>
             </div>
@@ -571,9 +326,9 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="bg-[#050505] border-t border-[#333]">
               {/* Main Footer Content */}
-              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                 {/* Brand Column */}
-                <div className="col-span-2 md:col-span-1">
+                <div className="col-span-2 md:col-span-3 lg:col-span-1">
                   <Link
                     href="/"
                     className="text-2xl tracking-tight inline-block mb-4"
@@ -624,6 +379,28 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-3">
                     {footerLinks.resources.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Industries Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    INDUSTRIES
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.industries.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}

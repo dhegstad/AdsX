@@ -27,6 +27,11 @@ const footerLinks = {
     { label: "Case Studies", href: "/case-studies" },
     { label: "Services", href: "/services" },
   ],
+  industries: [
+    { label: "SaaS", href: "/industries/saas" },
+    { label: "E-commerce", href: "/industries/ecommerce" },
+    { label: "Fintech", href: "/industries/fintech" },
+  ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
@@ -230,9 +235,9 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
             {/* Footer */}
             <footer className="bg-[#050505] border-t border-[#333]">
               {/* Main Footer Content */}
-              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                 {/* Brand Column */}
-                <div className="col-span-2 md:col-span-1">
+                <div className="col-span-2 md:col-span-3 lg:col-span-1">
                   <Link
                     href="/"
                     className="text-2xl tracking-tight inline-block mb-4"
@@ -283,6 +288,28 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                   </div>
                   <ul className="space-y-3">
                     {footerLinks.resources.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Industries Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    INDUSTRIES
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.industries.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}

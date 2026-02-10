@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, BookOpen, Lightbulb, Info, HelpCircle } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import {
   getAllTerms,
   getTermBySlug,
@@ -44,12 +43,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const categoryLabels: Record<string, string> = {
-  "ai-fundamentals": "AI Fundamentals",
-  "visibility": "Visibility Concepts",
-  "optimization": "Optimization Techniques",
-  "measurement": "Measurement & Analytics",
-  "strategy": "Strategy & Planning",
-  "platforms": "AI Platforms",
+  "ai-fundamentals": "AI FUNDAMENTALS",
+  "visibility": "VISIBILITY CONCEPTS",
+  "optimization": "OPTIMIZATION TECHNIQUES",
+  "measurement": "MEASUREMENT & ANALYTICS",
+  "strategy": "STRATEGY & PLANNING",
+  "platforms": "AI PLATFORMS",
 };
 
 export default async function GlossaryTermPage({ params }: PageProps) {
@@ -78,227 +77,253 @@ export default async function GlossaryTermPage({ params }: PageProps) {
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
       <SchemaScript schema={createFAQSchema(faqItems)} />
-      <ThemedLayout>
+      <BrutalistLayout>
         {/* Hero */}
-        <section className="relative pt-32 pb-16 overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-40" />
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-            <nav className="mb-8 text-sm">
-              <Link
-                href="/"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
-              >
-                Home
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <Link
-                href="/glossary"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
-              >
-                Glossary
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
-                {term.term}
-              </span>
-            </nav>
-
-            <div className="mx-auto max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm mb-6">
-                <BookOpen className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                  {categoryLabels[term.category]}
-                </span>
-              </div>
-
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                {term.term}
-              </h1>
-
-              <p className="mt-6 text-xl text-neutral-600 dark:text-white/60">
-                {term.shortDefinition}
-              </p>
-            </div>
+        <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+          <div
+            className="text-xs tracking-widest text-[#888] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+            <span className="mx-2">/</span>
+            <Link href="/glossary" className="hover:text-[#EAEAEA]">GLOSSARY</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#10b981]">{term.term.toUpperCase()}</span>
           </div>
-        </section>
+          <div
+            className="text-xs tracking-widest text-[#10b981] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            {categoryLabels[term.category]}
+          </div>
+          <h1
+            className="uppercase"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(28px, 5vw, 60px)",
+              lineHeight: 0.95,
+              letterSpacing: "-1px",
+            }}
+          >
+            {term.term}
+          </h1>
+          <p className="mt-6 max-w-2xl text-[#888] text-lg">
+            {term.shortDefinition}
+          </p>
+        </div>
 
         {/* Full Definition */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-6">What is {term.term}?</h2>
-            <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed">
+        <div className="grid lg:grid-cols-[2fr_1fr] border-b border-[#333]">
+          <div className="p-8 lg:border-r border-[#333]">
+            <div
+              className="text-xs tracking-widest text-[#888] mb-4"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              DEFINITION
+            </div>
+            <h2
+              className="text-xl md:text-2xl uppercase mb-6"
+              style={{ fontFamily: "var(--font-display)", lineHeight: 1.1 }}
+            >
+              What is {term.term}?
+            </h2>
+            <p className="text-[#ccc] leading-relaxed">
               {term.fullDefinition}
             </p>
 
             {term.usageInContext && (
-              <div className="mt-8 p-6 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <p className="text-neutral-700 dark:text-white/80">
-                    <strong>In Practice:</strong> {term.usageInContext}
-                  </p>
+              <div className="mt-8 p-6 border border-[#10b981]/30 bg-[#10b981]/5">
+                <div
+                  className="text-xs tracking-widest text-[#10b981] mb-2"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  IN PRACTICE
                 </div>
+                <p className="text-[#ccc]">
+                  {term.usageInContext}
+                </p>
               </div>
             )}
           </div>
-        </section>
 
-        {/* Why It Matters */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <Lightbulb className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h2 className="text-2xl font-bold">Why It Matters for AI Visibility</h2>
+          <div className="p-8 bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest text-[#888] mb-4"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              WHY IT MATTERS
             </div>
-            <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed">
+            <p className="text-[#ccc] leading-relaxed">
               {term.whyItMatters}
             </p>
           </div>
-        </section>
+        </div>
 
         {/* Examples */}
         {term.examples.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6">Examples</h2>
-              <ul className="space-y-4">
-                {term.examples.map((example, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 p-4 rounded-lg border border-neutral-200 dark:border-white/10"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                      {idx + 1}
-                    </span>
-                    <span className="text-neutral-600 dark:text-white/70">{example}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                EXAMPLES
+              </div>
             </div>
-          </section>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3">
+              {term.examples.map((example, idx) => (
+                <div
+                  key={idx}
+                  className={`p-6 ${idx < term.examples.length - 1 ? "border-b md:border-b-0" : ""} ${idx % 3 !== 2 ? "lg:border-r" : ""} ${idx % 2 !== 1 ? "md:border-r lg:border-r-0" : ""} border-[#333]`}
+                >
+                  <div className="flex items-start gap-4">
+                    <span
+                      className="text-[#10b981] text-xs"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <p className="text-[#ccc] text-sm">{example}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Common Misconceptions */}
         {term.commonMisconceptions && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6">Common Misconceptions</h2>
-              <div className="p-6 rounded-xl border border-amber-500/30 bg-amber-500/5">
-                <p className="text-neutral-600 dark:text-white/70">
-                  {term.commonMisconceptions}
-                </p>
-              </div>
+          <div className="border-b border-[#333] p-8 bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest text-[#888] mb-4"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              COMMON MISCONCEPTIONS
             </div>
-          </section>
+            <div className="p-6 border border-amber-500/30 bg-amber-500/5">
+              <p className="text-[#ccc]">
+                {term.commonMisconceptions}
+              </p>
+            </div>
+          </div>
         )}
 
         {/* FAQs */}
         {term.faqs.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <HelpCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
-              </div>
-              <div className="space-y-6">
-                {term.faqs.map((faq, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-xl border border-neutral-200 dark:border-white/10"
-                  >
-                    <h3 className="font-semibold text-lg mb-3">{faq.question}</h3>
-                    <p className="text-neutral-600 dark:text-white/70">{faq.answer}</p>
-                  </div>
-                ))}
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                FREQUENTLY ASKED QUESTIONS
               </div>
             </div>
-          </section>
+            <div>
+              {term.faqs.map((faq, idx) => (
+                <div
+                  key={idx}
+                  className={`p-6 ${idx < term.faqs.length - 1 ? "border-b border-[#333]" : ""}`}
+                >
+                  <h3
+                    className="text-lg mb-3"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    {faq.question}
+                  </h3>
+                  <p className="text-[#888]">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Related Terms */}
         {term.relatedTerms.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6">Related Terms</h2>
-              <div className="grid gap-3 md:grid-cols-2">
-                {term.relatedTerms.map((related) => (
-                  <Link
-                    key={related.slug}
-                    href={`/glossary/${related.slug}`}
-                    className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-white dark:hover:bg-white/[0.02] transition-colors group"
-                  >
-                    <span className="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                      {related.term}
-                    </span>
-                    <ArrowRight className="h-4 w-4 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
-                  </Link>
-                ))}
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                RELATED TERMS
               </div>
             </div>
-          </section>
+            <div className="grid md:grid-cols-2">
+              {term.relatedTerms.map((related, idx) => (
+                <Link
+                  key={related.slug}
+                  href={`/glossary/${related.slug}`}
+                  className={`group flex items-center justify-between p-6 ${idx % 2 === 0 ? "md:border-r" : ""} ${idx < term.relatedTerms.length - 2 ? "border-b" : idx === term.relatedTerms.length - 2 && term.relatedTerms.length % 2 === 0 ? "" : idx < term.relatedTerms.length - 1 ? "border-b" : ""} border-[#333] hover:bg-[#111] transition-colors`}
+                >
+                  <span className="font-medium group-hover:text-[#10b981] transition-colors">
+                    {related.term}
+                  </span>
+                  <span className="text-[#888] group-hover:text-[#10b981] group-hover:translate-x-1 transition-all">
+                    &rarr;
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* More from Category */}
         {relatedInCategory.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6">
-                More {categoryLabels[term.category]} Terms
-              </h2>
-              <div className="grid gap-4">
-                {relatedInCategory.map((t) => (
-                  <Link
-                    key={t.slug}
-                    href={`/glossary/${t.slug}`}
-                    className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-white dark:hover:bg-white/[0.02] transition-colors group"
-                  >
-                    <div>
-                      <div className="font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                        {t.term}
-                      </div>
-                      <div className="text-sm text-neutral-500 dark:text-white/50 mt-1">
-                        {t.shortDefinition}
-                      </div>
-                    </div>
-                    <ArrowRight className="h-5 w-5 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all shrink-0 ml-4" />
-                  </Link>
-                ))}
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                MORE {categoryLabels[term.category]} TERMS
               </div>
             </div>
-          </section>
+            <div>
+              {relatedInCategory.map((t, idx) => (
+                <Link
+                  key={t.slug}
+                  href={`/glossary/${t.slug}`}
+                  className={`group flex items-center justify-between p-6 ${idx < relatedInCategory.length - 1 ? "border-b border-[#333]" : ""} hover:bg-[#111] transition-colors`}
+                >
+                  <div>
+                    <div className="font-semibold group-hover:text-[#10b981] transition-colors">
+                      {t.term}
+                    </div>
+                    <div className="text-sm text-[#888] mt-1">
+                      {t.shortDefinition}
+                    </div>
+                  </div>
+                  <span className="text-[#888] group-hover:text-[#10b981] group-hover:translate-x-1 transition-all shrink-0 ml-4">
+                    &rarr;
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* CTA */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-24">
-          <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to Improve Your AI Visibility?
-            </h2>
-            <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-              Get a free audit to see how your brand appears across ChatGPT, Claude, Perplexity, and other AI platforms.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/tools/free-audit"
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-              >
-                Get Your Free Audit
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/glossary"
-                className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 dark:border-white/20 px-8 py-4 text-base font-medium hover:bg-neutral-50 dark:hover:bg-white/5 transition-all"
-              >
-                Browse All Terms
-              </Link>
-            </div>
+        <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">
+          <h2
+            className="text-2xl md:text-3xl uppercase mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Ready to improve your AI visibility?
+          </h2>
+          <p className="text-[#888] mb-8 max-w-lg mx-auto">
+            Get a free audit to see how your brand appears across ChatGPT, Claude, Perplexity, and other AI platforms.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/tools/free-audit" className="cta-btn cta-btn-primary">
+              Get Your Free Audit
+            </Link>
+            <Link href="/glossary" className="cta-btn">
+              Browse All Terms
+            </Link>
           </div>
-        </section>
-      </ThemedLayout>
+        </div>
+      </BrutalistLayout>
     </>
   );
 }

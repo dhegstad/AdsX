@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import { getAllExamples, getExampleCategories, getExamplesByCategory, type BrandExample } from "@/lib/examples";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
@@ -20,14 +19,14 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 const categoryLabels: Record<string, string> = {
-  ecommerce: "E-commerce",
-  saas: "SaaS",
-  fintech: "Fintech",
-  healthcare: "Healthcare",
-  consumer: "Consumer",
+  ecommerce: "E-COMMERCE",
+  saas: "SAAS",
+  fintech: "FINTECH",
+  healthcare: "HEALTHCARE",
+  consumer: "CONSUMER",
   b2b: "B2B",
-  media: "Media",
-  travel: "Travel",
+  media: "MEDIA",
+  travel: "TRAVEL",
 };
 
 const categoryDescriptions: Record<string, string> = {
@@ -56,204 +55,178 @@ export default function ExamplesIndexPage() {
   return (
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
-      <ThemedLayout>
+      <BrutalistLayout>
         {/* Hero */}
-        <section className="relative pt-32 pb-16 overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-40" />
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-            <nav className="mb-8 text-sm">
-              <Link
-                href="/"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
+        <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+          <div
+            className="text-xs tracking-widest text-[#888] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#10b981]">EXAMPLES</span>
+          </div>
+          <h1
+            className="uppercase"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(32px, 6vw, 72px)",
+              lineHeight: 0.9,
+              letterSpacing: "-2px",
+            }}
+          >
+            AI Visibility<br />Success Stories
+          </h1>
+          <p className="mt-6 max-w-2xl text-[#888] text-lg">
+            See how leading brands achieved AI visibility success. Learn from their
+            strategies, tactics, and results to improve your own AI presence.
+          </p>
+        </div>
+
+        {/* Stats Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 border-b border-[#333]">
+          {[
+            { label: "BRAND EXAMPLES", value: allExamples.length.toString() },
+            { label: "INDUSTRIES", value: categories.length.toString() },
+            { label: "AVG. AI REC RATE", value: "67%" },
+            { label: "TYPICAL TIMELINE", value: "4-6 MO" },
+          ].map((stat, idx) => (
+            <div
+              key={stat.label}
+              className={`p-6 ${idx < 3 ? "border-r" : ""} border-[#333] text-center`}
+            >
+              <div
+                className="text-2xl md:text-4xl text-[#10b981]"
+                style={{ fontFamily: "var(--font-display)" }}
               >
-                Home
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
-                Examples
-              </span>
-            </nav>
-
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm mb-6">
-                <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                  {allExamples.length} Brand Examples
-                </span>
+                {stat.value}
               </div>
-
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                AI Visibility{" "}
-                <span className="gradient-text">Success Stories</span>
-              </h1>
-
-              <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
-                See how leading brands achieved AI visibility success. Learn from their
-                strategies, tactics, and results to improve your own AI presence.
-              </p>
-
-              <div className="mt-10">
-                <Link
-                  href="/tools/free-audit"
-                  className="group inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-                >
-                  Get Your Free Audit
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+              <div
+                className="text-[10px] md:text-xs tracking-widest text-[#888] mt-2"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {stat.label}
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Stats */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-12">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {allExamples.length}
-                </div>
-                <div className="mt-2 text-sm text-neutral-600 dark:text-white/60">
-                  Brand Examples
-                </div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {categories.length}
-                </div>
-                <div className="mt-2 text-sm text-neutral-600 dark:text-white/60">
-                  Industries
-                </div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                  67%
-                </div>
-                <div className="mt-2 text-sm text-neutral-600 dark:text-white/60">
-                  Avg. AI Recommendation Rate
-                </div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                  4-6 mo
-                </div>
-                <div className="mt-2 text-sm text-neutral-600 dark:text-white/60">
-                  Typical Timeline
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          ))}
+        </div>
 
         {/* Featured Examples */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-8">Featured Examples</h2>
-            <div className="grid gap-6 lg:grid-cols-3">
-              {featuredExamples.map((example) => (
-                <Link
-                  key={example.slug}
-                  href={`/examples/${example.slug}`}
-                  className="group p-6 rounded-xl border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-white dark:hover:bg-white/[0.02] transition-colors"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">
-                      {categoryLabels[example.category]}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-2">
-                    {example.brand}
-                  </h3>
-                  <p className="text-sm text-neutral-500 dark:text-white/50 mb-3">
-                    {example.industry}
-                  </p>
-                  <p className="text-sm text-neutral-600 dark:text-white/60 mb-4 line-clamp-2">
-                    {example.headline}
-                  </p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                      <TrendingUp className="h-4 w-4" />
-                      <span>{example.metrics[0]?.value}</span>
-                    </div>
-                    <span className="text-neutral-400">|</span>
-                    <span className="text-neutral-500 dark:text-white/50">
-                      {example.timeline}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+        <div className="border-b border-[#333]">
+          <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest text-[#10b981]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              FEATURED EXAMPLES
             </div>
           </div>
-        </section>
+          <div className="grid lg:grid-cols-3">
+            {featuredExamples.map((example, idx) => (
+              <Link
+                key={example.slug}
+                href={`/examples/${example.slug}`}
+                className={`group p-6 ${idx < 2 ? "lg:border-r" : ""} border-[#333] hover:bg-[#111] transition-colors`}
+              >
+                <div
+                  className="text-xs tracking-widest text-[#10b981] mb-3"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  {categoryLabels[example.category]}
+                </div>
+                <h3
+                  className="text-xl font-semibold group-hover:text-[#10b981] transition-colors mb-2"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  {example.brand}
+                </h3>
+                <p className="text-sm text-[#888] mb-3">
+                  {example.industry}
+                </p>
+                <p className="text-sm text-[#ccc] mb-4 line-clamp-2">
+                  {example.headline}
+                </p>
+                <div className="flex items-center gap-4 text-sm">
+                  <span className="text-[#10b981]">{example.metrics[0]?.value}</span>
+                  <span className="text-[#888]">{example.timeline}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
 
         {/* Categories */}
-        {categories.map((cat) => {
+        {categories.map((cat, catIdx) => {
           const examples = getExamplesByCategory(cat.slug as BrandExample["category"]);
           return (
-            <section
-              key={cat.slug}
-              className="border-t border-neutral-200 dark:border-white/10 py-16"
-            >
-              <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="flex items-center justify-between mb-8">
+            <div key={cat.slug} className={catIdx < categories.length - 1 ? "border-b border-[#333]" : ""}>
+              <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-2xl font-bold">{cat.name}</h2>
-                    <p className="text-neutral-600 dark:text-white/60 mt-1">
+                    <div
+                      className="text-xs tracking-widest text-[#10b981] mb-2"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {categoryLabels[cat.slug]}
+                    </div>
+                    <p className="text-[#888] text-sm">
                       {categoryDescriptions[cat.slug]}
                     </p>
                   </div>
-                  <span className="text-sm text-neutral-500 dark:text-white/50">
-                    {cat.count} examples
+                  <span
+                    className="text-xs tracking-widest text-[#888]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {cat.count} EXAMPLES
                   </span>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {examples.map((example) => (
-                    <Link
-                      key={example.slug}
-                      href={`/examples/${example.slug}`}
-                      className="group flex items-start justify-between p-4 rounded-lg border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-white dark:hover:bg-white/[0.02] transition-colors"
-                    >
-                      <div>
-                        <div className="font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                          {example.brand}
-                        </div>
-                        <div className="text-sm text-neutral-500 dark:text-white/50 mt-1">
-                          {example.industry}
-                        </div>
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-2">
-                          {example.metrics[0]?.value} {example.metrics[0]?.context}
-                        </div>
-                      </div>
-                      <ArrowRight className="h-5 w-5 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all shrink-0" />
-                    </Link>
-                  ))}
-                </div>
               </div>
-            </section>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3">
+                {examples.map((example, idx) => (
+                  <Link
+                    key={example.slug}
+                    href={`/examples/${example.slug}`}
+                    className={`group flex items-start justify-between p-6 ${idx % 3 !== 2 ? "lg:border-r" : ""} ${idx % 2 !== 1 ? "md:border-r lg:border-r-0" : ""} ${idx < examples.length - 3 ? "lg:border-b" : ""} ${idx < examples.length - 2 ? "md:border-b lg:border-b-0" : ""} border-[#333] hover:bg-[#111] transition-colors`}
+                  >
+                    <div>
+                      <div className="font-semibold group-hover:text-[#10b981] transition-colors">
+                        {example.brand}
+                      </div>
+                      <div className="text-sm text-[#888] mt-1">
+                        {example.industry}
+                      </div>
+                      <div className="text-xs text-[#10b981] mt-2">
+                        {example.metrics[0]?.value} {example.metrics[0]?.context}
+                      </div>
+                    </div>
+                    <span className="text-[#888] group-hover:text-[#10b981] group-hover:translate-x-1 transition-all shrink-0">
+                      &rarr;
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           );
         })}
 
         {/* CTA */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-24">
-          <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Want to Be the Next Success Story?
-            </h2>
-            <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-              Get a free audit to see how your brand can achieve similar AI visibility results.
-            </p>
-            <div className="mt-10">
-              <Link
-                href="/tools/free-audit"
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-              >
-                Get Your Free Audit
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
+        <div className="p-8 md:p-16 text-center bg-[#0c0c0c] border-t border-[#333]">
+          <h2
+            className="text-2xl md:text-3xl uppercase mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Want to be the next success story?
+          </h2>
+          <p className="text-[#888] mb-8 max-w-lg mx-auto">
+            Get a free audit to see how your brand can achieve similar AI visibility results.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/tools/free-audit" className="cta-btn cta-btn-primary">
+              Get Your Free Audit
+            </Link>
           </div>
-        </section>
-      </ThemedLayout>
+        </div>
+      </BrutalistLayout>
     </>
   );
 }

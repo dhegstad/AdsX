@@ -1,17 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  Target,
-  TrendingUp,
-  CheckCircle,
-  Quote,
-  Clock,
-  HelpCircle,
-  Lightbulb,
-} from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import {
   getAllExamples,
   getExampleBySlug,
@@ -53,14 +43,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const categoryLabels: Record<string, string> = {
-  ecommerce: "E-commerce",
-  saas: "SaaS",
-  fintech: "Fintech",
-  healthcare: "Healthcare",
-  consumer: "Consumer",
+  ecommerce: "E-COMMERCE",
+  saas: "SAAS",
+  fintech: "FINTECH",
+  healthcare: "HEALTHCARE",
+  consumer: "CONSUMER",
   b2b: "B2B",
-  media: "Media",
-  travel: "Travel",
+  media: "MEDIA",
+  travel: "TRAVEL",
 };
 
 export default async function ExamplePage({ params }: PageProps) {
@@ -90,273 +80,254 @@ export default async function ExamplePage({ params }: PageProps) {
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
       <SchemaScript schema={createFAQSchema(faqItems)} />
-      <ThemedLayout>
+      <BrutalistLayout>
         {/* Hero */}
-        <section className="relative pt-32 pb-16 overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-40" />
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-            <nav className="mb-8 text-sm">
-              <Link
-                href="/"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
-              >
-                Home
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <Link
-                href="/examples"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
-              >
-                Examples
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
-                {example.brand}
-              </span>
-            </nav>
-
-            <div className="mx-auto max-w-3xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm">
-                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                    {categoryLabels[example.category]}
-                  </span>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 dark:border-white/20 px-4 py-2 text-sm">
-                  <Clock className="h-3 w-3" />
-                  <span className="text-neutral-600 dark:text-white/60">
-                    {example.timeline}
-                  </span>
-                </div>
-              </div>
-
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                {example.headline}
-              </h1>
-
-              <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-                {example.description}
-              </p>
-            </div>
+        <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+          <div
+            className="text-xs tracking-widest text-[#888] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+            <span className="mx-2">/</span>
+            <Link href="/examples" className="hover:text-[#EAEAEA]">EXAMPLES</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#10b981]">{example.brand.toUpperCase()}</span>
           </div>
-        </section>
+          <div className="flex items-center gap-4 mb-4">
+            <span
+              className="text-xs tracking-widest px-3 py-1 border border-[#10b981] text-[#10b981]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              {categoryLabels[example.category]}
+            </span>
+            <span className="text-xs tracking-widest text-[#888]" style={{ fontFamily: "var(--font-mono)" }}>
+              {example.timeline}
+            </span>
+          </div>
+          <h1
+            className="uppercase"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(24px, 4vw, 48px)",
+              lineHeight: 1,
+              letterSpacing: "-1px",
+            }}
+          >
+            {example.headline}
+          </h1>
+          <p className="mt-6 max-w-2xl text-[#888] text-lg">
+            {example.description}
+          </p>
+        </div>
 
         {/* Metrics */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-12">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {example.metrics.map((metric) => (
-                <div key={metric.metric} className="text-center">
-                  <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                    {metric.value}
-                  </div>
-                  <div className="mt-1 font-medium">{metric.metric}</div>
-                  <div className="mt-1 text-sm text-neutral-500 dark:text-white/50">
-                    {metric.context}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Challenge */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20">
-                <Target className="h-5 w-5 text-red-600 dark:text-red-400" />
+        <div className="grid grid-cols-3 border-b border-[#333]">
+          {example.metrics.map((metric, idx) => (
+            <div
+              key={metric.metric}
+              className={`p-6 ${idx < example.metrics.length - 1 ? "border-r" : ""} border-[#333] text-center`}
+            >
+              <div
+                className="text-2xl md:text-4xl text-[#10b981]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {metric.value}
               </div>
-              <h2 className="text-2xl font-bold">The Challenge</h2>
+              <div className="font-medium mt-1">{metric.metric}</div>
+              <div className="text-sm text-[#888] mt-1">{metric.context}</div>
             </div>
-            <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed">
+          ))}
+        </div>
+
+        {/* Challenge + Approach */}
+        <div className="grid lg:grid-cols-2 border-b border-[#333]">
+          <div className="p-8 lg:border-r border-[#333]">
+            <div
+              className="text-xs tracking-widest mb-4"
+              style={{ fontFamily: "var(--font-mono)", color: "#ef4444" }}
+            >
+              THE CHALLENGE
+            </div>
+            <p className="text-[#ccc] leading-relaxed">
               {example.challenge}
             </p>
           </div>
-        </section>
-
-        {/* Approach */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20">
-                <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <h2 className="text-2xl font-bold">The Approach</h2>
+          <div className="p-8 bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest mb-4"
+              style={{ fontFamily: "var(--font-mono)", color: "#3b82f6" }}
+            >
+              THE APPROACH
             </div>
-            <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed">
+            <p className="text-[#ccc] leading-relaxed">
               {example.approach}
             </p>
           </div>
-        </section>
+        </div>
 
         {/* Strategies */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl font-bold">Key Strategies</h2>
-              <p className="mt-2 text-neutral-600 dark:text-white/60">
-                The specific tactics that drove success
-              </p>
-            </div>
-            <div className="grid gap-6 lg:grid-cols-3">
-              {example.strategies.map((strategy, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.02]"
-                >
-                  <h3 className="font-semibold text-lg mb-3">{strategy.strategy}</h3>
-                  <p className="text-sm text-neutral-600 dark:text-white/60 mb-4">
-                    {strategy.implementation}
-                  </p>
-                  <div className="flex items-start gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                    <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="text-sm text-emerald-700 dark:text-emerald-300">
-                      {strategy.result}
-                    </span>
-                  </div>
-                </div>
-              ))}
+        <div className="border-b border-[#333]">
+          <div className="p-6 border-b border-[#333]">
+            <div
+              className="text-xs tracking-widest text-[#888]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              KEY STRATEGIES
             </div>
           </div>
-        </section>
+          <div className="grid lg:grid-cols-3">
+            {example.strategies.map((strategy, idx) => (
+              <div
+                key={idx}
+                className={`p-6 ${idx < 2 ? "lg:border-r" : ""} border-[#333] ${idx < example.strategies.length - 3 ? "border-b lg:border-b-0" : ""}`}
+              >
+                <h3 className="font-semibold text-lg mb-3">{strategy.strategy}</h3>
+                <p className="text-sm text-[#888] mb-4">
+                  {strategy.implementation}
+                </p>
+                <div className="p-3 border border-[#10b981]/30 bg-[#10b981]/5">
+                  <span className="text-sm text-[#10b981]">
+                    ✓ {strategy.result}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Results */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <TrendingUp className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h2 className="text-2xl font-bold">The Results</h2>
-            </div>
-            <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed">
-              {example.results}
-            </p>
+        <div className="border-b border-[#333] p-8 bg-[#0c0c0c]">
+          <div
+            className="text-xs tracking-widest text-[#10b981] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            THE RESULTS
           </div>
-        </section>
+          <p className="text-[#ccc] leading-relaxed max-w-3xl">
+            {example.results}
+          </p>
+        </div>
 
         {/* Quote */}
         {example.quote && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <div className="relative p-8 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                <Quote className="absolute top-4 left-4 h-8 w-8 text-emerald-500/30" />
-                <blockquote className="pl-8">
-                  <p className="text-xl italic text-neutral-700 dark:text-white/80 mb-4">
-                    &ldquo;{example.quote.text}&rdquo;
-                  </p>
-                  <footer className="text-neutral-600 dark:text-white/60">
-                    <span className="font-medium">{example.quote.author}</span>
-                    <span className="mx-2">-</span>
-                    <span>{example.quote.role}</span>
-                  </footer>
-                </blockquote>
+          <div className="border-b border-[#333] p-8">
+            <div className="max-w-3xl mx-auto">
+              <div className="p-8 border border-[#10b981]/20 bg-[#10b981]/5">
+                <p className="text-xl italic text-[#ccc] mb-4">
+                  &ldquo;{example.quote.text}&rdquo;
+                </p>
+                <footer className="text-[#888]">
+                  <span className="font-medium text-[#EAEAEA]">{example.quote.author}</span>
+                  <span className="mx-2">—</span>
+                  <span>{example.quote.role}</span>
+                </footer>
               </div>
             </div>
-          </section>
+          </div>
         )}
 
         {/* Key Takeaways */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
-            <ul className="space-y-4">
-              {example.keyTakeaways.map((takeaway, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-3 p-4 rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.02]"
-                >
-                  <CheckCircle className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-neutral-700 dark:text-white/80">{takeaway}</span>
-                </li>
-              ))}
-            </ul>
+        <div className="border-b border-[#333]">
+          <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest text-[#888]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              KEY TAKEAWAYS
+            </div>
           </div>
-        </section>
+          <div>
+            {example.keyTakeaways.map((takeaway, idx) => (
+              <div
+                key={idx}
+                className={`p-6 flex items-start gap-4 ${idx < example.keyTakeaways.length - 1 ? "border-b border-[#333]" : ""}`}
+              >
+                <span className="text-[#10b981]">✓</span>
+                <span className="text-[#ccc]">{takeaway}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* FAQs */}
         {example.faqs.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16">
-            <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <HelpCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
-              </div>
-              <div className="space-y-6">
-                {example.faqs.map((faq, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-xl border border-neutral-200 dark:border-white/10"
-                  >
-                    <h3 className="font-semibold text-lg mb-3">{faq.question}</h3>
-                    <p className="text-neutral-600 dark:text-white/70">{faq.answer}</p>
-                  </div>
-                ))}
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                FREQUENTLY ASKED QUESTIONS
               </div>
             </div>
-          </section>
+            <div>
+              {example.faqs.map((faq, idx) => (
+                <div
+                  key={idx}
+                  className={`p-6 ${idx < example.faqs.length - 1 ? "border-b border-[#333]" : ""}`}
+                >
+                  <h3 className="font-semibold mb-3">{faq.question}</h3>
+                  <p className="text-[#888]">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Related Examples */}
         {relatedExamples.length > 0 && (
-          <section className="border-t border-neutral-200 dark:border-white/10 py-16 bg-neutral-50 dark:bg-transparent">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-8">
-                More {categoryLabels[example.category]} Examples
-              </h2>
-              <div className="grid gap-6 md:grid-cols-3">
-                {relatedExamples.map((ex) => (
-                  <Link
-                    key={ex.slug}
-                    href={`/examples/${ex.slug}`}
-                    className="group p-6 rounded-xl border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-white dark:hover:bg-white/[0.02] transition-colors"
-                  >
-                    <div className="font-semibold text-lg group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-2">
-                      {ex.brand}
-                    </div>
-                    <p className="text-sm text-neutral-500 dark:text-white/50 mb-3">
-                      {ex.industry}
-                    </p>
-                    <p className="text-sm text-neutral-600 dark:text-white/60 line-clamp-2">
-                      {ex.headline}
-                    </p>
-                  </Link>
-                ))}
+          <div className="border-b border-[#333]">
+            <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+              <div
+                className="text-xs tracking-widest text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                MORE {categoryLabels[example.category]} EXAMPLES
               </div>
             </div>
-          </section>
+            <div className="grid md:grid-cols-3">
+              {relatedExamples.map((ex, idx) => (
+                <Link
+                  key={ex.slug}
+                  href={`/examples/${ex.slug}`}
+                  className={`group p-6 ${idx < 2 ? "md:border-r" : ""} border-[#333] hover:bg-[#111] transition-colors`}
+                >
+                  <div className="font-semibold text-lg group-hover:text-[#10b981] transition-colors mb-2">
+                    {ex.brand}
+                  </div>
+                  <p className="text-sm text-[#888] mb-3">
+                    {ex.industry}
+                  </p>
+                  <p className="text-sm text-[#ccc] line-clamp-2">
+                    {ex.headline}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* CTA */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-24">
-          <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready for Similar Results?
-            </h2>
-            <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-              Get a free audit to see how your brand can improve AI visibility like {example.brand}.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/tools/free-audit"
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-              >
-                Get Your Free Audit
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/examples"
-                className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 dark:border-white/20 px-8 py-4 text-base font-medium hover:bg-neutral-50 dark:hover:bg-white/5 transition-all"
-              >
-                Browse All Examples
-              </Link>
-            </div>
+        <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">
+          <h2
+            className="text-2xl md:text-3xl uppercase mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Ready for similar results?
+          </h2>
+          <p className="text-[#888] mb-8 max-w-lg mx-auto">
+            Get a free audit to see how your brand can improve AI visibility like {example.brand}.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/tools/free-audit" className="cta-btn cta-btn-primary">
+              Get Your Free Audit
+            </Link>
+            <Link href="/examples" className="cta-btn">
+              Browse All Examples
+            </Link>
           </div>
-        </section>
-      </ThemedLayout>
+        </div>
+      </BrutalistLayout>
     </>
   );
 }

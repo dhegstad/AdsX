@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Layers } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import { getAllIntegrations, type Integration } from "@/lib/integrations";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
@@ -20,10 +19,10 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 const categoryLabels: Record<Integration["category"], string> = {
-  ecommerce: "E-commerce",
+  ecommerce: "E-COMMERCE",
   crm: "CRM",
-  marketing: "Marketing",
-  analytics: "Analytics",
+  marketing: "MARKETING",
+  analytics: "ANALYTICS",
   cms: "CMS",
 };
 
@@ -66,133 +65,142 @@ export default function IntegrationsPage() {
   return (
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
-      <ThemedLayout>
+      <BrutalistLayout>
         {/* Hero */}
-        <section className="relative pt-32 pb-16 overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-40" />
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-            <nav className="mb-8 text-sm">
-              <Link
-                href="/"
-                className="text-neutral-500 hover:text-emerald-600 dark:text-white/50 dark:hover:text-emerald-400"
+        <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+          <div
+            className="text-xs tracking-widest text-[#888] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#10b981]">INTEGRATIONS</span>
+          </div>
+          <h1
+            className="uppercase"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(32px, 6vw, 72px)",
+              lineHeight: 0.9,
+              letterSpacing: "-2px",
+            }}
+          >
+            AI Visibility for<br />Your Platform
+          </h1>
+          <p className="mt-6 max-w-2xl text-[#888] text-lg">
+            Get your business recommended by AI assistants, optimized for the platforms you already use.
+            We help businesses on Shopify, HubSpot, WordPress, and more dominate AI search results.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <Link href="/tools/free-audit" className="cta-btn cta-btn-primary">
+              Get Your Free Audit
+            </Link>
+            <Link href="/contact" className="cta-btn">
+              Talk to Sales
+            </Link>
+          </div>
+        </div>
+
+        {/* Stats Strip */}
+        <div className="grid grid-cols-3 border-b border-[#333]">
+          {[
+            { label: "PLATFORMS", value: integrations.length.toString() },
+            { label: "CATEGORIES", value: Object.keys(categories).length.toString() },
+            { label: "AVG. ROI", value: "340%" },
+          ].map((stat, idx) => (
+            <div
+              key={stat.label}
+              className={`p-6 ${idx < 2 ? "border-r" : ""} border-[#333] text-center`}
+            >
+              <div
+                className="text-2xl md:text-4xl text-[#10b981]"
+                style={{ fontFamily: "var(--font-display)" }}
               >
-                Home
-              </Link>
-              <span className="mx-2 text-neutral-300 dark:text-white/30">/</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
-                Integrations
-              </span>
-            </nav>
-
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm mb-6">
-                <Layers className="h-4 w-4 text-emerald-500" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                  Platform Integrations
-                </span>
+                {stat.value}
               </div>
-
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                AI Visibility for{" "}
-                <span className="gradient-text">Your Platform</span>
-              </h1>
-
-              <p className="mt-6 text-lg sm:text-xl text-neutral-600 dark:text-white/60">
-                Get your business recommended by AI assistants, optimized for the platforms you already use.
-                We help businesses on Shopify, HubSpot, WordPress, and more dominate AI search results.
-              </p>
-
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  href="/tools/free-audit"
-                  className="group flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-                >
-                  Get Your Free Audit
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="flex items-center gap-2 rounded-lg border border-neutral-300 dark:border-white/20 px-8 py-4 text-base font-medium hover:bg-neutral-50 dark:hover:bg-white/5 transition-all"
-                >
-                  Talk to Sales
-                </Link>
+              <div
+                className="text-[10px] md:text-xs tracking-widest text-[#888] mt-2"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {stat.label}
               </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
 
-        {/* Integrations Grid */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="space-y-16">
-              {categoryOrder
-                .filter((category) => categories[category])
-                .map((category) => (
-                  <div key={category}>
-                    <div className="mb-8">
-                      <h2 className="text-2xl font-bold">{categoryLabels[category]}</h2>
-                      <p className="text-neutral-600 dark:text-white/60 mt-1">
-                        {categoryDescriptions[category]}
-                      </p>
+        {/* Integrations by Category */}
+        {categoryOrder
+          .filter((category) => categories[category])
+          .map((category, catIdx) => (
+            <div key={category} className={catIdx < categoryOrder.filter(c => categories[c]).length - 1 ? "border-b border-[#333]" : ""}>
+              <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+                <div
+                  className="text-xs tracking-widest text-[#10b981] mb-1"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  {categoryLabels[category]}
+                </div>
+                <p className="text-sm text-[#888]">
+                  {categoryDescriptions[category]}
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3">
+                {categories[category].map((integration, idx) => (
+                  <Link
+                    key={integration.slug}
+                    href={`/integrations/${integration.slug}`}
+                    className={`group p-6 ${idx % 3 !== 2 ? "lg:border-r" : ""} ${idx % 2 !== 1 ? "md:border-r lg:border-r-0" : ""} border-[#333] border-b last:border-b-0 hover:bg-[#111] transition-colors`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[#10b981]">◉</span>
+                          <h3 className="text-xl font-semibold group-hover:text-[#10b981] transition-colors">
+                            {integration.name}
+                          </h3>
+                        </div>
+                        <p className="text-sm text-[#888] line-clamp-2">
+                          {integration.description}
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {integration.useCases.slice(0, 2).map((useCase) => (
+                            <span
+                              key={useCase.title}
+                              className="text-xs text-[#888] border border-[#333] px-2 py-1"
+                            >
+                              {useCase.title}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <span className="text-[#888] group-hover:text-[#10b981] group-hover:translate-x-1 transition-all shrink-0">
+                        &rarr;
+                      </span>
                     </div>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {categories[category].map((integration) => (
-                        <Link
-                          key={integration.slug}
-                          href={`/integrations/${integration.slug}`}
-                          className="group rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-6 hover:border-emerald-500/30 transition-colors"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="text-xl font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                {integration.name}
-                              </h3>
-                              <p className="text-neutral-600 dark:text-white/60 text-sm mt-2 line-clamp-2">
-                                {integration.description}
-                              </p>
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all shrink-0" />
-                          </div>
-                          <div className="mt-4 flex flex-wrap gap-2">
-                            {integration.useCases.slice(0, 2).map((useCase) => (
-                              <span
-                                key={useCase.title}
-                                className="text-xs text-neutral-500 dark:text-white/50 bg-neutral-100 dark:bg-white/5 px-2 py-1 rounded-full"
-                              >
-                                {useCase.title}
-                              </span>
-                            ))}
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                  </Link>
                 ))}
+              </div>
             </div>
-          </div>
-        </section>
+          ))}
 
         {/* CTA */}
-        <section className="border-t border-neutral-200 dark:border-white/10 py-24 bg-neutral-50 dark:bg-transparent">
-          <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Don&apos;t See Your Platform?
-            </h2>
-            <p className="mt-6 text-lg text-neutral-600 dark:text-white/60">
-              We work with businesses on any platform. Get in touch to discuss AI visibility for your setup.
-            </p>
-            <div className="mt-10">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 text-base font-medium text-white hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/25"
-              >
-                Contact Us
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
+        <div className="p-8 md:p-16 text-center bg-[#0c0c0c] border-t border-[#333]">
+          <h2
+            className="text-2xl md:text-3xl uppercase mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Don&apos;t see your platform?
+          </h2>
+          <p className="text-[#888] mb-8 max-w-lg mx-auto">
+            We work with businesses on any platform. Get in touch to discuss AI visibility for your setup.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/contact" className="cta-btn cta-btn-primary">
+              Contact Us
+            </Link>
           </div>
-        </section>
-      </ThemedLayout>
+        </div>
+      </BrutalistLayout>
     </>
   );
 }

@@ -2,18 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BarChart3, Zap, Shield } from "lucide-react";
-import { ThemedLayout } from "@/components/themed-layout";
+import { BrutalistLayout } from "@/components/brutalist-layout";
 import { AuditForm } from "@/components/tools/audit-form";
 import { AuditResults } from "@/components/tools/audit-results";
-import { useTheme } from "@/context/theme-context";
-import { cn } from "@/lib/utils";
 import type { AuditResponse } from "@/types/visibility";
 
 export default function FreeAuditPage() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [results, setResults] = useState<AuditResponse | null>(null);
   const [brandName, setBrandName] = useState("");
@@ -55,232 +49,185 @@ export default function FreeAuditPage() {
   };
 
   return (
-    <ThemedLayout>
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 dot-pattern opacity-40" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div
-              className={cn(
-                "mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm",
-                isDark
-                  ? "border-emerald-500/30 bg-emerald-500/10"
-                  : "border-emerald-500/30 bg-emerald-500/10"
-              )}
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span
-                className={cn(
-                  "font-medium",
-                  isDark ? "text-emerald-400" : "text-emerald-600"
-                )}
-              >
-                Free AI Visibility Audit
-              </span>
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Is your brand visible in{" "}
-              <span className="gradient-text">AI search?</span>
-            </h1>
-            <p
-              className={cn(
-                "mt-6 text-lg sm:text-xl",
-                isDark ? "text-white/60" : "text-neutral-600"
-              )}
-            >
-              See how your brand appears when customers ask ChatGPT, Claude, and other
-              AI platforms for recommendations in your category.
-            </p>
-          </div>
+    <BrutalistLayout>
+      {/* Header */}
+      <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
+        <div
+          className="text-xs tracking-widest text-[#888] mb-4"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          <Link href="/" className="hover:text-[#EAEAEA]">HOME</Link>
+          <span className="mx-2">/</span>
+          <Link href="/tools/free-audit" className="hover:text-[#EAEAEA]">TOOLS</Link>
+          <span className="mx-2">/</span>
+          <span className="text-[#10b981]">FREE AUDIT</span>
         </div>
-      </section>
+        <div className="inline-flex items-center gap-2 px-3 py-1 border border-[#10b981]/30 bg-[#10b981]/10 text-[#10b981] text-sm mb-6">
+          <span className="h-2 w-2 bg-[#10b981] animate-pulse" />
+          <span style={{ fontFamily: "var(--font-mono)" }}>FREE AI VISIBILITY AUDIT</span>
+        </div>
+        <h1
+          className="uppercase"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(32px, 6vw, 72px)",
+            lineHeight: 0.9,
+            letterSpacing: "-2px",
+          }}
+        >
+          Is Your Brand Visible<br />In AI Search?
+        </h1>
+        <p className="mt-6 max-w-2xl text-[#888] text-lg">
+          See how your brand appears when customers ask ChatGPT, Claude, and other
+          AI platforms for recommendations in your category.
+        </p>
+      </div>
 
       {/* Main Content */}
-      <section
-        className={cn(
-          "border-t py-16",
-          isDark ? "border-white/10" : "border-neutral-200"
-        )}
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          {status === "success" && results ? (
-            <div className="mx-auto max-w-4xl">
+      <div className="border-b border-[#333]">
+        {status === "success" && results ? (
+          <div className="p-8 md:p-16">
+            <div className="max-w-4xl mx-auto">
               <AuditResults data={results} brandName={brandName} />
 
-              {/* CTA to book demo */}
-              <div
-                className={cn(
-                  "mt-12 rounded-2xl border p-8 text-center",
-                  isDark
-                    ? "border-emerald-500/30 bg-emerald-500/5"
-                    : "border-emerald-200 bg-emerald-50"
-                )}
-              >
-                <h3 className="text-2xl font-bold">Ready to improve your AI visibility?</h3>
-                <p
-                  className={cn(
-                    "mt-3 text-lg",
-                    isDark ? "text-white/60" : "text-neutral-600"
-                  )}
+              {/* CTA */}
+              <div className="mt-12 border border-[#10b981]/30 bg-[#10b981]/5 p-8 text-center">
+                <h3
+                  className="text-2xl uppercase"
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
+                  Ready to Improve Your AI Visibility?
+                </h3>
+                <p className="mt-3 text-lg text-[#888]">
                   Our team can help you get recommended by ChatGPT, Claude, and other AI platforms.
                   Book a call to discuss your custom strategy.
                 </p>
                 <div className="mt-6">
-                  <Link
-                    href="/contact"
-                    className={cn(
-                      "inline-flex items-center gap-2 rounded-lg px-8 py-4 text-base font-medium transition-all",
-                      isDark
-                        ? "bg-emerald-500 text-black hover:bg-emerald-400"
-                        : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25"
-                    )}
-                  >
+                  <Link href="/contact" className="cta-btn cta-btn-primary">
                     Book a Strategy Call
-                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
-              {/* Left: Benefits */}
-              <div>
-                <h2 className="text-2xl font-bold">
-                  Why check your AI visibility?
-                </h2>
-                <p
-                  className={cn(
-                    "mt-4 text-lg",
-                    isDark ? "text-white/60" : "text-neutral-600"
-                  )}
-                >
-                  Millions of people now ask AI assistants for product and service
-                  recommendations. If you&apos;re not showing up, your competitors are.
-                </p>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-2">
+            {/* Left: Benefits */}
+            <div className="p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#333]">
+              <div
+                className="text-xs tracking-widest text-[#10b981] mb-6"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                WHY CHECK YOUR AI VISIBILITY
+              </div>
+              <p className="text-lg text-[#888]">
+                Millions of people now ask AI assistants for product and service
+                recommendations. If you&apos;re not showing up, your competitors are.
+              </p>
 
-                <div className="mt-8 space-y-6">
-                  {[
-                    {
-                      icon: BarChart3,
-                      title: "Multi-Platform Analysis",
-                      description:
-                        "See how your brand appears across ChatGPT, Claude, and other major AI platforms.",
-                    },
-                    {
-                      icon: Zap,
-                      title: "Instant Results",
-                      description:
-                        "Get your visibility score in seconds. Real queries to real AI platforms.",
-                    },
-                    {
-                      icon: Shield,
-                      title: "Competitor Tracking",
-                      description:
-                        "See which competitors are being recommended instead of you.",
-                    },
-                  ].map((benefit) => (
-                    <div key={benefit.title} className="flex gap-4">
-                      <div
-                        className={cn(
-                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
-                          isDark
-                            ? "bg-emerald-500/10 border border-emerald-500/20"
-                            : "bg-emerald-100"
-                        )}
-                      >
-                        <benefit.icon
-                          className={cn(
-                            "h-5 w-5",
-                            isDark ? "text-emerald-400" : "text-emerald-600"
-                          )}
-                        />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">{benefit.title}</h3>
-                        <p
-                          className={cn(
-                            "mt-1 text-sm",
-                            isDark ? "text-white/60" : "text-neutral-600"
-                          )}
-                        >
-                          {benefit.description}
-                        </p>
-                      </div>
+              <div className="mt-8 space-y-6">
+                {[
+                  {
+                    idx: "01",
+                    title: "Multi-Platform Analysis",
+                    description:
+                      "See how your brand appears across ChatGPT, Claude, and other major AI platforms.",
+                  },
+                  {
+                    idx: "02",
+                    title: "Instant Results",
+                    description:
+                      "Get your visibility score in seconds. Real queries to real AI platforms.",
+                  },
+                  {
+                    idx: "03",
+                    title: "Competitor Tracking",
+                    description:
+                      "See which competitors are being recommended instead of you.",
+                  },
+                ].map((benefit) => (
+                  <div key={benefit.idx} className="flex gap-4">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center border border-[#333] text-[#10b981]"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {benefit.idx}
                     </div>
-                  ))}
-                </div>
-
-                <div
-                  className={cn(
-                    "mt-8 rounded-xl border p-5",
-                    isDark ? "border-white/10 bg-white/[0.02]" : "border-neutral-200 bg-neutral-50"
-                  )}
-                >
-                  <p
-                    className={cn(
-                      "text-sm",
-                      isDark ? "text-white/60" : "text-neutral-600"
-                    )}
-                  >
-                    <span className={isDark ? "text-emerald-400" : "text-emerald-600"}>800M+ people</span> now use ChatGPT weekly.
-                    Many of them are asking for product recommendations in your category.
-                  </p>
-                  <p
-                    className={cn(
-                      "mt-2 text-xs font-medium",
-                      isDark ? "text-white/40" : "text-neutral-500"
-                    )}
-                  >
-                    Source: OpenAI, 2024
-                  </p>
-                </div>
+                    <div>
+                      <h3 className="font-semibold">{benefit.title}</h3>
+                      <p className="mt-1 text-sm text-[#888]">
+                        {benefit.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Right: Form */}
-              <div
-                className={cn(
-                  "rounded-2xl border p-6 lg:p-8",
-                  isDark ? "border-white/10 bg-white/[0.02]" : "border-neutral-200 bg-white shadow-lg"
-                )}
-              >
-                <h3 className="text-xl font-bold mb-1">Run Your Free Audit</h3>
-                <p
-                  className={cn(
-                    "text-sm mb-6",
-                    isDark ? "text-white/40" : "text-neutral-500"
-                  )}
-                >
-                  Enter your details below. We&apos;ll query AI platforms in real-time.
+              <div className="mt-8 border border-[#333] p-5 bg-[#0c0c0c]">
+                <p className="text-sm text-[#888]">
+                  <span className="text-[#10b981]">800M+ people</span> now use ChatGPT weekly.
+                  Many of them are asking for product recommendations in your category.
                 </p>
-
-                {status === "error" && (
-                  <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
-                    {errorMessage}
-                  </div>
-                )}
-
-                <AuditForm
-                  showLeadCapture
-                  onLeadSubmit={handleSubmit}
-                  onSubmit={() => {}}
-                  isLoading={status === "loading"}
-                />
-
-                <p
-                  className={cn(
-                    "mt-4 text-xs text-center",
-                    isDark ? "text-white/30" : "text-neutral-400"
-                  )}
-                >
-                  Your data is secure. We don&apos;t share your information with third parties.
+                <p className="mt-2 text-xs text-[#555]" style={{ fontFamily: "var(--font-mono)" }}>
+                  SOURCE: OPENAI, 2024
                 </p>
               </div>
             </div>
-          )}
+
+            {/* Right: Form */}
+            <div className="p-8 md:p-12 bg-[#0c0c0c]">
+              <div
+                className="text-xs tracking-widest text-[#10b981] mb-2"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                RUN YOUR FREE AUDIT
+              </div>
+              <p className="text-sm text-[#888] mb-6">
+                Enter your details below. We&apos;ll query AI platforms in real-time.
+              </p>
+
+              {status === "error" && (
+                <div className="mb-6 border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+                  {errorMessage}
+                </div>
+              )}
+
+              <AuditForm
+                showLeadCapture
+                onLeadSubmit={handleSubmit}
+                onSubmit={() => {}}
+                isLoading={status === "loading"}
+              />
+
+              <p className="mt-4 text-xs text-center text-[#555]">
+                Your data is secure. We don&apos;t share your information with third parties.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">
+        <h2
+          className="text-2xl md:text-3xl uppercase mb-4"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Questions About AI Visibility?
+        </h2>
+        <p className="text-[#888] mb-8 max-w-lg mx-auto">
+          Our team can help you understand your AI search presence and build a strategy
+          to get your brand recommended.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/contact" className="cta-btn cta-btn-primary">
+            Talk to an Expert
+          </Link>
+          <Link href="/blog" className="cta-btn">
+            Read Our Blog
+          </Link>
         </div>
-      </section>
-    </ThemedLayout>
+      </div>
+    </BrutalistLayout>
   );
 }

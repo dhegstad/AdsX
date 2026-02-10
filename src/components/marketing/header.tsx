@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { throttleRAF } from "@/lib/utils/throttle";
 import { ScrollProgress } from "./scroll-progress";
 import { useTheme } from "@/context/theme-context";
 
@@ -20,10 +21,10 @@ export function Header() {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttleRAF(() => {
       setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
+    });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

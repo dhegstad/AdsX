@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPostMeta } from "@/lib/blog";
