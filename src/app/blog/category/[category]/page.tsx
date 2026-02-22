@@ -13,9 +13,12 @@ interface PageProps {
   params: Promise<{ category: string }>;
 }
 
+// Generate all category pages on-demand to avoid build timeouts with 500+ posts
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
-  const categories = getAllCategories();
-  return categories.map((c) => ({ category: c.slug }));
+  // Return empty array - all category pages generated on-demand
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
