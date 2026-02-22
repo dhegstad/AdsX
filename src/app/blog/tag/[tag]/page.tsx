@@ -9,10 +9,17 @@ interface PageProps {
   params: Promise<{ tag: string }>;
 }
 
+// Only pre-generate the top 50 most popular tags to avoid build timeouts
+// Other tags will be generated on-demand (ISR)
 export async function generateStaticParams() {
   const tags = getAllTags();
-  return tags.map((t) => ({ tag: t.slug }));
+  // Only statically generate tags with 3+ posts to reduce build time
+  const popularTags = tags.filter(t => t.count >= 3).slice(0, 50);
+  return popularTags.map((t) => ({ tag: t.slug }));
 }
+
+// Allow dynamic params for tags not in generateStaticParams
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tag: tagSlug } = await params;
