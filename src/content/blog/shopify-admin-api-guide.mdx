@@ -1,0 +1,859 @@
+---
+title: "Shopify Admin API: Complete Developer Guide to Store Management"
+excerpt: "Master the Shopify Admin API with this comprehensive guide. Learn REST vs GraphQL, authentication methods, manage products, orders, and customers, plus rate limits and best practices for production-grade e-commerce applications."
+date: "2026-02-21"
+category: "Guide"
+tags: ["Shopify", "API", "E-commerce", "REST", "GraphQL", "Developer Guide", "Store Management"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+updated: "2026-02-21"
+faqs:
+  - question: "Should I use Shopify REST API or GraphQL API?"
+    answer: "Use the REST API for simple operations and legacy integrations, as it's easier to understand and has more abundant documentation. GraphQL excels at complex queries requiring multiple resources, reducing over-fetching and under-fetching of data. For new projects, GraphQL is recommended due to flexibility and efficiency. Many developers use both depending on the use case."
+  - question: "How do I authenticate with the Shopify Admin API?"
+    answer: "Authentication depends on your app type. Public apps use OAuth 2.0 where merchants authorize your app to access their store. Private apps use API keys and passwords (legacy) or access tokens from custom apps. Custom apps created in the Shopify Admin provide the most straightforward authentication for store-specific integrations."
+  - question: "What are Shopify Admin API rate limits?"
+    answer: "Shopify uses a bucket-based rate limiting system. Each app gets a bucket that refills over time. REST API calls cost points based on operation complexity (GET/POST typically cost 1-2 points). Burst limit is 40 points/second, sustained around 2 points/second. GraphQL queries have similar limits (2 points/second sustained). Monitor the X-Request-Id header for rate limit information."
+  - question: "Can I manage multiple Shopify stores with one API integration?"
+    answer: "Yes. Public apps can be installed on multiple stores using OAuth 2.0. Each store grants authorization independently, and your app receives a unique access token per store. Store all access tokens securely and use the appropriate token when making API calls to each store's API endpoint."
+  - question: "What are the best practices for API error handling in production?"
+    answer: "Implement exponential backoff for rate limit errors (429 status), catch timeout errors and retry with delays, validate webhook signatures to ensure authentic requests, log all API errors with context for debugging, implement circuit breakers to fail gracefully during Shopify outages, and always use HTTPS with proper authentication headers in production environments."
+---
+
+The Shopify Admin API is the backbone of modern e-commerce automation, custom integrations, and store management tools. Whether you're building a marketing automation platform, inventory management system, or custom reporting dashboard, understanding the Admin API is essential for any developer working in the Shopify ecosystem.
+
+This comprehensive guide walks you through everything you need to know: from choosing between REST and GraphQL to implementing production-grade solutions with proper error handling and performance optimization.
+
+## What is the Shopify Admin API?
+
+The Shopify Admin API provides programmatic access to Shopify stores, allowing you to read and modify store data without using the Shopify admin interface. It powers everything from automated inventory management to custom analytics platforms.
+
+### Key Capabilities
+
+The Admin API lets you:
+
+- **Manage products**: Create, update, delete products and variants with images, variants, and metadata
+- **Process orders**: Track orders, update fulfillment status, create refunds, and manage order notes
+- **Manage customers**: Create customer records, track purchase history, manage customer groups
+- **Handle inventory**: Track inventory levels across locations, implement low-stock alerts
+- **Manage fulfillment**: Create and update fulfillment orders, track shipment status
+- **Webhooks**: Subscribe to store events for real-time notifications
+- **Analytics**: Access sales data, customer information, and performance metrics
+
+### Use Cases
+
+Common Shopify Admin API implementations include:
+
+1. **Inventory Sync Tools** - Synchronize inventory across multiple sales channels
+2. **Marketing Automation** - Segment customers, create targeted campaigns based on purchase history
+3. **Analytics Dashboards** - Build custom reporting on sales, traffic, and customer data
+4. **Order Management Systems** - Create custom fulfillment workflows
+5. **ERP Integration** - Connect Shopify with enterprise resource planning systems
+6. **Marketplace Connectors** - Sync Shopify inventory with Amazon, eBay, Etsy
+7. **Customer Data Platforms** - Aggregate customer data for unified marketing
+8. **Custom Apps** - Build store-specific functionality and automations
+
+## REST API vs GraphQL API
+
+Shopify offers two API approaches, each with strengths. Understanding when to use each is crucial for efficient development.
+
+### REST API Overview
+
+The REST API follows traditional HTTP methods (GET, POST, PUT, DELETE) organized into resource endpoints.
+
+**REST Example - Get Product:**
+```javascript
+// REST API - GET /admin/api/2024-01/products/{id}.json
+fetch('https://yourstore.myshopify.com/admin/api/2024-01/products/123456.json', {
+  headers: {
+    'X-Shopify-Access-Token': 'your_access_token'
+  }
+})
+.then(res => res.json())
+.then(data => console.log(data.product));
+```
+
+**REST Strengths:**
+- Simple and intuitive for developers familiar with HTTP APIs
+- Better for straightforward CRUD operations
+- Excellent documentation and tutorials
+- Easier debugging with standard HTTP tools
+- Good for batch operations using bulk operations
+
+**REST Limitations:**
+- Over-fetching: Returns all fields even if you only need a few
+- Under-fetching: Getting related data requires multiple requests
+- Less flexible for complex queries
+- Endpoint proliferation for different resource combinations
+
+### GraphQL API Overview
+
+GraphQL provides a query language that returns exactly the data you request.
+
+**GraphQL Example - Get Product:**
+```graphql
+# GraphQL Query
+query {
+  product(id: "gid://shopify/Product/123456") {
+    title
+    handle
+    variants(first: 5) {
+      edges {
+        node {
+          id
+          title
+          price
+        }
+      }
+    }
+  }
+}
+```
+
+**GraphQL Strengths:**
+- Query exactly what you need - no over-fetching
+- Get related data in a single request - no under-fetching
+- Strongly typed schema enables IDE autocomplete
+- More efficient for mobile and limited bandwidth
+- Easier to evolve API without breaking changes
+- Better performance with fewer network requests
+
+**GraphQL Limitations:**
+- Steeper learning curve for REST developers
+- More complex query debugging
+- Requires proper query optimization to avoid N+1 problems
+- Caching is more complex than HTTP caching
+
+### Comparison Table
+
+| Factor | REST API | GraphQL API |
+|--------|----------|-------------|
+| **Learning Curve** | Easy for HTTP developers | Moderate for REST developers |
+| **Data Fetching** | Over/under fetching | Precise data fetching |
+| **Network Requests** | Multiple requests for relations | Single request for complex data |
+| **Query Complexity** | Limited | Highly flexible |
+| **Caching** | HTTP caching friendly | Application-level caching |
+| **Error Handling** | HTTP status codes | GraphQL errors in response |
+| **Rate Limiting** | Simpler point system | Point-based with query cost |
+| **Documentation** | Extensive tutorials | Good reference docs |
+| **Use Case** | Simple CRUD, migrations | Complex queries, real-time |
+
+### When to Use Each
+
+**Use REST API when:**
+- Building simple integrations (basic product imports)
+- Migrating data from another platform
+- Building tools where documentation abundance matters
+- Your needs are primarily CRUD operations
+- You need simple HTTP caching strategies
+
+**Use GraphQL when:**
+- Building custom apps requiring multiple related resources
+- Optimizing for bandwidth and network requests
+- Creating mobile or low-bandwidth applications
+- You need maximum flexibility in data requests
+- Building real-time features with webhooks
+
+## Authentication Methods
+
+Shopify offers different authentication approaches depending on your integration type and use case. Understanding these is critical before writing your first API call.
+
+### 1. Public Apps (OAuth 2.0)
+
+Public apps are installable on any Shopify store and use OAuth 2.0 for authentication.
+
+**OAuth Flow:**
+```
+1. User clicks "Install" in your app listing
+2. Shopify redirects to your authorization endpoint with code
+3. Your app exchanges code for access token
+4. Store access token securely and use for API calls
+5. Access token never leaves server (never expose client-side)
+```
+
+**Implementation:**
+```javascript
+// Express.js example
+app.get('/auth/callback', async (req, res) => {
+  const { code, hmac, shop, timestamp } = req.query;
+
+  // Verify HMAC to ensure request came from Shopify
+  const hmacVerified = verifyShopifyHmac(req.query);
+  if (!hmacVerified) return res.status(401).send('Invalid HMAC');
+
+  // Exchange code for access token
+  const accessToken = await exchangeCodeForToken(shop, code);
+
+  // Store token securely (database, environment, etc.)
+  await saveAccessToken(shop, accessToken);
+
+  res.redirect(`https://${shop}/admin`);
+});
+```
+
+**Best for:**
+- Apps sold in Shopify App Store
+- Multi-store integrations
+- Apps where merchants control permissions
+
+### 2. Custom Apps (Admin-Generated Access Tokens)
+
+Custom apps are store-specific apps created directly in the Shopify Admin.
+
+**Setup:**
+1. In Shopify Admin: Settings > Apps and integrations > App and sales channel settings
+2. Click "Develop apps"
+3. Create new app and set scopes
+4. Generate access token (shown once - copy immediately)
+5. Use token for API calls
+
+**Implementation:**
+```javascript
+// Node.js fetch example
+const shopName = 'your-store';
+const accessToken = 'shpat_xxxxx...';
+
+const query = `
+  query {
+    products(first: 10) {
+      edges {
+        node {
+          id
+          title
+        }
+      }
+    }
+  }
+`;
+
+fetch(`https://${shopName}.myshopify.com/admin/api/2024-01/graphql.json`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Shopify-Access-Token': accessToken
+  },
+  body: JSON.stringify({ query })
+})
+.then(res => res.json())
+.then(data => console.log(data));
+```
+
+**Best for:**
+- Private integrations for a single store
+- Rapid development and testing
+- Store-specific custom functionality
+- Internal tools and automations
+
+### 3. Private Apps (Legacy)
+
+Private apps use API credentials (API key + password) instead of tokens. This method is being deprecated in favor of custom apps.
+
+**Not recommended for new projects** - use custom apps instead.
+
+### Required Scopes
+
+Apps must request specific scopes to access data. Common scopes include:
+
+```
+write_products          # Create/modify products
+read_products           # Read product data
+write_orders            # Modify orders
+read_orders             # Read order data
+write_customers         # Create/modify customers
+read_customers          # Read customer data
+write_inventory         # Modify inventory
+read_inventory          # Read inventory
+write_fulfillments      # Create fulfillments
+read_fulfillments       # Read fulfillment data
+write_analytics         # Write analytics data
+read_analytics          # Read analytics data
+```
+
+Request only the scopes you need - merchants are more likely to trust apps with minimal permissions.
+
+## Common Operations
+
+Here are the most frequent Admin API operations you'll need, with working examples.
+
+### Managing Products
+
+**Create a Product:**
+```graphql
+mutation CreateProduct($input: ProductInput!) {
+  productCreate(input: $input) {
+    product {
+      id
+      title
+      handle
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+Variables:
+```json
+{
+  "input": {
+    "title": "Custom T-Shirt",
+    "productType": "Apparel",
+    "vendor": "Your Brand",
+    "bodyHtml": "<p>Premium custom t-shirt</p>",
+    "status": "ACTIVE"
+  }
+}
+```
+
+**Update Product Variants:**
+```graphql
+mutation UpdateVariant($input: ProductVariantInput!) {
+  productVariantUpdate(input: $input) {
+    productVariant {
+      id
+      price
+      compareAtPrice
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+**Bulk Product Import:**
+
+For importing hundreds or thousands of products, use Shopify's Bulk Operations API:
+
+```graphql
+mutation {
+  bulkOperationRunMutation(
+    mutation: "mutation {productCreate(input:{title:\"Test\"})}"
+  ) {
+    bulkOperation {
+      id
+      status
+    }
+    userErrors {
+      message
+    }
+  }
+}
+```
+
+### Managing Orders
+
+**Get Order Details:**
+```graphql
+query GetOrder($id: ID!) {
+  order(id: $id) {
+    id
+    orderNumber
+    email
+    createdAt
+    totalPrice
+    lineItems(first: 5) {
+      edges {
+        node {
+          id
+          title
+          quantity
+          price
+        }
+      }
+    }
+    customer {
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+}
+```
+
+**Update Order Status:**
+```graphql
+mutation UpdateFulfillment($input: FulfillmentInput!) {
+  fulfillmentCreate(input: $input) {
+    fulfillment {
+      id
+      status
+      lineItems(first: 5) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+**Create Refund:**
+```graphql
+mutation CreateRefund($input: RefundInput!) {
+  refundCreate(input: $input) {
+    refund {
+      id
+      status
+      totalRefunded
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+### Managing Customers
+
+**Create Customer:**
+```graphql
+mutation CreateCustomer($input: CustomerInput!) {
+  customerCreate(input: $input) {
+    customer {
+      id
+      email
+      firstName
+      lastName
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+Variables:
+```json
+{
+  "input": {
+    "email": "customer@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "+1-555-123-4567",
+    "defaultAddress": {
+      "address1": "123 Main St",
+      "city": "San Francisco",
+      "province": "CA",
+      "country": "US",
+      "zip": "94102"
+    }
+  }
+}
+```
+
+**Search Customers:**
+```graphql
+query SearchCustomers($query: String!) {
+  customers(first: 10, query: $query) {
+    edges {
+      node {
+        id
+        email
+        firstName
+        lastName
+        ordersCount
+        totalSpent
+      }
+    }
+  }
+}
+```
+
+**Add Customer Tags:**
+```graphql
+mutation AddCustomerTag($input: CustomerInput!) {
+  customerUpdate(input: $input) {
+    customer {
+      id
+      tags
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+## Rate Limits and Performance
+
+Understanding Shopify's rate limiting is essential for building scalable integrations. Hit rate limits and your app's functionality suffers.
+
+### Rate Limiting System
+
+Shopify uses a **bucket-based rate limiting system**:
+
+- Each app gets a bucket that refills over time
+- API calls consume points from the bucket
+- When bucket is empty, requests are rejected with 429 status
+- Bucket refills automatically (approximately 2 points/second for most apps)
+
+**Point Costs:**
+- Simple queries (single product): 1 point
+- Medium complexity (product + variants + inventory): 2-3 points
+- Complex queries (multiple resources): 4-10 points
+- Bulk operations: Variable based on size
+
+### Monitoring Rate Limits
+
+Shopify returns rate limit info in response headers:
+
+```
+X-Request-Id: abc-123-def
+X-Shop-Api-Call-Limit: 32/40
+```
+
+The header format is: `current/limit`
+
+**Check remaining capacity in code:**
+```javascript
+fetch(url, options)
+  .then(res => {
+    const [used, limit] = res.headers
+      .get('X-Shop-Api-Call-Limit')
+      .split('/')
+      .map(Number);
+
+    console.log(`Used: ${used}/${limit}`);
+    console.log(`Remaining: ${limit - used}`);
+
+    return res.json();
+  });
+```
+
+### Rate Limit Best Practices
+
+1. **Implement Exponential Backoff:**
+```javascript
+async function apiCallWithRetry(fn, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error.status === 429) {
+        const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s, 8s...
+        console.log(`Rate limited. Retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+2. **Batch Operations When Possible:**
+```graphql
+query GetMultipleProducts($ids: [ID!]!) {
+  nodes(ids: $ids) {
+    ... on Product {
+      id
+      title
+    }
+  }
+}
+```
+
+3. **Use Webhooks Instead of Polling:**
+
+Instead of constantly polling for order updates, subscribe to webhooks:
+
+```javascript
+// Setup webhook endpoint
+app.post('/webhooks/orders/create', (req, res) => {
+  const { body } = req;
+  const hmacHeader = req.headers['x-shopify-hmac-sha256'];
+
+  if (verifyWebhook(body, hmacHeader)) {
+    console.log('New order:', body);
+    res.status(200).send('OK');
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+```
+
+4. **Cache Query Results:**
+```javascript
+const NodeCache = require('node-cache');
+const cache = new NodeCache({ stdTTL: 3600 });
+
+async function getCachedProduct(productId) {
+  const cached = cache.get(productId);
+  if (cached) return cached;
+
+  const product = await fetchProductFromAPI(productId);
+  cache.set(productId, product);
+  return product;
+}
+```
+
+5. **Monitor and Alert:**
+
+Track your API usage patterns and set up alerts when approaching limits:
+
+```javascript
+const apiUsagePercentage = used / limit * 100;
+if (apiUsagePercentage > 80) {
+  alertSlack(`API usage at ${apiUsagePercentage.toFixed(1)}%`);
+}
+```
+
+## Production Best Practices
+
+Building reliable integrations requires more than just knowing the API. Here are essential practices for production applications.
+
+### Error Handling
+
+**Implement Comprehensive Error Handling:**
+```javascript
+async function makeApiCall(query, variables) {
+  try {
+    const response = await fetch(
+      `https://${shopName}.myshopify.com/admin/api/2024-01/graphql.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Access-Token': accessToken
+        },
+        body: JSON.stringify({ query, variables })
+      }
+    );
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new RateLimitError('Rate limited - implement backoff');
+      }
+      throw new HttpError(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // GraphQL errors
+    if (data.errors) {
+      throw new GraphQLError(data.errors);
+    }
+
+    // User errors in mutation
+    if (data.data?.productCreate?.userErrors?.length) {
+      throw new ValidationError(data.data.productCreate.userErrors);
+    }
+
+    return data;
+  } catch (error) {
+    logger.error('API call failed', { error, query });
+    throw error;
+  }
+}
+```
+
+### Security
+
+1. **Never expose access tokens client-side**
+2. **Use environment variables for credentials**
+3. **Verify webhook HMAC signatures**
+4. **Rotate custom app tokens regularly**
+5. **Use HTTPS for all requests**
+6. **Implement request signing for sensitive operations**
+
+### Monitoring and Logging
+
+```javascript
+// Log all API interactions
+function logApiCall(method, endpoint, status, duration) {
+  logger.info('API call', {
+    method,
+    endpoint,
+    status,
+    duration_ms: duration,
+    timestamp: new Date()
+  });
+}
+
+// Monitor error rates
+setInterval(() => {
+  const errorRate = errorCount / totalRequests;
+  if (errorRate > 0.05) { // Alert if >5% errors
+    alertTeam(`High error rate: ${(errorRate*100).toFixed(1)}%`);
+  }
+}, 60000);
+```
+
+### Testing
+
+Use Shopify's test credentials for development:
+
+```javascript
+// Development
+const apiVersion = '2024-01';
+const shop = 'development-store';
+const accessToken = process.env.SHOPIFY_DEV_TOKEN;
+
+// Production uses Shopify-provided tokens from OAuth flow
+```
+
+## Choosing a Shopify API Client Library
+
+Several libraries simplify Admin API integration:
+
+**Official Shopify Library:**
+```javascript
+import shopifyApp from '@shopify/shopify-app-express';
+
+const app = shopifyApp({
+  apiKey: process.env.SHOPIFY_API_KEY,
+  apiSecret: process.env.SHOPIFY_API_SECRET,
+  scopes: ['write_products', 'read_orders']
+});
+```
+
+**Popular Community Options:**
+- **@shopify/shopify-api** - Official JavaScript client
+- **shopify-python-api** - Official Ruby client
+- **shopifython** - Python client
+- **shopify-go** - Go client
+
+## Common Integration Challenges
+
+### Challenge: Handling Webhook Retries
+
+Shopify retries webhooks if your endpoint doesn't respond with 200 within 5 seconds. Handle retries gracefully:
+
+```javascript
+const deliveryIdCache = new Set();
+
+app.post('/webhook', (req, res) => {
+  const deliveryId = req.headers['x-shopify-webhook-id'];
+
+  // Prevent duplicate processing
+  if (deliveryIdCache.has(deliveryId)) {
+    return res.status(200).send('Already processed');
+  }
+
+  // Process webhook
+  processWebhook(req.body);
+  deliveryIdCache.add(deliveryId);
+
+  res.status(200).send('OK');
+});
+```
+
+### Challenge: Syncing Large Product Catalogs
+
+For stores with thousands of products, use cursor-based pagination and bulk operations:
+
+```graphql
+query GetProductsPaginated($cursor: String) {
+  products(first: 250, after: $cursor) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        title
+      }
+    }
+  }
+}
+```
+
+### Challenge: Real-Time Inventory Updates
+
+Combine webhooks with periodic syncing:
+
+```javascript
+// Webhook for immediate updates
+app.post('/webhook/inventory', (req, res) => {
+  updateLocalInventory(req.body);
+  res.status(200).send('OK');
+});
+
+// Periodic sync for consistency
+setInterval(() => {
+  syncInventoryFromShopify();
+}, 3600000); // Every hour
+```
+
+## Getting Started: Your First API Call
+
+Ready to build? Here's a minimal working example:
+
+```javascript
+// 1. Set up environment
+const shopName = process.env.SHOPIFY_STORE;
+const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
+
+// 2. Define query
+const query = `
+  query {
+    shop {
+      name
+      plan {
+        displayName
+      }
+    }
+  }
+`;
+
+// 3. Make request
+const response = await fetch(
+  `https://${shopName}.myshopify.com/admin/api/2024-01/graphql.json`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Access-Token': accessToken
+    },
+    body: JSON.stringify({ query })
+  }
+);
+
+const data = await response.json();
+console.log(`Connected to ${data.data.shop.name}`);
+```
+
+## Next Steps
+
+1. **Explore the API Documentation** - Visit developers.shopify.com/docs/api/admin-rest for complete API reference
+2. **Try GraphQL Explorer** - Use Shopify's GraphQL explorer to test queries interactively
+3. **Set up a Custom App** - Create your first custom app in the Shopify Admin
+4. **Build Your First Integration** - Start with a simple product or order sync
+5. **Implement Webhooks** - Move beyond polling to event-driven architecture
+6. **Monitor and Optimize** - Track performance and optimize queries
+
+---
+
+## Need Expert Help With Shopify Integration?
+
+The Shopify Admin API is powerful, but building production-grade integrations requires expertise in authentication, error handling, rate limiting, and performance optimization. Whether you're building a custom app, integrating with external systems, or optimizing your store's automation, our team of e-commerce specialists can help.
+
+**[Get a free Shopify integration consultation](/contact)** - Let's discuss your integration challenges and find the right solution.
+
+Or if you're looking to improve your store's visibility and performance, **[take a free audit of your store](/tools/free-audit)** to identify opportunities for growth.
+
+---
+
+Looking to build a Shopify integration? Consider [Shopify Plus](https://shopify.pxf.io/c/6318547/3797171/13624) for enterprise-grade features, or start with a standard Shopify plan and grow from there. Shopify's ecosystem provides [excellent tools and resources](https://shopify.pxf.io/c/6318547/3797171/13624) to build sophisticated e-commerce applications. The Admin API is the foundation that makes all of it possible - master it, and you unlock unlimited possibilities for store automation and custom functionality. For comprehensive resources on Shopify development, [explore their developer documentation](https://shopify.pxf.io/c/6318547/3797171/13624).
+
+---
+
+*Last updated: February 21, 2026*

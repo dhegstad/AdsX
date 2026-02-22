@@ -1,0 +1,587 @@
+---
+title: "Shopify Staff Accounts: Set Up Team Access and Permissions"
+excerpt: "Learn how to create Shopify staff accounts, assign permissions, manage team access securely, and use audit logs to track activity. A complete guide to Shopify team management for store owners."
+date: "2026-02-21"
+updated: "2026-02-21"
+category: "Guide"
+tags: ["Shopify", "Staff Accounts", "Permissions", "Team Management"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "How many staff accounts can I have on Shopify?"
+    answer: "The number of staff accounts depends on your Shopify plan. Basic Shopify allows 2 staff accounts, Shopify plan allows 5 staff accounts, and Advanced Shopify allows 15 staff accounts. Shopify Plus offers unlimited staff accounts. The store owner account doesn't count toward these limits."
+  - question: "Can staff members see my Shopify revenue and financial data?"
+    answer: "Only if you grant them permission. Shopify lets you control exactly which financial information each staff member can access. You can allow view-only access to reports, full financial access, or completely restrict financial visibility depending on their role."
+  - question: "How do I remove a staff member who left my company?"
+    answer: "Go to Settings > Users and permissions, find the staff member, click their name, then select 'Remove staff account.' This immediately revokes their access. You should also change any shared passwords and review the audit log for their recent activity before removal."
+  - question: "What's the difference between staff accounts and collaborator accounts?"
+    answer: "Staff accounts are for your internal team members and count toward your plan limit. Collaborator accounts are free, unlimited accounts for external partners like developers, agencies, or contractors. Collaborators request access through Shopify Partners, and you approve them with specific permissions."
+  - question: "Can I track what changes my staff members make in Shopify?"
+    answer: "Yes, Shopify provides a detailed audit log (called Timeline or Activity log) that records all actions taken by staff members. This includes product changes, order modifications, discount creations, and settings updates. The log shows who made each change and when, helping you maintain accountability."
+---
+
+Managing a growing e-commerce business means bringing on team members to help with orders, products, customers, and marketing. But giving everyone full access to your store is a recipe for disaster. One accidental deletion, one unauthorized discount, or one data breach can cost you thousands.
+
+That's where Shopify staff accounts and permissions come in. By properly configuring team access, you protect your business while empowering your team to do their jobs effectively.
+
+If you're ready to [start your Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) or scale your existing operation, understanding staff management is essential for sustainable growth.
+
+![Team collaboration in e-commerce requires proper access management](https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80)
+
+## Understanding Shopify Staff Accounts
+
+Shopify staff accounts let you invite team members to help manage your store without sharing your owner login credentials. Each staff member gets their own login, and you control exactly what they can see and do.
+
+### Why Staff Accounts Matter
+
+Using individual staff accounts instead of sharing your owner login provides several critical benefits:
+
+**Security**: If a team member leaves, you revoke their specific account rather than changing a shared password that everyone uses.
+
+**Accountability**: Every action is tied to a specific person. When something changes unexpectedly, you know exactly who made the modification and when.
+
+**Appropriate Access**: Your customer service rep doesn't need access to financial reports. Your product manager doesn't need to process refunds. Staff accounts let you match access to responsibilities.
+
+**Compliance**: Many payment processors and business insurance policies require proper access controls. Staff accounts help you meet these requirements.
+
+### Staff Account Limits by Plan
+
+Your Shopify plan determines how many staff accounts you can create:
+
+| Shopify Plan | Staff Account Limit |
+|-------------|---------------------|
+| Basic | 2 staff accounts |
+| Shopify | 5 staff accounts |
+| Advanced | 15 staff accounts |
+| Shopify Plus | Unlimited staff accounts |
+
+The store owner account is separate and doesn't count toward these limits. If you need more staff accounts than your plan allows, upgrading to a higher plan or using collaborator accounts for external partners can help.
+
+## Creating and Managing Staff Accounts
+
+Setting up staff accounts in Shopify is straightforward, but doing it correctly from the start saves headaches later.
+
+### How to Add a New Staff Account
+
+1. From your Shopify admin, go to **Settings > Users and permissions**
+2. Click **Add staff**
+3. Enter the staff member's first name, last name, and email address
+4. Select the permissions you want to grant (we'll cover these in detail below)
+5. Click **Send invite**
+
+The staff member receives an email invitation to create their account. They'll set their own password and can optionally enable two-factor authentication.
+
+### Managing Existing Staff
+
+To modify an existing staff member's access:
+
+1. Go to **Settings > Users and permissions**
+2. Click on the staff member's name
+3. Update their permissions as needed
+4. Click **Save**
+
+Changes take effect immediately. The staff member doesn't need to log out and back in for permission changes to apply.
+
+### Removing Staff Access
+
+When someone leaves your team:
+
+1. Go to **Settings > Users and permissions**
+2. Click on the staff member's name
+3. Scroll down and click **Remove staff account**
+4. Confirm the removal
+
+This immediately revokes their access. They won't be able to log in, and any active sessions are terminated. Always remove access promptly when team members leave to maintain security.
+
+## Shopify Permission Categories Explained
+
+Shopify organizes permissions into logical categories. Understanding each helps you assign appropriate access.
+
+### Home
+
+Controls access to the admin dashboard overview, which shows key metrics and recent activity. Most staff members need at least view access here to navigate effectively.
+
+### Orders
+
+Order permissions are among the most commonly assigned:
+
+- **View orders**: See order details, customer information, shipping status
+- **Edit orders**: Modify order items, addresses, notes
+- **Create orders**: Process draft orders and manual orders
+- **Delete orders**: Remove orders entirely (rarely granted)
+- **Export orders**: Download order data to CSV
+- **Capture payments**: Process payments for authorized orders
+- **Mark orders as paid**: Record external payments
+- **Manage refunds**: Process full and partial refunds
+
+For customer service teams, view and edit permissions are typical. Only supervisors usually need refund capabilities.
+
+### Draft Orders
+
+Draft orders let you create quotes or orders that customers pay later:
+
+- **View draft orders**: See existing drafts
+- **Create draft orders**: Create new quotes and invoices
+- **Edit draft orders**: Modify existing drafts
+- **Delete draft orders**: Remove drafts
+
+Sales teams typically need full draft order permissions for creating quotes.
+
+### Products
+
+Product permissions control your catalog management:
+
+- **View products**: See product listings and details
+- **Create products**: Add new products to your store
+- **Edit products**: Modify existing products, pricing, inventory
+- **Delete products**: Remove products entirely
+- **View cost**: See product cost (margin) information
+- **Edit cost**: Modify cost data
+
+Product managers need full access. Customer service might only need view access to answer questions.
+
+### Customers
+
+Customer data is sensitive and requires careful access control:
+
+- **View customers**: See customer profiles and order history
+- **Edit customers**: Modify customer information
+- **Delete customers**: Remove customer accounts
+- **Export customers**: Download customer data
+
+Customer service needs view and edit. Export and delete should be restricted to protect customer data.
+
+### Reports
+
+Financial and analytics access:
+
+- **View reports**: Access Shopify analytics and reports
+- **Create custom reports**: Build custom analytics views (Plus only)
+
+Restrict report access to managers and executives who need the data for decisions.
+
+### Discounts
+
+Discount and promotion management:
+
+- **View discounts**: See existing discount codes and automatic discounts
+- **Create discounts**: Make new discount codes
+- **Edit discounts**: Modify existing discounts
+- **Delete discounts**: Remove discounts
+
+Marketing teams need full discount access. Limit this for other roles to prevent unauthorized promotions.
+
+### Marketing
+
+Marketing campaign management:
+
+- **View marketing**: See marketing campaigns and automations
+- **Create marketing**: Launch new campaigns
+- **Edit marketing**: Modify campaigns
+- **Delete marketing**: Remove campaigns
+
+### Online Store
+
+Website and theme management:
+
+- **View themes**: See installed themes
+- **Edit themes**: Modify theme code and settings
+- **Manage domains**: Configure custom domains
+
+Theme access should be limited to developers and site managers. Accidental theme changes can break your entire storefront.
+
+### Settings
+
+Store configuration access:
+
+- **View settings**: See store settings
+- **Edit settings**: Modify store configuration
+
+Settings access is powerful and should be restricted to administrators.
+
+## Creating Custom Permission Templates
+
+For larger teams, creating permission templates saves time and ensures consistency.
+
+### Role-Based Permission Examples
+
+Here are recommended permission sets for common roles:
+
+**Customer Service Representative**
+- Orders: View, Edit
+- Draft Orders: View
+- Products: View
+- Customers: View, Edit
+- Home: View
+
+**Product Manager**
+- Products: Full access
+- Collections: Full access
+- Home: View
+- Orders: View
+
+**Marketing Specialist**
+- Discounts: Full access
+- Marketing: Full access
+- Reports: View
+- Analytics: View
+
+**Order Fulfillment**
+- Orders: View, Edit, Mark as paid
+- Products: View
+- Shipping: Full access
+
+**Store Administrator**
+- All permissions except owner-only features
+
+### Documenting Your Permission Structure
+
+Create documentation that maps roles to permissions. This helps with:
+
+- Onboarding new staff quickly
+- Auditing access periodically
+- Ensuring consistency across similar roles
+- Training managers on appropriate access levels
+
+## Security Best Practices for Team Access
+
+Proper permission setup is just the beginning. Implement these practices to maintain security.
+
+### Require Two-Factor Authentication
+
+Two-factor authentication (2FA) adds a critical security layer. While you can't force staff to enable 2FA, you should:
+
+- Make 2FA a condition of employment for staff accounts
+- Provide instructions for setting up 2FA
+- Periodically verify staff have 2FA enabled
+- Consider it a requirement in your security policy
+
+### Regular Permission Audits
+
+Schedule quarterly reviews of staff permissions:
+
+1. Export or screenshot current permission assignments
+2. Verify each staff member still needs their access level
+3. Check for permission creep (accumulated unnecessary access)
+4. Remove or reduce access that's no longer required
+5. Document your review for compliance purposes
+
+### Immediate Access Revocation
+
+When staff members leave:
+
+1. Remove their Shopify access immediately upon departure
+2. Review their recent activity in the audit log
+3. Check for any unauthorized changes
+4. Change any shared credentials they might have known
+5. Remove their access from connected apps and services
+
+### Principle of Least Privilege
+
+Always grant the minimum permissions necessary for someone to do their job. It's easier to add permissions when legitimately needed than to recover from an incident caused by excessive access.
+
+If you're [building your store on Shopify](https://shopify.pxf.io/c/6318547/3797171/13624), establishing good security practices early creates a foundation for secure scaling.
+
+## Using Audit Logs and Activity Tracking
+
+Shopify provides activity logging that helps you track changes and maintain accountability.
+
+### What the Activity Log Captures
+
+The activity log (found in Settings > Activity log) records:
+
+- Product changes (creation, edits, deletions)
+- Order modifications
+- Customer data changes
+- Discount creations and edits
+- Theme modifications
+- Setting changes
+- Staff account changes
+- App installations and removals
+
+Each entry shows what changed, who made the change, and when it happened.
+
+### Reviewing Activity Logs
+
+Access the activity log to:
+
+**Investigate Issues**
+When a customer complains about an order problem, trace who handled the order and what changes were made.
+
+**Verify Work Completion**
+Confirm that assigned tasks (like product updates) were completed as expected.
+
+**Detect Unauthorized Activity**
+Spot unusual patterns like after-hours changes, bulk modifications, or access to sensitive areas.
+
+**Compliance Documentation**
+Export activity logs for compliance audits or legal requirements.
+
+### Activity Log Best Practices
+
+- Review logs weekly for unusual activity
+- Save logs before removing staff accounts
+- Use logs to verify training compliance
+- Cross-reference logs when investigating incidents
+
+## Collaborator Accounts for External Partners
+
+Collaborator accounts are separate from staff accounts and designed for external partners.
+
+### When to Use Collaborator Accounts
+
+Use collaborator accounts for:
+
+- Freelance developers working on your theme
+- Marketing agencies running campaigns
+- App developers providing support
+- Consultants with temporary access needs
+- Accountants reviewing financial data
+
+### Collaborator vs Staff Accounts
+
+| Feature | Staff Account | Collaborator Account |
+|---------|--------------|---------------------|
+| Counts toward plan limit | Yes | No |
+| Unlimited number | No | Yes |
+| Access request process | Direct invite | Request through Partners |
+| Best for | Internal team | External partners |
+| Permission control | Full | Full |
+
+### Managing Collaborator Access
+
+1. External partners request access through Shopify Partners
+2. You receive a notification in your Shopify admin
+3. Review the request and set appropriate permissions
+4. Approve or decline the request
+5. Monitor their activity in your logs
+6. Remove access when the project ends
+
+### Security with Collaborators
+
+- Set clear project end dates and remove access promptly
+- Grant minimal permissions for the specific task
+- Monitor activity closely during access periods
+- Use separate collaborator accounts for different projects with the same partner
+
+## Managing Multiple Stores
+
+If you operate multiple Shopify stores, staff account management becomes more complex.
+
+### Individual Store Management
+
+Each Shopify store has its own staff accounts. A team member working on multiple stores needs separate accounts for each.
+
+### Shopify Plus Organizations
+
+Shopify Plus offers organization-level user management:
+
+- Single login across multiple stores
+- Centralized permission management
+- Organization-level roles
+- Streamlined onboarding and offboarding
+
+### Cross-Store Best Practices
+
+- Document which staff have access to which stores
+- Use consistent permission structures across stores
+- Coordinate access removal when staff leave
+- Regular audits should cover all stores
+
+## Integrating with Apps and Third-Party Tools
+
+Staff permissions extend to Shopify apps and integrations.
+
+### App Permission Considerations
+
+When installing apps, consider:
+
+- Which staff roles need access to the app
+- What store data the app can access
+- Whether the app respects Shopify permissions
+- How app access is managed separately from Shopify
+
+### Common App Categories and Access
+
+**Shipping Apps**: Order fulfillment staff need access
+**Email Marketing**: Marketing team needs access
+**Inventory Management**: Product managers and warehouse staff
+**Customer Service**: Support tools for customer service reps
+**Accounting**: Finance team and accountants (often as collaborators)
+
+### Managing App-Specific Permissions
+
+Some apps have their own permission systems beyond Shopify's:
+
+- Set up app-level permissions that match Shopify roles
+- Remove app access when modifying Shopify permissions
+- Include app access in your regular audits
+
+## Training Your Team on Proper Access
+
+Providing access is just the first step. Train your team on using it responsibly.
+
+### Essential Training Topics
+
+**Security Awareness**
+- Recognizing phishing attempts
+- Password security
+- Two-factor authentication importance
+- Reporting suspicious activity
+
+**Platform Basics**
+- Navigating the Shopify admin
+- Understanding their permission boundaries
+- Requesting additional access when needed
+- Using help resources
+
+**Role-Specific Training**
+- Order processing workflows
+- Product management procedures
+- Customer service protocols
+- Marketing campaign guidelines
+
+### Documentation and Resources
+
+Create internal documentation that includes:
+
+- Role descriptions with expected Shopify usage
+- Common tasks and how to complete them
+- Who to contact for access issues
+- Security incident reporting procedures
+
+## Troubleshooting Common Permission Issues
+
+Address these common problems quickly to maintain productivity.
+
+### "I Can't See [Feature]"
+
+When staff report missing features:
+
+1. Verify their current permissions in Settings
+2. Check if the feature requires a specific permission
+3. Determine if they legitimately need access
+4. Update permissions if appropriate
+5. Document the change
+
+### Account Locked or Access Issues
+
+If staff can't log in:
+
+1. Check if their account still exists
+2. Verify their email address is correct
+3. Have them try password reset
+4. Check for 2FA issues
+5. Confirm no security holds on the account
+
+### Permission Changes Not Taking Effect
+
+If permission updates seem ignored:
+
+1. Staff should log out and back in
+2. Clear browser cache and cookies
+3. Try a different browser
+4. Verify the save was successful
+5. Check for conflicting permissions
+
+## Scaling Your Team Access Strategy
+
+As your business grows, your approach to team access should evolve.
+
+### Growth Milestones and Access Evolution
+
+**1-5 Staff**: Individual permission management works fine
+
+**5-15 Staff**: Implement role templates and document your structure
+
+**15-50 Staff**: Consider upgrading plans, formal access request processes
+
+**50+ Staff**: Shopify Plus with organization management, dedicated admin staff
+
+### Planning for Growth
+
+If you're [growing your business with Shopify](https://shopify.pxf.io/c/6318547/3797171/13624), plan your permission structure for scale:
+
+- Create clear role definitions before you need them
+- Document permission templates for common roles
+- Establish approval processes for access requests
+- Plan upgrade timing based on staff growth projections
+
+## Compliance and Legal Considerations
+
+Proper staff account management supports various compliance requirements.
+
+### PCI Compliance
+
+Payment card industry standards require:
+
+- Individual user accounts (no shared logins)
+- Role-based access control
+- Activity logging and monitoring
+- Prompt access termination
+
+Shopify staff accounts, when properly configured, help meet these requirements.
+
+### Data Protection (GDPR, CCPA)
+
+Data protection regulations require:
+
+- Access controls for personal data
+- Audit trails for data access
+- Data minimization (appropriate access levels)
+- Breach response capabilities
+
+### Industry-Specific Requirements
+
+Some industries have additional requirements:
+
+- Healthcare: HIPAA compliance
+- Finance: SOX compliance
+- Government: Various security frameworks
+
+Consult with compliance experts for industry-specific guidance.
+
+## Your Staff Account Setup Checklist
+
+Use this checklist when setting up or auditing staff accounts:
+
+**Initial Setup**
+- [ ] Document all roles that need Shopify access
+- [ ] Define permission templates for each role
+- [ ] Create written security policies
+- [ ] Establish access request and approval processes
+
+**For Each New Staff Member**
+- [ ] Create account with appropriate permissions
+- [ ] Provide security training
+- [ ] Document the access granted
+- [ ] Verify 2FA is enabled
+- [ ] Schedule periodic access review
+
+**Ongoing Maintenance**
+- [ ] Quarterly permission audits
+- [ ] Immediate revocation for departing staff
+- [ ] Regular activity log reviews
+- [ ] Annual security policy updates
+- [ ] Training refreshers as needed
+
+**When Staff Depart**
+- [ ] Immediate account removal
+- [ ] Activity log review
+- [ ] Shared credential changes
+- [ ] Connected app access removal
+- [ ] Documentation update
+
+## Conclusion
+
+Shopify staff accounts and permissions give you the control needed to scale your team safely. By implementing proper access management from the start, you protect your business while enabling your team to work effectively.
+
+Start with the principle of least privilege, document your structure, audit regularly, and evolve your approach as you grow. These practices might seem like overhead now, but they prevent costly incidents and position your business for sustainable scaling.
+
+The investment in proper team access management pays dividends in security, accountability, and peace of mind as your e-commerce operation grows.
+
+---
+
+*Need help optimizing your Shopify store for AI search visibility? [Get a free AI visibility audit](/tools/free-audit) to see how your store appears to AI shopping assistants.*
