@@ -220,5 +220,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...categoryUrls,
     // Tag pages (only those with 2+ posts)
     ...tagUrls,
-  ];
+  ].filter((entry, index, self) =>
+    index === self.findIndex((e) => e.url === entry.url)
+  );
 }

@@ -5,6 +5,14 @@ import readingTime from "reading-time";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export interface FAQItem {
   question: string;
   answer: string;
@@ -141,7 +149,7 @@ export function getAllCategories(): { category: string; count: number; slug: str
     .map(([category, count]) => ({
       category,
       count,
-      slug: category.toLowerCase().replace(/\s+/g, "-"),
+      slug: slugify(category),
     }))
     .sort((a, b) => b.count - a.count);
 }
@@ -149,7 +157,7 @@ export function getAllCategories(): { category: string; count: number; slug: str
 export function getPostsByCategory(categorySlug: string): BlogPostMeta[] {
   const posts = getAllPosts();
   return posts.filter(
-    (post) => post.category.toLowerCase().replace(/\s+/g, "-") === categorySlug
+    (post) => slugify(post.category) === categorySlug
   );
 }
 
@@ -175,7 +183,7 @@ export function getAllTags(): { tag: string; count: number; slug: string }[] {
     .map(([tag, count]) => ({
       tag,
       count,
-      slug: tag.toLowerCase().replace(/\s+/g, "-"),
+      slug: slugify(tag),
     }))
     .sort((a, b) => b.count - a.count);
 }
@@ -183,7 +191,7 @@ export function getAllTags(): { tag: string; count: number; slug: string }[] {
 export function getPostsByTag(tagSlug: string): BlogPostMeta[] {
   const posts = getAllPosts();
   return posts.filter((post) =>
-    post.tags?.some((tag) => tag.toLowerCase().replace(/\s+/g, "-") === tagSlug)
+    post.tags?.some((tag) => slugify(tag) === tagSlug)
   );
 }
 
