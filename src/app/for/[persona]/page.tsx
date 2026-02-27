@@ -13,6 +13,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ persona: string }>;
@@ -58,6 +60,7 @@ export default async function PersonaPage({ params }: PageProps) {
   const otherPersonas = getAllPersonas()
     .filter((p) => p.slug !== slug)
     .slice(0, 4);
+  const relatedArticles = getRelatedArticlesForPage(persona.keywords, persona.title);
 
   const industries = getAllIndustries();
   const relevantIndustries = industries.filter((i) =>
@@ -311,6 +314,8 @@ export default async function PersonaPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

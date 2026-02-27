@@ -11,6 +11,8 @@ import {
   createBreadcrumbSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ comparison: string }>;
@@ -52,6 +54,7 @@ export default async function ComparisonPage({ params }: PageProps) {
   const otherComparisons = getAllComparisons().filter(
     (c) => c.slug !== comparisonSlug
   );
+  const relatedArticles = getRelatedArticlesForPage(comparison.keywords, comparison.alternativeName);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -278,6 +281,8 @@ export default async function ComparisonPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

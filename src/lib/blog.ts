@@ -128,11 +128,43 @@ export function getAllSlugs(): string[] {
     .map((file) => file.replace(".mdx", ""));
 }
 
-export function getRelatedPosts(currentSlug: string, category: string, limit = 3): BlogPostMeta[] {
+export function getRelatedPosts(currentSlug: string, category: string, limit = 3, currentTags?: string[]): BlogPostMeta[] {
   const allPosts = getAllPosts();
-  return allPosts
-    .filter((post) => post.slug !== currentSlug && post.category === category)
-    .slice(0, limit);
+  const candidates = allPosts.filter((post) => post.slug !== currentSlug);
+
+  if (!currentTags || currentTags.length === 0) {
+    return candidates
+      .filter((post) => post.category === category)
+      .slice(0, limit);
+  }
+
+  const currentTagSet = new Set(currentTags.map((t) => t.toLowerCase()));
+
+  const scored = candidates.map((post) => {
+    const postTagSet = new Set((post.tags || []).map((t) => t.toLowerCase()));
+    const intersection = [...currentTagSet].filter((t) => postTagSet.has(t)).length;
+    const union = new Set([...currentTagSet, ...postTagSet]).size;
+    const jaccard = union > 0 ? intersection / union : 0;
+
+    let score = jaccard;
+    if (post.category === category) score += 0.1;
+    // Small recency bonus (up to 0.05 for posts within last 90 days)
+    const ageInDays = (Date.now() - new Date(post.date).getTime()) / (1000 * 60 * 60 * 24);
+    if (ageInDays < 90) score += 0.05 * (1 - ageInDays / 90);
+
+    return { post, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  // If top results have no tag overlap, fall back to category matching
+  if (scored.length > 0 && scored[0].score < 0.15) {
+    return candidates
+      .filter((post) => post.category === category)
+      .slice(0, limit);
+  }
+
+  return scored.slice(0, limit).map((s) => s.post);
 }
 
 // Category functions

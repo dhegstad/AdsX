@@ -14,6 +14,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ term: string }>;
@@ -61,6 +63,7 @@ export default async function GlossaryTermPage({ params }: PageProps) {
 
   const categoryTerms = getTermsByCategory(term.category).filter((t) => t.slug !== slug);
   const relatedInCategory = categoryTerms.slice(0, 4);
+  const relatedArticles = getRelatedArticlesForPage(term.keywords, term.term);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -302,6 +305,8 @@ export default async function GlossaryTermPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

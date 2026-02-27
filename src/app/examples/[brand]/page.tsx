@@ -14,6 +14,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ brand: string }>;
@@ -64,6 +66,7 @@ export default async function ExamplePage({ params }: PageProps) {
   const relatedExamples = getExamplesByCategory(example.category)
     .filter((e) => e.slug !== slug)
     .slice(0, 3);
+  const relatedArticles = getRelatedArticlesForPage(example.keywords, example.brand);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -306,6 +309,8 @@ export default async function ExamplePage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

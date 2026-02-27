@@ -12,6 +12,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ platform: string }>;
@@ -56,6 +58,7 @@ export default async function PlatformPage({ params }: PageProps) {
 
   const otherPlatforms = getAllPlatforms().filter((p) => p.slug !== slug);
   const badge = importanceBadges[platform.visibilityImportance];
+  const relatedArticles = getRelatedArticlesForPage(platform.keywords, platform.name);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -318,6 +321,8 @@ export default async function PlatformPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

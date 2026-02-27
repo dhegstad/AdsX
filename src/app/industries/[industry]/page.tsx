@@ -11,6 +11,8 @@ import {
   createBreadcrumbSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ industry: string }>;
@@ -48,6 +50,7 @@ export default async function IndustryPage({ params }: PageProps) {
   }
 
   const otherIndustries = getAllIndustries().filter((i) => i.slug !== slug);
+  const relatedArticles = getRelatedArticlesForPage(industry.keywords, industry.name);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -219,6 +222,8 @@ export default async function IndustryPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

@@ -1,5 +1,14 @@
 import { getAllPosts } from "@/lib/blog";
 
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export async function GET() {
   const posts = getAllPosts();
   const siteUrl = "https://www.adsx.com";
@@ -14,8 +23,8 @@ export async function GET() {
       <description><![CDATA[${post.excerpt}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author>hello@adsx.com (${post.author.name})</author>
-      <category>${post.category}</category>
-      ${post.tags?.map((tag) => `<category>${tag}</category>`).join("\n      ") || ""}
+      <category>${escapeXml(post.category)}</category>
+      ${post.tags?.map((tag) => `<category>${escapeXml(tag)}</category>`).join("\n      ") || ""}
     </item>`
     )
     .join("\n");

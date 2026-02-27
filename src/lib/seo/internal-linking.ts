@@ -7,7 +7,7 @@ import { getAllTerms } from "@/lib/glossary";
 import { getAllPlatforms } from "@/lib/platforms";
 import { getAllExamples } from "@/lib/examples";
 import { getAllLists } from "@/lib/curated-lists";
-import type { BlogPostMeta } from "@/lib/blog";
+import { getAllPosts, type BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
   title: string;
@@ -372,6 +372,43 @@ export function getRelatedPages(
   return relatedPages
     .sort((a, b) => b.relevance - a.relevance)
     .slice(0, limit);
+}
+
+/**
+ * Finds related blog articles for a programmatic page based on keyword matching.
+ * Used to add contextual blog links on industry, platform, glossary, etc. pages.
+ */
+export function getRelatedArticlesForPage(
+  keywords: string[],
+  pageName: string,
+  limit: number = 3
+): BlogPostMeta[] {
+  const allPosts = getAllPosts();
+  const searchTerms = [
+    ...keywords.map((k) => k.toLowerCase()),
+    pageName.toLowerCase(),
+  ];
+
+  const scored = allPosts.map((post) => {
+    const titleLower = post.title.toLowerCase();
+    const tagsLower = (post.tags || []).map((t) => t.toLowerCase());
+    const categoryLower = post.category.toLowerCase();
+    let score = 0;
+
+    for (const term of searchTerms) {
+      if (titleLower.includes(term)) score += 0.4;
+      if (tagsLower.some((tag) => tag.includes(term) || term.includes(tag))) score += 0.3;
+      if (categoryLower.includes(term)) score += 0.1;
+    }
+
+    return { post, score };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.post);
 }
 
 /**

@@ -13,6 +13,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ city: string }>;
@@ -52,6 +54,7 @@ export default async function LocationPage({ params }: PageProps) {
   const otherLocations = getAllLocations()
     .filter((l) => l.slug !== slug)
     .slice(0, 4);
+  const relatedArticles = getRelatedArticlesForPage(location.keywords, location.city);
 
   const industries = getAllIndustries();
   const relevantIndustries = industries.filter((i) =>
@@ -325,6 +328,8 @@ export default async function LocationPage({ params }: PageProps) {
             </Link>
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

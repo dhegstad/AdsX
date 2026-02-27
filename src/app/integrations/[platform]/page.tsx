@@ -13,6 +13,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ platform: string }>;
@@ -60,6 +62,7 @@ export default async function IntegrationPage({ params }: PageProps) {
   const otherIntegrations = getAllIntegrations()
     .filter((i) => i.slug !== slug)
     .slice(0, 4);
+  const relatedArticles = getRelatedArticlesForPage(integration.keywords, integration.name);
 
   const industries = getAllIndustries();
   const relevantIndustry = industries.find(
@@ -345,6 +348,8 @@ export default async function IntegrationPage({ params }: PageProps) {
             </Link>
           </div>
         </div>
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">

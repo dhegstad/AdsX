@@ -8,6 +8,38 @@ import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
 import type { RelatedPage } from "@/lib/seo/internal-linking";
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+interface TocHeading {
+  id: string;
+  text: string;
+  level: 2 | 3;
+}
+
+function extractHeadings(markdown: string): TocHeading[] {
+  const headings: TocHeading[] = [];
+  const lines = markdown.split("\n");
+  for (const line of lines) {
+    const match = line.match(/^(#{2,3})\s+(.+)$/);
+    if (match) {
+      const level = match[1].length as 2 | 3;
+      const text = match[2].trim();
+      const id = text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      headings.push({ id, text, level });
+    }
+  }
+  return headings;
+}
+
 interface BrutalistBlogPostContentProps {
   post: BlogPost;
   slug: string;
@@ -16,6 +48,8 @@ interface BrutalistBlogPostContentProps {
 }
 
 export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPages = [] }: BrutalistBlogPostContentProps) {
+  const tocHeadings = extractHeadings(post.content);
+
   return (
     <BrutalistLayout>
       {/* Breadcrumb */}
@@ -28,12 +62,13 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
           BLOG
         </Link>
         <span className="text-[#333]">/</span>
-        <span
-          className="text-xs tracking-widest text-[#10b981]"
+        <Link
+          href={`/blog/category/${slugify(post.category)}`}
+          className="text-xs tracking-widest text-[#10b981] hover:text-[#EAEAEA] transition-colors"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           {post.category.toUpperCase()}
-        </span>
+        </Link>
       </div>
 
       {/* Article Header */}
@@ -136,13 +171,14 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
-                    <span
+                    <Link
                       key={tag}
-                      className="px-2 py-1 border border-[#333] text-xs text-[#888]"
+                      href={`/blog/tag/${slugify(tag)}`}
+                      className="px-2 py-1 border border-[#333] text-xs text-[#888] hover:border-[#10b981] hover:text-[#10b981] transition-colors"
                       style={{ fontFamily: "var(--font-mono)" }}
                     >
                       {tag.toUpperCase()}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -163,24 +199,39 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
               CONTENTS
             </div>
             <nav className="space-y-2">
-              <div
-                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                → INTRODUCTION
-              </div>
-              <div
-                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                → KEY INSIGHTS
-              </div>
-              <div
-                className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                → CONCLUSION
-              </div>
+              {tocHeadings.length > 0 ? (
+                tocHeadings.map((heading) => (
+                  <a
+                    key={heading.id}
+                    href={`#${heading.id}`}
+                    className={`block text-xs text-[#888] hover:text-[#EAEAEA] transition-colors ${heading.level === 3 ? "ml-4" : ""}`}
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {heading.level === 2 ? "→ " : "· "}{heading.text.toUpperCase()}
+                  </a>
+                ))
+              ) : (
+                <>
+                  <div
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    → INTRODUCTION
+                  </div>
+                  <div
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    → KEY INSIGHTS
+                  </div>
+                  <div
+                    className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors cursor-pointer"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    → CONCLUSION
+                  </div>
+                </>
+              )}
             </nav>
           </div>
 

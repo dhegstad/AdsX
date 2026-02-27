@@ -14,6 +14,8 @@ import {
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
+import { RelatedArticles } from "@/components/related-articles";
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -60,6 +62,7 @@ export default async function CuratedListPage({ params }: PageProps) {
   const relatedLists = getListsByCategory(list.category)
     .filter((l) => l.slug !== slug)
     .slice(0, 3);
+  const relatedArticles = getRelatedArticlesForPage(list.keywords, list.title);
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -272,6 +275,8 @@ export default async function CuratedListPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        <RelatedArticles articles={relatedArticles} />
 
         {/* CTA */}
         <div className="p-8 md:p-16 text-center bg-[#0c0c0c]">
