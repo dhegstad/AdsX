@@ -110,6 +110,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
     // Industry pages (programmatic)
+    {
+      url: `${baseUrl}/industries`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
     ...getAllIndustries().map((industry) => ({
       url: `${baseUrl}/industries/${industry.slug}`,
       lastModified: new Date(),
@@ -130,6 +136,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     // Persona pages (programmatic)
+    {
+      url: `${baseUrl}/for`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
     ...getAllPersonas().map((persona) => ({
       url: `${baseUrl}/for/${persona.slug}`,
       lastModified: new Date(),

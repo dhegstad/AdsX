@@ -25,9 +25,19 @@ const footerLinks = {
     { label: "Services", href: "/services" },
   ],
   industries: [
+    { label: "All Industries", href: "/industries" },
     { label: "SaaS", href: "/industries/saas" },
     { label: "E-commerce", href: "/industries/ecommerce" },
     { label: "Fintech", href: "/industries/fintech" },
+  ],
+  explore: [
+    { label: "Glossary", href: "/glossary" },
+    { label: "Platforms", href: "/platforms" },
+    { label: "Integrations", href: "/integrations" },
+    { label: "Locations", href: "/locations" },
+    { label: "Examples", href: "/examples" },
+    { label: "Best Of", href: "/best" },
+    { label: "For Teams", href: "/for" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -326,7 +336,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="bg-[#050505] border-t border-[#333]">
               {/* Main Footer Content */}
-              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
                 {/* Brand Column */}
                 <div className="col-span-2 md:col-span-3 lg:col-span-1">
                   <Link
@@ -401,6 +411,28 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-3">
                     {footerLinks.industries.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Explore Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    EXPLORE
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.explore.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}

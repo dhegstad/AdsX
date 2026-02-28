@@ -11,6 +11,7 @@ const navigation = {
     { name: "Contact", href: "/contact" },
   ],
   industries: [
+    { name: "All Industries", href: "/industries" },
     { name: "SaaS", href: "/industries/saas" },
     { name: "E-commerce", href: "/industries/ecommerce" },
     { name: "Fintech", href: "/industries/fintech" },
@@ -20,6 +21,15 @@ const navigation = {
     { name: "Compare", href: "/compare" },
     { name: "Free Audit", href: "/tools/free-audit" },
     { name: "Pricing", href: "/pricing" },
+  ],
+  explore: [
+    { name: "Glossary", href: "/glossary" },
+    { name: "Platforms", href: "/platforms" },
+    { name: "Integrations", href: "/integrations" },
+    { name: "Locations", href: "/locations" },
+    { name: "Examples", href: "/examples" },
+    { name: "Best Of", href: "/best" },
+    { name: "For Teams", href: "/for" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -36,7 +46,7 @@ export function Footer() {
       theme === "dark" ? "border-white/10 bg-black" : "border-neutral-200 bg-white"
     )}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
@@ -114,6 +124,31 @@ export function Footer() {
             )}>Resources</h3>
             <ul className="mt-4 space-y-3">
               {navigation.resources.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "text-sm transition-colors",
+                      theme === "dark"
+                        ? "text-white/40 hover:text-white"
+                        : "text-neutral-500 hover:text-neutral-900"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Explore */}
+          <div>
+            <h3 className={cn(
+              "text-sm font-semibold",
+              theme === "dark" ? "text-white/80" : "text-neutral-700"
+            )}>Explore</h3>
+            <ul className="mt-4 space-y-3">
+              {navigation.explore.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
