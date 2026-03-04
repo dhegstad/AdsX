@@ -4,6 +4,11 @@ import { GeistMono } from "geist/font/mono";
 import { ThemeProvider, ThemeScript } from "@/context/theme-context";
 import { Analytics } from "@/components/analytics";
 import { brutalFontVariables } from "@/lib/fonts";
+import {
+  createOrganizationSchema,
+  createWebsiteSchema,
+  SchemaScript,
+} from "@/lib/seo/schemas";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -103,6 +108,8 @@ export default function RootLayout({
       <head>
         <Analytics />
         <ThemeScript />
+        <SchemaScript schema={createOrganizationSchema()} />
+        <SchemaScript schema={createWebsiteSchema()} />
       </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} ${brutalFontVariables} font-sans antialiased`}

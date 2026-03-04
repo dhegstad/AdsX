@@ -6,6 +6,7 @@ import { createArticleMetadata } from "@/lib/seo/metadata";
 import {
   createArticleSchema,
   createBreadcrumbSchema,
+  createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
 import { getRelatedPages } from "@/lib/seo/internal-linking";
@@ -70,10 +71,13 @@ export default async function BlogPostPage({ params }: PageProps) {
     { name: post.title, path: `/blog/${slug}` },
   ]);
 
+  const faqSchema = post.faqs?.length ? createFAQSchema(post.faqs) : null;
+
   return (
     <>
       <SchemaScript schema={articleSchema} />
       <SchemaScript schema={breadcrumbSchema} />
+      {faqSchema && <SchemaScript schema={faqSchema} />}
       <BrutalistBlogPostContent
         post={post}
         slug={slug}

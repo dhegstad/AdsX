@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { ServiceSchema } from "@/components/seo/structured-data";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata: Metadata = createPageMetadata({
   title: "AI Search Advertising Services | AdsX",
@@ -48,6 +49,10 @@ export default function ServicesPage() {
   return (
     <>
       <ServiceSchema />
+      <SchemaScript schema={createBreadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Services", path: "/services" },
+      ])} />
       <BrutalistLayout>
         {/* Hero */}
         <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">

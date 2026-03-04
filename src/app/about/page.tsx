@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
+import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 const values = [
   {
@@ -36,7 +37,12 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <BrutalistLayout>
+    <>
+      <SchemaScript schema={createBreadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "About", path: "/about" },
+      ])} />
+      <BrutalistLayout>
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
         <div
@@ -188,5 +194,6 @@ export default function AboutPage() {
         </Link>
       </div>
     </BrutalistLayout>
+    </>
   );
 }

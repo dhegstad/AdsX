@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts, getAllCategories } from "@/lib/blog";
 import { BrutalistBlogListing } from "@/components/blog/brutalist-blog-listing";
+import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata: Metadata = {
   title: "Blog | AI Search Advertising Insights",
@@ -19,5 +20,13 @@ export default function BlogPage() {
   const posts = getAllPosts();
   const categories = getAllCategories();
 
-  return <BrutalistBlogListing posts={posts} categories={categories} />;
+  return (
+    <>
+      <SchemaScript schema={createBreadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+      ])} />
+      <BrutalistBlogListing posts={posts} categories={categories} />
+    </>
+  );
 }
