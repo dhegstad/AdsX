@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { OrganizationSchema, WebSiteSchema, FAQSchema } from "@/components/seo/structured-data";
+import { FAQSchema } from "@/components/seo/structured-data";
 import { MobileMenuButton } from "@/components/home/mobile-menu";
 import { ParallaxHero } from "@/components/home/parallax-hero";
 import styles from "./home.module.css";
@@ -88,8 +88,6 @@ const stats = [
 export default function HomePage() {
   return (
     <>
-      <OrganizationSchema />
-      <WebSiteSchema />
       <FAQSchema />
 
       <div className={`${styles.vPage} min-h-screen bg-[#080808] text-[#EAEAEA]`} style={{ fontFamily: "var(--font-body)" }}>

@@ -16,6 +16,7 @@ export function createArticleSchema(config: {
   image?: string;
   tags?: string[];
   category?: string;
+  faqs?: { question: string; answer: string }[];
 }) {
   return {
     "@context": "https://schema.org",
@@ -44,6 +45,16 @@ export function createArticleSchema(config: {
     },
     ...(config.tags && { keywords: config.tags.join(", ") }),
     ...(config.category && { articleSection: config.category }),
+    ...(config.faqs?.length && {
+      hasPart: config.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    }),
   };
 }
 
