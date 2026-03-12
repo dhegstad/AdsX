@@ -1,0 +1,313 @@
+---
+title: "Shopify Payments vs Stripe vs PayPal: Which Payment Setup Is Best?"
+excerpt: "A detailed comparison of Shopify Payments, Stripe, and PayPal for Shopify stores, covering transaction fees, features, international support, and when to use each payment processor for maximum profitability."
+date: "2026-03-12"
+category: "Guide"
+tags: ["Shopify", "Payment Processing", "Stripe", "E-commerce"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-03-12"
+faqs:
+  - question: "Does Shopify charge extra fees if I do not use Shopify Payments?"
+    answer: "Yes, Shopify charges additional transaction fees on top of your payment processor's fees if you use a third-party payment gateway instead of Shopify Payments. The additional fees are 2 percent on Basic Shopify, 1 percent on Shopify, 0.5 percent on Advanced Shopify, and 0.15 percent on Shopify Plus. These fees apply to every transaction and can add up significantly. For a store processing $50,000 per month on Basic Shopify, that is an extra $1,000 per month in fees. This is why most merchants use Shopify Payments as their primary processor and add PayPal as a secondary option."
+  - question: "Can I use Shopify Payments and PayPal at the same time?"
+    answer: "Yes, you can and should offer both Shopify Payments and PayPal simultaneously. Shopify Payments handles credit and debit card transactions as your primary processor, while PayPal appears as an additional payment option at checkout. You only pay Shopify Payments fees on card transactions and PayPal fees on PayPal transactions, with no additional Shopify transaction fees on either. Offering both options increases conversion rates because approximately 25-30 percent of online shoppers prefer paying through PayPal. The combined setup requires no additional configuration beyond connecting your PayPal business account."
+  - question: "Is Shopify Payments the same as Stripe?"
+    answer: "Shopify Payments is powered by Stripe's infrastructure, which means your transactions are technically processed through Stripe's payment network. However, Shopify Payments is a separate product with its own fee structure, dashboard, and terms of service. You do not need a Stripe account to use Shopify Payments, and you cannot use your existing Stripe account as a substitute. The key difference is that Shopify Payments is specifically integrated into the Shopify admin and eliminates the additional transaction fees Shopify charges for third-party processors. If you use a standalone Stripe account as your Shopify payment gateway, you pay both Stripe's processing fees and Shopify's additional transaction fees."
+  - question: "Which payment processor has the lowest fees for Shopify stores?"
+    answer: "Shopify Payments on the Advanced Shopify plan offers the lowest effective cost for most merchants. The card processing rate is 2.4 percent plus $0.30 per online transaction with no additional Shopify transaction fees. If you use Stripe as a standalone gateway, you pay 2.9 percent plus $0.30 plus Shopify's 0.5-2 percent additional fee. PayPal charges 3.49 percent plus $0.49 for standard transactions. For a store processing $100,000 per month, Shopify Payments on Advanced saves approximately $500-2,000 per month compared to Stripe or PayPal as the primary processor. The exact savings depend on your Shopify plan and transaction volume."
+  - question: "What happens if my Shopify Payments account gets frozen or shut down?"
+    answer: "Shopify Payments can freeze or terminate your account if your business falls outside its acceptable use policy, which excludes certain product categories including CBD products, adult content, firearms, and some supplements. If your account is frozen, pending payouts are held for up to 120 days while transactions are reviewed. You can still process sales through a third-party payment gateway while your Shopify Payments account is under review. To protect your business, always review Shopify Payments' prohibited businesses list before relying on it exclusively, and have a backup payment processor configured and ready to activate if needed."
+---
+
+Payment processing is one of the largest ongoing costs for any Shopify store, yet most merchants accept the default settings without understanding how their choice of payment processor affects their bottom line. The difference between the cheapest and most expensive payment setup for a store processing $50,000 per month can exceed $500 in monthly fees, and that gap widens as revenue grows. Choosing the right combination of payment processors also affects your conversion rate, international selling capability, and customer trust.
+
+This guide provides a detailed, numbers-driven comparison of [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) Payments, Stripe, and PayPal for Shopify stores, with clear recommendations for which setup works best based on your business size, product type, and geographic focus.
+
+![Modern checkout payment terminal with multiple payment method icons displayed](https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=1200&q=80)
+
+## Understanding the Three Payment Processors
+
+### Shopify Payments
+
+Shopify Payments is Shopify's native payment processing solution, built on Stripe's infrastructure but managed entirely within your Shopify admin. It is the default payment option for Shopify stores and offers the lowest total cost for most merchants because it eliminates the additional transaction fees Shopify charges for third-party processors.
+
+**Key characteristics**:
+- Built directly into Shopify admin with no separate dashboard needed
+- Eliminates Shopify's additional transaction fees (0.5-2 percent)
+- Supports major credit and debit cards, Apple Pay, Google Pay, and Shop Pay
+- Available in 23 countries
+- Payouts processed in 2-3 business days
+- PCI DSS Level 1 compliance included
+- Chargeback management built into Shopify admin
+
+### Stripe
+
+Stripe is the world's largest online payment infrastructure company and the technology behind Shopify Payments. However, using Stripe as a standalone payment gateway on Shopify is different from using Shopify Payments. With standalone Stripe, you pay both Stripe's processing fees and Shopify's additional transaction fees.
+
+**Key characteristics**:
+- Industry-leading payment infrastructure with 99.999 percent uptime
+- Available in 47+ countries (more than Shopify Payments)
+- Advanced features including subscription billing, invoicing, and custom payment flows
+- Extensive API for custom integrations
+- Separate dashboard and reporting from Shopify
+- Stripe-specific fraud prevention with Radar
+
+### PayPal
+
+PayPal is the most recognized digital wallet globally with over 430 million active accounts. On Shopify, PayPal functions as a supplementary payment option alongside your primary processor, appearing as a payment button at checkout.
+
+**Key characteristics**:
+- 430 million active user accounts providing built-in trust
+- Available in 200+ countries and territories
+- PayPal buyer protection increases customer confidence
+- Higher processing fees than card-based processors
+- Separate account management and payout schedule
+- PayPal-specific dispute resolution process
+
+## Fee Comparison: The Complete Breakdown
+
+Understanding the true cost of each processor requires looking beyond the headline transaction rate. Here is a comprehensive fee comparison across all Shopify plans.
+
+### Online Transaction Fees
+
+**Shopify Payments rates by plan**:
+- Basic Shopify ($39/month): 2.9% + $0.30 per transaction
+- Shopify ($105/month): 2.6% + $0.30 per transaction
+- Advanced Shopify ($399/month): 2.4% + $0.30 per transaction
+- Shopify Plus ($2,300+/month): Negotiated rates, typically 2.15-2.25% + $0.30
+
+**Stripe standalone rates**:
+- Standard rate: 2.9% + $0.30 per transaction
+- Plus Shopify's additional fees: 2% (Basic), 1% (Shopify), 0.5% (Advanced), 0.15% (Plus)
+- Effective total on Basic Shopify: 4.9% + $0.30
+
+**PayPal rates**:
+- Standard PayPal Checkout: 3.49% + $0.49 per transaction
+- PayPal Advanced Checkout: 2.99% + $0.49 per transaction (with card-on-file)
+- Plus Shopify's additional fees if PayPal is your sole processor
+
+### In-Person Transaction Fees (POS)
+
+- **Shopify Payments**: 2.4-2.7% + $0.00 (no per-transaction flat fee for in-person)
+- **Stripe Terminal**: 2.7% + $0.05 per transaction (plus Shopify's additional fees)
+- **PayPal Here**: 2.29% + $0.09 per transaction (plus Shopify's additional fees)
+
+### Monthly and Hidden Costs
+
+**Shopify Payments**: No monthly gateway fee. No setup fee. No PCI compliance fee. Chargeback fee of $15 per dispute (refunded if you win the dispute).
+
+**Stripe**: No monthly gateway fee for standard accounts. Stripe Radar (advanced fraud protection) costs an additional $0.05-0.07 per transaction. Chargeback fee of $15 per dispute. Tax automation through Stripe Tax costs $0.50 per transaction.
+
+**PayPal**: No monthly gateway fee for standard PayPal. PayPal Pro (which adds on-site card processing) costs $30 per month plus per-transaction fees. Chargeback fee of $20 per dispute (non-refundable). Currency conversion fee of 3-4 percent on international transactions.
+
+### Cost Comparison at Different Revenue Levels
+
+To illustrate the real-world impact, here are monthly costs for each setup at various revenue levels, assuming an average transaction of $75:
+
+**$10,000 monthly revenue (133 transactions)**:
+- Shopify Payments (Basic plan): $330 in processing + $0 additional = $330 total
+- Stripe standalone (Basic plan): $330 processing + $200 additional = $530 total
+- PayPal only (Basic plan): $414 processing + $200 additional = $614 total
+- Shopify Payments + PayPal (70/30 split): $231 + $124 + $0 additional = $355 total
+
+**$50,000 monthly revenue (667 transactions)**:
+- Shopify Payments (Shopify plan): $1,500 processing + $0 additional = $1,500 total
+- Stripe standalone (Shopify plan): $1,650 processing + $500 additional = $2,150 total
+- Shopify Payments + PayPal (70/30 split): $1,050 + $622 + $0 additional = $1,672 total
+
+**$200,000 monthly revenue (2,667 transactions)**:
+- Shopify Payments (Advanced plan): $5,600 processing + $0 additional = $5,600 total
+- Stripe standalone (Advanced plan): $6,100 processing + $1,000 additional = $7,100 total
+- Shopify Payments + PayPal (70/30 split): $3,920 + $2,488 + $0 additional = $6,408 total
+
+The pattern is clear: Shopify Payments as the primary processor with PayPal as a secondary option provides the best balance of low fees and customer choice.
+
+## Feature Comparison
+
+### Fraud Protection
+
+**Shopify Payments**: Includes built-in fraud analysis that flags suspicious orders with risk indicators. The system analyzes IP address location, billing and shipping address mismatches, multiple failed payment attempts, and known fraudulent card numbers. No additional cost for basic fraud analysis.
+
+**Stripe**: Stripe Radar provides machine learning-based fraud detection trained on billions of transactions. It assigns a risk score to each transaction and can automatically block high-risk payments. Basic Radar is included free; advanced Radar with custom rules costs $0.05-0.07 per screened transaction.
+
+**PayPal**: Seller Protection Program covers eligible transactions against unauthorized payments and item-not-received claims. PayPal's fraud detection benefits from its closed ecosystem where buyer and seller identities are verified.
+
+**Assessment**: Stripe's Radar is the most sophisticated fraud system, but Shopify Payments' built-in analysis is adequate for most stores. PayPal's seller protection adds a useful layer for eligible transactions.
+
+### International Payment Support
+
+**Shopify Payments**: Available in 23 countries. Supports multi-currency pricing through Shopify Markets. Customers can pay in their local currency, and Shopify handles conversion. Currency conversion fee of approximately 1.5 percent.
+
+**Stripe**: Available in 47+ countries with the broadest geographic coverage. Supports 135+ currencies. Currency conversion fee of 1 percent plus a 1 percent international card fee.
+
+**PayPal**: Available in 200+ countries and territories with the widest reach globally. Supports 25 currencies for payment reception. Currency conversion fee of 3-4 percent, which is significantly higher than alternatives.
+
+**Assessment**: For stores selling internationally, Stripe offers the best combination of geographic coverage and reasonable conversion fees. Shopify Payments is adequate for stores selling within its supported countries. PayPal's high conversion fees make it expensive for international transactions but its widespread recognition provides trust in markets where other options may be unfamiliar.
+
+### Checkout Experience
+
+**Shopify Payments with Shop Pay**: Shop Pay is Shopify's accelerated checkout that saves customer shipping and payment information for one-click purchases. Shop Pay has been shown to increase conversion rates by up to 50 percent compared to regular checkout because returning customers can complete purchases in seconds. Shop Pay is only available with Shopify Payments.
+
+**Stripe Checkout**: Stripe's hosted checkout is optimized for conversion with minimal fields, smart payment method display, and real-time validation. However, using Stripe's checkout on Shopify means bypassing Shopify's native checkout, which can create a disjointed experience.
+
+**PayPal Express Checkout**: One-click checkout for users with PayPal accounts. Approximately 25-30 percent of online shoppers have PayPal accounts, and many prefer it for the buyer protection and familiarity. Adding PayPal Express as an option increases overall conversion rates by 8-12 percent.
+
+**Assessment**: Shopify Payments with Shop Pay provides the best checkout conversion rate. Adding PayPal as a secondary option captures customers who prefer PayPal's ecosystem. This combination maximizes conversion.
+
+### Payout Speed
+
+**Shopify Payments**: Payouts arrive in 2-3 business days (US). Daily automatic payouts with no minimum threshold.
+
+**Stripe**: Payouts arrive in 2 business days (US). Daily automatic payouts after an initial 7-14 day holding period for new accounts.
+
+**PayPal**: Funds available immediately in your PayPal account but take 1-3 business days to transfer to your bank account. Instant transfer available for a 1-1.5 percent fee.
+
+**Assessment**: All three offer comparable payout speeds. PayPal's instant availability within the PayPal ecosystem is useful if you use PayPal for business purchases, but bank transfers take similar time across all three.
+
+![Digital payment processing interface showing transaction analytics and payout information](https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80)
+
+## When to Use Each Processor
+
+### Use Shopify Payments As Your Primary Processor When
+
+- Your business operates in one of the 23 supported countries
+- Your products comply with Shopify Payments' acceptable use policy
+- You want the lowest total transaction costs
+- You value the simplicity of managing payments within Shopify admin
+- You want access to Shop Pay accelerated checkout
+- You plan to use Shopify POS for in-person selling
+- You want to qualify for Shopify Audiences (requires Shopify Payments)
+
+### Use Stripe As Your Primary Processor When
+
+- Your business operates in a country not supported by Shopify Payments
+- You sell products prohibited by Shopify Payments but allowed by Stripe
+- You need advanced payment features like subscription billing with custom logic
+- You require Stripe's advanced API for custom payment integrations
+- You need Stripe's more extensive geographic coverage for international transactions
+
+### Always Add PayPal As a Secondary Option When
+
+- Your target audience includes shoppers over 35 (who use PayPal at higher rates)
+- You sell internationally, especially in markets where PayPal is trusted more than unfamiliar card processors
+- Your products are priced above $100, where PayPal's buyer protection gives customers confidence
+- You want to maximize conversion by offering multiple payment methods
+
+### The Optimal Payment Setup for Most Shopify Stores
+
+For the majority of Shopify merchants, the optimal setup is:
+
+1. **Shopify Payments** as the primary payment processor for all card transactions
+2. **PayPal** as a secondary payment option at checkout
+3. **Shop Pay** enabled for accelerated checkout
+4. **Apple Pay and Google Pay** enabled through Shopify Payments for mobile customers
+
+This combination minimizes fees, maximizes conversion rates, and provides customers with familiar payment options. No additional Shopify transaction fees are charged on either Shopify Payments or PayPal transactions when Shopify Payments is your primary processor.
+
+## Multi-Gateway Strategy
+
+### Why Multiple Payment Options Increase Revenue
+
+Offering multiple payment methods at checkout directly impacts conversion rates. Research consistently shows:
+
+- Stores offering 3+ payment methods have 12-15 percent higher conversion rates than single-method stores
+- 7 percent of shoppers abandon carts because their preferred payment method is not available
+- Approximately 25-30 percent of online shoppers prefer PayPal for at least some purchases
+- Buy Now Pay Later options (Klarna, Afterpay, Shop Pay Installments) increase average order value by 20-30 percent
+
+### Adding Buy Now Pay Later
+
+Shop Pay Installments, Klarna, Afterpay, and similar services let customers split purchases into interest-free installments. These services are particularly effective for products priced between $100-1,000.
+
+**Shop Pay Installments**: Integrated with Shopify Payments at no additional cost. Customers split purchases into 4 bi-weekly payments. You receive the full payment upfront. This is the easiest BNPL option to add if you use Shopify Payments.
+
+**Klarna and Afterpay**: Available as Shopify payment apps. Merchant fees range from 3-6 percent per transaction, higher than standard card processing, but the increase in conversion rate and average order value typically offsets the higher cost.
+
+### Managing Multiple Processors
+
+When running multiple payment options, keep these operational considerations in mind:
+
+- **Reconciliation**: Reconcile payouts from each processor separately during bookkeeping. Shopify Payments payouts appear in your Shopify admin while PayPal payouts appear in your PayPal account
+- **Refunds**: Process refunds through the same processor that handled the original transaction. Shopify tracks which processor was used for each order
+- **Disputes**: Handle chargebacks and disputes through the respective processor's system. Shopify admin shows dispute information for Shopify Payments transactions
+- **Reporting**: Use Shopify's built-in reports for a unified view of sales across all payment methods
+
+## International Payment Considerations
+
+### Currency Support
+
+If you sell internationally, your payment setup must handle multiple currencies:
+
+**Shopify Payments with Shopify Markets**: The most streamlined international setup. Configure local currencies for your target markets, and customers see prices in their own currency. Shopify handles conversion and settlement. Conversion fee of approximately 1.5 percent.
+
+**Stripe**: Supports 135+ currencies with automatic currency detection based on customer location. 1 percent currency conversion fee plus 1 percent international card surcharge.
+
+**PayPal**: Supports 25 currencies for receiving payments. 3-4 percent currency conversion fee makes it expensive for high-volume international sales.
+
+### Country-Specific Payment Methods
+
+Different markets have different preferred payment methods:
+
+- **Germany**: Bank transfers and Klarna are preferred over credit cards
+- **Netherlands**: iDEAL is the dominant payment method
+- **Brazil**: Boleto bancario is essential for the Brazilian market
+- **India**: UPI payments are increasingly popular
+- **Japan**: Konbini (convenience store payments) are common
+
+Shopify Payments supports some local payment methods through Shopify Markets. For markets requiring specific payment methods not supported by Shopify Payments, you may need to add region-specific payment apps from the Shopify App Store.
+
+## Security and Compliance
+
+### PCI DSS Compliance
+
+All three processors handle PCI DSS compliance on your behalf:
+
+- **Shopify Payments**: Full PCI DSS Level 1 compliance. Shopify handles all card data storage and processing. You never touch raw card data.
+- **Stripe**: PCI DSS Level 1 certified. Stripe Elements and Checkout ensure card data goes directly to Stripe's servers.
+- **PayPal**: PCI DSS compliant. PayPal handles all payment data within its ecosystem.
+
+As a Shopify merchant, your PCI compliance obligations are minimal regardless of which processor you use, because Shopify's checkout handles card data securely without exposing it to your store's code.
+
+### Fraud Prevention Best Practices
+
+Regardless of your payment processor, implement these fraud prevention practices:
+
+1. **Enable AVS (Address Verification System)**: Match billing addresses with card issuer records
+2. **Require CVV**: Always require the card security code for online transactions
+3. **Review flagged orders**: Check orders flagged as high risk before fulfilling them
+4. **Set velocity limits**: Flag multiple rapid purchases from the same IP address or card
+5. **Use 3D Secure**: Enable 3D Secure authentication for high-risk transactions, which shifts chargeback liability to the card issuer
+
+## Common Mistakes to Avoid
+
+### Using Only PayPal As Your Payment Processor
+
+PayPal's higher fees and Shopify's additional transaction fees make it the most expensive option as a sole processor. Always use Shopify Payments as your primary processor and add PayPal as a secondary option.
+
+### Ignoring the Additional Transaction Fees
+
+The additional 0.5-2 percent fee Shopify charges for third-party processors is easy to overlook but adds up significantly. For a store doing $100,000/month on Basic Shopify with a third-party processor, that is $2,000/month in fees that Shopify Payments would eliminate.
+
+### Not Offering Enough Payment Options
+
+Every payment option you add to checkout captures customers who would have otherwise abandoned their cart. At minimum, offer card payments through Shopify Payments and PayPal. Consider adding BNPL options for higher-priced products.
+
+### Failing to Review Shopify Payments' Prohibited Products
+
+Shopify Payments has a list of prohibited business types and products. If your business falls into a restricted category and you start processing through Shopify Payments, your account can be frozen with funds held for up to 120 days. Review the prohibited list before committing to Shopify Payments as your processor.
+
+---
+
+Ready to see how your overall store setup affects your visibility in AI-powered search? [Run a free AI visibility audit](/tools/free-audit) to understand how AI assistants evaluate and recommend your products.
+
+Need help optimizing your [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store's payment setup and overall conversion funnel? [Contact our team](/contact) for a personalized optimization consultation.
+
+## Further Reading
+
+- [Shopify POS: How to Sell In Person and Online From One Platform](/blog/shopify-pos-sell-person-online-one-platform)
+- [Shopify Markets: How to Sell Internationally Without the Headache](/blog/shopify-markets-sell-internationally)
+- [Shopify Audiences Explained: How to Lower Your Ad Costs With First-Party Data](/blog/shopify-audiences-lower-ad-costs)
+- [Shopify SEO for Beginners: The Complete Guide](/blog/shopify-seo-beginners-guide)

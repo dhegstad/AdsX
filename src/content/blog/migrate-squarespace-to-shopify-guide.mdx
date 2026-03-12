@@ -1,0 +1,448 @@
+---
+title: "How to Move From Squarespace to Shopify: Step-by-Step Migration Guide"
+excerpt: "A complete guide to migrating from Squarespace to Shopify covering content export, product import, design migration, domain transfer, SEO redirect strategy, and post-migration testing."
+date: "2026-03-12"
+category: "Guide"
+tags: ["Shopify", "Squarespace", "Migration", "E-commerce"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-03-12"
+faqs:
+  - question: "Can I export my products from Squarespace to Shopify?"
+    answer: "Yes, Squarespace allows you to export product data as a CSV file. Go to Commerce then Products in your Squarespace admin, select the products you want to export, and download the CSV. The export includes product titles, descriptions, prices, SKUs, weights, and variant information. However, product images are not included in the CSV export. You will need to download images separately from your Squarespace media library and re-upload them to Shopify. Additionally, the Squarespace CSV format requires reformatting to match Shopify's import template. Columns need to be renamed and reorganized, and variant data needs to be restructured to fit Shopify's row-per-variant format."
+  - question: "How do I transfer my domain from Squarespace to Shopify?"
+    answer: "If your domain was purchased through Squarespace, you can transfer it by going to Settings then Domains in your Squarespace admin, selecting your domain, clicking Transfer, and following the process to unlock it and obtain the authorization code. Then in Shopify, go to Settings then Domains, click Transfer domain, enter your domain and the authorization code, and complete the transfer. The process takes 5-7 business days. If your domain is registered with a third-party provider, simply update the DNS records: set the A record to Shopify's IP address (23.227.38.65) and add a CNAME for www pointing to shops.myshopify.com. DNS changes propagate within 24-48 hours."
+  - question: "Will my Squarespace blog posts transfer to Shopify?"
+    answer: "Squarespace offers built-in blog export through its WordPress-format XML export, which is actually helpful for migration. Go to Settings then Advanced then Import/Export in your Squarespace admin and export your content. The XML file includes blog posts, pages, and gallery content. However, this export is in WordPress format, not Shopify format, so you cannot import it directly into Shopify. You will need to manually recreate blog posts in Shopify or use a migration service like LitExtension or CMS2CMS that can parse the Squarespace export and transfer blog content to Shopify. Product data is not included in this XML export and must be handled separately through the CSV export."
+  - question: "How long does it take to migrate from Squarespace to Shopify?"
+    answer: "A Squarespace to Shopify migration typically takes 2-5 weeks depending on your store's complexity. Small stores with fewer than 50 products and minimal blog content can complete the migration in 1-2 weeks. Medium stores with 50-200 products take 2-3 weeks. Large stores with 200+ products, extensive blog archives, and custom design requirements take 3-5 weeks. The timeline includes preparation and data export (2-3 days), product migration and image upload (3-5 days), content and page recreation (2-4 days), theme setup and design customization (3-7 days), redirect implementation (1-2 days), domain transfer (5-7 days for processing), testing (2-3 days), and go-live monitoring (ongoing). The domain transfer process often determines the minimum timeline since it requires 5-7 business days."
+  - question: "What Squarespace features do not exist on Shopify?"
+    answer: "Several Squarespace features either do not have direct Shopify equivalents or require apps to replicate. Squarespace's built-in appointment scheduling requires a Shopify app like Sesami or BookThatApp ($5-50/month). Squarespace's member areas for gated content require apps like Bold Memberships or Locksmith. Squarespace's built-in podcast hosting does not exist on Shopify and requires hosting your podcast on a dedicated platform like Buzzsprout or Anchor. Squarespace's restaurant-specific features like online ordering menus are handled by Shopify apps. However, Shopify surpasses Squarespace significantly in e-commerce functionality including advanced inventory management, multi-channel selling, app ecosystem depth, payment processing options, and scalability for growing stores."
+---
+
+Squarespace builds beautiful websites, but as your e-commerce ambitions grow, you will likely find its commerce tools limiting. The product management is basic compared to dedicated e-commerce platforms, the payment processing options are restricted, and the app ecosystem is a fraction of what [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) offers. Migrating from Squarespace to Shopify is a move that thousands of growing merchants make each year, trading design elegance for commerce power.
+
+This guide walks through every step of the Squarespace to Shopify migration, from exporting your content to going live on the new platform. It covers the specific challenges unique to Squarespace migrations, including the quirks of Squarespace's export tools, the URL structure differences that affect SEO, and the design transition from Squarespace's template system to Shopify's theme architecture.
+
+![Modern workspace with computer displaying e-commerce platform migration](https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&q=80)
+
+## Why Merchants Outgrow Squarespace for E-commerce
+
+### Limited E-commerce Features
+
+Squarespace Commerce provides the basics: product listings, cart, checkout, and order management. But it lacks advanced features that growing stores need:
+
+- **No abandoned cart recovery on the Basic Commerce plan** ($33/month). This feature is only available on the Advanced Commerce plan ($65/month)
+- **Limited discount functionality**: No automatic discounts, limited discount code rules, and no buy-one-get-one offers
+- **No multi-channel selling**: Squarespace does not integrate with Google Shopping, TikTok Shop, or most marketplace channels
+- **Limited shipping options**: No calculated carrier rates, no shipping labels, and limited shipping rule configuration
+- **No app ecosystem**: Squarespace has a small extension marketplace compared to Shopify's 8,000+ apps
+
+### Payment Processing Restrictions
+
+Squarespace uses Stripe for payment processing on Commerce plans, with transaction fees of 3% on the Basic Commerce plan and 0% additional transaction fees on Advanced Commerce (you still pay Stripe's processing fees). Shopify offers more payment flexibility with Shopify Payments, PayPal, and dozens of other payment gateways, plus Shop Pay for accelerated checkout that boosts conversion rates.
+
+### Scalability Concerns
+
+Squarespace handles small to medium product catalogs well but becomes unwieldy with large inventories. Product management tools are simpler than what dedicated e-commerce platforms provide, and performance can degrade with very large catalogs. Shopify is built to handle stores with thousands of products and high traffic volumes without performance issues.
+
+### Analytics and Reporting
+
+Squarespace analytics are adequate for understanding basic website traffic but lack the e-commerce-specific insights that Shopify provides. Shopify's built-in reports cover sales by product, sales by channel, customer reports, financial summaries, inventory reports, and acquisition reports. These detailed analytics are essential for data-driven decision making as your store grows.
+
+## Phase 1: Preparation and Planning (Days 1-3)
+
+### Audit Your Squarespace Site
+
+Document everything that needs to migrate:
+
+**Products**: Total count, variants, categories, images per product. Export your product list from Commerce then Products.
+
+**Pages**: List all pages including their URLs, content type (standard, gallery, events, etc.), and purpose.
+
+**Blog posts**: Count your posts and note which ones drive organic traffic.
+
+**Design elements**: Screenshot every page of your Squarespace site. These screenshots become your reference during Shopify design setup.
+
+**Media files**: Note all images, videos, and downloadable files that need to transfer.
+
+**Forms**: Document any custom forms and their purposes.
+
+**Integrations**: List connected services (email marketing, analytics, social media).
+
+**Customer data**: Note if you have customer accounts with saved information.
+
+### Map Your URL Structure
+
+Squarespace and Shopify use different URL patterns:
+
+| Content Type | Squarespace URL | Shopify URL |
+|--------------|-----------------|-------------|
+| Products | /store/p/product-name | /products/product-name |
+| Product categories | /store (filtered) | /collections/category-name |
+| Blog posts | /blog/post-slug | /blogs/news/post-slug |
+| Pages | /page-name | /pages/page-name |
+| Gallery | /gallery | /pages/gallery |
+
+Create a spreadsheet mapping every Squarespace URL to its Shopify equivalent. This redirect map is critical for preserving SEO.
+
+### Choose Your Shopify Plan
+
+Select the appropriate plan before starting:
+
+- **Basic ($39/month or $29/month annually)**: Right for most stores migrating from Squarespace. Includes everything Squarespace Commerce offers and significantly more.
+- **Shopify ($105/month or $79/month annually)**: For stores doing $20,000+ per month that benefit from lower transaction fees.
+- **Advanced ($399/month or $299/month annually)**: For high-volume international sellers.
+
+Most Squarespace merchants find the Basic plan provides a substantial upgrade in features at a comparable or lower price point, especially considering Squarespace Advanced Commerce costs $65/month.
+
+## Phase 2: Product Migration (Days 3-7)
+
+### Exporting Products from Squarespace
+
+1. Log in to your Squarespace admin
+2. Navigate to Commerce then Products
+3. Select all products
+4. Click Export and download the CSV file
+
+The Squarespace product CSV includes title, description, price, sale price, SKU, weight, quantity, visibility, tags, and variant information.
+
+### Reformatting for Shopify
+
+Squarespace's CSV format does not match Shopify's import template. Key reformatting tasks:
+
+**Column mapping:**
+
+| Squarespace Column | Shopify Column |
+|--------------------|--------------------|
+| Title | Title |
+| Description | Body (HTML) |
+| Price | Variant Price |
+| Sale Price | Variant Compare At Price |
+| SKU | Variant SKU |
+| Weight | Variant Grams |
+| Quantity | Variant Inventory Qty |
+| Tags | Tags |
+| Visible | Status |
+
+**Variant restructuring**: Squarespace handles variants differently than Shopify. Each variant needs its own row in the Shopify CSV, sharing the same Handle value as the parent product. Review Shopify's sample product CSV to understand the exact format required.
+
+**Handle creation**: Add a Handle column with URL-friendly versions of your product titles. These handles become the URL slugs for your product pages. Match them to the slugs used on your Squarespace site to simplify redirect mapping.
+
+### Image Migration
+
+Squarespace product images are not included in the CSV export. You need to handle them separately:
+
+1. **Download all product images from Squarespace**: Visit each product page and save the images, or use a tool like DownThemAll to batch download images from your media library.
+
+2. **Organize images by product**: Create folders for each product to keep images organized during the upload process.
+
+3. **Upload to Shopify**: After importing your product CSV, go to each product in the Shopify admin and upload the corresponding images. You can also add image URLs to your CSV if you host the images on a CDN before importing.
+
+4. **Add alt text**: For every image, add descriptive alt text that includes relevant keywords. This supports both SEO and accessibility.
+
+For stores with more than 100 products, consider using a migration service like LitExtension or Cart2Cart that can handle image transfer automatically.
+
+### Importing to Shopify
+
+1. In Shopify admin, go to Products then Import
+2. Upload your reformatted CSV
+3. Preview the import to verify field mapping
+4. Run the import
+
+After import, review a sample of 10-20 products to verify accuracy across all fields.
+
+### Collection Setup
+
+Squarespace uses categories and tags for product organization. Shopify uses collections:
+
+**Automated collections**: Create collections based on product tags. For example, create a "Summer Collection" that automatically includes any product tagged "summer." This mirrors how Squarespace categories likely worked.
+
+**Manual collections**: Hand-pick products for curated groups like "Best Sellers" or "Staff Picks."
+
+Set up your collection structure to match or improve upon your Squarespace product organization.
+
+## Phase 3: Content Migration (Days 7-10)
+
+### Blog Post Migration
+
+Squarespace offers an XML export that includes blog content:
+
+1. Go to Settings then Advanced then Import/Export
+2. Click Export and download the XML file
+
+This export is in WordPress format. To get it into Shopify:
+
+**Manual method** (for fewer than 30 posts):
+1. Open each blog post in your Squarespace editor
+2. Copy the title, content, and images
+3. Create a new blog post in Shopify (Online Store then Blog Posts)
+4. Paste and format the content
+5. Upload images and add alt text
+6. Set the URL handle, page title, and meta description
+7. Set the publication date to match the original
+
+**Automated method** (for 30+ posts):
+Use a migration service like LitExtension or CMS2CMS that can parse the Squarespace XML export and transfer blog content to Shopify. These services handle content, images, and metadata automatically. Pricing typically starts at $20-50.
+
+### Static Page Migration
+
+Recreate your Squarespace pages in Shopify:
+
+1. Go to Online Store then Pages in Shopify admin
+2. Create each page with the same content as the Squarespace original
+3. Set URL handles to match your redirect plan
+4. Customize the page title and meta description
+
+Essential pages to recreate:
+- About Us
+- Contact
+- FAQ
+- Shipping Policy
+- Return Policy
+- Terms of Service
+- Privacy Policy
+
+For policy pages, Shopify provides templates in Settings then Policies that you can customize with your specific terms.
+
+### Gallery Pages
+
+If your Squarespace site uses gallery pages to showcase products or brand imagery, recreate them in Shopify using your theme's image gallery sections or a dedicated page with image blocks. Alternatively, an app like Instafeed or a custom page template can replicate gallery functionality.
+
+### Form Migration
+
+Squarespace forms do not export to Shopify. Recreate any custom forms using Shopify Forms (free), or install a form builder app like PageFly or Formilla for more complex form needs.
+
+## Phase 4: Design Setup (Days 10-14)
+
+### Theme Selection
+
+Choose a Shopify theme that aligns with your Squarespace site's aesthetic. Squarespace is known for clean, design-forward templates. Shopify themes that capture a similar aesthetic:
+
+**Free options**:
+- **Dawn**: Minimalist, fast, highly customizable. Good match for Squarespace's clean design philosophy
+- **Refresh**: Modern, visually balanced. Suitable for fashion, lifestyle, and design-focused brands
+- **Craft**: Artisan, storytelling-focused. Matches Squarespace's ability to blend narrative with commerce
+
+**Paid options** ($150-400):
+- **Prestige**: Luxury aesthetic with elegant typography, similar to Squarespace's more sophisticated templates
+- **Symmetry**: Versatile, design-forward, with multiple style variations
+- **Motion**: Dynamic, animation-rich, similar to Squarespace's cinematic templates
+
+### Theme Customization
+
+Customize your Shopify theme to match your Squarespace brand identity:
+
+**Colors**: Apply the exact hex codes from your Squarespace site. Consistency in colors is the fastest way to maintain brand recognition during a platform switch.
+
+**Typography**: Match your Squarespace fonts as closely as possible. Shopify offers a large font library, and many popular Squarespace fonts have exact or near-exact matches.
+
+**Logo and favicon**: Upload the same logo and favicon used on your Squarespace site.
+
+**Homepage layout**: Recreate your homepage structure using Shopify's section editor. Match the order and type of content blocks: hero banner, featured products, text blocks, image galleries, testimonials, and newsletter signup.
+
+**Product pages**: Configure product page settings to display images, descriptions, variants, and related products in a layout similar to your Squarespace product pages.
+
+**Footer**: Add navigation links, social media icons, newsletter signup, and any other footer elements from your Squarespace site.
+
+### Design Differences to Accept
+
+Some Squarespace design features are difficult or impossible to replicate exactly on Shopify:
+
+- **Full-bleed backgrounds**: Squarespace excels at edge-to-edge imagery. Some Shopify themes contain sections within fixed-width containers.
+- **Gallery blocks**: Squarespace's built-in gallery functionality is more sophisticated than most Shopify theme image sections.
+- **Animation effects**: Squarespace's built-in scroll animations and page transitions may not have exact equivalents in your chosen Shopify theme.
+
+Focus on matching the brand feel rather than pixel-perfect reproduction. Your customers care more about the shopping experience than the exact spacing of design elements.
+
+## Phase 5: Redirect Implementation (Days 14-16)
+
+### Creating 301 Redirects
+
+Every Squarespace URL that received traffic or has external backlinks needs a 301 redirect to its Shopify equivalent.
+
+In Shopify, go to Online Store then Navigation then URL Redirects:
+
+**Manual entry** (under 50 redirects): Add each redirect individually.
+
+**Bulk import** (50+ redirects): Create a CSV with "Redirect from" and "Redirect to" columns and upload it.
+
+Example redirects:
+
+| Redirect from | Redirect to |
+|---------------|-------------|
+| /store/p/blue-widget | /products/blue-widget |
+| /blog/how-to-use-widgets | /blogs/news/how-to-use-widgets |
+| /about-1 | /pages/about-us |
+| /contact | /pages/contact |
+| /store | /collections/all |
+
+### Squarespace-Specific URL Quirks
+
+Squarespace has some unique URL patterns that require special attention:
+
+**Product URLs with /store/p/ prefix**: Squarespace product URLs typically start with /store/p/. Map each to /products/ on Shopify.
+
+**Blog URLs with date stamps**: Some Squarespace blog configurations include dates in the URL. Map these to Shopify's simpler /blogs/news/slug format.
+
+**Gallery URLs**: If you had gallery pages, redirect them to the most relevant Shopify page or collection.
+
+**Pages with numeric suffixes**: Squarespace sometimes adds numeric suffixes to page URLs (e.g., /about-1). Make sure your redirects account for these.
+
+### Testing Redirects
+
+After implementing all redirects, test a sample by entering old Squarespace URLs in your browser and verifying they land on the correct Shopify pages. Use a tool like Screaming Frog to bulk-test your redirect map.
+
+![Team reviewing website migration checklist on whiteboard](https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&q=80)
+
+## Phase 6: Domain Transfer (Days 16-23)
+
+### Transferring a Squarespace-Registered Domain
+
+If you purchased your domain through Squarespace:
+
+1. Go to Settings then Domains in Squarespace
+2. Select your domain and click Transfer
+3. Follow the steps to unlock the domain
+4. Copy the authorization code (EPP code)
+5. In Shopify, go to Settings then Domains
+6. Click Transfer domain
+7. Enter your domain and the authorization code
+8. Complete the transfer (5-7 business days processing)
+
+### Updating DNS for Third-Party Domains
+
+If your domain is registered elsewhere:
+
+1. Log in to your domain registrar
+2. Update DNS records:
+   - A record: `23.227.38.65`
+   - CNAME for www: `shops.myshopify.com`
+3. Remove any Squarespace-specific DNS records
+4. Wait 24-48 hours for DNS propagation
+
+### SSL Certificate
+
+Shopify automatically provisions a free SSL certificate for your custom domain. Verify SSL is active by checking for the padlock icon in the browser after DNS propagation completes.
+
+## Phase 7: Pre-Launch Testing (Days 23-25)
+
+### Functional Testing Checklist
+
+Test every aspect of your store before going live:
+
+- Products display correctly with accurate information, images, and pricing
+- All variants can be selected and added to cart
+- Cart calculates totals correctly including shipping and tax
+- Checkout flow works end-to-end using test mode
+- Email notifications (order confirmation, shipping, etc.) are sent and formatted properly
+- Contact form submissions arrive at the correct email
+- Navigation links all work correctly
+- Mobile experience is smooth and professional
+- Search functionality returns accurate results
+- Discount codes work (if applicable)
+
+### SEO Verification
+
+- All redirects are working (301 status code)
+- Page titles and meta descriptions are in place for key pages
+- Product pages have proper schema markup (test with Google Rich Results Test)
+- Sitemap is accessible at yourstore.com/sitemap.xml
+- No pages are accidentally blocked by robots.txt
+- Google Analytics is connected and tracking
+- Google Search Console is verified for the new platform
+
+### Performance Testing
+
+Run Google PageSpeed Insights on your homepage, a product page, a collection page, and a blog post. Compare scores to your Squarespace site. Shopify should score equal to or better on most metrics.
+
+## Phase 8: Go-Live and Post-Migration Monitoring (Days 25-60)
+
+### Go-Live Steps
+
+1. Remove the Shopify store password (Online Store then Preferences)
+2. Verify your domain is pointing to Shopify
+3. Place a real test order to verify end-to-end functionality
+4. Submit your new sitemap to Google Search Console
+5. Update any external service integrations (email marketing, analytics, social media)
+
+### Post-Migration Monitoring
+
+Monitor these metrics weekly for 8 weeks:
+
+**Google Search Console**: Watch for crawl errors (404s indicating missing redirects), index coverage changes, and search performance trends.
+
+**Google Analytics**: Track organic traffic volume, bounce rate, conversion rate, and revenue compared to pre-migration baselines.
+
+**Customer feedback**: Pay attention to customer complaints or confusion about the new site. Address any issues promptly.
+
+### Expected SEO Impact Timeline
+
+- **Week 1-2**: 10-20% temporary decline in organic traffic
+- **Week 3-4**: Recovery to 80-90% of pre-migration levels
+- **Week 5-8**: Full recovery to pre-migration levels
+- **Month 3+**: Potential improvement as Shopify's platform SEO advantages take effect
+
+### When to Cancel Squarespace
+
+Keep your Squarespace subscription active for 2-4 weeks after going live on Shopify. This ensures you have access to data and images if anything was missed during migration, your Squarespace site can serve visitors whose DNS has not updated, and you can reference the old design for any remaining customization work.
+
+After your Shopify store has been live for 2-4 weeks with stable traffic and no migration issues, you can safely cancel your Squarespace subscription.
+
+## Squarespace Features to Shopify Equivalents
+
+| Squarespace Feature | Shopify Equivalent |
+|---------------------|-------------------|
+| Commerce Products | Shopify Products |
+| Commerce Categories | Shopify Collections |
+| Scheduling/Appointments | Sesami, BookThatApp apps |
+| Member Areas | Bold Memberships, Locksmith apps |
+| Email Campaigns | Shopify Email, Klaviyo |
+| SEO Tools | Shopify SEO, Plug In SEO app |
+| Analytics | Shopify Analytics + Google Analytics |
+| Form Blocks | Shopify Forms, PageFly app |
+| Gallery Pages | Theme gallery sections, Instafeed app |
+| Blog | Shopify Blog |
+| Cover Pages | Shopify landing pages (via theme or app) |
+| Podcast Hosting | External hosting (Buzzsprout, Anchor) |
+| Donation Blocks | DonateMate, Give & Grow apps |
+| Social Links | Theme social media settings |
+
+## Common Squarespace to Shopify Migration Mistakes
+
+### Not Downloading Images Before Canceling
+
+Squarespace-hosted images become inaccessible when you cancel your subscription. Download every image from your media library before migration. This includes product photos, blog images, page images, and any other media files.
+
+### Forgetting About Squarespace-Specific Pages
+
+Squarespace creates platform-specific pages like /store, /cart, and /checkout that may be indexed by Google. Create redirects for these to their Shopify equivalents.
+
+### Underestimating Design Recreation Time
+
+Squarespace is known for beautiful design, and merchants often underestimate how long it takes to recreate that aesthetic on Shopify. Budget 3-7 days for theme selection and customization, not 1-2 days.
+
+### Ignoring Email Marketing Migration
+
+If you used Squarespace Email Campaigns, your email list needs to be exported and imported into your new email platform (Shopify Email, Klaviyo, etc.). Do not lose your subscriber list during the platform switch.
+
+### Skipping the Testing Phase
+
+Rushing to go live without thorough testing leads to customer-facing errors that damage trust. Invest 2-3 days in comprehensive testing before removing the store password.
+
+---
+
+Moving from Squarespace to [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) is a strategic upgrade that positions your store for serious e-commerce growth. Squarespace excels at creating beautiful websites, but Shopify excels at selling products at scale. By following this migration guide, you preserve your existing SEO value, maintain your brand identity, and unlock the full power of a purpose-built commerce platform.
+
+Ready to optimize your new Shopify store for AI-powered product discovery? [Run a free AI visibility audit](/tools/free-audit) to understand how AI shopping assistants find and recommend products in your category.
+
+Need expert guidance on your Squarespace to Shopify migration? [Contact our team](/contact) for a personalized migration strategy.
+
+## Further Reading
+
+- [Shopify SEO for Beginners: The Complete Guide](/blog/shopify-seo-beginners-guide)
+- [Free vs Paid Shopify Themes: Is a Premium Theme Worth the Investment?](/blog/free-vs-paid-shopify-themes-worth-it)
+- [Launching Your First Shopify Store: Complete Checklist](/blog/launching-first-shopify-store-checklist)
+- [How to Save Money on Shopify: Discounts, Annual Billing, and 15 Cost-Cutting Tips](/blog/save-money-on-shopify-cost-cutting-tips)
