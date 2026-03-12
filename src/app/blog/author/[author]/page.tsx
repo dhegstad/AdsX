@@ -9,14 +9,10 @@ interface PageProps {
   params: Promise<{ author: string }>;
 }
 
-// Generate all author pages on-demand to avoid build timeouts
-export const dynamic = 'force-dynamic';
+// ISR: generate on first request, cache for 24 hours
+export const revalidate = 86400;
 
 const deprecatedAuthors = ["sarah-chen", "marcus-rodriguez", "dr-james-liu"];
-
-export async function generateStaticParams() {
-  return [];
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { author: authorSlug } = await params;

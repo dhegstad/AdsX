@@ -10,16 +10,11 @@ import {
 } from "@/lib/seo/schemas";
 import { getRelatedPages } from "@/lib/seo/internal-linking";
 
-// Generate all blog pages on-demand to avoid build timeouts with 600+ posts
-export const dynamic = 'force-dynamic';
+// ISR: generate on first request, cache for 24 hours
+export const revalidate = 86400;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  // Return empty array - all pages generated on-demand
-  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

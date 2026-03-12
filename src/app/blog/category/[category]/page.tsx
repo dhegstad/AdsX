@@ -13,13 +13,8 @@ interface PageProps {
   params: Promise<{ category: string }>;
 }
 
-// Generate all category pages on-demand to avoid build timeouts with 500+ posts
-export const dynamic = 'force-dynamic';
-
-export async function generateStaticParams() {
-  // Return empty array - all category pages generated on-demand
-  return [];
-}
+// ISR: generate on first request, cache for 24 hours
+export const revalidate = 86400;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category: categorySlug } = await params;

@@ -17,15 +17,11 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
-// Generate all example pages on-demand to avoid build timeouts
-export const dynamic = 'force-dynamic';
+// ISR: generate on first request, cache for 24 hours
+export const revalidate = 86400;
 
 interface PageProps {
   params: Promise<{ brand: string }>;
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
