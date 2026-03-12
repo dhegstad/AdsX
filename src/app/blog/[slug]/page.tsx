@@ -10,13 +10,16 @@ import {
 } from "@/lib/seo/schemas";
 import { getRelatedPages } from "@/lib/seo/internal-linking";
 
+// Generate all blog pages on-demand to avoid build timeouts with 600+ posts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
-  return slugs.map((slug) => ({ slug }));
+  // Return empty array - all pages generated on-demand
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

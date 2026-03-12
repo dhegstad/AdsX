@@ -16,15 +16,15 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
+// Generate all integration pages on-demand to avoid build timeouts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ platform: string }>;
 }
 
 export async function generateStaticParams() {
-  const integrations = getAllIntegrations();
-  return integrations.map((integration) => ({
-    platform: integration.slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

@@ -16,15 +16,15 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
+// Generate all persona pages on-demand to avoid build timeouts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ persona: string }>;
 }
 
 export async function generateStaticParams() {
-  const personas = getAllPersonas();
-  return personas.map((persona) => ({
-    persona: persona.slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

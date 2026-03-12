@@ -17,15 +17,15 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
+// Generate all glossary pages on-demand to avoid build timeouts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ term: string }>;
 }
 
 export async function generateStaticParams() {
-  const terms = getAllTerms();
-  return terms.map((term) => ({
-    term: term.slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

@@ -16,15 +16,15 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
+// Generate all location pages on-demand to avoid build timeouts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ city: string }>;
 }
 
 export async function generateStaticParams() {
-  const locations = getAllLocations();
-  return locations.map((location) => ({
-    city: location.slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

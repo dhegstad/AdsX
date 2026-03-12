@@ -14,15 +14,15 @@ import {
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
 import { RelatedArticles } from "@/components/related-articles";
 
+// Generate all comparison pages on-demand to avoid build timeouts
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ comparison: string }>;
 }
 
 export async function generateStaticParams() {
-  const comparisons = getAllComparisons();
-  return comparisons.map((comparison) => ({
-    comparison: `ai-visibility-vs-${comparison.slug}`,
-  }));
+  return [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
