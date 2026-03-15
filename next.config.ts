@@ -20,6 +20,42 @@ const nextConfig: NextConfig = {
         destination: "https://www.adsx.com/:path*",
         permanent: true,
       },
+      // Legacy site redirects — old HTML/PDF pages returning 404 in Google Search Console
+      {
+        source: "/content/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/prodservpart/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/pressreleasses",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/main.thm",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/main.htm",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index.htm",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index.html",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
   experimental: {
