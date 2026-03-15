@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { BrutalistLayout } from "@/components/brutalist-layout";
-import { getAllTags, getPostsByTag, getTagBySlug, getPostsByTagCount } from "@/lib/blog";
+import { getAllTags, getPostsByTag, getTagBySlug } from "@/lib/blog";
 
 interface PageProps {
   params: Promise<{ tag: string }>;
@@ -15,28 +15,19 @@ export const revalidate = 86400;
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tag: tagSlug } = await params;
   const tag = getTagBySlug(tagSlug);
-  const postCount = getPostsByTagCount(tagSlug);
 
   if (!tag) {
     return { title: "Tag Not Found" };
   }
 
-  const shouldIndex = postCount >= 2;
-
   return {
     title: `Articles Tagged "${tag}"`,
     description: `Browse all articles tagged with "${tag}" - insights on AI search advertising, ChatGPT optimization, and AI visibility.`,
-    alternates: {
-      canonical: `https://www.adsx.com/blog/tag/${tagSlug}`,
-    },
     openGraph: {
       title: `${tag} | AdsX Blog`,
       description: `Browse all articles tagged with "${tag}".`,
-      url: `https://www.adsx.com/blog/tag/${tagSlug}`,
     },
-    robots: shouldIndex
-      ? { index: true, follow: true }
-      : { index: false, follow: true },
+    robots: { index: false, follow: true },
   };
 }
 

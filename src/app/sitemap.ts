@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog';
+import { getAllPosts, getAllCategories } from '@/lib/blog';
 import { getAllIndustries } from '@/lib/industries';
 import { getAllComparisons } from '@/lib/comparisons';
 import { getAllLocations } from '@/lib/locations';
@@ -31,16 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  // Get only tags with 2+ posts to avoid thin content pages
-  const tags = getAllTags();
-  const tagUrls: MetadataRoute.Sitemap = tags
-    .filter((tag) => tag.count >= 2)
-    .map((tag) => ({
-      url: `${baseUrl}/blog/tag/${tag.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.4,
-    }));
+  // Tag pages are noindexed - excluded from sitemap to save crawl budget
 
   // Author pages excluded - using single team author
 
@@ -230,8 +221,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPostUrls,
     // Category pages
     ...categoryUrls,
-    // Tag pages (only those with 2+ posts)
-    ...tagUrls,
   ].filter((entry, index, self) =>
     index === self.findIndex((e) => e.url === entry.url)
   );
