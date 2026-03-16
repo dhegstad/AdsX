@@ -12,6 +12,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import {
   createBreadcrumbSchema,
   createFAQSchema,
+  createItemListSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
@@ -75,6 +76,16 @@ export default async function CuratedListPage({ params }: PageProps) {
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
       <SchemaScript schema={createFAQSchema(faqItems)} />
+      <SchemaScript schema={createItemListSchema({
+        name: list.title,
+        description: list.description,
+        slug,
+        items: list.items.map((item, idx) => ({
+          name: item.name,
+          description: item.description,
+          position: idx + 1,
+        })),
+      })} />
       <BrutalistLayout>
         {/* Hero */}
         <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">

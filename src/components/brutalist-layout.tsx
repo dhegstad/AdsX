@@ -26,11 +26,17 @@ const footerLinks = {
     { label: "Free Audit", href: "/tools/free-audit" },
     { label: "Case Studies", href: "/case-studies" },
     { label: "Services", href: "/services" },
+    { label: "Compare", href: "/compare" },
+    { label: "Best Of", href: "/best" },
   ],
-  industries: [
-    { label: "SaaS", href: "/industries/saas" },
-    { label: "E-commerce", href: "/industries/ecommerce" },
-    { label: "Fintech", href: "/industries/fintech" },
+  explore: [
+    { label: "AI Platforms", href: "/platforms" },
+    { label: "Industries", href: "/industries" },
+    { label: "Locations", href: "/locations" },
+    { label: "Integrations", href: "/integrations" },
+    { label: "For Teams", href: "/for" },
+    { label: "Glossary", href: "/glossary" },
+    { label: "Examples", href: "/examples" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -237,7 +243,7 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
               {/* Main Footer Content */}
               <div className="p-6 md:p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                 {/* Brand Column */}
-                <div className="col-span-2 md:col-span-3 lg:col-span-1">
+                <div className="col-span-2 md:col-span-1">
                   <Link
                     href="/"
                     className="text-2xl tracking-tight inline-block mb-4"
@@ -300,16 +306,16 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                   </ul>
                 </div>
 
-                {/* Industries Links */}
+                {/* Explore Links */}
                 <div>
                   <div
                     className="text-xs tracking-widest text-[#10b981] mb-4"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    INDUSTRIES
+                    EXPLORE
                   </div>
                   <ul className="space-y-3">
-                    {footerLinks.industries.map((link) => (
+                    {footerLinks.explore.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}

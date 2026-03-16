@@ -11,6 +11,7 @@ import {
 import { createPageMetadata } from "@/lib/seo/metadata";
 import {
   createBreadcrumbSchema,
+  createDefinedTermSchema,
   createFAQSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
@@ -76,6 +77,12 @@ export default async function GlossaryTermPage({ params }: PageProps) {
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
       <SchemaScript schema={createFAQSchema(faqItems)} />
+      <SchemaScript schema={createDefinedTermSchema({
+        term: term.term,
+        definition: term.fullDefinition,
+        slug,
+        category: term.category,
+      })} />
       <BrutalistLayout>
         {/* Hero */}
         <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">

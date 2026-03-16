@@ -170,6 +170,79 @@ export function createServiceSchema(config: {
 }
 
 /**
+ * Creates DefinedTerm structured data for glossary pages
+ */
+export function createDefinedTermSchema(config: {
+  term: string;
+  definition: string;
+  slug: string;
+  category?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    name: config.term,
+    description: config.definition,
+    url: `${SITE_URL}/glossary/${config.slug}`,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      name: "AI Visibility Glossary",
+      url: `${SITE_URL}/glossary`,
+    },
+    ...(config.category && { termCode: config.category }),
+  };
+}
+
+/**
+ * Creates ItemList structured data for curated list pages
+ */
+export function createItemListSchema(config: {
+  name: string;
+  description: string;
+  slug: string;
+  items: { name: string; description: string; position: number }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: config.name,
+    description: config.description,
+    url: `${SITE_URL}/best/${config.slug}`,
+    numberOfItems: config.items.length,
+    itemListElement: config.items.map((item) => ({
+      "@type": "ListItem",
+      position: item.position,
+      name: item.name,
+      description: item.description,
+    })),
+  };
+}
+
+/**
+ * Creates SoftwareApplication structured data for platform pages
+ */
+export function createSoftwareApplicationSchema(config: {
+  name: string;
+  description: string;
+  company: string;
+  slug: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: config.name,
+    description: config.description,
+    url: `${SITE_URL}/platforms/${config.slug}`,
+    applicationCategory: "AI Assistant",
+    operatingSystem: "Web",
+    creator: {
+      "@type": "Organization",
+      name: config.company,
+    },
+  };
+}
+
+/**
  * Helper to render schema as JSON-LD script tag
  */
 export function SchemaScript({ schema }: { schema: object }) {

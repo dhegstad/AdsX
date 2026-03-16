@@ -10,6 +10,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import {
   createBreadcrumbSchema,
   createFAQSchema,
+  createSoftwareApplicationSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
 import { getRelatedArticlesForPage } from "@/lib/seo/internal-linking";
@@ -71,6 +72,12 @@ export default async function PlatformPage({ params }: PageProps) {
     <>
       <SchemaScript schema={createBreadcrumbSchema(breadcrumbs)} />
       <SchemaScript schema={createFAQSchema(faqItems)} />
+      <SchemaScript schema={createSoftwareApplicationSchema({
+        name: platform.name,
+        description: platform.description,
+        company: platform.company,
+        slug,
+      })} />
       <BrutalistLayout>
         {/* Hero */}
         <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">

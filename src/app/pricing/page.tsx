@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
-import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
+import { createBreadcrumbSchema, createFAQSchema, createServiceSchema, SchemaScript } from "@/lib/seo/schemas";
 
 const features = [
   {
@@ -107,6 +107,13 @@ export default function PricingPage() {
         { name: "Home", path: "/" },
         { name: "Pricing", path: "/pricing" },
       ])} />
+      <SchemaScript schema={createFAQSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
+      <SchemaScript schema={createServiceSchema({
+        name: "AI Search Advertising - Full Service Plan",
+        description: "Full-service AI visibility and advertising for brands that want to be recommended by ChatGPT, Perplexity, Claude, and Google AI.",
+        price: "4250",
+        priceCurrency: "USD",
+      })} />
       <BrutalistLayout>
       {/* Hero */}
       <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">
