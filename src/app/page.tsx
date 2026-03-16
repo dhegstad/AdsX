@@ -142,7 +142,7 @@ export default function HomePage() {
                   letterSpacing: "-2px"
                 }}
               >
-                Get recommended<br />by AI platforms
+                <h1 className="contents">Get recommended<br />by AI platforms</h1>
               </div>
               <div
                 className="p-5 flex flex-col justify-center bg-[#111] text-[#888]"

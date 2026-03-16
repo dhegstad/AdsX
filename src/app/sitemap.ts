@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts, getAllCategories } from '@/lib/blog';
+import { getAllPosts } from '@/lib/blog';
 import { getAllIndustries } from '@/lib/industries';
 import { getAllComparisons } from '@/lib/comparisons';
 import { getAllLocations } from '@/lib/locations';
@@ -22,14 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  // Get all categories
-  const categories = getAllCategories();
-  const categoryUrls: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${baseUrl}/blog/category/${cat.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.5,
-  }));
+  // Category pages are noindexed - excluded from sitemap to save crawl budget
 
   // Tag pages are noindexed - excluded from sitemap to save crawl budget
 
@@ -219,8 +212,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Blog posts
     ...blogPostUrls,
-    // Category pages
-    ...categoryUrls,
   ].filter((entry, index, self) =>
     index === self.findIndex((e) => e.url === entry.url)
   );

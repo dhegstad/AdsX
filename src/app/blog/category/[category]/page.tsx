@@ -27,14 +27,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${category} Articles`,
     description: `Browse all ${category.toLowerCase()} articles about AI search advertising, ChatGPT ads, and AI visibility optimization.`,
-    alternates: {
-      canonical: `https://www.adsx.com/blog/category/${categorySlug}`,
-    },
     openGraph: {
       title: `${category} | AdsX Blog`,
       description: `Browse all ${category.toLowerCase()} articles about AI search advertising.`,
-      url: `https://www.adsx.com/blog/category/${categorySlug}`,
     },
+    robots: { index: false, follow: true },
   };
 }
 

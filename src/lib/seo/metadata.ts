@@ -76,7 +76,7 @@ export function createArticleMetadata(config: ArticleMetadataConfig): Metadata {
   const ogImage = config.image || `${SITE_URL}/blog/${config.slug}/opengraph-image`;
 
   return {
-    title: `${config.title} | AdsX Blog`,
+    title: config.title,
     description: config.description,
     authors: [{ name: config.author }],
     keywords: config.tags,
