@@ -20,9 +20,20 @@ const nextConfig: NextConfig = {
         destination: "https://www.adsx.com/:path*",
         permanent: true,
       },
-      // Legacy site redirects — old HTML/PDF pages returning 404 in Google Search Console
+      // Legacy site redirects — old HTML/PDF/HTM pages from previous adsx.com site
+      // Exact matches for known legacy paths
+      {
+        source: "/content",
+        destination: "/",
+        permanent: true,
+      },
       {
         source: "/content/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/prodservpart",
         destination: "/",
         permanent: true,
       },
@@ -36,23 +47,24 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      // Catch-all for legacy file extensions at any path depth
       {
-        source: "/main.thm",
+        source: "/:path*.htm",
         destination: "/",
         permanent: true,
       },
       {
-        source: "/main.htm",
+        source: "/:path*.html",
         destination: "/",
         permanent: true,
       },
       {
-        source: "/index.htm",
+        source: "/:path*.thm",
         destination: "/",
         permanent: true,
       },
       {
-        source: "/index.html",
+        source: "/:path*.pdf",
         destination: "/",
         permanent: true,
       },
