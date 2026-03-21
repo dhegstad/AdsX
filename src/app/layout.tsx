@@ -71,6 +71,14 @@ export const metadata: Metadata = {
     siteName: "AdsX",
     title: "AdsX - AI Search Advertising Agency | ChatGPT, Gemini, Claude Ads",
     description: "The first advertising agency built for AI search. 340% avg increase in AI mentions. Get your brand recommended by ChatGPT, Gemini, Claude, Perplexity & more.",
+    images: [
+      {
+        url: "https://www.adsx.com/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "AdsX - Advertising for the AI Search Era",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -78,6 +86,7 @@ export const metadata: Metadata = {
     description: "Get your brand recommended by ChatGPT, Gemini, Claude, Perplexity & more. 340% avg increase in AI mentions.",
     creator: "@adsx",
     site: "@adsx",
+    images: ["https://www.adsx.com/opengraph-image"],
   },
   robots: {
     index: true,
