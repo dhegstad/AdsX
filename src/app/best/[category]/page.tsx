@@ -21,6 +21,10 @@ import { RelatedArticles } from "@/components/related-articles";
 // ISR: generate on first request, cache for 24 hours
 export const revalidate = 86400;
 
+export async function generateStaticParams() {
+  return getAllLists().map((l) => ({ category: l.slug }));
+}
+
 interface PageProps {
   params: Promise<{ category: string }>;
 }

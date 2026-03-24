@@ -9,7 +9,7 @@ interface PageProps {
   params: Promise<{ author: string }>;
 }
 
-// ISR: generate on first request, cache for 24 hours
+// ISR only — single author, not worth static generation
 export const revalidate = 86400;
 
 const deprecatedAuthors = ["sarah-chen", "marcus-rodriguez", "dr-james-liu"];

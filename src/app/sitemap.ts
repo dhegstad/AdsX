@@ -1,4 +1,8 @@
 import { MetadataRoute } from 'next';
+
+// Cache sitemap for 24 hours to avoid regenerating on every crawl request
+export const revalidate = 86400;
+
 import { getAllPosts } from '@/lib/blog';
 import { getAllIndustries } from '@/lib/industries';
 import { getAllComparisons } from '@/lib/comparisons';

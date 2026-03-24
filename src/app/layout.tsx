@@ -9,6 +9,7 @@ import {
   createWebsiteSchema,
   SchemaScript,
 } from "@/lib/seo/schemas";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -126,6 +127,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

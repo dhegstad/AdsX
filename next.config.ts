@@ -93,8 +93,6 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  // Performance: Enable static generation for faster builds
-  output: "standalone",
 };
 
 export default withBundleAnalyzer(nextConfig);

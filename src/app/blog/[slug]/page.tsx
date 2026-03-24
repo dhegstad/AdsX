@@ -13,6 +13,10 @@ import { getRelatedPages } from "@/lib/seo/internal-linking";
 // ISR: generate on first request, cache for 24 hours
 export const revalidate = 86400;
 
+export async function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({ slug }));
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }

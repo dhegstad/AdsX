@@ -9,7 +9,7 @@ interface PageProps {
   params: Promise<{ tag: string }>;
 }
 
-// ISR: generate on first request, cache for 24 hours
+// ISR only — noindexed pages, not worth static generation
 export const revalidate = 86400;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
