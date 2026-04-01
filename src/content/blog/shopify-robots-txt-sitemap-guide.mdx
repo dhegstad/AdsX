@@ -1,0 +1,192 @@
+---
+title: "Shopify Robots.txt and Sitemap: SEO Configuration Guide"
+excerpt: "Configure Shopify's robots.txt to allow AI crawlers, optimize your sitemap structure, and fix common technical SEO issues that block search engines from indexing your store."
+date: "2026-04-01"
+category: "Guide"
+tags: ["Shopify", "SEO", "Robots.txt", "Sitemap", "Technical SEO", "E-commerce"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-04-01"
+faqs:
+  - question: "Can you edit robots.txt on Shopify?"
+    answer: "Yes, since June 2021 Shopify allows merchants to customize robots.txt through a theme template file called robots.txt.liquid. You can add custom rules, allow or disallow specific crawlers, and add sitemap references. Navigate to your theme's Templates folder and create or edit the robots.txt.liquid file."
+  - question: "Does Shopify automatically generate a sitemap?"
+    answer: "Yes, Shopify automatically generates an XML sitemap at yourstore.com/sitemap.xml. This is a sitemap index that references sub-sitemaps for products, collections, blogs, and pages. The sitemap updates automatically when you add or remove content. You cannot directly edit the sitemap, but you can influence what appears in it by managing page visibility and canonical URLs."
+  - question: "Should I allow AI crawlers like GPTBot in my Shopify robots.txt?"
+    answer: "For most e-commerce stores, yes. Allowing AI crawlers like GPTBot (OpenAI), Anthropic-AI, Google-Extended, and PerplexityBot enables your products to appear in AI-powered search results and shopping recommendations. Blocking these crawlers means your products will not be recommended by AI shopping agents, which is an increasingly significant traffic and revenue source."
+---
+
+Your Shopify store's robots.txt and sitemap are the foundation of how search engines and AI systems discover and index your content. A misconfigured robots.txt can block Google from indexing your products. An incomplete sitemap can leave new products undiscovered for weeks. And failing to allow AI crawlers means your store is invisible to the fastest-growing discovery channel in e-commerce.
+
+Most Shopify merchants never touch these files. That is a mistake.
+
+## What Is Robots.txt and Why Does It Matter for Shopify?
+
+The robots.txt file is a plain text file at the root of your domain that tells web crawlers which parts of your site they can and cannot access. When Googlebot, GPTBot, or any other crawler visits your store, the first thing it checks is your robots.txt file.
+
+Shopify generates a default robots.txt that handles the basics — blocking admin pages, checkout, and cart from crawling. But the defaults were designed before AI shopping agents existed, and they do not account for the specific crawl patterns that matter for AI visibility.
+
+## What Does Shopify's Default Robots.txt Look Like?
+
+Shopify's default robots.txt includes these rules:
+
+```
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /carts
+Disallow: /account
+Disallow: /*?*variant=*
+Disallow: /collections/*+*
+Disallow: /collections/*%2B*
+Disallow: /collections/*%2b*
+Sitemap: https://yourstore.com/sitemap.xml
+```
+
+The key rules: admin, cart, checkout, and account pages are blocked (correct). Variant URLs with query parameters are blocked to prevent duplicate content (correct). Collection filter URLs with `+` are blocked (correct).
+
+What is missing: specific directives for AI crawlers, crawl-delay settings, and any custom rules for your store's specific URL structure.
+
+## How Do You Customize Robots.txt on Shopify?
+
+Since June 2021, Shopify allows robots.txt customization through the `robots.txt.liquid` template file. Here is how to set it up:
+
+**Step 1:** In your Shopify admin, go to Online Store > Themes > Actions > Edit Code.
+
+**Step 2:** In the Templates folder, look for `robots.txt.liquid`. If it does not exist, create it.
+
+**Step 3:** Start with Shopify's default output and add your custom rules:
+
+```liquid
+{% comment %}
+  Output Shopify's default robots.txt rules
+{% endcomment %}
+{{ content_for_header }}
+
+{% comment %}
+  Custom rules below
+{% endcomment %}
+
+# Allow AI Search Crawlers
+User-agent: GPTBot
+Allow: /collections/
+Allow: /products/
+Allow: /pages/
+Allow: /blogs/
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+
+User-agent: Anthropic-AI
+Allow: /collections/
+Allow: /products/
+Allow: /pages/
+Allow: /blogs/
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+
+User-agent: Google-Extended
+Allow: /
+```
+
+This configuration explicitly allows the major AI crawlers to access your product and content pages while still blocking sensitive areas.
+
+## Which AI Crawlers Should You Allow?
+
+Here are the major AI crawlers and their user-agent strings as of 2026:
+
+| AI System | User-Agent | What It Does | Recommended |
+|-----------|-----------|--------------|-------------|
+| OpenAI (ChatGPT) | GPTBot | Trains models and powers ChatGPT Shopping | Allow |
+| Anthropic (Claude) | Anthropic-AI | AI assistant training and web access | Allow |
+| Google AI | Google-Extended | Gemini and AI Overviews training | Allow |
+| Perplexity | PerplexityBot | AI-powered search and shopping | Allow |
+| Meta AI | FacebookBot | AI training and commerce features | Allow |
+| Apple Intelligence | Applebot-Extended | Siri, Apple Intelligence features | Allow |
+| Common Crawl | CCBot | Open dataset used by many AI systems | Allow |
+
+For e-commerce stores, allowing all major AI crawlers is almost always the right decision. Your product pages are public information — you want them discoverable. The only scenario where blocking makes sense is if you have proprietary content (research, reports) that you do not want used for AI training.
+
+## How Does Shopify's Sitemap Work?
+
+Shopify automatically generates a sitemap index at `yourstore.com/sitemap.xml`. This index file references sub-sitemaps:
+
+- `sitemap_products_1.xml` — All published products (up to 5,000 per file)
+- `sitemap_collections_1.xml` — All published collections
+- `sitemap_pages_1.xml` — All published pages
+- `sitemap_blogs_1.xml` — All blog posts
+
+Each sub-sitemap includes the URL, last modified date, and change frequency for each page. Shopify updates these sitemaps automatically when you publish, update, or remove content.
+
+**You cannot directly edit Shopify's sitemap.** However, you can influence what appears in it:
+
+- Products set to "Draft" status are excluded from the sitemap
+- Pages with `noindex` meta tags are still included in the sitemap (a known Shopify inconsistency)
+- Canonical URLs determine which URL version appears
+
+## What Are Common Shopify Sitemap Issues?
+
+Several issues commonly affect Shopify sitemaps:
+
+**Issue 1: Duplicate product URLs.** Products that appear in multiple collections can generate multiple URLs. Shopify handles this with canonical tags, but the sitemap may include the non-canonical versions.
+
+**Fix:** Ensure your theme sets canonical URLs correctly. Products should canonicalize to `/products/product-handle`, not `/collections/collection-handle/products/product-handle`.
+
+**Issue 2: Out-of-stock products in the sitemap.** Shopify includes out-of-stock products in the sitemap by default. If you have hundreds of permanently discontinued products, this wastes crawl budget.
+
+**Fix:** Set permanently discontinued products to "Draft" status. For temporarily out-of-stock products, keep them published — you want them indexed for when they return.
+
+**Issue 3: Pagination URLs.** Collection pages with pagination (`?page=2`, `?page=3`) are not included in the sitemap, which means products only accessible via deep pagination may not get crawled.
+
+**Fix:** Ensure important products appear in collections with fewer than 50 items, or create curated collections that surface products without requiring pagination.
+
+**Issue 4: Missing blog post images.** Shopify's sitemap does not include image sub-sitemaps for blog posts, only for products. Blog post images rely on on-page image tags and alt text for discovery.
+
+## How Do You Submit Your Sitemap to Search Engines?
+
+**Google Search Console:** Go to Sitemaps in the left menu, enter your sitemap URL (`https://yourstore.com/sitemap.xml`), and click Submit. Google will report the number of discovered URLs, any errors, and indexing status.
+
+**Bing Webmaster Tools:** Similar process — add your sitemap URL in the Sitemaps section. Bing's crawler also powers several AI systems, so this is worth doing.
+
+**Robots.txt reference:** Your robots.txt should include a Sitemap directive pointing to your sitemap URL. Shopify includes this by default, but verify it is present if you have customized your robots.txt.liquid file.
+
+## How Do You Monitor Crawling and Indexing?
+
+After configuring your robots.txt and sitemap, monitor these metrics in Google Search Console:
+
+| Metric | Where to Find It | What to Look For |
+|--------|------------------|-----------------|
+| Crawl stats | Settings > Crawl stats | Steady or increasing crawl rate |
+| Index coverage | Pages > Indexing | Low number of excluded pages |
+| Sitemap status | Sitemaps | "Success" status, all URLs discovered |
+| Crawl errors | Pages > Indexing | Zero "Blocked by robots.txt" for important pages |
+| Page discovery | Pages > Indexing | New pages discovered within 48 hours |
+
+Check these metrics weekly for the first month after making changes, then monthly thereafter.
+
+## What Are the Action Steps for Shopify Robots.txt and Sitemap Optimization?
+
+1. **Check your current robots.txt** by visiting `yourstore.com/robots.txt` — verify no important pages are blocked
+2. **Create or edit robots.txt.liquid** to add explicit AI crawler permissions
+3. **Submit your sitemap** to Google Search Console and Bing Webmaster Tools if you have not already
+4. **Audit your sitemap contents** — compare the number of URLs in your sitemap to the number of published products and pages
+5. **Set discontinued products to Draft** to remove them from your sitemap and free up crawl budget
+6. **Verify canonical URLs** are correctly set across all product pages
+7. **Monitor Google Search Console weekly** for crawl errors, blocked resources, and indexing issues
+
+These configurations take less than an hour to implement but directly affect whether search engines and AI systems can discover and recommend your products. A properly configured robots.txt and sitemap ensures that every published product has the best possible chance of being indexed, ranked, and recommended.
