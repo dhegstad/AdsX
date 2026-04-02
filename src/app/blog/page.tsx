@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getAllPosts, getAllCategories } from "@/lib/blog";
+import { getPaginatedPosts, getAllCategories } from "@/lib/blog";
 import { BrutalistBlogListing } from "@/components/blog/brutalist-blog-listing";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const posts = getAllPosts();
+  const { posts, totalPages, currentPage, totalPosts } = getPaginatedPosts(1, 20);
   const categories = getAllCategories();
 
   return (
@@ -26,7 +26,13 @@ export default function BlogPage() {
         { name: "Home", path: "/" },
         { name: "Blog", path: "/blog" },
       ])} />
-      <BrutalistBlogListing posts={posts} categories={categories} />
+      <BrutalistBlogListing
+        posts={posts}
+        categories={categories}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalPosts={totalPosts}
+      />
     </>
   );
 }

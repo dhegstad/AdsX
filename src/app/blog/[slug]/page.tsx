@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(slug, post.category, 3, post.tags);
+  const relatedPosts = getRelatedPosts(slug, post.category, 5, post.tags);
   const relatedPages = getRelatedPages(post);
 
   // Create schemas using factories

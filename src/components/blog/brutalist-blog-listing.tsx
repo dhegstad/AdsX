@@ -11,11 +11,17 @@ interface Category {
 interface BrutalistBlogListingProps {
   posts: BlogPostMeta[];
   categories: Category[];
+  currentPage?: number;
+  totalPages?: number;
+  totalPosts?: number;
 }
 
-export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListingProps) {
-  const featuredPost = posts.find((p) => p.featured) || posts[0];
-  const otherPosts = posts.filter((p) => p.slug !== featuredPost?.slug);
+export function BrutalistBlogListing({ posts, categories, currentPage, totalPages, totalPosts }: BrutalistBlogListingProps) {
+  const isPaginated = currentPage !== undefined && totalPages !== undefined;
+  const showFeatured = !isPaginated || currentPage === 1;
+  const featuredPost = showFeatured ? (posts.find((p) => p.featured) || posts[0]) : null;
+  const otherPosts = featuredPost ? posts.filter((p) => p.slug !== featuredPost.slug) : posts;
+  const displayTotal = totalPosts ?? posts.length;
 
   return (
     <BrutalistLayout>
@@ -36,7 +42,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
             letterSpacing: "-2px",
           }}
         >
-          Intel &<br />insights
+          AI Search<br />Optimization Blog
         </h1>
         <p className="mt-6 max-w-2xl text-[#888] text-lg">
           Strategic intelligence on AI search visibility, optimization tactics, and the future of brand discovery.
@@ -46,7 +52,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
       {/* Stats Strip */}
       <div className="grid grid-cols-3 border-b border-[#333]">
         {[
-          { label: "TOTAL POSTS", value: String(posts.length).padStart(2, "0") },
+          { label: "TOTAL POSTS", value: String(displayTotal).padStart(2, "0") },
           { label: "CATEGORIES", value: String(categories.length).padStart(2, "0") },
           { label: "AVG READ TIME", value: "8M" },
         ].map((stat) => (
@@ -205,7 +211,7 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
             className="text-xs tracking-widest text-[#888]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            ALL POSTS
+            {isPaginated && currentPage! > 1 ? `POSTS — PAGE ${currentPage}` : "ALL POSTS"}
           </span>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3">
@@ -265,6 +271,80 @@ export function BrutalistBlogListing({ posts, categories }: BrutalistBlogListing
           ))}
         </div>
       </div>
+
+      {/* Pagination */}
+      {isPaginated && totalPages! > 1 && (
+        <div className="border-b border-[#333] p-6 md:p-8">
+          <nav aria-label="Blog pagination" className="flex flex-wrap items-center justify-center gap-2">
+            {currentPage! > 1 && (
+              <Link
+                href={currentPage === 2 ? "/blog" : `/blog/page/${currentPage! - 1}`}
+                className="px-4 py-2 border border-[#333] text-[#888] text-xs tracking-wider uppercase hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                ← PREV
+              </Link>
+            )}
+            {(() => {
+              const pages: (number | string)[] = [];
+              const total = totalPages!;
+              const current = currentPage!;
+              if (total <= 7) {
+                for (let i = 1; i <= total; i++) pages.push(i);
+              } else {
+                pages.push(1);
+                if (current > 3) pages.push("...");
+                const start = Math.max(2, current - 1);
+                const end = Math.min(total - 1, current + 1);
+                for (let i = start; i <= end; i++) pages.push(i);
+                if (current < total - 2) pages.push("...");
+                pages.push(total);
+              }
+              return pages.map((p, idx) =>
+                typeof p === "string" ? (
+                  <span
+                    key={`ellipsis-${idx}`}
+                    className="px-2 py-2 text-[#888] text-xs"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    ...
+                  </span>
+                ) : (
+                  <Link
+                    key={p}
+                    href={p === 1 ? "/blog" : `/blog/page/${p}`}
+                    className={`px-3 py-2 border text-xs tracking-wider uppercase transition-colors ${
+                      p === current
+                        ? "border-[#10b981] text-[#10b981] bg-[#10b981]/10"
+                        : "border-[#333] text-[#888] hover:border-[#10b981] hover:text-[#10b981]"
+                    }`}
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {String(p).padStart(2, "0")}
+                  </Link>
+                )
+              );
+            })()}
+            {currentPage! < totalPages! && (
+              <Link
+                href={`/blog/page/${currentPage! + 1}`}
+                className="px-4 py-2 border border-[#333] text-[#888] text-xs tracking-wider uppercase hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                NEXT →
+              </Link>
+            )}
+          </nav>
+          <div className="text-center mt-4">
+            <span
+              className="text-xs tracking-widest text-[#888]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              PAGE {currentPage} OF {totalPages}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* CTA */}
       <div className="p-8 md:p-16 text-center">

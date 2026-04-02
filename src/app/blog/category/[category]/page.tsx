@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${category} Articles`,
-    description: `Browse all ${category.toLowerCase()} articles about AI search advertising, ChatGPT ads, and AI visibility optimization.`,
+    title: `${category} Articles | AI Search & E-Commerce Insights`,
+    description: `Browse all ${category.toLowerCase()} articles about AI search advertising, Shopify optimization, ChatGPT ads, and AI visibility strategies for e-commerce brands.`,
     openGraph: {
       title: `${category} | AdsX Blog`,
       description: `Browse all ${category.toLowerCase()} articles about AI search advertising.`,
@@ -69,7 +69,7 @@ export default async function CategoryPage({ params }: PageProps) {
             letterSpacing: "-1px",
           }}
         >
-          {category}
+          {category} Articles:<br />AI Search & E-Commerce
         </h1>
         <p className="mt-4 text-[#888]">
           {posts.length} article{posts.length !== 1 ? "s" : ""} in this category

@@ -14,7 +14,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "AdsX - AI Search Advertising Agency | ChatGPT, Gemini, Claude, Perplexity Ads",
+    default: "AdsX - AI Search Advertising Agency | Get Recommended by AI",
     template: "%s | AdsX",
   },
   icons: {

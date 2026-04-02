@@ -167,6 +167,25 @@ export function getRelatedPosts(currentSlug: string, category: string, limit = 3
   return scored.slice(0, limit).map((s) => s.post);
 }
 
+// Pagination
+export interface PaginatedPosts {
+  posts: BlogPostMeta[];
+  totalPages: number;
+  currentPage: number;
+  totalPosts: number;
+}
+
+export function getPaginatedPosts(page: number, perPage: number): PaginatedPosts {
+  const allPosts = getAllPosts();
+  const totalPosts = allPosts.length;
+  const totalPages = Math.ceil(totalPosts / perPage);
+  const currentPage = Math.max(1, Math.min(page, totalPages));
+  const start = (currentPage - 1) * perPage;
+  const posts = allPosts.slice(start, start + perPage);
+
+  return { posts, totalPages, currentPage, totalPosts };
+}
+
 // Category functions
 export function getAllCategories(): { category: string; count: number; slug: string }[] {
   const posts = getAllPosts();

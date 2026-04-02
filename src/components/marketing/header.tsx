@@ -10,6 +10,7 @@ import { useTheme } from "@/context/theme-context";
 
 const navigation = [
   { name: "Services", href: "/services" },
+  { name: "Blog", href: "/blog" },
   { name: "Case Studies", href: "/case-studies" },
   { name: "About", href: "/about" },
   { name: "Pricing", href: "/pricing" },
