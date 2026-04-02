@@ -27,6 +27,7 @@ const footerLinks = {
     { label: "Case Studies", href: "/case-studies" },
     { label: "Services", href: "/services" },
     { label: "Compare", href: "/compare" },
+    { label: "Migrate to Shopify", href: "/migrate" },
     { label: "Best Of", href: "/best" },
   ],
   explore: [

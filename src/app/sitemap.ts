@@ -13,6 +13,7 @@ import { getAllTerms } from '@/lib/glossary';
 import { getAllPlatforms } from '@/lib/platforms';
 import { getAllExamples } from '@/lib/examples';
 import { getAllLists } from '@/lib/curated-lists';
+import { getAllProducts } from '@/lib/sell-products';
 
 const BLOG_POSTS_PER_SITEMAP = 200;
 
@@ -198,6 +199,19 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
       },
       ...getAllLists().map((list) => ({
         url: `${baseUrl}/best/${list.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      })),
+      // Sell Products (programmatic)
+      {
+        url: `${baseUrl}/sell`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      },
+      ...getAllProducts().map((product) => ({
+        url: `${baseUrl}/sell/${product.slug}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
         priority: 0.6,

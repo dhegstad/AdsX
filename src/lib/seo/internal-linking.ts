@@ -483,6 +483,16 @@ export function getBreadcrumbs(
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }
+  } else if (segments[0] === "migrate") {
+    breadcrumbs.push({ name: "Migrate to Shopify", path: "/migrate" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
+  } else if (segments[0] === "tools") {
+    breadcrumbs.push({ name: "Tools", path: "/tools/free-audit" });
+    if (segments[1]) {
+      breadcrumbs.push({ name: pageTitle, path });
+    }
   } else {
     breadcrumbs.push({ name: pageTitle, path });
   }
