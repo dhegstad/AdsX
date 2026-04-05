@@ -4,6 +4,7 @@ import { BrutalistLayout } from "@/components/brutalist-layout";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 import { getAllShopifyComparisons } from "@/lib/shopify-comparisons";
+import { getAllAdComparisons } from "@/lib/ad-comparisons";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Compare AI Visibility | AdsX",
@@ -140,6 +141,41 @@ export default function ComparePage() {
                   <span className="text-[#10b981]">&#9670;</span>
                   <h3 className="font-semibold group-hover:text-[#10b981] transition-colors">
                     Shopify vs {comp.platformName}
+                  </h3>
+                </div>
+                <p className="text-sm text-[#888] mb-4 line-clamp-2">
+                  {comp.description}
+                </p>
+                <div className="flex items-center gap-2 text-[#10b981] text-sm font-medium">
+                  <span>View comparison</span>
+                  <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* AI Ads vs Traditional Channels */}
+        <div className="border-b border-[#333]">
+          <div className="p-6 border-b border-[#333] bg-[#0c0c0c]">
+            <div
+              className="text-xs tracking-widest text-[#10b981]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              AI ADS VS TRADITIONAL CHANNELS
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3">
+            {getAllAdComparisons().map((comp, idx) => (
+              <Link
+                key={comp.slug}
+                href={`/compare/ai-ads-vs-${comp.slug}`}
+                className={`group p-6 ${idx % 3 < 2 ? "md:border-r" : ""} border-[#333] border-b hover:bg-[#111] transition-colors`}
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-[#10b981]">&#9670;</span>
+                  <h3 className="font-semibold group-hover:text-[#10b981] transition-colors">
+                    {comp.channelA} vs {comp.channelB}
                   </h3>
                 </div>
                 <p className="text-sm text-[#888] mb-4 line-clamp-2">

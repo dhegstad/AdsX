@@ -2005,6 +2005,1757 @@ export const glossaryTerms: GlossaryTerm[] = [
     keywords: ["Bing AI", "Bing Chat", "Bing Copilot", "Bing AI visibility"],
     category: "platforms",
   },
+  // ── New terms: AI advertising, Shopify/e-commerce, and emerging AI search ──
+  {
+    slug: "answer-engine-optimization",
+    term: "Answer Engine Optimization (AEO)",
+    shortDefinition: "The practice of optimizing content so AI-powered answer engines surface your brand in direct responses.",
+    fullDefinition: "Answer Engine Optimization (AEO) is a marketing discipline focused on structuring content so that AI-driven answer engines—such as ChatGPT, Perplexity, and Google AI Overviews—select and cite your brand when generating answers to user queries. Unlike traditional SEO, which aims for link-based rankings, AEO targets the underlying mechanisms LLMs use to retrieve, evaluate, and synthesize information. Tactics include concise Q&A formatting, authoritative entity signals, schema markup, and ensuring content is crawlable by AI bots.",
+    whyItMatters: "As more users get answers directly from AI instead of clicking through search results, AEO determines whether your brand is part of those answers or invisible to a growing audience.",
+    examples: [
+      "Structuring FAQ sections so ChatGPT can pull direct answers about your product",
+      "Optimizing product descriptions so Perplexity cites your site in shopping queries",
+      "Adding structured data that Google AI Overviews can reference",
+    ],
+    relatedTerms: [
+      { term: "Generative Engine Optimization", slug: "generative-engine-optimization" },
+      { term: "LLM Optimization", slug: "llm-optimization" },
+      { term: "AI Visibility", slug: "ai-visibility" },
+    ],
+    usageInContext: "Our AEO strategy ensures your brand appears in AI-generated answers across ChatGPT, Perplexity, and Google AI Overviews.",
+    commonMisconceptions: "AEO is not just traditional SEO rebranded. AI answer engines use fundamentally different ranking and citation logic than link-based search engines.",
+    faqs: [
+      {
+        question: "How is AEO different from SEO?",
+        answer: "SEO optimizes for link rankings on search engine results pages. AEO optimizes for being cited or mentioned in AI-generated answers, which requires different content structures and authority signals.",
+      },
+      {
+        question: "Which answer engines matter most for AEO?",
+        answer: "ChatGPT, Perplexity, Google AI Overviews, and Claude are the primary answer engines. Each has different retrieval mechanisms, so a multi-platform approach is important.",
+      },
+      {
+        question: "Can small brands benefit from AEO?",
+        answer: "Yes. AI answer engines often surface niche experts and well-structured content regardless of domain authority, giving smaller brands an opportunity traditional SEO does not.",
+      },
+    ],
+    keywords: ["answer engine optimization", "AEO", "AEO marketing", "optimize for AI answers", "answer engine SEO"],
+    category: "optimization",
+  },
+  {
+    slug: "chatgpt-shopping",
+    term: "ChatGPT Shopping",
+    shortDefinition: "OpenAI's native shopping experience that lets users browse, compare, and purchase products directly inside ChatGPT.",
+    fullDefinition: "ChatGPT Shopping is OpenAI's integrated commerce feature that enables users to search for products, compare options, read reviews, and complete purchases without leaving the ChatGPT interface. When a user asks a shopping-related question, ChatGPT can display product cards with images, prices, ratings, and direct buy links. The feature pulls data from merchant feeds, reviews, and web sources to curate product recommendations in a conversational format.",
+    whyItMatters: "ChatGPT Shopping represents a new commerce channel where purchase decisions happen inside an AI conversation. Brands that are not represented in ChatGPT's product data are excluded from a rapidly growing buying path.",
+    examples: [
+      "A user asking ChatGPT 'best running shoes under $150' and seeing product cards with buy links",
+      "ChatGPT comparing three laptop models side by side during a purchase research conversation",
+      "A Shopify merchant's products appearing in ChatGPT shopping results after feed optimization",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Product Feed AI", slug: "product-feed-ai" },
+    ],
+    usageInContext: "We optimize your product feeds and content so your brand appears prominently in ChatGPT Shopping results.",
+    commonMisconceptions: "ChatGPT Shopping is not just a search engine reskin. It synthesizes information conversationally, meaning product positioning depends on content quality and entity authority, not just bid price.",
+    faqs: [
+      {
+        question: "How do products get into ChatGPT Shopping?",
+        answer: "Products are surfaced through merchant feeds, web crawling, and partnerships. Ensuring your product data is structured, accurate, and accessible to OpenAI's crawlers is essential.",
+      },
+      {
+        question: "Is ChatGPT Shopping free for merchants?",
+        answer: "Currently, organic product listings in ChatGPT Shopping do not require payment. However, OpenAI is developing advertising products that may introduce paid placements.",
+      },
+      {
+        question: "Does ChatGPT Shopping work for services, not just products?",
+        answer: "ChatGPT Shopping is primarily designed for physical and digital products. Service-based businesses benefit more from general AI visibility and citation optimization.",
+      },
+    ],
+    keywords: ["ChatGPT shopping", "ChatGPT commerce", "buy on ChatGPT", "ChatGPT product search", "OpenAI shopping"],
+    category: "platforms",
+  },
+  {
+    slug: "chatgpt-ads",
+    term: "ChatGPT Ads",
+    shortDefinition: "Paid advertising placements within ChatGPT conversations and shopping experiences.",
+    fullDefinition: "ChatGPT Ads refers to the emerging advertising ecosystem within OpenAI's ChatGPT platform. As ChatGPT becomes a primary interface for information discovery and shopping, OpenAI is developing ad formats that allow brands to sponsor placements in conversational responses, shopping results, and product recommendations. These ads blend naturally into the conversational flow, appearing as recommended products, sponsored answers, or highlighted brands within ChatGPT's responses.",
+    whyItMatters: "ChatGPT Ads represent an entirely new advertising channel with high purchase intent. Users asking AI for product recommendations are often further along in the buying journey than those browsing social media, making these placements potentially high-converting.",
+    examples: [
+      "A sponsored product card appearing when a user asks ChatGPT for laptop recommendations",
+      "A brand's answer being promoted in response to an industry question",
+      "A featured merchant listing in ChatGPT Shopping results",
+    ],
+    relatedTerms: [
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+      { term: "AI Ads CPM", slug: "ai-ads-cpm" },
+      { term: "Sponsored AI Results", slug: "sponsored-ai-results" },
+    ],
+    usageInContext: "We help brands prepare for ChatGPT Ads by ensuring product feeds, entity authority, and content are optimized before paid placements launch.",
+    commonMisconceptions: "ChatGPT Ads will not work like Google Ads. Conversational ad formats require natural integration into AI responses rather than keyword bidding, making content quality and brand authority more important than budget alone.",
+    faqs: [
+      {
+        question: "Are ChatGPT Ads available now?",
+        answer: "OpenAI has begun testing ad formats in ChatGPT. The full advertising platform is still evolving, but brands should prepare their AI presence now to be ready when it scales.",
+      },
+      {
+        question: "How will ChatGPT Ads be priced?",
+        answer: "Pricing models are still being developed. Expect a mix of CPM, cost-per-click, and potentially cost-per-citation models unique to conversational AI.",
+      },
+      {
+        question: "Will ChatGPT Ads hurt organic AI visibility?",
+        answer: "Organic and paid AI visibility will likely coexist, similar to Google. Strong organic presence will remain valuable, and ads will provide additional reach.",
+      },
+    ],
+    keywords: ["ChatGPT ads", "ChatGPT advertising", "OpenAI ads", "AI advertising ChatGPT", "advertise on ChatGPT"],
+    category: "strategy",
+  },
+  {
+    slug: "perplexity-merchant-program",
+    term: "Perplexity Merchant Program",
+    shortDefinition: "Perplexity's program that enables merchants to list products and earn visibility in AI-powered shopping answers.",
+    fullDefinition: "The Perplexity Merchant Program is a commerce initiative by Perplexity AI that allows e-commerce brands and retailers to submit product catalogs, feeds, and structured data to be featured in Perplexity's AI-powered shopping results. Merchants who join the program gain enhanced visibility when users ask product-related questions, with rich product cards, pricing, reviews, and direct purchase links appearing in Perplexity's answers. The program represents one of the first formal merchant relationships between an AI search platform and e-commerce businesses.",
+    whyItMatters: "Perplexity's Merchant Program offers early-mover advantage in AI commerce. Merchants enrolled in the program get preferential placement in product-related AI answers, capturing purchase-intent traffic before competitors.",
+    examples: [
+      "A Shopify store enrolling in the program to appear in Perplexity product comparisons",
+      "Product cards with buy-now links showing in Perplexity answers to shopping queries",
+      "Merchants using the program dashboard to track AI-driven referral traffic",
+    ],
+    relatedTerms: [
+      { term: "Perplexity", slug: "perplexity" },
+      { term: "Product Feed AI", slug: "product-feed-ai" },
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+    ],
+    usageInContext: "We help you enroll in and optimize for the Perplexity Merchant Program so your products are featured in AI shopping answers.",
+    commonMisconceptions: "The Perplexity Merchant Program is not just a product listing directory. It feeds directly into Perplexity's AI reasoning, meaning product data quality and structured information determine placement more than simple catalog size.",
+    faqs: [
+      {
+        question: "Who can join the Perplexity Merchant Program?",
+        answer: "The program is open to e-commerce merchants with product catalogs. Shopify stores, DTC brands, and retailers can apply, with eligibility expanding over time.",
+      },
+      {
+        question: "Does the Perplexity Merchant Program cost money?",
+        answer: "Perplexity has offered organic merchant listings. Paid promotion options are developing alongside the platform's advertising features.",
+      },
+      {
+        question: "How does the program differ from Google Shopping?",
+        answer: "Unlike Google Shopping's auction-based model, Perplexity's program uses AI to match products to queries conversationally, emphasizing relevance and product data quality over bids.",
+      },
+    ],
+    keywords: ["Perplexity merchant program", "Perplexity shopping", "Perplexity commerce", "sell on Perplexity", "Perplexity product listing"],
+    category: "platforms",
+  },
+  {
+    slug: "ai-overview",
+    term: "Google AI Overview",
+    shortDefinition: "Google's AI-generated answer summaries displayed at the top of search results.",
+    fullDefinition: "Google AI Overview (formerly Search Generative Experience or SGE) is Google's feature that displays AI-generated summary answers at the top of search results pages. When a user enters a query, Google's AI synthesizes information from multiple web sources into a concise overview, often with citations and links to source pages. AI Overviews appear above traditional organic results and can significantly impact click-through rates, making them a critical factor in modern search visibility strategy.",
+    whyItMatters: "AI Overviews dominate the top of Google search results, pushing organic listings further down the page. Being cited in an AI Overview can drive significant traffic, while being excluded can drastically reduce visibility even for high-ranking pages.",
+    examples: [
+      "A search for 'best project management tools' showing an AI-generated comparison at the top",
+      "An AI Overview citing three sources when answering 'how does solar energy work'",
+      "Product recommendations appearing in AI Overviews for commercial queries",
+    ],
+    relatedTerms: [
+      { term: "Google", slug: "google" },
+      { term: "Zero-Click Search", slug: "zero-click-search" },
+      { term: "Answer Engine Optimization", slug: "answer-engine-optimization" },
+    ],
+    usageInContext: "We optimize your content to be cited in Google AI Overviews, ensuring visibility in both traditional and AI-enhanced search results.",
+    commonMisconceptions: "Ranking #1 in organic results does not guarantee inclusion in AI Overviews. Google's AI uses different criteria for selecting overview sources, often favoring structured, authoritative, and concise content.",
+    faqs: [
+      {
+        question: "How do I get my site cited in Google AI Overviews?",
+        answer: "Focus on clear, well-structured content that directly answers questions. Use schema markup, maintain strong E-E-A-T signals, and ensure your content is comprehensive yet concise.",
+      },
+      {
+        question: "Do AI Overviews reduce website traffic?",
+        answer: "They can reduce clicks for informational queries where users get their answer directly. However, being cited in an AI Overview can increase traffic compared to not appearing at all.",
+      },
+      {
+        question: "Are AI Overviews shown for all queries?",
+        answer: "No. Google selectively shows AI Overviews for queries where an AI summary adds value. Commercial, informational, and comparison queries are most likely to trigger them.",
+      },
+    ],
+    keywords: ["Google AI Overview", "AI overview", "SGE", "search generative experience", "Google AI answers"],
+    category: "platforms",
+  },
+  {
+    slug: "agentic-commerce",
+    term: "Agentic Commerce",
+    shortDefinition: "A commerce model where AI agents autonomously browse, compare, and purchase products on behalf of users.",
+    fullDefinition: "Agentic commerce is an emerging retail paradigm in which AI agents act as autonomous shopping proxies for consumers. Rather than a human browsing websites and comparing products, an AI agent receives a shopping intent (e.g., 'find me a lightweight laptop under $1,000'), then independently researches options, evaluates reviews, compares prices, and can even complete the purchase. This model fundamentally changes how brands reach buyers because the 'customer' interacting with your storefront may be an AI agent, not a human.",
+    whyItMatters: "When AI agents make or heavily influence purchasing decisions, traditional marketing tactics like banner ads and emotional branding become less effective. Brands must optimize for machine-readable product data, competitive pricing, and structured information that AI agents can evaluate.",
+    examples: [
+      "An AI agent comparing five skincare brands based on ingredients, reviews, and price before recommending one",
+      "A ChatGPT plugin completing an entire purchase flow from research to checkout",
+      "Shopify's agentic storefront features enabling AI bots to browse and transact",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Conversational Commerce", slug: "conversational-commerce" },
+      { term: "AI Commerce Protocol", slug: "ai-commerce-protocol" },
+    ],
+    usageInContext: "Agentic commerce is reshaping how products are discovered and bought—our platform ensures your brand is optimized for AI agents, not just human shoppers.",
+    commonMisconceptions: "Agentic commerce does not mean humans are removed from buying decisions. In most cases, AI agents research and recommend, while humans approve the final purchase. The shift is in who does the discovery work.",
+    faqs: [
+      {
+        question: "Is agentic commerce already happening?",
+        answer: "Yes. AI assistants like ChatGPT and Perplexity already influence purchase decisions. Fully autonomous purchasing is emerging through AI agent frameworks and Shopify integrations.",
+      },
+      {
+        question: "How do I optimize my store for agentic commerce?",
+        answer: "Ensure your product data is structured, machine-readable, and accessible via APIs or AI-crawlable feeds. Competitive pricing and strong review signals are critical since AI agents compare objectively.",
+      },
+      {
+        question: "Will agentic commerce replace traditional e-commerce?",
+        answer: "Not replace, but augment. Expect a growing share of purchases to be agent-influenced. Brands need to serve both human browsers and AI agents effectively.",
+      },
+    ],
+    keywords: ["agentic commerce", "AI shopping agent", "autonomous shopping", "AI commerce", "agent-driven commerce"],
+    category: "strategy",
+  },
+  {
+    slug: "universal-commerce-protocol",
+    term: "Universal Commerce Protocol",
+    shortDefinition: "A standardized protocol enabling AI agents to interact with online stores for browsing, comparing, and purchasing products.",
+    fullDefinition: "The Universal Commerce Protocol is a proposed standardized framework that allows AI agents to interact with e-commerce platforms in a consistent, machine-readable way. Similar to how HTTP standardized web communication, this protocol aims to standardize how AI agents discover product catalogs, query inventory, compare prices, and execute transactions across different online stores. The protocol enables any AI agent to seamlessly interact with any participating merchant without custom integrations.",
+    whyItMatters: "Without a universal protocol, each AI platform requires separate integrations with each merchant. A standardized protocol dramatically expands the reach of AI commerce, and early adopters gain access to every AI agent that supports the protocol.",
+    examples: [
+      "An AI agent using the protocol to query product availability across 50 stores simultaneously",
+      "Shopify implementing the protocol so any AI agent can browse its merchants' catalogs",
+      "A price comparison AI using the protocol to get real-time pricing from multiple retailers",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "AI Commerce Protocol", slug: "ai-commerce-protocol" },
+      { term: "Product Feed AI", slug: "product-feed-ai" },
+    ],
+    usageInContext: "Implementing the Universal Commerce Protocol ensures your store is accessible to every AI shopping agent, maximizing your reach in the agentic commerce era.",
+    commonMisconceptions: "The Universal Commerce Protocol is not just another API standard. It is specifically designed for AI agent interactions, including natural language query support and autonomous transaction capabilities that traditional APIs do not handle.",
+    faqs: [
+      {
+        question: "Is the Universal Commerce Protocol widely adopted?",
+        answer: "The protocol is in early stages. Major platforms like Shopify are exploring implementations, and adoption is expected to accelerate as agentic commerce grows.",
+      },
+      {
+        question: "Do I need to implement this protocol now?",
+        answer: "Early implementation provides competitive advantage. Start by ensuring your product data is structured and machine-readable, which is the foundation the protocol builds on.",
+      },
+      {
+        question: "How does this differ from existing product feeds?",
+        answer: "Traditional feeds are one-way data exports. The Universal Commerce Protocol enables two-way interactions—AI agents can query, filter, and transact in real time.",
+      },
+    ],
+    keywords: ["universal commerce protocol", "AI commerce standard", "agentic commerce protocol", "AI shopping protocol", "machine-readable commerce"],
+    category: "strategy",
+  },
+  {
+    slug: "ai-shopping-assistant",
+    term: "AI Shopping Assistant",
+    shortDefinition: "An AI-powered tool that helps consumers discover, compare, and purchase products through conversational interaction.",
+    fullDefinition: "An AI shopping assistant is an artificial intelligence application specifically designed to help consumers with purchase decisions through natural language conversation. These assistants can understand shopping intent, recommend products based on preferences and constraints, compare options across retailers, surface reviews and ratings, and guide users through the purchase process. Examples include ChatGPT's shopping features, Amazon Rufus, Perplexity's shopping mode, and various brand-specific AI assistants embedded in e-commerce sites.",
+    whyItMatters: "AI shopping assistants are becoming the new storefront. When a consumer asks an AI assistant for product recommendations, the assistant's response determines which brands get considered. If your products are not in the AI's knowledge base or feeds, you lose the sale before the customer even sees your site.",
+    examples: [
+      "Amazon Rufus helping a customer find the right hiking boots based on trail type and budget",
+      "ChatGPT recommending Shopify stores when asked about unique gift ideas",
+      "A brand's embedded AI assistant guiding visitors from browsing to checkout",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+      { term: "Rufus", slug: "rufus" },
+    ],
+    usageInContext: "We ensure your products are surfaced by the leading AI shopping assistants so you capture purchase-intent traffic across every AI platform.",
+    commonMisconceptions: "AI shopping assistants are not simply chatbots with a product database. They use LLMs to understand nuanced preferences, compare trade-offs, and provide personalized recommendations that basic search filters cannot match.",
+    faqs: [
+      {
+        question: "Which AI shopping assistants should I prioritize?",
+        answer: "Focus on ChatGPT Shopping, Perplexity, and Amazon Rufus first, as they have the largest user bases for purchase-intent queries. Then expand to Google Gemini and niche assistants.",
+      },
+      {
+        question: "How do AI shopping assistants choose which products to recommend?",
+        answer: "They consider product data quality, reviews, pricing competitiveness, brand authority, and how well product information matches the user's stated preferences.",
+      },
+      {
+        question: "Can AI shopping assistants complete purchases?",
+        answer: "Some can. ChatGPT and Perplexity offer direct purchase links, and emerging agentic commerce features enable full checkout without leaving the AI interface.",
+      },
+    ],
+    keywords: ["AI shopping assistant", "AI product recommendations", "AI personal shopper", "conversational shopping AI", "AI buying assistant"],
+    category: "ai-fundamentals",
+  },
+  {
+    slug: "share-of-model",
+    term: "Share of Model",
+    shortDefinition: "A metric measuring how often an AI model recommends your brand compared to competitors for relevant queries.",
+    fullDefinition: "Share of Model is an emerging marketing metric that quantifies the percentage of times a specific AI model (such as ChatGPT, Claude, or Gemini) recommends or mentions your brand when responding to queries relevant to your industry or product category. It is the AI equivalent of share of voice in traditional marketing. Tracking share of model across different AI platforms reveals where your brand has strong AI visibility and where competitors are dominating the conversation.",
+    whyItMatters: "Share of model directly correlates with AI-driven revenue. As more consumers use AI assistants for purchase decisions, the brands with higher share of model capture more consideration and conversions from AI-influenced buying journeys.",
+    examples: [
+      "Tracking that your CRM brand is recommended 35% of the time by ChatGPT for 'best CRM' queries",
+      "Comparing share of model across ChatGPT, Claude, and Perplexity to find platform gaps",
+      "Monitoring share of model changes after a content optimization campaign",
+    ],
+    relatedTerms: [
+      { term: "Share of Voice AI", slug: "share-of-voice-ai" },
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+      { term: "AI Search Impression", slug: "ai-search-impression" },
+    ],
+    usageInContext: "Our dashboard tracks your share of model across every major AI platform, showing exactly how often you are recommended versus competitors.",
+    commonMisconceptions: "Share of model is not static. AI models update their knowledge and reasoning regularly, so share of model can fluctuate based on content changes, competitor activity, and model updates.",
+    faqs: [
+      {
+        question: "How is share of model measured?",
+        answer: "By systematically querying AI models with relevant prompts and tracking how often each brand is mentioned or recommended. This is done at scale across hundreds of queries per category.",
+      },
+      {
+        question: "What is a good share of model percentage?",
+        answer: "It varies by category competitiveness. In a market with 10 major players, achieving 20-30% share of model indicates strong AI visibility. Market leaders often reach 40%+.",
+      },
+      {
+        question: "Can I improve my share of model quickly?",
+        answer: "Some tactics yield faster results than others. Structured data and content optimization can improve share within weeks, while building entity authority takes months.",
+      },
+    ],
+    keywords: ["share of model", "AI share of voice", "LLM share of voice", "AI brand mentions", "AI recommendation share"],
+    category: "measurement",
+  },
+  {
+    slug: "entity-authority",
+    term: "Entity Authority",
+    shortDefinition: "The strength of your brand's identity and reputation as understood by AI systems and knowledge graphs.",
+    fullDefinition: "Entity authority measures how well AI systems recognize, understand, and trust your brand as a distinct entity. It encompasses the completeness and accuracy of your brand's presence in knowledge graphs (like Google's Knowledge Graph and Wikidata), the consistency of information across authoritative sources, and the strength of associations between your brand and relevant topics. High entity authority means AI systems confidently identify your brand and associate it with your core products, services, and expertise areas.",
+    whyItMatters: "AI models recommend brands they 'understand' and trust. Entity authority is the foundation of AI visibility—without it, LLMs may confuse your brand with competitors, misrepresent your offerings, or simply omit you from responses.",
+    examples: [
+      "A brand with strong entity authority appearing in Google's Knowledge Panel with accurate information",
+      "An LLM correctly identifying your company's products, founding year, and market position",
+      "Wikipedia and Wikidata entries reinforcing your brand's entity signals",
+    ],
+    relatedTerms: [
+      { term: "Knowledge Graph", slug: "knowledge-graph" },
+      { term: "Entity Recognition", slug: "entity-recognition" },
+      { term: "E-E-A-T", slug: "e-e-a-t" },
+    ],
+    usageInContext: "Building your entity authority ensures AI systems recognize your brand as a trusted source, which is the foundation for all AI visibility improvements.",
+    commonMisconceptions: "Entity authority is not the same as domain authority. A site can have high domain authority for SEO but weak entity authority if AI systems do not clearly understand what the brand represents.",
+    faqs: [
+      {
+        question: "How do I build entity authority?",
+        answer: "Ensure consistent brand information across authoritative sources: Wikipedia, Wikidata, Google Business Profile, industry directories, and major publications. Structured data on your site reinforces these signals.",
+      },
+      {
+        question: "Can I measure entity authority?",
+        answer: "Yes. Query AI models about your brand and evaluate accuracy, check your Knowledge Graph presence, and audit how consistently your brand is described across the web.",
+      },
+      {
+        question: "How long does it take to build entity authority?",
+        answer: "Building strong entity authority typically takes 3-6 months of consistent effort across multiple channels. The payoff is lasting AI visibility that compounds over time.",
+      },
+    ],
+    keywords: ["entity authority", "brand entity", "knowledge graph authority", "AI brand recognition", "entity SEO"],
+    category: "visibility",
+  },
+  {
+    slug: "llm-optimization",
+    term: "LLM Optimization (LLMO)",
+    shortDefinition: "The practice of optimizing your digital presence to be favorably represented by large language models.",
+    fullDefinition: "LLM Optimization (LLMO) is the strategic process of improving how large language models perceive, understand, and represent your brand. It encompasses content optimization for AI comprehension, entity authority building, structured data implementation, and strategic placement across sources that LLMs reference during training and retrieval. LLMO differs from traditional SEO because it targets the reasoning and synthesis processes of AI models rather than search engine ranking algorithms.",
+    whyItMatters: "As LLMs become primary information intermediaries, LLMO determines whether your brand is accurately represented, positively positioned, and consistently recommended in AI-generated responses across all major platforms.",
+    examples: [
+      "Restructuring product pages so LLMs can accurately extract and compare features",
+      "Building citations on authoritative sources that LLMs reference during training",
+      "Creating content that addresses the specific query patterns users bring to AI assistants",
+    ],
+    relatedTerms: [
+      { term: "LLM SEO", slug: "llm-seo" },
+      { term: "Answer Engine Optimization", slug: "answer-engine-optimization" },
+      { term: "AI Visibility", slug: "ai-visibility" },
+    ],
+    usageInContext: "Our LLMO strategies ensure every major language model accurately understands and recommends your brand for relevant queries.",
+    commonMisconceptions: "LLMO is not about gaming or tricking AI models. It is about ensuring your brand information is accurate, well-structured, and accessible so LLMs can fairly represent you alongside competitors.",
+    faqs: [
+      {
+        question: "Is LLMO the same as GEO?",
+        answer: "They overlap significantly. GEO (Generative Engine Optimization) focuses on AI search engines specifically, while LLMO is broader, covering all LLM-powered applications including assistants, agents, and embedded AI.",
+      },
+      {
+        question: "What are the key LLMO tactics?",
+        answer: "Key tactics include structured data markup, entity authority building, content optimization for AI comprehension, citation building on authoritative sources, and monitoring AI outputs for accuracy.",
+      },
+      {
+        question: "How do I measure LLMO success?",
+        answer: "Track share of model, citation rates, AI visibility scores, and brand mention accuracy across major LLMs. Compare these metrics before and after optimization efforts.",
+      },
+    ],
+    keywords: ["LLMO", "LLM optimization", "optimize for LLMs", "large language model optimization", "LLM marketing"],
+    category: "optimization",
+  },
+  {
+    slug: "ai-citation",
+    term: "AI Citation",
+    shortDefinition: "When an AI system references or links to your content as a source in its generated response.",
+    fullDefinition: "An AI citation occurs when an AI-powered platform such as Perplexity, Google AI Overviews, or ChatGPT with browsing references your content as a source in its generated answer. Citations can appear as inline links, footnotes, source cards, or attributed quotes. AI citations serve as the equivalent of backlinks in traditional SEO—they validate your authority, drive referral traffic, and signal to the AI system that your content is trustworthy. Earning consistent AI citations is a primary goal of AI visibility strategies.",
+    whyItMatters: "AI citations drive direct traffic from AI platforms and reinforce your authority in the AI ecosystem. Brands that earn more citations get recommended more frequently, creating a virtuous cycle of AI visibility.",
+    examples: [
+      "Perplexity citing your blog post as a source in a research answer with an inline link",
+      "Google AI Overview listing your page as one of three sources for its summary",
+      "ChatGPT with browsing linking to your product page when recommending solutions",
+    ],
+    relatedTerms: [
+      { term: "Citation", slug: "citation" },
+      { term: "Content Authority", slug: "content-authority" },
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+    ],
+    usageInContext: "We track and optimize your AI citation rate across platforms, ensuring your content is referenced as a trusted source in AI-generated answers.",
+    commonMisconceptions: "Not all AI mentions are citations. A brand mention without a source link provides visibility but less traffic. True AI citations include attribution that users can follow back to your content.",
+    faqs: [
+      {
+        question: "How do I earn more AI citations?",
+        answer: "Create authoritative, well-structured content that directly answers common queries. Ensure your site is crawlable by AI bots, use schema markup, and build topical authority in your niche.",
+      },
+      {
+        question: "Which AI platforms provide citations?",
+        answer: "Perplexity consistently provides inline citations. Google AI Overviews link to source pages. ChatGPT with browsing includes references. Claude and base ChatGPT may mention brands without direct links.",
+      },
+      {
+        question: "Can I track AI citations?",
+        answer: "Yes. Monitor referral traffic from AI platforms in your analytics, and use AI visibility tools that systematically query AI models to track when and where your content is cited.",
+      },
+    ],
+    keywords: ["AI citation", "AI source citation", "cited by AI", "AI backlinks", "AI referral traffic"],
+    category: "visibility",
+  },
+  {
+    slug: "content-freshness-ai",
+    term: "Content Freshness for AI",
+    shortDefinition: "The recency and update frequency of your content as evaluated by AI systems for inclusion in their responses.",
+    fullDefinition: "Content freshness for AI refers to how recently your content has been created or updated, and how this recency factor influences whether AI systems include it in their responses. AI platforms with retrieval capabilities (like Perplexity and ChatGPT with browsing) prioritize recent content for time-sensitive queries. Even for LLMs relying on training data, content that was fresh and frequently updated at the time of training crawls receives stronger signals. Maintaining content freshness ensures your information stays current in both real-time AI retrieval and future training data sets.",
+    whyItMatters: "Outdated content gets deprioritized by AI systems. If your competitor's content is more recent and accurate, AI platforms will cite them instead. Content freshness is a competitive lever for AI visibility.",
+    examples: [
+      "Updating pricing pages quarterly so AI shopping assistants show current prices",
+      "Publishing timely industry analysis that Perplexity picks up within hours",
+      "Refreshing comparison articles so LLMs reference your latest data",
+    ],
+    relatedTerms: [
+      { term: "Content Optimization AI", slug: "content-optimization-ai" },
+      { term: "AI Crawl Budget", slug: "ai-crawl-budget" },
+      { term: "Training Data", slug: "training-data" },
+    ],
+    usageInContext: "We maintain a content freshness schedule to ensure AI systems always have your most current information for real-time retrieval and future training cycles.",
+    commonMisconceptions: "Content freshness does not mean publishing new content constantly. Updating existing high-performing content with current data is often more effective than creating new pages.",
+    faqs: [
+      {
+        question: "How often should I update content for AI freshness?",
+        answer: "Update key pages at least quarterly. For fast-moving industries, monthly updates to core content are recommended. Product pages should be updated whenever pricing or features change.",
+      },
+      {
+        question: "Does content freshness matter for all AI platforms?",
+        answer: "It matters most for retrieval-based platforms like Perplexity and ChatGPT with browsing. For base LLMs, freshness at the time of training data collection matters.",
+      },
+      {
+        question: "How can I signal content freshness to AI crawlers?",
+        answer: "Use visible last-updated dates, update XML sitemaps with accurate lastmod dates, and make substantive content changes rather than superficial edits.",
+      },
+    ],
+    keywords: ["content freshness AI", "AI content recency", "update content for AI", "AI crawl freshness", "content update frequency"],
+    category: "optimization",
+  },
+  {
+    slug: "digital-pr-ai",
+    term: "Digital PR for AI Visibility",
+    shortDefinition: "Using digital PR strategies to build brand mentions on authoritative sources that AI systems reference.",
+    fullDefinition: "Digital PR for AI visibility is the strategic practice of earning brand mentions, citations, and coverage on authoritative websites and publications that AI models reference during training and retrieval. This includes earning press coverage, contributing expert quotes, publishing research that gets cited, and building presence on high-authority platforms. Unlike traditional digital PR focused on backlinks for SEO, AI-focused digital PR prioritizes sources that LLMs weight heavily in their knowledge base, such as Wikipedia, major news outlets, industry publications, and trusted review platforms.",
+    whyItMatters: "AI models learn about brands from authoritative sources. Strategic digital PR plants the seeds that grow into AI recommendations—the more high-quality mentions across trusted sources, the more likely AI systems are to recommend your brand.",
+    examples: [
+      "Earning a feature in a major publication that LLMs reference for industry recommendations",
+      "Contributing expert commentary that gets cited in Wikipedia articles",
+      "Publishing original research that Perplexity cites in AI-generated answers",
+    ],
+    relatedTerms: [
+      { term: "Entity Authority", slug: "entity-authority" },
+      { term: "Brand Mention", slug: "brand-mention" },
+      { term: "Content Authority", slug: "content-authority" },
+    ],
+    usageInContext: "Our digital PR strategy builds your brand's presence on the authoritative sources that AI models trust, directly improving your AI visibility and recommendation rates.",
+    commonMisconceptions: "Digital PR for AI is not just about getting backlinks. A mention on a high-authority site without a backlink can still significantly boost your entity authority in AI systems, because LLMs process text content, not just link graphs.",
+    faqs: [
+      {
+        question: "Which publications matter most for AI visibility?",
+        answer: "Major news outlets (NYT, Forbes, TechCrunch), Wikipedia, industry-specific authoritative sites, and trusted review platforms. LLMs weight these sources heavily in their training data.",
+      },
+      {
+        question: "How is AI-focused digital PR different from traditional PR?",
+        answer: "Traditional PR focuses on audience reach and backlinks. AI-focused PR targets sources LLMs reference, emphasizes factual accuracy and entity clarity, and values text mentions as much as links.",
+      },
+      {
+        question: "How long before digital PR efforts impact AI visibility?",
+        answer: "Real-time AI platforms like Perplexity may cite new coverage within days. For base LLMs, improvements appear after model updates that incorporate new training data, typically over months.",
+      },
+    ],
+    keywords: ["digital PR AI", "AI visibility PR", "PR for LLMs", "AI brand mentions PR", "digital PR strategy AI"],
+    category: "strategy",
+  },
+  {
+    slug: "product-feed-ai",
+    term: "Product Feed for AI",
+    shortDefinition: "A structured product data feed optimized for consumption by AI shopping assistants and agentic commerce platforms.",
+    fullDefinition: "A product feed for AI is a structured data export of your product catalog specifically optimized for AI platforms that power shopping experiences. While traditional product feeds (like Google Shopping feeds) focus on ad platforms, AI product feeds are designed for consumption by ChatGPT Shopping, Perplexity's merchant features, Amazon Rufus, and other AI shopping assistants. These feeds require rich, machine-readable product data including detailed descriptions, specifications, competitive differentiators, review summaries, and structured attributes that AI systems use to compare and recommend products.",
+    whyItMatters: "AI shopping assistants can only recommend products they can access and understand. A well-optimized AI product feed ensures your catalog is visible and accurately represented across every AI commerce platform.",
+    examples: [
+      "A Shopify store generating an AI-optimized feed with detailed product attributes for ChatGPT Shopping",
+      "Including competitive differentiators in feed descriptions so AI assistants can explain why your product stands out",
+      "Enriching product feeds with review summaries and use-case descriptions for Perplexity's merchant program",
+    ],
+    relatedTerms: [
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+      { term: "Perplexity Merchant Program", slug: "perplexity-merchant-program" },
+      { term: "Product Schema AI", slug: "product-schema-ai" },
+    ],
+    usageInContext: "We optimize your product feeds for AI consumption, ensuring every major AI shopping platform can accurately discover and recommend your products.",
+    commonMisconceptions: "Your existing Google Shopping feed is not sufficient for AI platforms. AI shopping assistants need richer, more descriptive product data than traditional ad feeds provide.",
+    faqs: [
+      {
+        question: "What data should an AI product feed include?",
+        answer: "Beyond standard fields (title, price, image), include detailed descriptions, key differentiators, use cases, review summaries, technical specifications, and structured attributes like materials, dimensions, and compatibility.",
+      },
+      {
+        question: "How do I submit feeds to AI platforms?",
+        answer: "Methods vary by platform. Perplexity has a merchant program, ChatGPT uses web crawling and partnerships, and many AI platforms access feeds through your site's structured data and standard feed URLs.",
+      },
+      {
+        question: "How often should AI product feeds be updated?",
+        answer: "Update feeds whenever prices, availability, or product details change. For dynamic pricing, real-time or daily updates are essential. At minimum, update weekly.",
+      },
+    ],
+    keywords: ["product feed AI", "AI shopping feed", "AI product data", "AI commerce feed", "product catalog AI"],
+    category: "optimization",
+  },
+  {
+    slug: "ai-crawl-budget",
+    term: "AI Crawl Budget",
+    shortDefinition: "The amount of resources AI bots allocate to crawling and indexing your website's content.",
+    fullDefinition: "AI crawl budget refers to the finite resources that AI platform crawlers—such as OAI-SearchBot, PerplexityBot, ClaudeBot, and Google's AI crawlers—allocate to discovering and processing your website's content. Similar to how Googlebot has a crawl budget for traditional search, AI crawlers have limited capacity and must prioritize which pages to crawl and how frequently. Optimizing your AI crawl budget means ensuring these bots can efficiently access your most important content, reducing waste on low-value pages, and signaling which content should be crawled most frequently.",
+    whyItMatters: "If AI crawlers cannot efficiently access your key pages, that content will not appear in AI-generated answers. Poor AI crawl budget management means your best content may be invisible to AI platforms while low-value pages consume crawler resources.",
+    examples: [
+      "Configuring robots.txt to allow AI bot access to product and content pages while blocking admin pages",
+      "Using XML sitemaps to prioritize high-value pages for AI crawler discovery",
+      "Reducing page load times so AI crawlers can process more pages within their budget",
+    ],
+    relatedTerms: [
+      { term: "Web Crawling", slug: "web-crawling" },
+      { term: "Robots.txt", slug: "robots-txt" },
+      { term: "Technical SEO", slug: "technical-seo" },
+    ],
+    usageInContext: "We optimize your AI crawl budget to ensure AI bots prioritize your most valuable content, maximizing your AI visibility across platforms.",
+    commonMisconceptions: "Blocking AI crawlers with robots.txt does not protect your content—it only prevents your site from being accurately represented. AI models will still discuss your brand based on third-party sources, but without your own content to reference.",
+    faqs: [
+      {
+        question: "How do I know if AI bots are crawling my site?",
+        answer: "Check your server logs for user agents like OAI-SearchBot, PerplexityBot, ClaudeBot, and GPTBot. Most hosting platforms and CDNs can filter logs by bot type.",
+      },
+      {
+        question: "Should I allow all AI bots to crawl my site?",
+        answer: "Generally yes, with thoughtful configuration. Allow access to content you want represented in AI answers, and use robots.txt to block truly irrelevant pages like admin panels or duplicate content.",
+      },
+      {
+        question: "How can I improve my AI crawl budget efficiency?",
+        answer: "Improve site speed, reduce duplicate content, use clean URL structures, maintain updated sitemaps, and ensure your site architecture allows crawlers to reach important pages within a few clicks.",
+      },
+    ],
+    keywords: ["AI crawl budget", "AI bot crawling", "crawl budget optimization AI", "AI crawler access", "AI indexing"],
+    category: "optimization",
+  },
+  {
+    slug: "oai-searchbot",
+    term: "OAI-SearchBot",
+    shortDefinition: "OpenAI's web crawler that indexes content for ChatGPT's search and shopping features.",
+    fullDefinition: "OAI-SearchBot is OpenAI's dedicated web crawler that discovers and indexes web content for use in ChatGPT's real-time search, shopping, and browsing features. When ChatGPT needs to provide up-to-date information or product data, OAI-SearchBot's index is what it references. This crawler is distinct from GPTBot (which collects training data) and specifically powers ChatGPT's live retrieval capabilities. Ensuring OAI-SearchBot can access your content is essential for appearing in ChatGPT's real-time search results and shopping features.",
+    whyItMatters: "If OAI-SearchBot cannot crawl your site, ChatGPT's search and shopping features will not include your content in real-time answers. This means missing out on ChatGPT's massive user base when they search for topics related to your business.",
+    examples: [
+      "Allowing OAI-SearchBot in robots.txt so ChatGPT can cite your content in browsing mode",
+      "Monitoring server logs for OAI-SearchBot activity to understand which pages ChatGPT indexes",
+      "Optimizing page structure so OAI-SearchBot can efficiently extract key information",
+    ],
+    relatedTerms: [
+      { term: "AI Crawl Budget", slug: "ai-crawl-budget" },
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+      { term: "Robots.txt", slug: "robots-txt" },
+    ],
+    usageInContext: "We ensure OAI-SearchBot has proper access to your key pages so ChatGPT's search and shopping features can reference your content in real-time.",
+    commonMisconceptions: "OAI-SearchBot and GPTBot serve different purposes. GPTBot collects data for model training, while OAI-SearchBot powers real-time search. Blocking one does not block the other—configure each separately.",
+    faqs: [
+      {
+        question: "How do I allow OAI-SearchBot to crawl my site?",
+        answer: "Ensure your robots.txt does not block OAI-SearchBot. The default is to allow crawling, so only sites that explicitly block it need to make changes.",
+      },
+      {
+        question: "What is the difference between OAI-SearchBot and GPTBot?",
+        answer: "GPTBot crawls content for OpenAI's model training data. OAI-SearchBot crawls for ChatGPT's real-time search and browsing features. They have different user agent strings and purposes.",
+      },
+      {
+        question: "How frequently does OAI-SearchBot crawl sites?",
+        answer: "Crawl frequency depends on your site's authority, content update frequency, and crawl budget allocation. High-authority sites with frequent updates get crawled more often.",
+      },
+    ],
+    keywords: ["OAI-SearchBot", "OpenAI crawler", "ChatGPT search bot", "OpenAI web crawler", "OAI SearchBot robots.txt"],
+    category: "platforms",
+  },
+  {
+    slug: "perplexitybot",
+    term: "PerplexityBot",
+    shortDefinition: "Perplexity AI's web crawler that indexes content for its AI-powered search and answer engine.",
+    fullDefinition: "PerplexityBot is the web crawler operated by Perplexity AI to discover and index web content for its AI-powered search engine. Perplexity is known for providing detailed, cited answers to user queries, and PerplexityBot is the mechanism by which it accesses and indexes web content in near real-time. Because Perplexity provides inline citations with links back to source material, being indexed by PerplexityBot can drive direct referral traffic. Perplexity processes billions of queries, making PerplexityBot access essential for AI search visibility.",
+    whyItMatters: "Perplexity is one of the fastest-growing AI search platforms. Allowing PerplexityBot to crawl your site means your content can be cited in Perplexity's answers, driving high-quality referral traffic from users actively seeking information.",
+    examples: [
+      "Checking server logs to confirm PerplexityBot is crawling product pages",
+      "Ensuring robots.txt allows PerplexityBot access to maximize citations",
+      "Tracking referral traffic from Perplexity after enabling PerplexityBot crawling",
+    ],
+    relatedTerms: [
+      { term: "Perplexity", slug: "perplexity" },
+      { term: "AI Citation", slug: "ai-citation" },
+      { term: "AI Crawl Budget", slug: "ai-crawl-budget" },
+    ],
+    usageInContext: "We verify PerplexityBot has full access to your key pages, maximizing your chances of being cited in Perplexity's AI-generated answers.",
+    commonMisconceptions: "Some site owners block PerplexityBot thinking it only scrapes content. In reality, Perplexity provides full attribution with links, making it a traffic source rather than just a content consumer.",
+    faqs: [
+      {
+        question: "Should I allow PerplexityBot to crawl my site?",
+        answer: "Yes. Perplexity provides source citations with links, driving referral traffic. Blocking PerplexityBot means your content will not appear in Perplexity's answers.",
+      },
+      {
+        question: "How do I identify PerplexityBot in my logs?",
+        answer: "Look for the user agent string containing 'PerplexityBot'. Most analytics and log management tools can filter by this identifier.",
+      },
+      {
+        question: "Does PerplexityBot respect robots.txt?",
+        answer: "Yes. PerplexityBot follows standard robots.txt directives. Configure it like any other crawler, allowing access to content pages and blocking irrelevant sections.",
+      },
+    ],
+    keywords: ["PerplexityBot", "Perplexity crawler", "Perplexity web crawler", "PerplexityBot robots.txt", "Perplexity AI crawler"],
+    category: "platforms",
+  },
+  {
+    slug: "claudebot",
+    term: "ClaudeBot",
+    shortDefinition: "Anthropic's web crawler that indexes content for Claude's search and retrieval capabilities.",
+    fullDefinition: "ClaudeBot is the web crawler operated by Anthropic to discover and index web content for Claude's retrieval and search features. As Claude expands its capabilities to include real-time web access and search, ClaudeBot indexes content that Claude can reference when answering user queries. Anthropic has positioned Claude as a leading AI assistant focused on helpfulness and accuracy, and ClaudeBot helps ensure Claude has access to current, authoritative web content to support its responses.",
+    whyItMatters: "Claude has a large and growing user base that values its accuracy and depth. Allowing ClaudeBot to crawl your site ensures Claude can reference your content when users ask questions relevant to your business.",
+    examples: [
+      "Configuring robots.txt to explicitly allow ClaudeBot access",
+      "Monitoring referral traffic from Claude-related sources",
+      "Ensuring technical documentation is accessible to ClaudeBot for developer-focused queries",
+    ],
+    relatedTerms: [
+      { term: "Claude", slug: "claude" },
+      { term: "AI Crawl Budget", slug: "ai-crawl-budget" },
+      { term: "Robots.txt", slug: "robots-txt" },
+    ],
+    usageInContext: "We ensure ClaudeBot can access your most important content, positioning your brand to be referenced in Claude's growing ecosystem of AI-powered answers.",
+    commonMisconceptions: "ClaudeBot crawling your site does not mean your content is used for training. Like other AI search crawlers, ClaudeBot indexes content for retrieval purposes, separate from the model training pipeline.",
+    faqs: [
+      {
+        question: "What is ClaudeBot's user agent?",
+        answer: "ClaudeBot identifies itself with a user agent string containing 'ClaudeBot'. Check Anthropic's documentation for the current exact string to use in robots.txt configuration.",
+      },
+      {
+        question: "Is ClaudeBot different from Anthropic's training crawlers?",
+        answer: "Yes. ClaudeBot is for real-time retrieval and search. Anthropic uses separate processes for training data collection, each with its own user agent and configuration.",
+      },
+      {
+        question: "Should I prioritize ClaudeBot access?",
+        answer: "Yes. Claude is one of the top AI assistants, and its user base is growing rapidly. Ensuring ClaudeBot access is part of comprehensive multi-platform AI visibility.",
+      },
+    ],
+    keywords: ["ClaudeBot", "Anthropic crawler", "Claude web crawler", "ClaudeBot robots.txt", "Anthropic AI crawler"],
+    category: "platforms",
+  },
+  {
+    slug: "googlebot-ai",
+    term: "Googlebot for AI",
+    shortDefinition: "Google's extended crawling infrastructure that indexes content for AI Overviews and Gemini-powered features.",
+    fullDefinition: "Googlebot for AI refers to Google's crawling and indexing infrastructure as it relates to powering AI-generated features like AI Overviews, Gemini, and other AI-enhanced search experiences. While the core Googlebot crawler remains the same, the way Google processes and indexes content has expanded to feed AI systems that generate summaries, comparisons, and recommendations. Understanding how Googlebot's crawling feeds into Google's AI features is essential for ensuring your content appears in both traditional search results and AI-generated overviews.",
+    whyItMatters: "Google remains the dominant search engine, and its AI features are expanding rapidly. Content that Googlebot indexes well will appear in both organic results and AI Overviews, covering the broadest possible search audience.",
+    examples: [
+      "Ensuring Googlebot can access all key pages so content feeds into AI Overviews",
+      "Using structured data that helps Google's AI understand and summarize your content",
+      "Optimizing for featured snippet-style content that Google's AI favors",
+    ],
+    relatedTerms: [
+      { term: "Google", slug: "google" },
+      { term: "Google AI Overview", slug: "ai-overview" },
+      { term: "Technical SEO", slug: "technical-seo" },
+    ],
+    usageInContext: "We optimize your site for Googlebot's AI-related indexing to ensure your content powers both organic rankings and AI Overview citations.",
+    commonMisconceptions: "There is not a separate 'AI Googlebot.' The same Googlebot crawls your site, but Google increasingly uses the indexed content for AI features. Optimizing for one benefits both.",
+    faqs: [
+      {
+        question: "Is there a separate Googlebot for AI?",
+        answer: "No. Google uses the same Googlebot infrastructure but processes content for both traditional rankings and AI features. Google does have Google-Extended for controlling Gemini training data access.",
+      },
+      {
+        question: "How do I optimize for Google's AI features?",
+        answer: "Follow traditional technical SEO best practices, add comprehensive structured data, create clear and concise content that answers specific questions, and maintain strong E-E-A-T signals.",
+      },
+      {
+        question: "Can I opt out of Google's AI features?",
+        answer: "You can use Google-Extended in robots.txt to control Gemini training data usage, but currently there is no way to opt out of AI Overviews while remaining in organic search results.",
+      },
+    ],
+    keywords: ["Googlebot AI", "Google AI crawler", "Google AI indexing", "Googlebot AI Overview", "Google Extended"],
+    category: "platforms",
+  },
+  {
+    slug: "search-everywhere-optimization",
+    term: "Search Everywhere Optimization",
+    shortDefinition: "A strategy that optimizes your brand's visibility across all search platforms, including AI assistants, social media, and traditional search.",
+    fullDefinition: "Search Everywhere Optimization is a holistic marketing strategy that ensures your brand is discoverable across every platform where people search for information—not just Google. This includes AI assistants (ChatGPT, Claude, Perplexity), social media search (TikTok, Instagram, Reddit), voice assistants (Alexa, Siri), video platforms (YouTube), and traditional search engines. The approach recognizes that the modern search landscape is fragmented and users search on different platforms for different types of queries.",
+    whyItMatters: "Consumers no longer rely on a single search engine. Optimizing only for Google means missing the growing share of discovery that happens on AI assistants, social platforms, and vertical search engines. Comprehensive visibility requires a multi-platform strategy.",
+    examples: [
+      "Optimizing product content for Google, ChatGPT Shopping, TikTok search, and Amazon simultaneously",
+      "Ensuring brand consistency across AI assistants, social platforms, and review sites",
+      "Creating platform-specific content formats for each search channel",
+    ],
+    relatedTerms: [
+      { term: "Multi-Platform AI Strategy", slug: "multi-platform-ai-strategy" },
+      { term: "Omnichannel AI", slug: "omnichannel-ai" },
+      { term: "AI Visibility", slug: "ai-visibility" },
+    ],
+    usageInContext: "Our search everywhere optimization strategy ensures your brand is discoverable wherever your audience searches, from Google to ChatGPT to TikTok.",
+    commonMisconceptions: "Search everywhere optimization does not mean creating the same content for every platform. Each search channel has unique formats, ranking signals, and user intent that require platform-specific optimization.",
+    faqs: [
+      {
+        question: "Which platforms should I prioritize?",
+        answer: "Start with Google and the top AI assistants (ChatGPT, Perplexity). Then expand to platforms where your audience actively searches: YouTube for tutorials, TikTok for product discovery, Reddit for reviews.",
+      },
+      {
+        question: "Is this just omnichannel marketing rebranded?",
+        answer: "It overlaps with omnichannel but is specifically focused on search and discovery behavior. It addresses the new reality that AI platforms are now search engines in their own right.",
+      },
+      {
+        question: "How do I measure search everywhere performance?",
+        answer: "Track visibility metrics per platform: organic rankings for Google, share of model for AI platforms, search impressions on social platforms, and referral traffic from each source.",
+      },
+    ],
+    keywords: ["search everywhere optimization", "multi-platform search", "search beyond Google", "omnichannel search", "AI search optimization"],
+    category: "strategy",
+  },
+  {
+    slug: "ai-ads-cpm",
+    term: "AI Ads CPM",
+    shortDefinition: "The cost per thousand impressions for advertising placements within AI-powered platforms and conversations.",
+    fullDefinition: "AI Ads CPM (Cost Per Mille) is the pricing metric for advertising impressions served within AI-powered platforms such as ChatGPT, Perplexity, and other AI assistants. Unlike traditional display or search CPMs, AI Ads CPM reflects the cost of having your brand featured in AI-generated responses, product recommendations, or sponsored answer placements. Because AI platform users typically have high intent and engage deeply with responses, AI Ads CPMs may command premium pricing compared to traditional digital advertising channels.",
+    whyItMatters: "Understanding AI Ads CPM is essential for budgeting and ROI planning as advertising expands into AI platforms. Early benchmarks help brands allocate budgets effectively across traditional and AI advertising channels.",
+    examples: [
+      "Comparing ChatGPT Shopping ad CPMs against Google Shopping CPMs for the same product category",
+      "Tracking AI Ads CPM trends as Perplexity scales its advertising offerings",
+      "Budgeting for AI platform ads based on estimated CPMs and conversion rates",
+    ],
+    relatedTerms: [
+      { term: "ChatGPT Ads", slug: "chatgpt-ads" },
+      { term: "Sponsored AI Results", slug: "sponsored-ai-results" },
+      { term: "Cost Per AI Mention", slug: "cost-per-ai-mention" },
+    ],
+    usageInContext: "We benchmark AI Ads CPMs across platforms to help you allocate advertising budget where it delivers the strongest return.",
+    commonMisconceptions: "AI Ads CPMs should not be directly compared to social media CPMs. AI platform impressions typically reach users with higher purchase intent, so a higher CPM may still deliver better ROI.",
+    faqs: [
+      {
+        question: "What are typical AI Ads CPMs?",
+        answer: "The market is still developing, but early benchmarks suggest AI platform CPMs range from $15-50+, reflecting the high-intent nature of AI search users. Expect pricing to evolve as the market matures.",
+      },
+      {
+        question: "Are AI Ads CPMs worth the premium?",
+        answer: "For high-intent categories like software, e-commerce, and professional services, the higher engagement and conversion rates from AI platforms can justify premium CPMs compared to traditional display.",
+      },
+      {
+        question: "How will AI Ads CPMs be measured?",
+        answer: "AI platforms will likely develop impression counting similar to traditional digital ads but adapted for conversational formats, counting when a sponsored response is shown to a user.",
+      },
+    ],
+    keywords: ["AI ads CPM", "AI advertising cost", "ChatGPT CPM", "AI platform advertising rates", "cost of AI ads"],
+    category: "measurement",
+  },
+  {
+    slug: "sponsored-ai-results",
+    term: "Sponsored AI Results",
+    shortDefinition: "Paid placements within AI-generated answers and recommendations across AI search platforms.",
+    fullDefinition: "Sponsored AI results are paid advertising placements that appear within AI-generated responses on platforms like ChatGPT, Perplexity, Google AI Overviews, and other AI search engines. These placements integrate branded content into conversational AI answers, appearing as recommended products, featured solutions, or highlighted brand mentions. Unlike traditional search ads that appear alongside results, sponsored AI results are woven into the AI's response itself, requiring careful balance between advertising value and user trust.",
+    whyItMatters: "Sponsored AI results will become a major advertising channel as AI search usage grows. Brands that understand and adopt these formats early will gain a competitive advantage in a channel with high purchase intent and deep user engagement.",
+    examples: [
+      "A 'Sponsored' product recommendation appearing in Perplexity's shopping answer",
+      "A brand featured in Google AI Overview with a sponsored label",
+      "A promoted solution appearing in ChatGPT's response to a software comparison query",
+    ],
+    relatedTerms: [
+      { term: "ChatGPT Ads", slug: "chatgpt-ads" },
+      { term: "AI Ads CPM", slug: "ai-ads-cpm" },
+      { term: "AI Ad Placement", slug: "ai-ad-placement" },
+    ],
+    usageInContext: "We help you develop a sponsored AI results strategy that maximizes visibility across AI platforms while maintaining brand trust.",
+    commonMisconceptions: "Sponsored AI results are not guaranteed to override organic AI recommendations. AI platforms maintain quality standards, and poorly matched sponsored content may be deprioritized or labeled in ways that reduce effectiveness.",
+    faqs: [
+      {
+        question: "Which AI platforms offer sponsored results?",
+        answer: "Perplexity has launched sponsored answers, Google is testing sponsored AI Overviews, and OpenAI is developing advertising for ChatGPT. The landscape is rapidly expanding.",
+      },
+      {
+        question: "Will users trust sponsored AI results?",
+        answer: "Trust depends on relevance and transparency. Platforms that clearly label sponsored content while ensuring relevance will maintain user trust. Poorly targeted ads risk user backlash.",
+      },
+      {
+        question: "How do I create effective sponsored AI content?",
+        answer: "Focus on genuinely helpful, relevant content rather than hard selling. AI platform users expect conversational, informative responses—ads that feel like useful recommendations perform best.",
+      },
+    ],
+    keywords: ["sponsored AI results", "AI search ads", "paid AI placements", "AI advertising", "sponsored AI answers"],
+    category: "strategy",
+  },
+  {
+    slug: "conversational-commerce",
+    term: "Conversational Commerce",
+    shortDefinition: "Using AI-powered chat interfaces to facilitate product discovery, recommendation, and purchase in real time.",
+    fullDefinition: "Conversational commerce is the practice of enabling customers to discover, evaluate, and purchase products through natural language conversations with AI-powered chat interfaces. This extends beyond simple chatbots to include sophisticated AI assistants that understand context, remember preferences, compare products, and facilitate transactions within the chat experience. Conversational commerce spans AI search platforms (ChatGPT Shopping, Perplexity), brand-owned chatbots, messaging platforms (WhatsApp, iMessage), and voice assistants.",
+    whyItMatters: "Conversational commerce represents a fundamental shift in the buying journey. Instead of browsing catalogs and comparing tabs, consumers describe what they want in natural language and receive personalized recommendations. Brands that enable this experience capture more purchase-intent conversations.",
+    examples: [
+      "A customer telling ChatGPT 'I need a waterproof jacket for hiking in the Pacific Northwest under $200' and getting personalized recommendations",
+      "A Shopify store's AI chatbot guiding a visitor from initial question to completed purchase",
+      "WhatsApp AI bots helping customers reorder products through simple messages",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+    ],
+    usageInContext: "We optimize your product data and brand presence for conversational commerce, ensuring AI assistants can effectively sell your products through natural dialogue.",
+    commonMisconceptions: "Conversational commerce is not just adding a chatbot to your website. It encompasses the entire ecosystem of AI-powered purchase conversations across every platform where consumers interact with AI.",
+    faqs: [
+      {
+        question: "How big is the conversational commerce market?",
+        answer: "Conversational commerce is projected to exceed $30 billion globally, driven by AI assistant adoption and messaging platform commerce features. Growth is accelerating as AI capabilities improve.",
+      },
+      {
+        question: "Does conversational commerce work for B2B?",
+        answer: "Yes. B2B conversational commerce is growing, particularly for software purchasing, supply reordering, and professional services. AI assistants are increasingly used for B2B research and vendor evaluation.",
+      },
+      {
+        question: "What technology do I need for conversational commerce?",
+        answer: "Start with optimized product data for AI platforms. Then consider an AI-powered chatbot for your site, messaging platform integrations, and participation in AI shopping programs like ChatGPT Shopping and Perplexity Merchant.",
+      },
+    ],
+    keywords: ["conversational commerce", "chat commerce", "AI shopping conversation", "conversational buying", "messaging commerce"],
+    category: "strategy",
+  },
+  {
+    slug: "ai-product-recommendation",
+    term: "AI Product Recommendation",
+    shortDefinition: "When an AI assistant suggests specific products to a user based on their stated needs and preferences.",
+    fullDefinition: "An AI product recommendation occurs when an artificial intelligence system—such as ChatGPT, Perplexity, Claude, or an e-commerce AI assistant—suggests specific products to a user in response to a query about their needs. Unlike traditional recommendation engines that use collaborative filtering on purchase history, AI product recommendations leverage natural language understanding to interpret nuanced preferences, compare products across multiple dimensions, and explain the reasoning behind each recommendation. This makes AI recommendations more consultative and trusted by consumers.",
+    whyItMatters: "AI product recommendations carry significant influence because users perceive them as objective, expert advice rather than advertising. Being recommended by AI assistants can drive conversions at a rate far higher than traditional ads because users already trust the recommendation source.",
+    examples: [
+      "ChatGPT recommending three specific laptops after a user describes their workflow and budget",
+      "Perplexity comparing running shoes and recommending the best option for flat feet",
+      "Claude suggesting project management tools based on team size and feature requirements",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Share of Model", slug: "share-of-model" },
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+    ],
+    usageInContext: "We track and optimize how often AI assistants recommend your products, ensuring you capture the growing stream of AI-influenced purchase decisions.",
+    commonMisconceptions: "AI product recommendations are not random or purely based on popularity. LLMs consider specific product attributes, reviews, brand authority, and user context, meaning optimization is possible and effective.",
+    faqs: [
+      {
+        question: "How do AI assistants decide which products to recommend?",
+        answer: "They analyze product data, reviews, brand authority, pricing, and how well each option matches the user's stated criteria. Well-structured product information that clearly communicates differentiators gets recommended more.",
+      },
+      {
+        question: "Can I influence which products AI recommends?",
+        answer: "Yes. Optimize your product data for AI consumption, build strong review profiles, ensure accurate structured data, and create content that highlights your product's strengths for common query patterns.",
+      },
+      {
+        question: "How important are AI product recommendations for sales?",
+        answer: "Increasingly important. Studies show AI-recommended products have higher conversion rates because users trust the recommendation. As AI assistant usage grows, this channel will represent a significant share of product discovery.",
+      },
+    ],
+    keywords: ["AI product recommendation", "AI recommended products", "LLM product suggestion", "AI buying recommendation", "AI product advice"],
+    category: "visibility",
+  },
+  {
+    slug: "rufus",
+    term: "Rufus (Amazon)",
+    shortDefinition: "Amazon's AI shopping assistant that helps customers find, compare, and decide on products within the Amazon ecosystem.",
+    fullDefinition: "Rufus is Amazon's AI-powered shopping assistant integrated into the Amazon app and website. Using generative AI, Rufus helps customers with product research, comparison shopping, and purchase decisions by engaging in natural language conversations. Rufus can answer questions about product categories ('what should I look for in a tent for winter camping?'), compare specific products, summarize reviews, and guide users through the Amazon catalog. As Amazon's native AI shopping tool, Rufus has direct access to Amazon's vast product database, reviews, and purchasing capabilities.",
+    whyItMatters: "Rufus influences purchasing decisions within Amazon's massive ecosystem. Products that Rufus recommends get preferential visibility within the world's largest e-commerce platform. For Amazon sellers, Rufus optimization is essential.",
+    examples: [
+      "A customer asking Rufus 'what's the best air purifier for pet owners?' and getting personalized recommendations",
+      "Rufus summarizing the pros and cons of three competing products based on thousands of reviews",
+      "A shopper using Rufus to narrow down options before adding to cart",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "AI Product Recommendation", slug: "ai-product-recommendation" },
+      { term: "Conversational Commerce", slug: "conversational-commerce" },
+    ],
+    usageInContext: "For Amazon sellers, we optimize product listings, A+ content, and review profiles to ensure Rufus recommends your products to relevant shoppers.",
+    commonMisconceptions: "Rufus does not only recommend Amazon's own brands. It surfaces products from all sellers based on relevance, reviews, and product data quality. Third-party sellers can optimize for Rufus just like any other AI assistant.",
+    faqs: [
+      {
+        question: "How do I optimize my products for Rufus?",
+        answer: "Focus on detailed, accurate product titles and descriptions, complete bullet points, comprehensive A+ content, and strong review profiles. Rufus relies heavily on this data to make recommendations.",
+      },
+      {
+        question: "Does Rufus replace Amazon's search?",
+        answer: "Rufus complements traditional Amazon search. Some shoppers use Rufus for research and exploration, then use standard search for direct purchases. Both channels matter.",
+      },
+      {
+        question: "Is Rufus available to all Amazon shoppers?",
+        answer: "Rufus is rolling out across Amazon's platforms. Availability varies by region and platform (app vs. desktop), with expansion ongoing.",
+      },
+    ],
+    keywords: ["Amazon Rufus", "Rufus AI", "Amazon AI assistant", "Amazon shopping AI", "Rufus product recommendations"],
+    category: "platforms",
+  },
+  {
+    slug: "ai-search-attribution",
+    term: "AI Search Attribution",
+    shortDefinition: "Tracking and measuring which conversions and revenue came from AI search platforms and assistants.",
+    fullDefinition: "AI search attribution is the practice of identifying and measuring the business impact—traffic, leads, and revenue—generated by AI search platforms and assistants. This includes tracking referrals from ChatGPT, Perplexity, Google AI Overviews, Claude, and other AI sources. Attribution is challenging because not all AI interactions result in clickable links, and some AI-influenced decisions happen without direct referral traffic. Effective AI search attribution combines referral analytics, UTM tracking, brand lift measurement, and AI visibility monitoring to build a complete picture of AI-driven business value.",
+    whyItMatters: "Without proper attribution, businesses cannot measure the ROI of their AI visibility efforts or justify continued investment. AI search attribution provides the data needed to prove and optimize the value of AI optimization strategies.",
+    examples: [
+      "Tracking referral traffic from perplexity.ai in Google Analytics to measure Perplexity-driven conversions",
+      "Using UTM parameters on AI-specific landing pages to attribute leads to ChatGPT",
+      "Measuring brand search volume increases that correlate with AI visibility improvements",
+    ],
+    relatedTerms: [
+      { term: "AI Attribution", slug: "ai-attribution" },
+      { term: "Conversion Tracking", slug: "conversion-tracking" },
+      { term: "ROI", slug: "roi" },
+    ],
+    usageInContext: "Our AI search attribution framework tracks every touchpoint from AI platforms, giving you clear visibility into the revenue generated by your AI optimization efforts.",
+    commonMisconceptions: "AI search attribution is not as simple as tracking referral URLs. Many AI-influenced decisions involve users who learn about your brand from AI but then navigate directly to your site, making direct traffic partially AI-attributed.",
+    faqs: [
+      {
+        question: "How do I track traffic from AI platforms?",
+        answer: "Set up referral tracking in your analytics for domains like chat.openai.com, perplexity.ai, and google.com (AI Overview clicks). Also monitor branded search increases as a proxy for AI visibility impact.",
+      },
+      {
+        question: "Why is AI attribution harder than search attribution?",
+        answer: "Because AI interactions often do not result in clicks. A user may get a recommendation from ChatGPT, then google your brand name directly. This 'dark AI traffic' requires indirect attribution methods.",
+      },
+      {
+        question: "What metrics should I track for AI attribution?",
+        answer: "Track AI platform referral traffic, conversion rates from AI referrals, branded search volume changes, share of model trends, and AI citation rates. Together, these paint a comprehensive attribution picture.",
+      },
+    ],
+    keywords: ["AI search attribution", "AI traffic attribution", "ChatGPT attribution", "AI referral tracking", "AI conversion tracking"],
+    category: "measurement",
+  },
+  {
+    slug: "brand-safety-ai",
+    term: "Brand Safety in AI",
+    shortDefinition: "Ensuring your brand is represented accurately and positively in AI-generated content and recommendations.",
+    fullDefinition: "Brand safety in AI refers to monitoring and managing how your brand is portrayed in AI-generated responses across all AI platforms. This includes ensuring AI assistants do not associate your brand with incorrect information, negative sentiment, competitor products, or inappropriate contexts. Brand safety in AI also involves proactively shaping how AI systems understand your brand by providing accurate, positive, and consistent information across all sources that AI models reference. Unlike traditional brand safety (focused on ad placement context), AI brand safety addresses the content AI generates about your brand.",
+    whyItMatters: "When an AI assistant gives inaccurate or negative information about your brand to millions of users, the reputational damage can be swift and widespread. Proactive brand safety in AI prevents misinformation from becoming embedded in AI knowledge.",
+    examples: [
+      "Detecting that ChatGPT incorrectly states your company was involved in a data breach that never happened",
+      "Ensuring AI assistants describe your product's pricing accurately rather than citing outdated information",
+      "Monitoring for AI-generated content that incorrectly associates your brand with a competitor's product",
+    ],
+    relatedTerms: [
+      { term: "Reputation Management AI", slug: "reputation-management-ai" },
+      { term: "Hallucination", slug: "hallucination" },
+      { term: "LLM Brand Sentiment", slug: "llm-brand-sentiment" },
+    ],
+    usageInContext: "Our brand safety monitoring ensures AI platforms represent your brand accurately, catching and correcting misinformation before it spreads.",
+    commonMisconceptions: "Brand safety in AI is not just about preventing negative mentions. It also involves ensuring accuracy—even positive but incorrect statements about your brand can create customer expectations you cannot meet.",
+    faqs: [
+      {
+        question: "How do I monitor brand safety across AI platforms?",
+        answer: "Regularly query major AI assistants about your brand and products. Use AI monitoring tools that automatically track brand mentions across LLMs and flag inaccuracies or negative sentiment.",
+      },
+      {
+        question: "What can I do if an AI says something wrong about my brand?",
+        answer: "Update the source material AI references: correct information on your website, Wikipedia, and other authoritative sources. For platforms with feedback mechanisms, submit corrections directly.",
+      },
+      {
+        question: "How quickly do AI corrections take effect?",
+        answer: "For retrieval-based systems like Perplexity, corrections can appear within days. For base LLMs, corrections may not take effect until the next model training cycle, which could take months.",
+      },
+    ],
+    keywords: ["brand safety AI", "AI brand reputation", "AI misinformation", "brand monitoring AI", "AI brand accuracy"],
+    category: "visibility",
+  },
+  {
+    slug: "ai-ad-placement",
+    term: "AI Ad Placement",
+    shortDefinition: "The strategic positioning of advertisements within AI-generated responses and conversational interfaces.",
+    fullDefinition: "AI ad placement refers to the strategy and mechanics of positioning paid advertisements within AI-generated content, including conversational responses, product recommendations, and AI search results. Unlike traditional ad placement (which targets web pages, search results, or social feeds), AI ad placement must integrate naturally into conversational AI flows without disrupting the user experience. Effective AI ad placement considers the context of the conversation, user intent, and the natural flow of AI responses to deliver ads that feel like helpful recommendations rather than interruptions.",
+    whyItMatters: "As AI platforms monetize through advertising, understanding AI ad placement becomes critical for advertisers. The conversational format creates new opportunities and constraints—ads must be relevant and contextual to be effective in AI environments.",
+    examples: [
+      "A product ad appearing naturally within a ChatGPT shopping recommendation flow",
+      "A sponsored answer in Perplexity that matches the user's research topic",
+      "An AI-generated comparison that highlights a sponsored product alongside organic recommendations",
+    ],
+    relatedTerms: [
+      { term: "Sponsored AI Results", slug: "sponsored-ai-results" },
+      { term: "ChatGPT Ads", slug: "chatgpt-ads" },
+      { term: "AI Ads CPM", slug: "ai-ads-cpm" },
+    ],
+    usageInContext: "We develop AI ad placement strategies that position your brand naturally within AI conversations, maximizing click-through without disrupting user experience.",
+    commonMisconceptions: "AI ad placement is not about buying the top spot like Google Ads. Conversational AI requires contextual relevance—a poorly placed ad in an AI response can damage both brand perception and platform trust.",
+    faqs: [
+      {
+        question: "What AI ad placement formats exist?",
+        answer: "Current formats include sponsored product cards, promoted answers, featured brand mentions, and contextual recommendations. New formats are emerging as platforms experiment with monetization.",
+      },
+      {
+        question: "How do I ensure my ads are placed in relevant AI contexts?",
+        answer: "Define your target query categories and user intents. Work with AI platform ad tools to set contextual targeting that matches your ads with relevant conversations and shopping queries.",
+      },
+      {
+        question: "Will intrusive AI ads drive users away?",
+        answer: "AI platforms are incentivized to maintain user trust, so ad formats tend to be more native and contextual than traditional display ads. However, poor relevance will reduce effectiveness.",
+      },
+    ],
+    keywords: ["AI ad placement", "AI advertising placement", "conversational ad placement", "AI native ads", "AI ad formats"],
+    category: "strategy",
+  },
+  {
+    slug: "prompt-optimization",
+    term: "Prompt Optimization",
+    shortDefinition: "Crafting and refining the way content is structured so AI models provide favorable responses about your brand.",
+    fullDefinition: "Prompt optimization in an AI visibility context refers to understanding how users prompt AI assistants and structuring your content to align with those prompt patterns. It involves researching common prompts users enter when seeking products or services in your category, then optimizing your digital presence so AI models generate favorable responses for those prompts. This is distinct from prompt engineering (crafting prompts for personal AI use) and focuses on the marketing side: ensuring your brand wins when users prompt AI assistants with relevant queries.",
+    whyItMatters: "The way users phrase prompts directly influences which brands AI assistants recommend. Understanding and optimizing for common prompt patterns ensures your brand appears in the responses that matter most for your business.",
+    examples: [
+      "Researching that users commonly ask 'what is the best [category] for [use case]' and ensuring your content addresses those patterns",
+      "Optimizing product descriptions to match the specific attributes users mention in AI shopping prompts",
+      "Creating content that directly answers the prompt patterns that trigger purchase recommendations",
+    ],
+    relatedTerms: [
+      { term: "Prompt", slug: "prompt" },
+      { term: "Query Intent", slug: "query-intent" },
+      { term: "Answer Engine Optimization", slug: "answer-engine-optimization" },
+    ],
+    usageInContext: "We analyze the prompt patterns your target audience uses across AI platforms and optimize your content to win those conversations.",
+    commonMisconceptions: "Prompt optimization is not about stuffing keywords into your content. It is about understanding user intent behind prompts and ensuring your content provides the most relevant, complete answer to those intents.",
+    faqs: [
+      {
+        question: "How do I research common prompts in my category?",
+        answer: "Query AI assistants with various phrasings relevant to your products. Analyze which prompts trigger competitor recommendations and which prompt patterns lead to purchase-intent conversations.",
+      },
+      {
+        question: "Does prompt optimization differ by AI platform?",
+        answer: "Yes. Users prompt ChatGPT, Claude, and Perplexity differently. Some users are more conversational, others more direct. Optimize for the range of prompt styles across platforms.",
+      },
+      {
+        question: "How often should I update my prompt optimization strategy?",
+        answer: "Quarterly at minimum. User prompting behavior evolves, and AI platforms update their understanding. Regular prompt research keeps your optimization aligned with current patterns.",
+      },
+    ],
+    keywords: ["prompt optimization", "AI prompt strategy", "optimize for AI prompts", "prompt marketing", "AI query optimization"],
+    category: "optimization",
+  },
+  {
+    slug: "ai-visibility-score",
+    term: "AI Visibility Score",
+    shortDefinition: "A composite metric measuring how visible and favorably your brand appears across AI platforms.",
+    fullDefinition: "An AI visibility score is a composite metric that quantifies how visible, accurately represented, and favorably positioned your brand is across AI search platforms and assistants. The score typically aggregates multiple factors including share of model, citation rates, brand mention frequency, sentiment, accuracy of AI-generated brand information, and coverage across platforms (ChatGPT, Claude, Perplexity, Gemini). AI visibility scores provide a single benchmark for tracking overall AI presence and measuring the impact of optimization efforts over time.",
+    whyItMatters: "A single visibility score simplifies reporting and goal-setting for AI optimization efforts. It allows brands to benchmark against competitors, track progress over time, and demonstrate the impact of AI visibility investments to stakeholders.",
+    examples: [
+      "A brand's AI visibility score increasing from 42 to 67 after three months of optimization",
+      "Comparing your AI visibility score against the top three competitors in your category",
+      "Using the score to identify which AI platforms need the most improvement",
+    ],
+    relatedTerms: [
+      { term: "Share of Model", slug: "share-of-model" },
+      { term: "AI Search Impression", slug: "ai-search-impression" },
+      { term: "Platform Coverage", slug: "platform-coverage" },
+    ],
+    usageInContext: "Our platform calculates your AI visibility score across all major platforms, giving you a clear benchmark and tracking progress as we optimize your AI presence.",
+    commonMisconceptions: "There is no universally standardized AI visibility score yet. Different tools calculate it differently. Focus on consistent methodology within one tool rather than comparing scores across different platforms.",
+    faqs: [
+      {
+        question: "What factors contribute to an AI visibility score?",
+        answer: "Key factors include share of model (recommendation frequency), citation rates, brand mention accuracy, sentiment, and coverage breadth across AI platforms. Each factor is weighted based on business impact.",
+      },
+      {
+        question: "What is a good AI visibility score?",
+        answer: "Scores are relative to your category. A score that places you in the top 3 for your competitive set indicates strong visibility. The absolute number matters less than your rank and trajectory.",
+      },
+      {
+        question: "How quickly can I improve my AI visibility score?",
+        answer: "Quick wins like structured data fixes and content optimization can show improvements within weeks. Building entity authority and earning citations for deeper score improvements typically takes 2-4 months.",
+      },
+    ],
+    keywords: ["AI visibility score", "AI visibility metric", "AI brand score", "measure AI visibility", "AI presence score"],
+    category: "measurement",
+  },
+  {
+    slug: "multi-platform-ai-strategy",
+    term: "Multi-Platform AI Strategy",
+    shortDefinition: "A coordinated approach to building brand visibility across all major AI assistants and search platforms.",
+    fullDefinition: "A multi-platform AI strategy is a comprehensive plan for ensuring your brand is visible, accurately represented, and favorably positioned across every major AI platform—including ChatGPT, Claude, Perplexity, Gemini, Amazon Rufus, Google AI Overviews, and emerging AI assistants. The strategy accounts for each platform's unique characteristics, data sources, and user behavior patterns. It coordinates content optimization, structured data, entity authority building, and monitoring efforts to maintain consistent brand presence across the fragmented AI landscape.",
+    whyItMatters: "No single AI platform dominates all use cases. Users switch between platforms based on their needs. A multi-platform strategy ensures you capture AI-driven discovery and purchase intent regardless of which platform the user chooses.",
+    examples: [
+      "Optimizing product data differently for ChatGPT Shopping versus Perplexity's merchant features",
+      "Maintaining consistent brand information across all AI platforms while tailoring format to each",
+      "Prioritizing platform investment based on where your target audience uses AI most",
+    ],
+    relatedTerms: [
+      { term: "Search Everywhere Optimization", slug: "search-everywhere-optimization" },
+      { term: "Platform Coverage", slug: "platform-coverage" },
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+    ],
+    usageInContext: "Our multi-platform AI strategy ensures you have comprehensive coverage across every AI platform where your customers search and shop.",
+    commonMisconceptions: "A multi-platform strategy does not mean doing the same thing everywhere. Each AI platform has unique data sources, user behaviors, and optimization levers. The strategy must be tailored per platform.",
+    faqs: [
+      {
+        question: "Which AI platforms should I prioritize?",
+        answer: "Start with the platforms your audience uses most—typically ChatGPT, Google (AI Overviews), and Perplexity for B2B/B2C. Add Amazon Rufus for e-commerce and Claude for technical audiences.",
+      },
+      {
+        question: "Is it possible to manage all AI platforms effectively?",
+        answer: "Yes, because many optimization fundamentals (structured data, entity authority, quality content) benefit all platforms. Platform-specific tactics then fine-tune visibility for each.",
+      },
+      {
+        question: "How do I measure multi-platform effectiveness?",
+        answer: "Track platform-specific metrics (share of model per platform, citations per platform) and aggregate them into an overall AI visibility score. Identify gaps by comparing performance across platforms.",
+      },
+    ],
+    keywords: ["multi-platform AI strategy", "AI platform strategy", "cross-platform AI visibility", "AI presence management", "multi-AI optimization"],
+    category: "strategy",
+  },
+  {
+    slug: "ai-search-market-share",
+    term: "AI Search Market Share",
+    shortDefinition: "The distribution of user search activity across AI-powered platforms compared to traditional search engines.",
+    fullDefinition: "AI search market share measures the proportion of user search queries handled by AI-powered platforms (ChatGPT, Perplexity, Claude, Gemini) compared to traditional search engines (Google, Bing). This metric tracks the ongoing shift in how people seek information—from typing keywords into search engines to asking questions in natural language to AI assistants. Understanding AI search market share helps businesses allocate marketing resources between traditional SEO and AI optimization strategies based on where their audience is actually searching.",
+    whyItMatters: "As AI search market share grows, businesses that only optimize for traditional search engines miss an increasing portion of their potential audience. Tracking market share shifts helps justify and prioritize AI visibility investments.",
+    examples: [
+      "AI search platforms capturing 15-20% of informational query volume from traditional search",
+      "Perplexity growing from 0 to billions of queries annually within two years",
+      "ChatGPT handling more product research queries than some traditional comparison websites",
+    ],
+    relatedTerms: [
+      { term: "AI Search", slug: "ai-search" },
+      { term: "Traditional Search", slug: "traditional-search" },
+      { term: "Share of Model", slug: "share-of-model" },
+    ],
+    usageInContext: "We track AI search market share trends in your industry to ensure your visibility strategy matches where your customers are actually searching.",
+    commonMisconceptions: "AI search is not replacing traditional search entirely. The shift is gradual and varies by query type. Informational and research queries are shifting fastest, while navigational queries remain on traditional search.",
+    faqs: [
+      {
+        question: "What percentage of searches happen on AI platforms?",
+        answer: "AI platforms handle an estimated 10-20% of informational search queries and growing rapidly. The percentage varies significantly by demographic, with younger users and tech professionals showing higher AI adoption.",
+      },
+      {
+        question: "Will AI search replace Google?",
+        answer: "Not entirely, but it will capture an increasing share. Google is adapting with AI Overviews. The likely outcome is a multi-platform search landscape where AI and traditional search coexist.",
+      },
+      {
+        question: "How should I split my marketing budget between traditional and AI search?",
+        answer: "Allocate based on your audience's search behavior. Most businesses should invest 70-80% in traditional SEO and 20-30% in AI visibility, adjusting as AI search share grows.",
+      },
+    ],
+    keywords: ["AI search market share", "AI vs traditional search", "AI search growth", "search market trends", "AI platform market share"],
+    category: "measurement",
+  },
+  {
+    slug: "shopify-agentic-storefronts",
+    term: "Shopify Agentic Storefronts",
+    shortDefinition: "Shopify's storefront technology that enables AI agents to browse, query, and transact on behalf of shoppers.",
+    fullDefinition: "Shopify Agentic Storefronts are Shopify's next-generation storefront capabilities designed to serve AI agents as customers alongside human shoppers. These storefronts provide machine-readable product catalogs, API-accessible inventory and pricing, structured product data, and transaction endpoints that AI shopping agents can interact with programmatically. The technology enables any AI assistant—from ChatGPT to custom shopping agents—to browse a Shopify store's catalog, compare products, check availability, and even initiate purchases without human-oriented UI elements.",
+    whyItMatters: "As agentic commerce grows, stores that are agent-ready will capture sales from AI-driven shopping. Shopify's agentic storefronts provide the infrastructure for merchants to serve both human and AI customers from a single platform.",
+    examples: [
+      "A ChatGPT shopping agent querying a Shopify store's API to find products matching a customer's criteria",
+      "An AI agent checking real-time inventory across multiple Shopify stores to find the best price",
+      "Shopify merchants enabling agentic endpoints so AI assistants can recommend their products with live pricing",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "AI Commerce Protocol", slug: "ai-commerce-protocol" },
+      { term: "Universal Commerce Protocol", slug: "universal-commerce-protocol" },
+    ],
+    usageInContext: "We help Shopify merchants activate and optimize agentic storefront features, ensuring AI shopping agents can discover and recommend their products.",
+    commonMisconceptions: "Agentic storefronts do not replace your regular Shopify store. They add a machine-readable layer on top of your existing store, serving AI agents while your human-facing storefront continues unchanged.",
+    faqs: [
+      {
+        question: "Do I need a special Shopify plan for agentic storefronts?",
+        answer: "Shopify is rolling out agentic capabilities across plans. Check Shopify's current documentation for plan requirements, as availability expands over time.",
+      },
+      {
+        question: "How do AI agents find my Shopify agentic storefront?",
+        answer: "Through AI platform integrations, structured data on your site, and commerce protocols that AI agents use to discover participating merchants.",
+      },
+      {
+        question: "Is my product data secure with agentic storefronts?",
+        answer: "Agentic storefronts expose only the product data you choose—catalog, pricing, availability. Sensitive business data remains private. You control what AI agents can access.",
+      },
+    ],
+    keywords: ["Shopify agentic storefronts", "Shopify AI commerce", "Shopify AI agents", "agentic Shopify", "Shopify machine-readable storefront"],
+    category: "platforms",
+  },
+  {
+    slug: "ai-powered-checkout",
+    term: "AI-Powered Checkout",
+    shortDefinition: "A checkout experience enhanced by AI that reduces friction and enables purchases within AI conversations.",
+    fullDefinition: "AI-powered checkout refers to purchase completion flows that are enhanced or fully managed by artificial intelligence. This ranges from AI assistants completing purchases within a conversation (a user tells ChatGPT to buy a product and the transaction completes within the chat) to AI-optimized checkout pages that dynamically reduce friction based on user behavior. AI-powered checkout eliminates traditional barriers like navigating to a store, finding the product, adding to cart, and filling out forms—compressing the entire journey into a conversational command.",
+    whyItMatters: "Every step in a traditional checkout flow loses customers. AI-powered checkout can compress the entire purchase journey into a single conversational interaction, dramatically increasing conversion rates for AI-influenced purchases.",
+    examples: [
+      "A user completing a purchase entirely within ChatGPT without visiting the merchant's website",
+      "An AI shopping agent handling payment and shipping details on behalf of the user",
+      "Shopify's AI checkout reducing form fields by auto-populating known customer data",
+    ],
+    relatedTerms: [
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "Conversational Commerce", slug: "conversational-commerce" },
+      { term: "Shopify Agentic Storefronts", slug: "shopify-agentic-storefronts" },
+    ],
+    usageInContext: "We help merchants enable AI-powered checkout paths so customers coming from AI assistants can complete purchases with minimal friction.",
+    commonMisconceptions: "AI-powered checkout does not mean giving AI complete financial control. Most implementations require user confirmation for payment. The AI handles product selection and form-filling while the human approves the transaction.",
+    faqs: [
+      {
+        question: "Is AI-powered checkout secure?",
+        answer: "Yes, when implemented properly. AI checkout uses the same encryption and payment processing as traditional checkout. User authentication and payment confirmation remain under the customer's control.",
+      },
+      {
+        question: "Which platforms support AI-powered checkout?",
+        answer: "Shopify, ChatGPT (through integrations), and various AI agent frameworks support AI checkout. The ecosystem is expanding rapidly with new integrations launching regularly.",
+      },
+      {
+        question: "Will customers trust AI checkout?",
+        answer: "Trust is building as users become comfortable with AI assistants. Clear transaction summaries, familiar payment methods, and confirmation steps help establish trust in AI checkout flows.",
+      },
+    ],
+    keywords: ["AI powered checkout", "AI checkout", "conversational checkout", "AI purchase completion", "agentic checkout"],
+    category: "optimization",
+  },
+  {
+    slug: "product-schema-ai",
+    term: "Product Schema for AI",
+    shortDefinition: "Enhanced structured data markup that helps AI systems understand, compare, and recommend your products.",
+    fullDefinition: "Product schema for AI refers to the implementation of structured data markup (primarily Schema.org Product markup in JSON-LD format) that is optimized not just for traditional search engines but specifically for AI systems. While standard product schema helps Google display rich results, AI-optimized product schema includes additional detail that helps LLMs understand product differentiators, use cases, competitive positioning, and customer satisfaction. This includes comprehensive product attributes, review aggregations, comparison-friendly specifications, and category signals that AI models use when generating product recommendations.",
+    whyItMatters: "AI assistants rely heavily on structured data to understand and compare products. Rich product schema gives AI systems the machine-readable information they need to accurately represent and recommend your products in conversational answers.",
+    examples: [
+      "Adding detailed product attributes (material, dimensions, compatibility) to schema markup for AI comprehension",
+      "Including aggregated review data in schema so AI assistants can cite customer satisfaction",
+      "Implementing comparison-friendly specifications that help AI models rank your product against competitors",
+    ],
+    relatedTerms: [
+      { term: "Schema Markup", slug: "schema-markup" },
+      { term: "Structured Data", slug: "structured-data" },
+      { term: "Product Feed AI", slug: "product-feed-ai" },
+    ],
+    usageInContext: "We implement enhanced product schema that helps AI platforms understand your products deeply, leading to more accurate and frequent recommendations.",
+    commonMisconceptions: "Standard product schema is not enough for AI visibility. AI systems need richer, more descriptive structured data than what traditional search engines require for rich results.",
+    faqs: [
+      {
+        question: "What should AI-optimized product schema include?",
+        answer: "Beyond standard fields, include detailed specifications, use case descriptions, competitive differentiators, warranty information, compatibility data, and comprehensive review aggregations.",
+      },
+      {
+        question: "Does product schema directly improve AI recommendations?",
+        answer: "Yes. AI systems that crawl your site extract structured data to build product understanding. The richer your schema, the more accurately AI assistants can represent and recommend your products.",
+      },
+      {
+        question: "How do I test if my product schema works for AI?",
+        answer: "Query AI assistants about your products and check if they accurately represent your specifications and differentiators. If the AI gets details wrong, your schema likely needs enrichment.",
+      },
+    ],
+    keywords: ["product schema AI", "AI structured data", "product markup AI", "JSON-LD products AI", "schema markup AI optimization"],
+    category: "optimization",
+  },
+  {
+    slug: "ai-review-summarization",
+    term: "AI Review Summarization",
+    shortDefinition: "When AI systems aggregate and summarize product or brand reviews to present consensus opinions to users.",
+    fullDefinition: "AI review summarization is the process by which AI assistants and search platforms aggregate customer reviews from multiple sources, analyze sentiment and themes, and present a synthesized summary to users. Instead of reading dozens of individual reviews, users get an AI-generated overview of what customers love, common complaints, and overall satisfaction. AI review summarization influences purchase decisions because users trust these AI-curated summaries as objective assessments, making your review profile a critical factor in AI visibility and recommendations.",
+    whyItMatters: "AI-summarized reviews are becoming the new star rating. When an AI assistant tells a user 'customers love this product's durability but note the steep learning curve,' that summary shapes the purchase decision more powerfully than any marketing message.",
+    examples: [
+      "ChatGPT summarizing '4.5 stars across 2,000 reviews, with praise for battery life and criticism of weight'",
+      "Amazon Rufus synthesizing review themes to help a shopper decide between two products",
+      "Perplexity citing review consensus from multiple platforms in a product recommendation",
+    ],
+    relatedTerms: [
+      { term: "Sentiment Analysis", slug: "sentiment-analysis" },
+      { term: "AI Product Recommendation", slug: "ai-product-recommendation" },
+      { term: "Trust Signals", slug: "trust-signals" },
+    ],
+    usageInContext: "We help you build and manage a review profile that AI systems summarize favorably, ensuring AI-generated review summaries work in your favor.",
+    commonMisconceptions: "You cannot game AI review summarization with fake reviews. AI systems are increasingly sophisticated at detecting review manipulation, and getting caught damages both your review profile and AI visibility.",
+    faqs: [
+      {
+        question: "Which review platforms do AI systems pull from?",
+        answer: "AI assistants reference reviews from Google, Amazon, G2, Trustpilot, Capterra, Yelp, and other major platforms. Having strong reviews across multiple platforms strengthens AI summarization.",
+      },
+      {
+        question: "Can I influence how AI summarizes my reviews?",
+        answer: "Indirectly, yes. Encourage satisfied customers to leave detailed reviews highlighting specific product strengths. Address negative review themes with product improvements. The AI summary reflects the actual review landscape.",
+      },
+      {
+        question: "How important are reviews for AI product recommendations?",
+        answer: "Very important. Review quality and quantity are among the strongest signals AI assistants use when deciding which products to recommend. A strong review profile directly improves AI recommendation rates.",
+      },
+    ],
+    keywords: ["AI review summarization", "AI review summary", "LLM review analysis", "AI customer reviews", "review aggregation AI"],
+    category: "visibility",
+  },
+  {
+    slug: "voice-commerce",
+    term: "Voice Commerce",
+    shortDefinition: "Purchasing products through voice-activated AI assistants like Alexa, Siri, and Google Assistant.",
+    fullDefinition: "Voice commerce (v-commerce) is the use of voice-activated AI assistants to search for, evaluate, and purchase products using spoken commands. This includes smart speaker transactions (Alexa, Google Home), phone-based voice purchases (Siri, Google Assistant), and in-car commerce (automotive AI assistants). Voice commerce presents unique optimization challenges because there are no visual results—the AI assistant typically recommends only one or two products, making the top recommendation position critically important. Product data optimization, brand authority, and natural language alignment are key to capturing voice commerce sales.",
+    whyItMatters: "Voice commerce offers a zero-visual buying experience where the AI's recommendation IS the entire shelf. If the voice assistant does not recommend your product, the customer never knows it exists. This winner-take-all dynamic makes voice optimization essential.",
+    examples: [
+      "A customer saying 'Alexa, order more coffee pods' and Amazon selecting a specific brand",
+      "Google Assistant recommending a restaurant when a driver asks for dinner options",
+      "Siri suggesting a product from a Shopify store when asked for gift recommendations",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Conversational Commerce", slug: "conversational-commerce" },
+      { term: "AI Product Recommendation", slug: "ai-product-recommendation" },
+    ],
+    usageInContext: "We optimize your product data and brand signals for voice commerce, ensuring voice assistants recommend your brand when customers shop by voice.",
+    commonMisconceptions: "Voice commerce is not dead—it is evolving. While early smart speaker shopping was limited, the integration of advanced LLMs into voice assistants is making voice commerce more capable and natural.",
+    faqs: [
+      {
+        question: "How big is the voice commerce market?",
+        answer: "Voice commerce is projected to reach tens of billions in transaction value, driven by smart speaker adoption and LLM integration into voice assistants. Growth is accelerating with improved AI capabilities.",
+      },
+      {
+        question: "How do I optimize for voice commerce?",
+        answer: "Focus on being the default recommendation: optimize product data, build brand authority with AI systems, ensure your products match natural language descriptions users speak, and maintain strong review profiles.",
+      },
+      {
+        question: "Which voice platforms matter most?",
+        answer: "Amazon Alexa (largest smart speaker base), Google Assistant (Android integration), and Apple Siri (iOS integration). Each has different optimization requirements based on their data sources.",
+      },
+    ],
+    keywords: ["voice commerce", "v-commerce", "voice shopping", "Alexa commerce", "voice assistant shopping"],
+    category: "strategy",
+  },
+  {
+    slug: "visual-ai-search",
+    term: "Visual AI Search",
+    shortDefinition: "Using images or camera input to search for products and information through AI-powered visual recognition.",
+    fullDefinition: "Visual AI search allows users to find products and information by submitting images rather than text queries. Users can take a photo of an item, upload a screenshot, or use their camera in real time to search for similar or identical products. AI visual search systems use computer vision and LLMs to identify objects, brands, styles, and attributes in images, then match them with product databases. Platforms offering visual AI search include Google Lens, Amazon's visual search, Pinterest Lens, and multimodal AI assistants like GPT-4 with vision and Gemini.",
+    whyItMatters: "Visual search captures purchase intent that text search cannot. When a consumer photographs a product they want to buy, they have extremely high purchase intent. Brands optimized for visual search capture these high-converting moments.",
+    examples: [
+      "A consumer photographing a friend's handbag and Google Lens identifying the brand and showing purchase options",
+      "A shopper using Amazon's camera search to find a replacement part by taking a photo of the broken one",
+      "A user uploading a screenshot of a room to ChatGPT and asking 'where can I buy this lamp?'",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Product Schema AI", slug: "product-schema-ai" },
+      { term: "AI Product Recommendation", slug: "ai-product-recommendation" },
+    ],
+    usageInContext: "We optimize your product images and visual data so AI visual search platforms can identify and recommend your products when users search by image.",
+    commonMisconceptions: "Visual AI search is not limited to fashion and furniture. It works across all product categories, from industrial parts to food items. Any product that can be photographed can be found through visual search.",
+    faqs: [
+      {
+        question: "How do I optimize for visual AI search?",
+        answer: "Use high-quality product images from multiple angles, include detailed alt text, implement product image schema, and ensure your product images are indexed by major visual search platforms.",
+      },
+      {
+        question: "Which visual search platforms should I focus on?",
+        answer: "Google Lens has the broadest reach, followed by Amazon's visual search for product purchases, and Pinterest Lens for discovery. Multimodal AI assistants (GPT-4V, Gemini) are also growing.",
+      },
+      {
+        question: "How important is visual search for e-commerce?",
+        answer: "Increasingly critical. Visual search users have 30-50% higher purchase intent than text searchers. As smartphone cameras and AI capabilities improve, visual search adoption is accelerating.",
+      },
+    ],
+    keywords: ["visual AI search", "image search AI", "visual product search", "Google Lens shopping", "camera search commerce"],
+    category: "ai-fundamentals",
+  },
+  {
+    slug: "ai-price-comparison",
+    term: "AI Price Comparison",
+    shortDefinition: "When AI assistants compare prices across retailers and recommend the best deal to users in real time.",
+    fullDefinition: "AI price comparison refers to the capability of AI assistants to automatically query, compare, and present product pricing from multiple retailers when helping users with purchase decisions. Unlike traditional price comparison websites that require manual visits, AI price comparison happens conversationally—a user asks an AI assistant for the best price on a specific product, and the AI searches across retailers, compares total costs (including shipping and taxes where possible), and recommends the best option. This capability is available in ChatGPT Shopping, Perplexity, and emerging AI shopping agents.",
+    whyItMatters: "AI price comparison makes pricing transparent and competitive in real time. Brands with uncompetitive pricing will be called out by AI assistants, while brands offering genuine value will be highlighted. Pricing strategy must account for AI-driven transparency.",
+    examples: [
+      "ChatGPT showing a user the same product from three retailers with different prices and shipping costs",
+      "An AI agent finding a 20% lower price on an identical product at a different retailer",
+      "Perplexity comparing subscription pricing across competitors and recommending the best value",
+    ],
+    relatedTerms: [
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+      { term: "Conversational Commerce", slug: "conversational-commerce" },
+      { term: "ChatGPT Shopping", slug: "chatgpt-shopping" },
+    ],
+    usageInContext: "We ensure your pricing is competitive and accurately represented in AI price comparison results so AI assistants present your brand favorably.",
+    commonMisconceptions: "AI price comparison is not just about being the cheapest. AI assistants consider total value—including shipping, return policies, warranties, and seller reputation—when making recommendations, not just the lowest sticker price.",
+    faqs: [
+      {
+        question: "How do AI assistants access pricing data?",
+        answer: "Through product feeds, web crawling, merchant APIs, and commerce protocols. Ensuring your current pricing is accessible and machine-readable is essential for accurate AI price comparison.",
+      },
+      {
+        question: "Can I compete if I am not the cheapest option?",
+        answer: "Yes. AI assistants recommend based on overall value, not just price. Strong reviews, superior features, better policies, and brand trust can offset higher pricing in AI recommendations.",
+      },
+      {
+        question: "How often do AI assistants update pricing data?",
+        answer: "Real-time AI platforms like Perplexity access live pricing. Others refresh periodically. Keep your product feeds updated to ensure AI assistants always show current, accurate pricing.",
+      },
+    ],
+    keywords: ["AI price comparison", "AI price check", "AI shopping comparison", "AI deal finder", "AI best price"],
+    category: "ai-fundamentals",
+  },
+  {
+    slug: "geo-targeting-ai",
+    term: "Geo-Targeting for AI",
+    shortDefinition: "Optimizing AI visibility for location-specific queries so AI assistants recommend your brand in relevant geographic markets.",
+    fullDefinition: "Geo-targeting for AI is the practice of optimizing your brand's AI visibility for location-specific queries and recommendations. When users ask AI assistants for local recommendations ('best Italian restaurant near me,' 'plumber in Austin'), the AI draws on location-aware data sources to generate answers. Effective geo-targeting for AI involves ensuring your business information is accurate and consistent across local directories, Google Business Profile, review platforms, and structured data—all sources that AI systems reference for location-based recommendations.",
+    whyItMatters: "Local and location-based queries represent a significant share of AI assistant usage. Businesses that optimize for geo-targeted AI visibility capture foot traffic, local service inquiries, and location-specific purchase intent that competitors miss.",
+    examples: [
+      "Ensuring your Google Business Profile is optimized so Gemini recommends your restaurant for local dining queries",
+      "Adding LocalBusiness schema so AI assistants understand your service areas",
+      "Building local review profiles on platforms AI systems reference for location recommendations",
+    ],
+    relatedTerms: [
+      { term: "Entity Authority", slug: "entity-authority" },
+      { term: "Schema Markup", slug: "schema-markup" },
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+    ],
+    usageInContext: "Our geo-targeting AI strategy ensures your brand appears in location-specific AI recommendations across all platforms your local customers use.",
+    commonMisconceptions: "Geo-targeting for AI is not just about Google Maps. AI assistants pull local data from multiple sources, and being well-represented across all local data sources is necessary for comprehensive local AI visibility.",
+    faqs: [
+      {
+        question: "Which local data sources matter for AI?",
+        answer: "Google Business Profile, Yelp, Apple Maps, local directories, review platforms, and your website's local schema. AI assistants aggregate data from all these sources for location-based answers.",
+      },
+      {
+        question: "How do I optimize for 'near me' AI queries?",
+        answer: "Maintain accurate NAP (Name, Address, Phone) across all platforms, build local reviews, use LocalBusiness schema, and create location-specific content that AI systems can reference.",
+      },
+      {
+        question: "Do AI assistants use GPS data for local recommendations?",
+        answer: "When available, yes. Mobile AI assistants and voice assistants use device location. Desktop-based AI uses IP geolocation or user-stated location. Optimize for both precise and approximate location targeting.",
+      },
+    ],
+    keywords: ["geo targeting AI", "local AI visibility", "AI local search", "AI near me optimization", "local AI recommendations"],
+    category: "optimization",
+  },
+  {
+    slug: "ai-audience-targeting",
+    term: "AI Audience Targeting",
+    shortDefinition: "Using AI-powered tools to identify and reach the most relevant audiences for advertising and content.",
+    fullDefinition: "AI audience targeting leverages artificial intelligence to identify, segment, and reach the most valuable audiences for your brand's advertising and content. Unlike traditional demographic or behavioral targeting, AI audience targeting uses machine learning to analyze vast datasets—including browsing behavior, purchase history, content consumption, and intent signals—to build dynamic audience segments that predict who is most likely to convert. AI targeting operates across traditional ad platforms (Google, Meta) and emerging AI advertising channels (ChatGPT Ads, Perplexity Ads) to deliver messages to the right people at the right time.",
+    whyItMatters: "AI audience targeting dramatically improves advertising efficiency by focusing spend on the users most likely to convert. As AI advertising channels emerge, AI-powered targeting becomes essential for reaching users within conversational AI environments.",
+    examples: [
+      "Using AI to identify high-intent shoppers on ChatGPT based on their conversation patterns",
+      "Machine learning models predicting which website visitors are most likely to purchase",
+      "AI-powered lookalike audiences that find new customers similar to your best existing ones",
+    ],
+    relatedTerms: [
+      { term: "AI Ad Placement", slug: "ai-ad-placement" },
+      { term: "Paid Media", slug: "paid-media" },
+      { term: "Conversion", slug: "conversion" },
+    ],
+    usageInContext: "Our AI audience targeting ensures your ads and content reach the users most likely to engage and convert, across both traditional and AI platforms.",
+    commonMisconceptions: "AI audience targeting is not a black box you cannot control. Modern AI targeting tools provide transparency into which signals drive audience selection, allowing marketers to guide and refine the AI's targeting decisions.",
+    faqs: [
+      {
+        question: "How does AI targeting differ from traditional targeting?",
+        answer: "Traditional targeting uses static demographics and behaviors. AI targeting uses machine learning to continuously analyze and predict conversion likelihood, adapting in real time as user behavior evolves.",
+      },
+      {
+        question: "Does AI audience targeting work for small businesses?",
+        answer: "Yes. Many AI targeting tools are accessible to businesses of all sizes. Platforms like Meta and Google include AI-powered targeting features in their standard advertising tools.",
+      },
+      {
+        question: "What data does AI targeting use?",
+        answer: "AI targeting uses first-party data (your customer data), platform behavioral data, contextual signals, and conversion patterns. Privacy regulations apply, and data usage varies by platform and region.",
+      },
+    ],
+    keywords: ["AI audience targeting", "AI ad targeting", "machine learning targeting", "AI advertising audience", "predictive audience targeting"],
+    category: "strategy",
+  },
+  {
+    slug: "cost-per-ai-mention",
+    term: "Cost Per AI Mention",
+    shortDefinition: "A metric calculating the cost of earning each brand mention or recommendation from AI platforms.",
+    fullDefinition: "Cost per AI mention is a performance marketing metric that calculates the average cost of earning one brand mention or recommendation from AI platforms. It is computed by dividing the total investment in AI visibility optimization (content creation, structured data, digital PR, monitoring tools) by the number of AI mentions or recommendations tracked across platforms during a given period. This metric helps marketers evaluate the ROI of AI visibility efforts and compare the cost-effectiveness of AI optimization against traditional marketing channels.",
+    whyItMatters: "Cost per AI mention provides a concrete way to measure AI visibility ROI. By comparing this cost against customer acquisition costs from other channels, marketers can justify and optimize their AI visibility investments.",
+    examples: [
+      "Calculating that three months of AI optimization costing $15,000 generated 500 AI mentions, yielding a $30 cost per AI mention",
+      "Comparing cost per AI mention across different platforms to identify the most cost-effective optimization channels",
+      "Tracking cost per AI mention trends over time to demonstrate improving efficiency",
+    ],
+    relatedTerms: [
+      { term: "AI Ads CPM", slug: "ai-ads-cpm" },
+      { term: "ROI", slug: "roi" },
+      { term: "Share of Model", slug: "share-of-model" },
+    ],
+    usageInContext: "We track your cost per AI mention to demonstrate clear ROI from AI visibility investments and optimize spend allocation across channels.",
+    commonMisconceptions: "Cost per AI mention should not be compared directly to cost per click. AI mentions influence purchasing decisions differently—they build trust and awareness within a conversational context, often leading to higher conversion rates per interaction.",
+    faqs: [
+      {
+        question: "What is a good cost per AI mention?",
+        answer: "This varies dramatically by industry and competitiveness. Calculate the downstream revenue per AI mention to determine what cost is sustainable. Focus on the trend—costs should decrease as optimization compounds.",
+      },
+      {
+        question: "How do I track AI mentions to calculate this metric?",
+        answer: "Use AI visibility monitoring tools that systematically query AI platforms for your brand. Track mentions across ChatGPT, Claude, Perplexity, and Gemini to get a comprehensive count.",
+      },
+      {
+        question: "Should I optimize for cost per mention or quality of mentions?",
+        answer: "Both matter. A low cost per mention is meaningless if mentions are in irrelevant contexts. Focus on cost per quality mention—recommendations in high-intent, purchase-relevant conversations.",
+      },
+    ],
+    keywords: ["cost per AI mention", "AI mention cost", "AI visibility ROI", "AI optimization cost", "cost per AI recommendation"],
+    category: "measurement",
+  },
+  {
+    slug: "ai-search-impression",
+    term: "AI Search Impression",
+    shortDefinition: "Each instance where your brand appears in an AI-generated search result or conversational response.",
+    fullDefinition: "An AI search impression is a single instance of your brand being mentioned, cited, or recommended in an AI-generated response across any AI platform. Unlike traditional search impressions (where your listing appears in search results), AI search impressions occur within the AI's answer itself—whether as a named recommendation, a cited source, a product card, or a brand mention within a conversational response. Tracking AI search impressions across platforms provides a measure of your brand's overall AI visibility and reach.",
+    whyItMatters: "AI search impressions represent your brand's exposure to the growing audience using AI for information and shopping. Tracking impressions helps measure awareness and calculate conversion rates from AI visibility to business outcomes.",
+    examples: [
+      "Your brand being mentioned by ChatGPT when a user asks for software recommendations",
+      "Your product appearing as a cited source in a Perplexity shopping answer",
+      "Your company name included in a Google AI Overview for an industry query",
+    ],
+    relatedTerms: [
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+      { term: "Share of Model", slug: "share-of-model" },
+      { term: "Cost Per AI Mention", slug: "cost-per-ai-mention" },
+    ],
+    usageInContext: "We measure your AI search impressions across all major platforms, showing how many potential customers see your brand in AI-generated answers.",
+    commonMisconceptions: "AI search impressions are harder to measure precisely than traditional search impressions because AI platforms do not provide impression data like Google Search Console does. Estimates are based on systematic querying and platform traffic data.",
+    faqs: [
+      {
+        question: "How are AI search impressions different from traditional impressions?",
+        answer: "Traditional impressions mean your listing was shown. AI impressions mean your brand was included in the AI's answer. AI impressions carry higher attention value because users read the full response.",
+      },
+      {
+        question: "Can I see how many AI search impressions I get?",
+        answer: "Not directly from AI platforms yet. AI visibility tools estimate impression counts by systematically querying platforms and combining data with platform traffic statistics.",
+      },
+      {
+        question: "Are AI impressions more valuable than search impressions?",
+        answer: "Generally yes. AI impressions appear within trusted conversational responses, carry implicit recommendation from the AI, and reach users with typically higher engagement and intent levels.",
+      },
+    ],
+    keywords: ["AI search impression", "AI impression", "AI visibility impression", "AI brand exposure", "AI search reach"],
+    category: "measurement",
+  },
+  {
+    slug: "ai-visibility-audit",
+    term: "AI Visibility Audit",
+    shortDefinition: "A comprehensive assessment of how your brand currently appears across all AI search platforms and assistants.",
+    fullDefinition: "An AI visibility audit is a systematic evaluation of your brand's presence, accuracy, and positioning across all major AI platforms. The audit involves querying ChatGPT, Claude, Perplexity, Gemini, and other AI assistants with hundreds of relevant prompts to assess how often your brand is mentioned, how accurately it is described, what sentiment accompanies mentions, and how you compare to competitors. The audit also evaluates technical factors like AI bot crawl access, structured data quality, entity authority signals, and source citation patterns to identify specific optimization opportunities.",
+    whyItMatters: "You cannot optimize what you do not measure. An AI visibility audit establishes your baseline, identifies gaps and inaccuracies, reveals competitive advantages and disadvantages, and provides a prioritized roadmap for AI visibility improvement.",
+    examples: [
+      "Discovering that ChatGPT recommends your top competitor 3x more often for your primary keyword",
+      "Finding that Claude incorrectly describes your pricing tier, potentially losing customers",
+      "Identifying that Perplexity never cites your site because PerplexityBot is blocked in robots.txt",
+    ],
+    relatedTerms: [
+      { term: "AI Visibility Score", slug: "ai-visibility-score" },
+      { term: "Share of Model", slug: "share-of-model" },
+      { term: "Brand Safety AI", slug: "brand-safety-ai" },
+    ],
+    usageInContext: "We begin every engagement with a comprehensive AI visibility audit, establishing your baseline and creating a data-driven optimization roadmap.",
+    commonMisconceptions: "An AI visibility audit is not a one-time activity. AI models update regularly, competitors optimize, and user behavior evolves. Regular audits (quarterly or after major AI model updates) ensure your strategy stays current.",
+    faqs: [
+      {
+        question: "What does an AI visibility audit cover?",
+        answer: "Brand mention frequency, recommendation rates, accuracy of AI-generated brand information, sentiment analysis, competitive comparison, technical factors (crawler access, structured data), and citation patterns across all major AI platforms.",
+      },
+      {
+        question: "How long does an AI visibility audit take?",
+        answer: "A comprehensive audit takes 1-2 weeks, including querying AI platforms at scale, analyzing results, benchmarking against competitors, and preparing actionable recommendations.",
+      },
+      {
+        question: "What actions follow an audit?",
+        answer: "The audit produces a prioritized action plan addressing the highest-impact opportunities first: fixing inaccuracies, enabling crawler access, optimizing structured data, and building entity authority.",
+      },
+    ],
+    keywords: ["AI visibility audit", "AI SEO audit", "AI brand audit", "audit AI presence", "AI search audit"],
+    category: "measurement",
+  },
+  {
+    slug: "third-party-ai-mentions",
+    term: "Third-Party AI Mentions",
+    shortDefinition: "When external websites and publications mention your brand in ways that influence how AI systems represent you.",
+    fullDefinition: "Third-party AI mentions are references to your brand on external websites, publications, review platforms, and databases that AI systems use as data sources for training and retrieval. These mentions form the foundation of how AI models understand your brand—LLMs learn about companies primarily through third-party content rather than the brand's own website. The quality, quantity, accuracy, and sentiment of third-party mentions directly determine how AI assistants describe and recommend your brand. Managing third-party mentions is a critical component of AI visibility strategy.",
+    whyItMatters: "AI models trust third-party sources more than your own marketing content. Your brand narrative in AI responses is shaped primarily by what external sources say about you. Actively building positive, accurate third-party mentions is essential for favorable AI representation.",
+    examples: [
+      "A TechCrunch article mentioning your product favorably, which LLMs reference in technology recommendations",
+      "G2 and Capterra reviews that AI assistants cite when comparing software options",
+      "An industry report listing your company as a market leader, influencing AI's brand perception",
+    ],
+    relatedTerms: [
+      { term: "Digital PR AI", slug: "digital-pr-ai" },
+      { term: "Brand Mention", slug: "brand-mention" },
+      { term: "Entity Authority", slug: "entity-authority" },
+    ],
+    usageInContext: "We build and manage your third-party AI mention profile, ensuring external sources provide the accurate, positive information that shapes how AI platforms represent your brand.",
+    commonMisconceptions: "You do not need mentions on thousands of sites. AI models weight quality heavily—a few mentions on highly authoritative sources (major publications, Wikipedia, industry leaders) can be more impactful than hundreds of low-quality mentions.",
+    faqs: [
+      {
+        question: "Which third-party sources matter most for AI?",
+        answer: "Wikipedia, major news publications (NYT, Forbes, TechCrunch), authoritative review platforms (G2, Trustpilot), industry reports, and educational institutions. These are heavily weighted in LLM training data.",
+      },
+      {
+        question: "Can negative third-party mentions hurt my AI visibility?",
+        answer: "Yes. If prominent negative mentions exist, AI systems may surface them when users ask about your brand. Address negative coverage proactively and build positive mentions to shift the balance.",
+      },
+      {
+        question: "How do I build more third-party AI mentions?",
+        answer: "Invest in digital PR, contribute expert content to publications, participate in industry reports, encourage reviews on major platforms, and create newsworthy announcements that earn coverage.",
+      },
+    ],
+    keywords: ["third party AI mentions", "external AI mentions", "AI brand mentions", "third party brand references", "AI training data mentions"],
+    category: "visibility",
+  },
+  {
+    slug: "ai-content-scoring",
+    term: "AI Content Scoring",
+    shortDefinition: "Evaluating how well your content is optimized for AI systems to understand, reference, and recommend.",
+    fullDefinition: "AI content scoring is the process of evaluating web content against criteria that determine how effectively AI systems can understand, extract information from, and reference it in generated responses. Scoring factors include content structure, clarity, factual authority, schema markup quality, question-answer formatting, topic comprehensiveness, and alignment with common AI query patterns. AI content scoring tools analyze your pages and assign scores indicating how 'AI-ready' your content is, with specific recommendations for improvement.",
+    whyItMatters: "Content that scores well for AI readability gets cited more frequently by AI platforms. AI content scoring helps prioritize optimization efforts by identifying which pages need the most improvement and which changes will have the greatest impact.",
+    examples: [
+      "Scoring a product page and finding it lacks the structured Q&A format that AI systems prefer",
+      "Identifying that a blog post scores low because it buries key facts in narrative prose instead of using clear headings",
+      "Comparing content scores across your site to prioritize which pages to optimize first",
+    ],
+    relatedTerms: [
+      { term: "Content Optimization AI", slug: "content-optimization-ai" },
+      { term: "Answer Engine Optimization", slug: "answer-engine-optimization" },
+      { term: "AI Citation", slug: "ai-citation" },
+    ],
+    usageInContext: "We score all your key content for AI readability and provide specific recommendations to improve each page's AI optimization level.",
+    commonMisconceptions: "High AI content scores do not require sacrificing human readability. The best AI-optimized content is also clear, well-structured, and engaging for human readers. Good content structure benefits both audiences.",
+    faqs: [
+      {
+        question: "What factors go into AI content scoring?",
+        answer: "Key factors include content structure (headings, lists, Q&A), schema markup presence, factual clarity, topic coverage depth, source citations, and alignment with common query patterns in your category.",
+      },
+      {
+        question: "How often should I score my content?",
+        answer: "Score key pages quarterly, and score any new content before publication. After major content updates, rescore to verify improvements were effective.",
+      },
+      {
+        question: "Does AI content scoring replace traditional SEO content analysis?",
+        answer: "No, it complements it. Traditional SEO content analysis focuses on keyword optimization and user engagement. AI content scoring focuses on how effectively AI systems can extract and reference your information.",
+      },
+    ],
+    keywords: ["AI content scoring", "AI content optimization score", "AI readability score", "content AI grading", "AI SEO content score"],
+    category: "optimization",
+  },
+  {
+    slug: "retrieval-augmented-shopping",
+    term: "Retrieval-Augmented Shopping",
+    shortDefinition: "AI shopping experiences that combine LLM reasoning with real-time product data retrieval for accurate recommendations.",
+    fullDefinition: "Retrieval-augmented shopping applies the Retrieval-Augmented Generation (RAG) pattern to e-commerce, combining an LLM's conversational and reasoning abilities with real-time retrieval of current product data, pricing, inventory, and reviews. Instead of relying solely on what the AI learned during training (which may be outdated), retrieval-augmented shopping systems query live product databases, merchant feeds, and review platforms at the moment a user asks a shopping question. This ensures recommendations reflect current availability, accurate pricing, and the latest customer feedback.",
+    whyItMatters: "Retrieval-augmented shopping solves the freshness problem in AI commerce. Products, prices, and availability change constantly—systems using real-time retrieval provide accurate recommendations that static LLM knowledge cannot match, leading to higher user trust and conversion.",
+    examples: [
+      "Perplexity pulling live product data from merchant feeds while answering a shopping query",
+      "ChatGPT Shopping retrieving current prices and stock levels before making recommendations",
+      "An AI agent checking real-time inventory across retailers before suggesting where to buy",
+    ],
+    relatedTerms: [
+      { term: "Retrieval-Augmented Generation", slug: "retrieval-augmented-generation" },
+      { term: "Product Feed AI", slug: "product-feed-ai" },
+      { term: "AI Shopping Assistant", slug: "ai-shopping-assistant" },
+    ],
+    usageInContext: "We optimize your product data for retrieval-augmented shopping systems, ensuring AI platforms always have access to your current pricing, inventory, and product details.",
+    commonMisconceptions: "Retrieval-augmented shopping is not just search with a chatbot interface. The LLM adds genuine reasoning—understanding nuanced preferences, making trade-off comparisons, and explaining why a product fits the user's specific needs.",
+    faqs: [
+      {
+        question: "How does retrieval-augmented shopping access my product data?",
+        answer: "Through structured product feeds, merchant program APIs, web crawling, and commerce protocols. Ensuring your data is machine-readable and accessible through at least one of these channels is essential.",
+      },
+      {
+        question: "Is retrieval-augmented shopping more accurate than regular AI recommendations?",
+        answer: "Yes, for product-specific details like pricing and availability. The retrieval component ensures factual accuracy while the LLM provides the reasoning and personalization layer.",
+      },
+      {
+        question: "Do I need to update my product data more frequently for RAG shopping?",
+        answer: "Yes. Because retrieval-augmented systems access live data, outdated prices or inventory can lead to negative user experiences and lower recommendation rates. Real-time or daily updates are ideal.",
+      },
+    ],
+    keywords: ["retrieval augmented shopping", "RAG shopping", "AI real-time shopping", "RAG commerce", "AI product retrieval"],
+    category: "ai-fundamentals",
+  },
+  {
+    slug: "llm-brand-sentiment",
+    term: "LLM Brand Sentiment",
+    shortDefinition: "The overall tone and favorability with which large language models describe and discuss your brand.",
+    fullDefinition: "LLM brand sentiment measures the overall positivity, neutrality, or negativity of how large language models describe your brand when generating responses. This goes beyond simple mention counting to analyze the qualitative tone of AI-generated brand descriptions—whether LLMs characterize your brand favorably, present it as a strong option, note concerns or limitations, or position it unfavorably against competitors. LLM brand sentiment is shaped by training data sources, review profiles, media coverage, and the overall online narrative around your brand.",
+    whyItMatters: "Even when AI mentions your brand, the sentiment matters enormously. A recommendation with reservations ('Company X is popular but has mixed reviews on customer service') is far less valuable than an enthusiastic endorsement. Understanding and improving LLM sentiment is key to converting AI visibility into business results.",
+    examples: [
+      "ChatGPT describing your product as 'a leading solution known for reliability' (positive sentiment)",
+      "Claude mentioning your brand but noting 'some users report a steep learning curve' (mixed sentiment)",
+      "Perplexity citing a negative review when summarizing your product's reputation (negative sentiment)",
+    ],
+    relatedTerms: [
+      { term: "Sentiment Analysis", slug: "sentiment-analysis" },
+      { term: "Brand Safety AI", slug: "brand-safety-ai" },
+      { term: "AI Review Summarization", slug: "ai-review-summarization" },
+    ],
+    usageInContext: "We monitor LLM brand sentiment across all major AI platforms and implement strategies to shift the narrative positively through better content, reviews, and PR.",
+    commonMisconceptions: "LLM sentiment cannot be directly manipulated through your own website content alone. AI models form sentiment from the aggregate of all sources—especially third-party reviews, media coverage, and user-generated content.",
+    faqs: [
+      {
+        question: "How is LLM brand sentiment measured?",
+        answer: "By querying AI models with brand-related prompts and analyzing the language, tone, and qualifiers used in responses. Sentiment analysis tools score responses as positive, neutral, or negative with specific themes identified.",
+      },
+      {
+        question: "What causes negative LLM sentiment?",
+        answer: "Negative reviews on major platforms, unfavorable media coverage, unresolved customer complaints visible online, and outdated negative information that remains in training data. All of these shape how LLMs discuss your brand.",
+      },
+      {
+        question: "How long does it take to improve LLM sentiment?",
+        answer: "Improvements in retrieval-based systems (Perplexity) can appear within weeks as you address review and content issues. For base LLMs, sentiment changes require new training cycles, typically months.",
+      },
+    ],
+    keywords: ["LLM brand sentiment", "AI brand sentiment", "LLM brand perception", "AI brand tone", "LLM brand analysis"],
+    category: "measurement",
+  },
+  {
+    slug: "ai-commerce-protocol",
+    term: "AI Commerce Protocol",
+    shortDefinition: "A technical standard enabling AI agents to discover, interact with, and transact on e-commerce stores programmatically.",
+    fullDefinition: "An AI commerce protocol is a technical specification that defines how AI agents interact with e-commerce platforms to browse catalogs, query products, compare options, and execute transactions. These protocols establish standardized endpoints, data formats, authentication methods, and transaction flows that enable any compatible AI agent to interact with any participating merchant. AI commerce protocols are the infrastructure layer that makes agentic commerce scalable—without them, each AI platform would need custom integrations with each merchant.",
+    whyItMatters: "AI commerce protocols determine whether your store is accessible to AI shopping agents. Merchants implementing these protocols gain access to the growing universe of AI agents that help consumers shop, creating a new high-intent traffic and sales channel.",
+    examples: [
+      "A Shopify app implementing an AI commerce protocol to make products available to all compatible AI agents",
+      "An AI agent using a standardized protocol to query inventory and pricing across dozens of merchants simultaneously",
+      "A protocol endpoint enabling AI assistants to initiate checkout flows programmatically",
+    ],
+    relatedTerms: [
+      { term: "Universal Commerce Protocol", slug: "universal-commerce-protocol" },
+      { term: "Agentic Commerce", slug: "agentic-commerce" },
+      { term: "Shopify Agentic Storefronts", slug: "shopify-agentic-storefronts" },
+    ],
+    usageInContext: "We help merchants implement AI commerce protocols so your store is accessible to every AI shopping agent, maximizing your reach in the agentic commerce era.",
+    commonMisconceptions: "AI commerce protocols are not replacements for your existing e-commerce platform. They are an additional layer that makes your existing store accessible to AI agents, similar to how RSS made blogs accessible to feed readers.",
+    faqs: [
+      {
+        question: "Which AI commerce protocols exist?",
+        answer: "The ecosystem is early and evolving. Shopify's agentic features, OpenAI's plugin/action frameworks, and emerging open standards are the main protocols. Adoption is expected to consolidate around a few dominant standards.",
+      },
+      {
+        question: "Do I need technical expertise to implement these protocols?",
+        answer: "Most implementations are available through e-commerce platform apps and plugins. Shopify and other platforms are building protocol support into their core features, reducing the technical barrier.",
+      },
+      {
+        question: "Is implementing an AI commerce protocol worth it now?",
+        answer: "Yes. Early implementation gives you first-mover advantage as AI shopping grows. The technical investment is modest, and being agent-ready positions you ahead of competitors who wait.",
+      },
+    ],
+    keywords: ["AI commerce protocol", "agentic commerce protocol", "AI shopping protocol", "AI transaction standard", "machine-readable commerce"],
+    category: "strategy",
+  },
 ];
 
 /**
