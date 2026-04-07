@@ -1,0 +1,196 @@
+---
+title: "Shopify Inventory Forecasting: Never Run Out of Stock Again"
+excerpt: "Master inventory forecasting for your Shopify store. Learn demand planning formulas, safety stock calculations, reorder points, and seasonal planning."
+date: "2026-04-06"
+category: "Guide"
+tags: ["Shopify", "Inventory", "Forecasting"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-04-06"
+faqs:
+  - question: "How do I forecast inventory for a new Shopify store with no sales data?"
+    answer: "Without historical data, use industry benchmarks, competitor research, and conservative estimates. Order small initial batches (2-4 weeks of projected sales), track actual sell-through rates weekly, and adjust forecasts after 30 days of real data. For new products, plan to sell 1-3 units per day as a baseline and adjust upward or downward based on actual performance. Always err on the side of less inventory initially to avoid tying up cash."
+  - question: "What is safety stock and how much should I keep?"
+    answer: "Safety stock is extra inventory held to prevent stockouts caused by demand spikes or supply delays. A simple formula is: Safety Stock = (Maximum Daily Sales x Maximum Lead Time) - (Average Daily Sales x Average Lead Time). For most Shopify stores, 2-4 weeks of average sales as safety stock provides adequate protection. High-demand or seasonal products may require 4-6 weeks of safety stock."
+  - question: "What Shopify apps help with inventory forecasting?"
+    answer: "The top inventory forecasting apps for Shopify are Inventory Planner by Sage (most comprehensive, starts at $249/month), Stocky (free with Shopify POS Pro), Prediko (AI-powered, starts at $119/month), and Cogsy (demand planning focused, starts at $69/month). For smaller stores, spreadsheet-based forecasting using Shopify's export data works well until you reach 100+ SKUs."
+---
+
+Stockouts cost [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) stores an estimated 4% of annual revenue on average—and for fast-growing brands, the figure is much higher. Every day a bestselling product shows "out of stock" means lost sales, lost advertising spend driving traffic to an unavailable product, and customers discovering your competitors instead of buying from you.
+
+On the other side, overstocking ties up cash in inventory that sits in warehouses for months, accruing storage fees and risking obsolescence. The sweet spot—having enough inventory to meet demand without overcommitting capital—requires systematic forecasting.
+
+This guide teaches you the formulas, frameworks, and tools to forecast inventory accurately for your Shopify store, whether you manage 10 SKUs or 10,000.
+
+## Why Does Inventory Forecasting Matter for Shopify Stores?
+
+The financial impact of inventory management goes far beyond missed sales:
+
+| Problem | Impact | Frequency |
+|---|---|---|
+| **Stockout on a bestseller** | 4-8% of monthly revenue lost per SKU | Affects 65% of stores monthly |
+| **Overstocking slow movers** | Cash tied up for 3-12 months | Affects 80% of stores |
+| **Emergency restocking (air freight)** | 3-5x normal shipping costs | Affects 40% of stores quarterly |
+| **Dead stock write-offs** | 5-10% of annual inventory value | Affects 50% of stores annually |
+| **Lost ad spend on OOS products** | $500-$5,000/month wasted | Affects 45% of stores running ads |
+
+Stores with disciplined inventory forecasting maintain 95-98% in-stock rates while keeping inventory turns at 6-12x per year—meaning they sell through their entire inventory every 1-2 months.
+
+## How Do You Calculate Basic Demand Forecasts?
+
+Start with the simplest approach that works: historical sales data extrapolation. You need at least 30 days of sales data per SKU for meaningful forecasting, with 90+ days being ideal.
+
+### The basic forecasting formula:
+
+**Forecasted Demand = Average Daily Sales x Planning Period (in days) x Growth Factor**
+
+Example: A product sells an average of 8 units per day. You are planning for the next 60 days. Your store is growing at 15% quarter-over-quarter.
+
+Forecasted Demand = 8 x 60 x 1.15 = 552 units
+
+### Calculating average daily sales:
+
+Do not simply divide total sales by total days. Use a **weighted moving average** that gives more importance to recent sales:
+
+1. Calculate average daily sales for the most recent 30 days
+2. Calculate average daily sales for the previous 30 days (31-60 days ago)
+3. Weight recent sales more: (Recent 30-day avg x 0.7) + (Prior 30-day avg x 0.3)
+
+This weighted approach captures current trends better than a simple average. If sales are accelerating, your forecast reflects that momentum. If sales are declining, your forecast adjusts downward.
+
+### How to pull this data from Shopify:
+
+1. Go to Analytics > Reports in your Shopify admin
+2. Open "Sales by product" report
+3. Set the date range to the last 90 days
+4. Export the data to a spreadsheet
+5. Calculate daily averages per product for each 30-day period
+6. Apply the weighted moving average formula
+
+## What Is Safety Stock and How Do You Calculate It?
+
+Safety stock is your buffer against uncertainty—demand spikes, supplier delays, and shipping disruptions. Without safety stock, even small deviations from your forecast lead to stockouts.
+
+### The safety stock formula:
+
+**Safety Stock = (Max Daily Sales x Max Lead Time) - (Avg Daily Sales x Avg Lead Time)**
+
+Where:
+- **Max Daily Sales** = Your highest daily sales in the past 90 days
+- **Max Lead Time** = Your longest supplier lead time in the past 6 months
+- **Avg Daily Sales** = Your average daily sales over 90 days
+- **Avg Lead Time** = Your average supplier lead time
+
+Example:
+- Max daily sales: 15 units
+- Max lead time: 35 days
+- Avg daily sales: 8 units
+- Avg lead time: 21 days
+
+Safety Stock = (15 x 35) - (8 x 21) = 525 - 168 = **357 units**
+
+This means you should always have at least 357 units on hand to protect against the combination of peak demand and worst-case lead time.
+
+### Safety stock guidelines by product type:
+
+| Product Category | Recommended Safety Stock | Rationale |
+|---|---|---|
+| Bestsellers (top 20% of revenue) | 4-6 weeks of avg sales | High revenue impact of stockouts |
+| Regular movers | 2-4 weeks of avg sales | Balanced protection |
+| Slow movers | 1-2 weeks of avg sales | Minimize carrying costs |
+| Seasonal products | 6-8 weeks pre-season | No time to reorder during peak |
+| New products (first 90 days) | 2-3 weeks of projected sales | Limited data, conservative approach |
+
+## How Do You Calculate Reorder Points?
+
+The reorder point tells you exactly when to place a new purchase order so inventory arrives before you run out.
+
+### The reorder point formula:
+
+**Reorder Point = (Average Daily Sales x Lead Time) + Safety Stock**
+
+Example:
+- Average daily sales: 8 units
+- Supplier lead time: 21 days
+- Safety stock: 357 units
+
+Reorder Point = (8 x 21) + 357 = 168 + 357 = **525 units**
+
+When your inventory hits 525 units, place a reorder. The 168 units will be sold during the 21-day lead time, leaving you with your safety stock buffer if demand is normal—or dipping into safety stock if demand spikes.
+
+### Setting up reorder alerts in Shopify:
+
+Shopify does not have built-in reorder point alerts, but you can set them up using:
+
+1. **Shopify Flow** (available on Shopify Plus or with apps) — Create an automation that sends an email when inventory for a product drops below its reorder point
+2. **Inventory Planner app** — Automatically calculates reorder points and generates purchase orders
+3. **Stocky** (free with Shopify POS Pro) — Provides inventory analytics and reorder suggestions
+4. **Manual spreadsheet tracking** — Export inventory levels weekly and compare against reorder points
+
+## How Do You Plan for Seasonal Demand?
+
+Seasonal planning is where most Shopify stores make the biggest inventory mistakes—either ordering too late and missing the peak, or ordering too much and getting stuck with unsold stock.
+
+### The seasonal planning framework:
+
+**Step 1: Identify your seasonal patterns**
+
+Export 12 months of sales data (or use industry benchmarks if you are newer) and calculate monthly sales as a percentage of annual sales. This reveals your seasonal index.
+
+| Month | % of Annual Sales | Seasonal Index |
+|---|---|---|
+| January | 6% | 0.72 |
+| February | 7% | 0.84 |
+| March | 8% | 0.96 |
+| April | 8% | 0.96 |
+| May | 8% | 0.96 |
+| June | 7% | 0.84 |
+| July | 7% | 0.84 |
+| August | 8% | 0.96 |
+| September | 9% | 1.08 |
+| October | 10% | 1.20 |
+| November | 12% | 1.44 |
+| December | 10% | 1.20 |
+
+A seasonal index of 1.44 for November means sales are 44% above the monthly average.
+
+**Step 2: Apply seasonal indices to your base forecast**
+
+Multiply your base monthly forecast by the seasonal index for each month. If your base forecast is 240 units per month and November has a 1.44 index, forecast 346 units for November.
+
+**Step 3: Back-calculate order dates from lead times**
+
+If you need inventory by November 1 and your supplier lead time is 45 days (including production and shipping), place your order by September 15 at the latest. Add a 2-week buffer for production delays, making the real deadline September 1.
+
+**Step 4: Plan for post-season liquidation**
+
+Order seasonal inventory in tiers: 70% of forecast as the base order, 20% as a reorder if early sales exceed expectations, and accept that 10% of seasonal inventory may need to be discounted after the season ends.
+
+## What Tools and Apps Help With Shopify Inventory Forecasting?
+
+As your store grows beyond 50-100 SKUs, manual spreadsheet forecasting becomes unsustainable. Here are the tools that automate the process:
+
+| Tool | Price | Best For | Key Features |
+|---|---|---|---|
+| **Inventory Planner (Sage)** | $249/mo+ | Established stores, 100+ SKUs | AI forecasting, purchase orders, multi-warehouse |
+| **Prediko** | $119/mo+ | Growing DTC brands | AI-driven, scenario planning, cash flow impact |
+| **Cogsy** | $69/mo+ | Demand planning focus | Revenue forecasting, marketing-aware planning |
+| **Stocky** | Free (POS Pro) | Stores with Shopify POS | Basic forecasting, purchase orders, receiving |
+| **Google Sheets** | Free | Small stores, <50 SKUs | Complete customization, manual input |
+
+### Steps to implement inventory forecasting:
+
+1. Export 90 days of sales data from Shopify (Analytics > Reports > Sales by product)
+2. Calculate average daily sales for each product using the weighted moving average
+3. Calculate safety stock for your top 20 products (by revenue)
+4. Set reorder points for those top 20 products
+5. Create a simple spreadsheet tracking current inventory vs. reorder point
+6. Check inventory levels weekly and place orders when reorder points are hit
+7. After 30 days, compare your forecasts against actual sales and adjust
+8. Evaluate a dedicated forecasting app once you manage 100+ SKUs
+9. Build seasonal indices using your first full year of data
+10. Review and refine forecasts monthly—forecasting is an ongoing process, not a one-time setup
+
+Inventory forecasting is not about predicting the future perfectly. It is about being systematically close enough that you rarely stock out and rarely overstock. Start with the basic formulas, refine with real data, and invest in tools as your complexity grows. The stores that treat inventory as a strategic function—not an operational afterthought—consistently outperform those that order based on gut feeling.

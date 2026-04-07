@@ -1,0 +1,137 @@
+---
+title: "Shopify Automated Inventory Alerts: Never Miss a Reorder Point"
+excerpt: "Set up automated inventory alerts on Shopify using Flow, apps, and integrations. Includes low stock alerts, auto-reorder rules, and vendor notifications."
+date: "2026-04-06"
+category: "Guide"
+tags: ["Shopify", "Automation", "Inventory"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-04-06"
+faqs:
+  - question: "Does Shopify have built-in low stock alerts?"
+    answer: "Shopify does not have built-in low stock email alerts on its Basic or standard plans. However, Shopify Flow — available on Shopify, Advanced, and Plus plans — lets you create automated workflows that trigger when inventory drops below a threshold you set. If you are on the Basic plan, you will need a third-party app like Stocky (by Shopify), Low Stock Alert, or Back in Stock to get automated inventory notifications. You can also check inventory levels manually through the Products section of your admin, but that approach does not scale."
+  - question: "How do I calculate the right reorder point for my products?"
+    answer: "The standard reorder point formula is: (Average daily sales x Lead time in days) + Safety stock. For example, if you sell 10 units per day and your supplier takes 14 days to deliver, your base reorder point is 140 units. Add safety stock (typically 20-30% of the base) to account for demand spikes and supplier delays, giving you a reorder point of 168-182 units. For seasonal products, calculate separate reorder points for peak and off-peak periods. Review and adjust reorder points quarterly based on actual sales velocity and supplier performance."
+  - question: "Can I automate purchase orders to suppliers when stock runs low?"
+    answer: "Yes, but the level of automation depends on your tools and supplier relationships. Shopify Flow can send automated emails to suppliers when inventory hits a threshold, but the supplier still processes the order manually. For fully automated purchase orders, apps like Inventory Planner, Stocky, or Cogsy can generate POs with pre-set quantities and send them to suppliers via email or EDI. Some suppliers accept orders through API integrations, which tools like Mechanic or custom Shopify Flow workflows can trigger. The most common setup is semi-automated: the system generates the PO and notifies you for approval before sending to the supplier."
+---
+
+Stockouts cost Shopify merchants an estimated 4% of annual revenue on average. For a store doing $500,000 per year, that is $20,000 in lost sales from products that simply were not available when customers wanted to buy them. The damage extends beyond the missed sale — stockouts push customers to competitors, damage your search rankings as pages return "out of stock" status, and reduce your visibility in AI shopping recommendations that prioritize in-stock products.
+
+The solution is not checking inventory manually every morning. It is building automated systems that alert you before stock runs low, notify suppliers when reorder points are reached, and give you enough lead time to replenish without disruption. Shopify's ecosystem provides multiple tools to build this system, from the native Shopify Flow automation engine to specialized inventory management apps.
+
+This guide covers the exact setup for automated inventory alerts at every budget level, from free solutions to enterprise-grade inventory intelligence.
+
+## How Does Shopify Flow Handle Inventory Automation?
+
+Shopify Flow is the most powerful native automation tool for inventory management. It is available on Shopify (formerly known as Shopify Basic was excluded), Advanced, and Plus plans at no additional cost.
+
+Flow operates on a trigger-condition-action model. You define what event starts the workflow (trigger), what criteria must be met (condition), and what happens when those criteria are satisfied (action).
+
+**Setting up a basic low stock alert in Flow:**
+
+**Step 1: Open Shopify Flow.** Navigate to your Shopify admin, click "Apps," then "Shopify Flow." Click "Create workflow."
+
+**Step 2: Set the trigger.** Select "Inventory quantity changed" as your trigger. This fires every time any product's inventory level changes — from sales, manual adjustments, or incoming transfers.
+
+**Step 3: Add a condition.** Add a condition block that checks: "Inventory quantity is less than or equal to [your threshold]." Set the threshold based on your reorder point calculation for each product.
+
+**Step 4: Set the action.** Add actions for what should happen when the condition is met. Common actions include: send an internal email notification, send a Slack message to your operations channel, tag the product as "low-stock," or send an email to your supplier.
+
+**Step 5: Add product-specific logic.** Use additional conditions to set different thresholds for different products. High-velocity products might trigger at 50 units while slow-moving items trigger at 10.
+
+## What Are the Best Inventory Alert Apps for Shopify?
+
+If you are on Shopify's Basic plan or need more sophisticated inventory management than Flow provides, these apps fill the gap.
+
+| App | Price | Key Features | Best For | Shopify Plan Required |
+|-----|-------|-------------|---------|---------------------|
+| Stocky (by Shopify) | Free (with Shopify POS) | Demand forecasting, PO management, low stock alerts | POS users, small catalogs | Any with POS Pro |
+| Inventory Planner | From $249/mo | Demand forecasting, reorder recommendations, vendor management | Growing stores, 200+ SKUs | Any |
+| Cogsy | From $69/mo | Revenue forecasting, stockout prediction, purchase planning | Revenue-focused operations | Any |
+| Low Stock Alert | Free - $5.99/mo | Email alerts at custom thresholds, daily digests | Budget-conscious stores | Any |
+| Back in Stock | From $19/mo | Customer waitlist, restock notifications, demand signals | Customer-facing stock alerts | Any |
+| Mechanic | From $9/mo | Custom automation tasks, advanced workflow logic | Technical teams, edge cases | Any |
+
+## How Do You Calculate Reorder Points for Each Product?
+
+Automating alerts is useless if the thresholds are wrong. Here is how to calculate accurate reorder points based on your actual data.
+
+**The reorder point formula:**
+
+Reorder Point = (Average Daily Sales x Supplier Lead Time) + Safety Stock
+
+**Step 1: Calculate average daily sales.** Pull the last 90 days of sales data for each product from your Shopify Analytics. Divide total units sold by 90 to get the daily average. For seasonal products, use the corresponding 90-day period from the previous year.
+
+**Step 2: Determine supplier lead time.** This is the number of days between placing an order and receiving the inventory. Include manufacturing time, shipping time, and customs processing if applicable. Use the worst-case realistic lead time, not the optimistic estimate.
+
+**Step 3: Calculate safety stock.** Safety stock buffers against demand spikes and supplier delays. A common formula is: Safety Stock = (Maximum daily sales - Average daily sales) x Maximum lead time. For most products, this works out to 20-30% of your base reorder quantity.
+
+**Step 4: Set per-product thresholds.** Here is how this looks in practice for a sample catalog:
+
+| Product | Daily Sales Avg | Lead Time (Days) | Base Reorder | Safety Stock (25%) | Reorder Point |
+|---------|----------------|-------------------|-------------|--------------------|--------------|
+| Widget A | 15 | 10 | 150 | 38 | 188 |
+| Widget B | 3 | 21 | 63 | 16 | 79 |
+| Widget C | 40 | 7 | 280 | 70 | 350 |
+| Widget D | 1 | 30 | 30 | 8 | 38 |
+
+## How Do You Set Up Vendor Notification Workflows?
+
+Automated vendor notifications close the loop between detecting low stock and initiating replenishment. Here are three approaches ranked by complexity.
+
+**Approach 1: Email notification via Shopify Flow (simplest)**
+
+Create a Flow workflow that sends an email to your supplier's order email address when inventory crosses the reorder point. Include the product name, SKU, current quantity, and suggested reorder quantity in the email body. The supplier receives the notification and processes the order through their normal channels.
+
+Limitation: The supplier must manually process the order. This is fine for suppliers who respond quickly to email orders.
+
+**Approach 2: Slack or Teams notification for internal review**
+
+Send the alert to your operations team's Slack channel first. Include a pre-filled purchase order draft that a team member can review and forward to the supplier with one click. This adds a human approval step while keeping the process mostly automated.
+
+Use this approach when: you need to consolidate orders across multiple products before contacting the supplier, your reorder quantities vary based on cash flow, or you have minimum order requirements that need manual calculation.
+
+**Approach 3: Automated purchase order generation (most automated)**
+
+Use Inventory Planner or Cogsy to generate purchase orders automatically based on demand forecasts and reorder points. These tools create POs with the recommended quantities, factor in minimum order requirements and shipping container optimization, and send them to suppliers via email or EDI.
+
+Configure approval workflows so POs above a certain dollar amount require manual approval while routine reorders are sent automatically.
+
+## How Do You Handle Multi-Location Inventory Alerts?
+
+Merchants selling through multiple warehouses, retail locations, or fulfillment centers need location-aware inventory alerts. A product might have 200 units in your main warehouse but zero at your East Coast fulfillment center.
+
+**Shopify Flow supports location-specific triggers.** When configuring your inventory workflow, add a condition that checks the specific location's inventory rather than the total inventory across all locations. Create separate workflows for each location with different thresholds based on that location's sales velocity.
+
+**Set up transfer alerts between locations.** When one location runs low while another has excess stock, trigger a workflow that creates an internal transfer request. Shopify's Transfers feature lets you move inventory between locations without creating a purchase order.
+
+**Consolidate alerts into a daily digest.** Rather than receiving individual alerts for every product at every location, use a tool like Mechanic to compile all low-stock items into a single daily email sent each morning. Group by location and priority so your operations team can process everything efficiently.
+
+## How Do You Monitor Alert Effectiveness Over Time?
+
+Setting up alerts is step one. Optimizing them is the ongoing work that prevents both stockouts and overstock.
+
+**Track these metrics monthly:**
+
+- **Stockout frequency:** How often do products hit zero inventory? This should trend toward zero.
+- **Days of stock on hand:** Are you carrying too much safety stock and tying up capital? Target 30-45 days for most products.
+- **Alert accuracy:** What percentage of alerts led to actual reorders versus false alarms? Excessive alerts cause alert fatigue.
+- **Supplier lead time accuracy:** Are your lead time assumptions matching reality? Adjust thresholds as supplier performance changes.
+- **Overstock rate:** Are any products consistently sitting well above the reorder point? This indicates your reorder quantities may be too high.
+
+Review reorder points quarterly. Sales velocity changes seasonally, supplier lead times shift, and new products may cannibalize demand for existing ones. A reorder point set in January may be completely wrong by June.
+
+## What Should You Do This Week?
+
+Implement automated inventory alerts with these five steps:
+
+1. **Export your inventory report.** Pull your current inventory levels and last 90 days of sales data from Shopify Analytics. Identify the 10 products most at risk of stockout based on current stock versus sales velocity.
+2. **Calculate reorder points for your top 20 products.** Use the formula above to set specific thresholds for your fastest-selling items. These are the products where stockouts cost you the most revenue.
+3. **Set up your first Shopify Flow workflow.** Create a low stock alert that emails you when any of your top 20 products drops below its reorder point. Test the workflow by manually adjusting inventory on a test product.
+4. **Configure vendor notifications.** Set up an automated email or Slack notification that includes product name, SKU, current stock, and suggested reorder quantity. Send test notifications to verify formatting and delivery.
+5. **Schedule a monthly review.** Block 30 minutes on your calendar each month to review stockout incidents, adjust reorder points based on updated sales data, and refine alert thresholds. This ongoing maintenance is what separates stores that never run out from stores that constantly scramble.
+
+Inventory automation is not about eliminating human judgment from your supply chain. It is about making sure that judgment is applied proactively — weeks before a stockout — rather than reactively after customers have already bounced to a competitor.
