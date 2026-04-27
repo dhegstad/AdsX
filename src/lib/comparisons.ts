@@ -1793,6 +1793,436 @@ export const comparisons: Comparison[] = [
       "AI training Wikipedia",
     ],
   },
+  {
+    slug: "shopify-seo-apps",
+    alternativeName: "Shopify SEO Apps",
+    alternativeShortName: "Shopify SEO Apps",
+    headline: "AI Visibility vs Shopify SEO Apps",
+    subheadline:
+      "Why meta tags and keyword tools won't get your store recommended by AI",
+    description:
+      "Shopify SEO apps like Yoast, SEO Manager, and Plug In SEO help optimize your store for Google. AI visibility optimization ensures your products and brand get recommended when shoppers ask ChatGPT, Claude, or Perplexity what to buy. Here's why that distinction matters for e-commerce.",
+    comparisonPoints: [
+      {
+        feature: "Optimization Target",
+        adsX: "AI assistants (ChatGPT, Claude, Perplexity)",
+        alternative: "Google search engine rankings",
+        winner: "tie",
+      },
+      {
+        feature: "Product Discovery",
+        adsX: "Recommended when shoppers ask AI what to buy",
+        alternative: "Found when shoppers search specific keywords",
+        winner: "adsx",
+      },
+      {
+        feature: "Technical Scope",
+        adsX: "Brand positioning across LLM training data and citations",
+        alternative: "Meta tags, alt text, sitemaps, page speed",
+        winner: "tie",
+      },
+      {
+        feature: "Competitive Advantage",
+        adsX: "Few Shopify stores optimized for AI—massive first-mover edge",
+        alternative: "Every Shopify store uses SEO apps—crowded field",
+        winner: "adsx",
+      },
+      {
+        feature: "Buyer Intent Capture",
+        adsX: "Captures 'what should I buy' conversational queries",
+        alternative: "Captures 'specific product name' search queries",
+        winner: "adsx",
+      },
+      {
+        feature: "Setup Complexity",
+        adsX: "Strategic optimization handled by specialists",
+        alternative: "Install app, follow checklists",
+        winner: "alternative",
+      },
+    ],
+    adsXBenefits: [
+      {
+        title: "Capture the AI Shopping Shift",
+        description:
+          "Over 40% of Gen Z now starts product research with AI assistants instead of Google. AI visibility puts your store in those conversations.",
+      },
+      {
+        title: "Brand-Level Recommendations",
+        description:
+          "AI doesn't just surface product pages—it recommends brands. AI visibility positions your entire store as a trusted recommendation.",
+      },
+      {
+        title: "Beyond the Keyword Ceiling",
+        description:
+          "SEO apps optimize for keywords your competitors also target. AI visibility gets you recommended in open-ended discovery queries with no keyword limits.",
+      },
+    ],
+    alternativeBenefits: [
+      {
+        title: "Proven Google Traffic",
+        description:
+          "Shopify SEO apps address real technical SEO issues that drive organic search traffic today.",
+      },
+      {
+        title: "Easy Self-Service Setup",
+        description:
+          "Install from the Shopify App Store and follow guided recommendations without needing external help.",
+      },
+    ],
+    verdict:
+      "Shopify SEO apps are table stakes—every store needs solid technical SEO. But they only optimize for Google, and an increasing share of product discovery now starts with AI. Use SEO apps for your Google foundation, then add AI visibility to capture the next wave of shoppers who ask AI what to buy.",
+    keywords: [
+      "AI visibility vs Shopify SEO apps",
+      "Shopify SEO vs AI optimization",
+      "ChatGPT product recommendations Shopify",
+      "AI search for Shopify stores",
+      "Shopify SEO app alternatives",
+    ],
+  },
+  {
+    slug: "amazon-ppc",
+    alternativeName: "Amazon PPC",
+    alternativeShortName: "Amazon PPC",
+    headline: "AI Visibility vs Amazon PPC",
+    subheadline:
+      "Why paying for clicks inside Amazon's walled garden isn't your only growth lever",
+    description:
+      "Amazon PPC (Sponsored Products, Brands, and Display) keeps you visible inside Amazon's marketplace. AI visibility gets your products recommended when shoppers ask AI assistants for buying advice—before they even open Amazon. For Shopify merchants, this difference is critical.",
+    comparisonPoints: [
+      {
+        feature: "Where Shoppers Discover You",
+        adsX: "AI assistants, before marketplace search",
+        alternative: "Inside Amazon search results only",
+        winner: "adsx",
+      },
+      {
+        feature: "Cost Model",
+        adsX: "Fixed investment that compounds over time",
+        alternative: "CPC that rises as competition increases (avg $0.80–$1.20+)",
+        winner: "adsx",
+      },
+      {
+        feature: "Brand Ownership",
+        adsX: "Drive traffic to your own Shopify store",
+        alternative: "Traffic stays on Amazon—you rent the customer",
+        winner: "adsx",
+      },
+      {
+        feature: "Customer Data",
+        adsX: "Full customer data and email ownership on Shopify",
+        alternative: "Amazon controls customer relationship and data",
+        winner: "adsx",
+      },
+      {
+        feature: "Purchase Intent",
+        adsX: "High—users asking AI what to buy are ready to purchase",
+        alternative: "Very high—Amazon shoppers are in buying mode",
+        winner: "tie",
+      },
+      {
+        feature: "Marketplace Reach",
+        adsX: "Platform-agnostic—works across all channels",
+        alternative: "Access to 300M+ active Amazon customers",
+        winner: "alternative",
+      },
+    ],
+    adsXBenefits: [
+      {
+        title: "Own Your Customer Relationship",
+        description:
+          "AI visibility drives shoppers to your Shopify store where you capture emails, build loyalty, and own the lifetime value—not Amazon.",
+      },
+      {
+        title: "Escape Rising Amazon CPCs",
+        description:
+          "Amazon PPC costs have increased 30%+ year-over-year in many categories. AI visibility offers a fixed-cost channel with compounding returns.",
+      },
+      {
+        title: "Influence the Research Phase",
+        description:
+          "When shoppers ask AI 'what's the best [product]?', AI visibility ensures your brand appears—before they ever search on Amazon.",
+      },
+    ],
+    alternativeBenefits: [
+      {
+        title: "Massive Built-In Audience",
+        description:
+          "Amazon's 300M+ active buyers are already in purchase mode, making it one of the highest-converting ad platforms for e-commerce.",
+      },
+      {
+        title: "Proven E-commerce Attribution",
+        description:
+          "Amazon provides clear ACOS and ROAS metrics with direct attribution from ad click to sale.",
+      },
+    ],
+    verdict:
+      "Amazon PPC is powerful for marketplace sales, but it keeps you dependent on Amazon's ecosystem with rising costs and no customer ownership. AI visibility is the complementary channel that drives shoppers to your Shopify store. Smart merchants use both—Amazon for marketplace volume, AI visibility for brand-building direct sales.",
+    keywords: [
+      "AI visibility vs Amazon PPC",
+      "Amazon ads vs AI optimization",
+      "Shopify vs Amazon advertising",
+      "alternative to Amazon PPC",
+      "AI product recommendations vs Amazon sponsored products",
+    ],
+  },
+  {
+    slug: "google-shopping",
+    alternativeName: "Google Shopping Ads",
+    alternativeShortName: "Google Shopping",
+    headline: "AI Visibility vs Google Shopping Ads",
+    subheadline:
+      "Why product listing ads miss the growing share of shoppers who ask AI first",
+    description:
+      "Google Shopping and Performance Max campaigns put your products in front of high-intent shoppers searching Google. AI visibility ensures your products get recommended when those same shoppers ask ChatGPT or Perplexity for buying advice instead. For Shopify stores, both channels matter—but only one is growing exponentially.",
+    comparisonPoints: [
+      {
+        feature: "Discovery Mechanism",
+        adsX: "AI recommends your product in conversation",
+        alternative: "Product listing ads in Google search and Shopping tab",
+        winner: "tie",
+      },
+      {
+        feature: "Cost Trajectory",
+        adsX: "Fixed monthly cost with compounding visibility",
+        alternative: "CPCs rising 15–20% annually in competitive categories",
+        winner: "adsx",
+      },
+      {
+        feature: "Merchant Feed Dependency",
+        adsX: "No feed management required",
+        alternative: "Requires optimized product feed, Merchant Center setup",
+        winner: "adsx",
+      },
+      {
+        feature: "Conversion Tracking",
+        adsX: "AI mention tracking and referral attribution",
+        alternative: "Mature conversion tracking with Google Ads attribution",
+        winner: "alternative",
+      },
+      {
+        feature: "Visual Product Showcase",
+        adsX: "Text-based recommendations with brand context",
+        alternative: "Rich product images, prices, reviews in ad units",
+        winner: "alternative",
+      },
+      {
+        feature: "Channel Growth Rate",
+        adsX: "AI search usage growing 400%+ year-over-year",
+        alternative: "Mature channel with single-digit growth",
+        winner: "adsx",
+      },
+    ],
+    adsXBenefits: [
+      {
+        title: "Capture Pre-Search Discovery",
+        description:
+          "More shoppers now ask AI 'what's the best product for X?' before searching Google. AI visibility puts you in that conversation first.",
+      },
+      {
+        title: "No Feed Management Overhead",
+        description:
+          "Skip the complexity of product feeds, Merchant Center errors, and disapproved listings. AI visibility works at the brand level.",
+      },
+      {
+        title: "Compounding Returns vs Linear Spend",
+        description:
+          "Google Shopping requires ongoing spend for every click. AI visibility builds persistent brand recognition that compounds without proportional cost increases.",
+      },
+    ],
+    alternativeBenefits: [
+      {
+        title: "Visual Product Ads",
+        description:
+          "Google Shopping displays product images, prices, and reviews directly in search results—highly effective for impulse and comparison shopping.",
+      },
+      {
+        title: "Proven E-commerce ROAS",
+        description:
+          "Google Shopping delivers measurable, predictable ROAS with mature attribution tools that Shopify merchants rely on.",
+      },
+    ],
+    verdict:
+      "Google Shopping remains one of the highest-performing ad channels for Shopify stores today. But the shoppers who ask AI for recommendations before searching Google represent a fast-growing segment that Shopping ads simply cannot reach. The winning strategy layers AI visibility on top of Google Shopping to capture demand at every stage.",
+    keywords: [
+      "AI visibility vs Google Shopping",
+      "Google Shopping ads vs AI optimization",
+      "Performance Max vs AI visibility",
+      "Shopify Google Shopping alternative",
+      "AI product discovery vs Google Shopping ads",
+    ],
+  },
+  {
+    slug: "meta-ads-ecommerce",
+    alternativeName: "Meta Ads for E-commerce",
+    alternativeShortName: "Meta Ads",
+    headline: "AI Visibility vs Meta Ads for E-commerce",
+    subheadline:
+      "Why Facebook and Instagram ads can't reach shoppers who ask AI what to buy",
+    description:
+      "Meta Ads (Facebook and Instagram) are a cornerstone of e-commerce advertising—powerful for demand generation and retargeting. AI visibility captures a different moment: when shoppers actively ask AI assistants for product recommendations. For Shopify merchants spending on Meta, understanding this gap is essential.",
+    comparisonPoints: [
+      {
+        feature: "Buyer Mindset",
+        adsX: "Active—user is asking for recommendations",
+        alternative: "Passive—user is browsing social feeds",
+        winner: "adsx",
+      },
+      {
+        feature: "Targeting Approach",
+        adsX: "Matches relevant product queries in AI naturally",
+        alternative: "Lookalike audiences, interest targeting, custom audiences",
+        winner: "alternative",
+      },
+      {
+        feature: "iOS Privacy Impact",
+        adsX: "Unaffected by ATT/privacy changes",
+        alternative: "Significant signal loss since iOS 14.5+",
+        winner: "adsx",
+      },
+      {
+        feature: "Creative Requirements",
+        adsX: "Strategic content optimization, no ad creative needed",
+        alternative: "Constant creative refresh to avoid fatigue",
+        winner: "adsx",
+      },
+      {
+        feature: "Retargeting Capability",
+        adsX: "Limited—AI visibility is top-of-funnel",
+        alternative: "Powerful retargeting across Facebook and Instagram",
+        winner: "alternative",
+      },
+      {
+        feature: "Scalability Ceiling",
+        adsX: "Grows with AI adoption—no auction ceiling",
+        alternative: "CPMs increase as you scale spend in audience",
+        winner: "adsx",
+      },
+    ],
+    adsXBenefits: [
+      {
+        title: "Privacy-Proof Channel",
+        description:
+          "Unlike Meta Ads, AI visibility is unaffected by iOS privacy changes, cookie deprecation, or signal loss that has driven up Meta CPAs for Shopify merchants.",
+      },
+      {
+        title: "Zero Creative Fatigue",
+        description:
+          "Meta demands constant creative testing and refresh. AI visibility builds persistent brand presence without the creative production treadmill.",
+      },
+      {
+        title: "Capture Active Buying Intent",
+        description:
+          "Meta Ads interrupt social browsing. AI visibility appears when shoppers are actively asking what to buy—a fundamentally higher-intent moment.",
+      },
+    ],
+    alternativeBenefits: [
+      {
+        title: "Unmatched Demand Generation",
+        description:
+          "Meta Ads excel at introducing products to shoppers who didn't know they wanted them—powerful for new product launches and impulse purchases.",
+      },
+      {
+        title: "Sophisticated Retargeting",
+        description:
+          "Retarget site visitors, cart abandoners, and past buyers across Facebook and Instagram to recover lost revenue.",
+      },
+    ],
+    verdict:
+      "Meta Ads remain essential for Shopify stores—especially for demand generation and retargeting. But they can't reach shoppers who bypass social media and go straight to AI for buying advice. AI visibility fills that gap. The strongest e-commerce brands will run Meta for demand creation and AI visibility for demand capture.",
+    keywords: [
+      "AI visibility vs Meta ads",
+      "Facebook ads vs AI optimization e-commerce",
+      "Instagram ads vs AI visibility Shopify",
+      "Meta ads alternative for Shopify",
+      "AI product recommendations vs Facebook ads",
+    ],
+  },
+  {
+    slug: "tiktok-shop",
+    alternativeName: "TikTok Shop Ads",
+    alternativeShortName: "TikTok Shop",
+    headline: "AI Visibility vs TikTok Shop Ads",
+    subheadline:
+      "Why viral product videos don't replace AI-driven product recommendations",
+    description:
+      "TikTok Shop has exploded as an e-commerce channel—blending entertainment with instant purchasing. AI visibility works differently: it positions your products as trusted recommendations when shoppers deliberately ask AI what to buy. For Shopify merchants weighing channel investments, here's how they compare.",
+    comparisonPoints: [
+      {
+        feature: "Purchase Trigger",
+        adsX: "Deliberate—shopper asks AI for a recommendation",
+        alternative: "Impulsive—shopper sees product in entertaining video",
+        winner: "tie",
+      },
+      {
+        feature: "Average Order Value",
+        adsX: "Higher—considered purchases after AI research",
+        alternative: "Lower—impulse buys driven by content trends",
+        winner: "adsx",
+      },
+      {
+        feature: "Return Rate",
+        adsX: "Lower—buyers research before purchasing",
+        alternative: "Higher—impulse purchases lead to 30–50% return rates",
+        winner: "adsx",
+      },
+      {
+        feature: "Content Requirements",
+        adsX: "Brand and product content optimization",
+        alternative: "Constant short-form video production or creator partnerships",
+        winner: "adsx",
+      },
+      {
+        feature: "Audience Demographics",
+        adsX: "All demographics using AI assistants",
+        alternative: "Skews younger—strong with Gen Z and millennials",
+        winner: "tie",
+      },
+      {
+        feature: "Virality Potential",
+        adsX: "Steady compounding growth, not viral spikes",
+        alternative: "Single video can drive millions in sales overnight",
+        winner: "alternative",
+      },
+    ],
+    adsXBenefits: [
+      {
+        title: "Higher-Quality Customers",
+        description:
+          "Shoppers who research via AI before buying have higher AOV, lower return rates, and stronger lifetime value than impulse TikTok buyers.",
+      },
+      {
+        title: "No Creator Dependency",
+        description:
+          "TikTok Shop success often depends on influencer partnerships and viral content. AI visibility builds sustainable, creator-independent brand presence.",
+      },
+      {
+        title: "Works for Considered Purchases",
+        description:
+          "Products over $50 or requiring research rarely sell well via TikTok impulse. AI visibility excels for these higher-consideration categories.",
+      },
+    ],
+    alternativeBenefits: [
+      {
+        title: "Explosive Viral Potential",
+        description:
+          "A single TikTok can drive thousands of sales overnight—no other channel matches TikTok's ability to create instant product demand.",
+      },
+      {
+        title: "Built-In Checkout Experience",
+        description:
+          "TikTok Shop's native checkout removes friction between discovery and purchase, enabling one-tap buying directly from content.",
+      },
+    ],
+    verdict:
+      "TikTok Shop is a powerful impulse-purchase channel, but it favors low-AOV products and requires constant content creation. AI visibility serves a different purpose—capturing deliberate, research-driven buyers who tend to spend more and return less. Shopify merchants selling considered products should prioritize AI visibility, while those with impulse-friendly products can benefit from both channels.",
+    keywords: [
+      "AI visibility vs TikTok Shop",
+      "TikTok Shop ads vs AI optimization",
+      "TikTok Shop alternative for Shopify",
+      "AI product recommendations vs TikTok",
+      "Shopify TikTok Shop vs AI visibility",
+    ],
+  },
 ];
 
 /**

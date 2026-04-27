@@ -243,6 +243,67 @@ export function createSoftwareApplicationSchema(config: {
 }
 
 /**
+ * Creates VideoObject structured data for embedded videos
+ */
+export function createVideoSchema(config: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  embedUrl: string;
+  contentUrl?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: config.name,
+    description: config.description,
+    thumbnailUrl: config.thumbnailUrl,
+    uploadDate: config.uploadDate,
+    embedUrl: config.embedUrl,
+    ...(config.contentUrl && { contentUrl: config.contentUrl }),
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: SITE_LOGO,
+      },
+    },
+  };
+}
+
+/**
+ * Extracts YouTube video IDs from markdown content and returns VideoObject schemas
+ */
+export function extractVideoSchemas(content: string, postTitle: string, postDate: string) {
+  const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g;
+  const videos: ReturnType<typeof createVideoSchema>[] = [];
+  const seen = new Set<string>();
+  let match;
+
+  while ((match = youtubeRegex.exec(content)) !== null) {
+    const videoId = match[1];
+    if (seen.has(videoId)) continue;
+    seen.add(videoId);
+
+    videos.push(
+      createVideoSchema({
+        name: `${postTitle} - Video`,
+        description: `Video embedded in "${postTitle}" on AdsX`,
+        thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        uploadDate: postDate,
+        embedUrl: `https://www.youtube.com/embed/${videoId}`,
+        contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+      })
+    );
+  }
+
+  return videos;
+}
+
+/**
  * Helper to render schema as JSON-LD script tag
  */
 export function SchemaScript({ schema }: { schema: object }) {

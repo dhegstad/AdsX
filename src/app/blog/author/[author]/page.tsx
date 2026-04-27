@@ -9,8 +9,11 @@ interface PageProps {
   params: Promise<{ author: string }>;
 }
 
-// ISR only — single author, not worth static generation
 export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  return authors.map((author) => ({ author: author.slug }));
+}
 
 const deprecatedAuthors = ["sarah-chen", "marcus-rodriguez", "dr-james-liu"];
 
@@ -30,34 +33,73 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Author Not Found" };
   }
 
+  const posts = getPostsByAuthor(author.name);
+
   return {
-    title: `${author.name} - ${author.role}`,
-    description: author.bio,
+    title: `${author.name} - ${author.role} at AdsX`,
+    description: `${author.bio.slice(0, 155)}...`,
     alternates: {
       canonical: `https://www.adsx.com/blog/author/${authorSlug}`,
     },
     openGraph: {
-      title: `${author.name} | AdsX Blog`,
+      title: `${author.name} - ${author.role} | AdsX`,
       description: author.bio,
       url: `https://www.adsx.com/blog/author/${authorSlug}`,
+      type: "profile",
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
+    authors: [{ name: author.name }],
+    keywords: ["AI search advertising", "AI visibility", author.name, author.role, "AdsX"],
   };
 }
 
-function AuthorSchema({ author }: { author: NonNullable<ReturnType<typeof getAuthorBySlug>> }) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: author.name,
-    description: author.bio,
-    url: "https://www.adsx.com",
-    parentOrganization: {
-      "@type": "Organization",
-      name: "AdsX",
-      url: "https://www.adsx.com",
-    },
-  };
+function AuthorSchema({ author, postCount }: { author: NonNullable<ReturnType<typeof getAuthorBySlug>>; postCount: number }) {
+  const isOrg = author.slug === "adsx-team";
+  const sameAs: string[] = [];
+  if (author.twitter) sameAs.push(`https://twitter.com/${author.twitter}`);
+  if (author.linkedin) sameAs.push(`https://linkedin.com/in/${author.linkedin}`);
+
+  const schema = isOrg
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: author.name,
+        description: author.bio,
+        url: "https://www.adsx.com",
+        sameAs,
+        parentOrganization: {
+          "@type": "Organization",
+          name: "AdsX",
+          url: "https://www.adsx.com",
+        },
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: author.name,
+        jobTitle: author.role,
+        description: author.bio,
+        url: `https://www.adsx.com/blog/author/${author.slug}`,
+        sameAs,
+        worksFor: {
+          "@type": "Organization",
+          name: "AdsX",
+          url: "https://www.adsx.com",
+        },
+        knowsAbout: [
+          "AI Search Advertising",
+          "AI Visibility Optimization",
+          "ChatGPT Advertising",
+          "LLM Marketing",
+          "E-commerce Growth",
+          "Shopify Marketing",
+          "Performance Marketing",
+        ],
+        memberOf: {
+          "@type": "Organization",
+          name: "AdsX",
+        },
+      };
 
   return (
     <script
@@ -84,7 +126,7 @@ export default async function AuthorPage({ params }: PageProps) {
 
   return (
     <>
-      <AuthorSchema author={author} />
+      <AuthorSchema author={author} postCount={posts.length} />
       <BrutalistLayout>
         {/* Header */}
         <div className="border-b-2 border-[#EAEAEA] p-8 md:p-16">

@@ -12,7 +12,7 @@ import { getAllPosts, type BlogPostMeta } from "@/lib/blog";
 export interface RelatedPage {
   title: string;
   path: string;
-  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform" | "example" | "guide";
+  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform" | "example" | "guide" | "research";
   relevance: number; // 0-1 score for sorting
 }
 
@@ -250,7 +250,7 @@ export function getRelatedPages(
   const isTechnicalContent = technicalKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
 
   if (isTechnicalContent) {
-    for (const term of glossaryTerms.slice(0, 10)) {
+    for (const term of glossaryTerms.slice(0, 50)) {
       let relevance = 0;
       const termLower = term.term.toLowerCase();
 
@@ -368,9 +368,51 @@ export function getRelatedPages(
     }
   }
 
-  // Sort by relevance and limit
+  // Link to research hub for data/stats-heavy content
+  const dataKeywords = ["benchmark", "data", "statistic", "report", "study", "research", "metric", "roi", "conversion", "performance"];
+  const isDataContent = dataKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
+  if (isDataContent) {
+    relatedPages.push({
+      title: "AI Search Advertising Research & Data",
+      path: "/research",
+      type: "research",
+      relevance: 0.4,
+    });
+  }
+
+  // Always include the free audit tool as a conversion link
+  relatedPages.push({
+    title: "Free AI Visibility Audit",
+    path: "/tools/free-audit",
+    type: "tool",
+    relevance: 0.35,
+  });
+
+  // Always include the glossary hub for educational context
+  relatedPages.push({
+    title: "AI Visibility Glossary",
+    path: "/glossary",
+    type: "glossary",
+    relevance: 0.2,
+  });
+
+  // Always include the services page
+  relatedPages.push({
+    title: "Our AI Advertising Services",
+    path: "/services",
+    type: "service",
+    relevance: 0.15,
+  });
+
+  // Deduplicate by path and sort by relevance
+  const seen = new Set<string>();
   return relatedPages
     .sort((a, b) => b.relevance - a.relevance)
+    .filter((page) => {
+      if (seen.has(page.path)) return false;
+      seen.add(page.path);
+      return true;
+    })
     .slice(0, limit);
 }
 

@@ -63,6 +63,7 @@ export const metadata: Metadata = {
     canonical: "https://www.adsx.com",
     types: {
       "application/rss+xml": "https://www.adsx.com/feed.xml",
+      "text/plain": "https://www.adsx.com/llms.txt",
     },
   },
   openGraph: {

@@ -37,6 +37,7 @@ export interface BlogPost {
   readingTime: string;
   featured?: boolean;
   faqs?: FAQItem[];
+  tldr?: string;
 }
 
 export interface BlogPostMeta {
@@ -114,6 +115,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     readingTime: stats.text,
     featured: data.featured || false,
     faqs: data.faqs || undefined,
+    tldr: data.tldr || undefined,
   };
 }
 
@@ -272,7 +274,17 @@ export const authors: Author[] = [
     slug: "adsx-team",
     name: "AdsX Team",
     role: "AI Search Specialists",
-    bio: "The AdsX team helps brands navigate AI-powered search and get recommended by ChatGPT, Claude, Perplexity, and other AI platforms.",
+    bio: "The AdsX team helps brands navigate AI-powered search and get recommended by ChatGPT, Claude, Perplexity, and other AI platforms. With deep expertise in LLM optimization, paid media, and e-commerce growth, our team has driven a 340% average increase in AI mentions for clients across industries.",
+    linkedin: "company/adsx",
+    twitter: "adsx",
+  },
+  {
+    slug: "dennis-hegstad",
+    name: "Dennis Hegstad",
+    role: "Founder & CEO",
+    bio: "Dennis Hegstad is the founder and CEO of AdsX, the first advertising agency built for AI search. With a background in performance marketing and e-commerce growth, Dennis identified the shift toward AI-powered product discovery early and built AdsX to help brands capitalize on this new channel. He specializes in AI visibility strategy, Shopify growth, and building scalable paid acquisition systems.",
+    linkedin: "dennishegstad",
+    twitter: "dennishegstad",
   },
 ];
 

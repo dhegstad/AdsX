@@ -6,6 +6,7 @@ import { createArticleMetadata } from "@/lib/seo/metadata";
 import {
   createArticleSchema,
   createBreadcrumbSchema,
+  extractVideoSchemas,
   SchemaScript,
 } from "@/lib/seo/schemas";
 import { getRelatedPages } from "@/lib/seo/internal-linking";
@@ -50,7 +51,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const relatedPosts = getRelatedPosts(slug, post.category, 5, post.tags);
-  const relatedPages = getRelatedPages(post);
+  const relatedPages = getRelatedPages(post, 8);
 
   // Create schemas using factories
   const articleSchema = createArticleSchema({
@@ -73,10 +74,15 @@ export default async function BlogPostPage({ params }: PageProps) {
     { name: post.title, path: `/blog/${slug}` },
   ]);
 
+  const videoSchemas = extractVideoSchemas(post.content, post.title, post.date);
+
   return (
     <>
       <SchemaScript schema={articleSchema} />
       <SchemaScript schema={breadcrumbSchema} />
+      {videoSchemas.map((vs, i) => (
+        <SchemaScript key={`video-${i}`} schema={vs} />
+      ))}
       <BrutalistBlogPostContent
         post={post}
         slug={slug}

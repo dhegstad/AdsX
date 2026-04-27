@@ -47,5 +47,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: 'https://www.adsx.com/sitemap.xml',
+    host: 'https://www.adsx.com',
   };
 }

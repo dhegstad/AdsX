@@ -237,6 +237,38 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
 
           {/* Main Content */}
           <div className="lg:col-span-3 p-8 md:p-12">
+            {/* TL;DR / Key Takeaway - optimized for AI citation */}
+            {post.tldr && (
+              <div className="mb-10 border border-[#10b981]/30 bg-[#10b981]/5 p-6">
+                <div
+                  className="text-xs tracking-widest text-[#10b981] mb-3 flex items-center gap-2"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <span className="inline-block w-2 h-2 bg-[#10b981]" />
+                  KEY TAKEAWAY
+                </div>
+                <p className="text-[#EAEAEA] text-base leading-relaxed font-medium">
+                  {post.tldr}
+                </p>
+              </div>
+            )}
+
+            {/* Auto-generated summary when no tldr provided */}
+            {!post.tldr && post.excerpt && (
+              <div className="mb-10 border border-[#333] bg-[#111] p-6">
+                <div
+                  className="text-xs tracking-widest text-[#888] mb-3 flex items-center gap-2"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  <span className="inline-block w-2 h-2 bg-[#888]" />
+                  SUMMARY
+                </div>
+                <p className="text-[#ccc] text-base leading-relaxed">
+                  {post.excerpt}
+                </p>
+              </div>
+            )}
+
             <article className="v1-prose max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
