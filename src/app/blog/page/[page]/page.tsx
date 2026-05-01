@@ -6,6 +6,10 @@ import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 const POSTS_PER_PAGE = 20;
 
+// Enable ISR for paginated blog pages - revalidate every hour
+// This prevents timeouts during build with 900+ blog posts
+export const revalidate = 3600;
+
 interface PageProps {
   params: Promise<{ page: string }>;
 }
@@ -47,11 +51,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export function generateStaticParams() {
-  const { totalPages } = getPaginatedPosts(1, POSTS_PER_PAGE);
-  // Skip page 1 since it's handled by /blog
-  return Array.from({ length: totalPages - 1 }, (_, i) => ({
-    page: String(i + 2),
-  }));
+  // Only pre-generate first 5 pages to prevent build timeout with 900+ posts
+  // Remaining pages use on-demand ISR via revalidate export
+  return [
+    { page: "2" },
+    { page: "3" },
+    { page: "4" },
+    { page: "5" },
+    { page: "6" },
+  ];
 }
 
 export default async function PaginatedBlogPage({ params }: PageProps) {

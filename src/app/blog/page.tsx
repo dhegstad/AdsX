@@ -3,6 +3,9 @@ import { getPaginatedPosts, getAllCategories } from "@/lib/blog";
 import { BrutalistBlogListing } from "@/components/blog/brutalist-blog-listing";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
+// Enable ISR for blog listing - revalidate every hour
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Blog | AI Search Advertising Insights",
   description: "Expert insights on AI search advertising, ChatGPT ads, content optimization for LLMs, and strategies for capturing visibility in AI-powered search.",
