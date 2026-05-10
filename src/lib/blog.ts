@@ -57,9 +57,19 @@ export interface BlogPostMeta {
   featured?: boolean;
 }
 
+// Module-level cache: with 1000+ posts, reading and parsing MDX on every call is
+// the dominant cost during build. The blog directory is immutable at build time,
+// so caching per worker process is safe and removes the timeout that hits paginated routes.
+let _allPostsCache: BlogPostMeta[] | null = null;
+
 export function getAllPosts(): BlogPostMeta[] {
+  if (_allPostsCache) {
+    return _allPostsCache;
+  }
+
   if (!fs.existsSync(BLOG_DIR)) {
-    return [];
+    _allPostsCache = [];
+    return _allPostsCache;
   }
 
   const files = fs.readdirSync(BLOG_DIR).filter((file) => file.endsWith(".mdx"));
@@ -86,7 +96,9 @@ export function getAllPosts(): BlogPostMeta[] {
   });
 
   // Sort by date (newest first)
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  _allPostsCache = posts;
+  return _allPostsCache;
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
