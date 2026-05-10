@@ -1,0 +1,151 @@
+---
+title: "Search vs PMax Cannibalization on Google Ads: Diagnose and Fix (2026)"
+excerpt: "How to tell if your Google search and Performance Max campaigns are cannibalizing each other, and the structural changes that fix it without losing branded traffic."
+date: "2026-05-12"
+updated: "2026-05-12"
+category: "Paid Ads"
+tags: ["Google Ads", "Performance Max", "Search Ads", "Shopify", "PMax"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "How do I know if PMax is eating my brand search traffic?"
+    answer: "Check your branded search campaign impression share over the last 90 days. If it's dropping while PMax conversion volume is rising, PMax is likely intercepting branded queries. The other tell: your branded campaign CPC is rising at the same time, suggesting more competition in the auction (your own PMax)."
+  - question: "Should I exclude all branded keywords from PMax?"
+    answer: "Yes, for most accounts. PMax now offers a brand exclusion option in campaign settings (generally available in 2025). Use it. Run a separate brand search campaign with manual CPC bidding for brand defense. Letting PMax eat brand traffic inflates its reported ROAS while costing you incremental revenue."
+  - question: "Can I tell PMax to exclude specific competitor terms?"
+    answer: "Yes, with limitations. PMax allows negative keyword lists at the campaign level for brand exclusions. You can include competitor brand names in those lists. The exclusion is less granular than search campaigns but workable for most use cases."
+  - question: "Is search still worth running alongside PMax in 2026?"
+    answer: "Yes. Search captures non-brand commercial intent terms that PMax under-serves, gives you control over ad copy for high-value queries, and provides reporting transparency PMax doesn't. Most accounts run both, with clear delineation of what each owns."
+  - question: "How much is PMax cannibalization actually costing?"
+    answer: "In our audit data, cannibalized branded traffic typically represents 8-15% of total PMax conversions for established brands. That's the slice that would have converted via brand search at lower cost. Reclaiming it lifts blended Google ROAS by 10-20% without losing volume."
+---
+
+Performance Max is Google's preferred campaign type, and for good reason — it works. But it has a tendency the platform doesn't advertise: it likes to scoop up branded search traffic and report it as part of its own ROAS. That branded traffic was already going to convert. PMax just paid for it twice.
+
+This is one of the most common audit findings in Shopify Google accounts: PMax is "performing" at 7x ROAS, but blended Google performance is flat or declining, and brand search impression share is quietly eroding. The fix is structural and straightforward, but most operators don't realize it's happening.
+
+## The cannibalization mechanism
+
+PMax's "Final URL expansion" and broad audience signals let it bid on virtually any query Google thinks is relevant — including searches for your exact brand name. When someone searches "[your brand] running shoes," PMax can serve a Shopping ad alongside or instead of your branded search campaign.
+
+The result:
+
+- PMax wins the click (sometimes from the same advertiser's brand campaign)
+- The conversion is credited to PMax in the dashboard
+- Your branded campaign loses impression share and conversion volume
+- Blended performance doesn't actually improve — you're shifting credit, not generating new conversions
+
+Worse, the blended Google CPC creeps up because your brand campaign and PMax campaign are bidding against each other in the auction. You're paying yourself.
+
+## How to diagnose cannibalization
+
+Pull a 90-day comparison from Google Ads:
+
+**Branded search campaign metrics:**
+
+- Impression share (search lost — IS due to budget vs. due to rank)
+- Click volume
+- CPC trend
+- Conversion volume
+
+**PMax campaign metrics:**
+
+- Search categories report (if available)
+- Conversion volume by week
+- New customer percentage
+
+Signals that cannibalization is happening:
+
+- Branded campaign impression share dropping over time
+- Branded campaign CPC rising
+- PMax conversion volume rising while branded search conversions decline
+- Total Google conversions flat or growing only modestly
+
+If you see all four, you've got cannibalization. The fix is to exclude branded queries from PMax and let your branded search campaign do its job.
+
+## The fix: brand exclusions in PMax
+
+As of 2025, PMax campaigns support brand exclusions natively. The setup:
+
+1. Go to your PMax campaign settings
+2. Find the "Brand exclusions" section
+3. Add your brand name and common variations (with/without spaces, common misspellings)
+4. Apply
+
+You can also add competitor brand names if you don't want PMax bidding on those.
+
+After enabling brand exclusions, expect:
+
+- 10-15% drop in PMax-attributed conversions (the cannibalized brand traffic moving back to brand search)
+- 10-20% lift in branded search impression share
+- Lower branded search CPC (less competition in the auction)
+- Net Google performance roughly flat or slightly improved (you stopped paying yourself)
+
+## What to expect in the first month after the fix
+
+Week 1: PMax conversion volume drops. Don't panic — this is the cannibalized traffic correcting.
+
+Week 2: Branded campaign volume rises. Brand search CPC declines.
+
+Week 3-4: PMax stabilizes at lower volume but cleaner ROAS (no more inflated brand attribution).
+
+Week 4+: Net Google performance reflects true acquisition contribution.
+
+If your overall Google performance drops materially after the fix, the issue isn't the fix — it's that PMax was the only thing carrying your account, and it was carrying it on cannibalized traffic. That's diagnostic in itself.
+
+## Search campaign structure post-fix
+
+Once brand is excluded from PMax, your search campaigns should cover:
+
+**Brand defense campaign.** Manual CPC, your brand terms only, modest budget. Goal: maintain top-of-page presence for brand searches at low CPC.
+
+**Generic / commercial intent campaign.** Manual CPC or smart bidding, non-brand keywords with strong commercial intent. Often the highest-value paid Google traffic when properly run.
+
+**Competitor campaign (optional).** Bidding on competitor brand terms. Tactical, requires careful copy to avoid trademark issues. Skip unless you have specific competitive positioning.
+
+## Common Google Ads structure mistakes
+
+**Running brand search campaigns at automated bidding strategies.** Auto-bidding on brand terms inflates CPC unnecessarily. Manual CPC works better — you don't need to "optimize" something already converting.
+
+**No brand defense campaign at all.** "Why pay for traffic that's already searching for me?" Because if you don't, your competitors will. Even cheap brand defense at $10-30/day matters.
+
+**Letting PMax own brand traffic on purpose.** Some operators read PMax's high reported ROAS and decide to lean into it. The math doesn't survive incrementality testing.
+
+**Not running search at all.** PMax-only Google strategies leave high-intent generic search traffic on the table. Search campaigns capture that intent better than PMax does.
+
+**Allowing PMax to expand to YouTube and Display when you don't want it.** PMax's placements are bundled. If you don't want display impressions, separate your campaigns.
+
+## A real example
+
+A footwear client we audited had:
+
+- PMax campaign: $40K/month spend, 6.8x reported ROAS
+- Brand search: $3K/month spend, 18x ROAS, declining impression share (74% → 52% over 6 months)
+- Generic search: $5K/month, 4.2x ROAS
+
+After enabling brand exclusions in PMax:
+
+- PMax: $40K/month, 5.2x ROAS (more honest number)
+- Brand search: $5K/month (more available impressions to capture), 17x ROAS, impression share back to 88%
+- Generic search: unchanged
+
+Total Google revenue: up 12%. Total Google spend: roughly flat. Blended ROAS improved meaningfully because the campaigns stopped competing with each other.
+
+## Preventing cannibalization on new accounts
+
+If you're setting up Google Ads from scratch, build the structure to avoid cannibalization from day one:
+
+1. Enable brand exclusions in PMax before launch
+2. Set up brand defense campaign in parallel
+3. Set up generic search campaign for non-brand commercial intent
+4. Monitor branded campaign impression share weekly
+
+Done right, your structure is clean from launch and you avoid the months of cannibalized data that operators with legacy accounts have to work through.
+
+## What to do this week
+
+Pull your branded search campaign's impression share trend for the last 90 days. If it's declining and PMax has been growing, you've likely got cannibalization. Enable brand exclusions in PMax this week. Watch the next 4 weeks of data carefully — you'll see the real numbers.
+
+For more on Google strategy, see our [PMax asset group structure guide](/blog/google-pmax-asset-groups-shopify-structure), [Google Shopping feed optimization checklist](/blog/google-shopping-feed-optimization-checklist-2026), and [why PMax spending on brand terms diagnosis](/blog/why-pmax-spending-on-brand-terms-fix).
