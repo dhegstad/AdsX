@@ -1,0 +1,164 @@
+---
+title: "Sticky Add-to-Cart on Mobile: Conversion Lift Data and Implementation"
+excerpt: "Sticky add-to-cart buttons on mobile typically lift conversion 6-15%. Here's the implementation approach and the design choices that affect impact."
+date: "2026-05-17"
+updated: "2026-05-17"
+category: "CRO & Creative"
+tags: ["Sticky ATC", "Mobile CRO", "Shopify", "Conversion", "PDP"]
+author:
+  name: "AdsX Team"
+  role: "Conversion Specialists"
+featured: false
+faqs:
+  - question: "How much does sticky ATC actually lift conversion?"
+    answer: "6-15% in our test data. Varies by category — higher AOV and longer PDPs see larger lifts because the button stays visible while users scroll through more content. Impulse categories with short PDPs see smaller lifts."
+  - question: "Should sticky ATC appear on desktop too?"
+    answer: "Usually no. Desktop screens are large enough that the regular ATC stays visible during scroll. Sticky ATC on desktop often feels intrusive without the same conversion benefit."
+  - question: "Does sticky ATC interfere with scrolling or content?"
+    answer: "Done well, no. Done poorly, yes. The implementation matters: the bar should be slim (60-80px), high-contrast but not aggressive, and ideally include a small product image or price for context."
+  - question: "Should the sticky bar appear immediately or after scroll?"
+    answer: "After scroll. Users in the hero section have a regular ATC visible. The sticky bar should appear when the regular ATC is no longer in view (typically 400-600px scroll). Immediate display feels redundant."
+  - question: "Can sticky ATC hurt anything?"
+    answer: "Slightly higher accidental taps when content is dense. Mostly cosmetic — users don't actually mis-buy. The bigger risk is design execution: bars that look like ads or feel intrusive can hurt brand perception."
+---
+
+Sticky add-to-cart on mobile is one of those tactics that's easy, well-documented, and consistently produces conversion lift — yet many Shopify stores still don't implement it. The answer might be that operators are over-thinking the design choices when the simple version works fine.
+
+This guide covers the implementation approach we use, with the design choices that affect actual lift.
+
+## What sticky ATC actually does
+
+A sticky add-to-cart button is a thin bar pinned to the bottom of the mobile screen that contains the ATC button (and often product image, price, and variant selector). It appears as the user scrolls down the PDP and stays visible regardless of scroll position.
+
+The mechanic: customers don't have to scroll back to the top to add to cart. Friction drops. Conversion lifts.
+
+## The conversion lift data
+
+Across 35+ Shopify accounts we've tested:
+
+**Average lift:** 8-12% on mobile CVR
+**Range:** 4-18% depending on category and PDP length
+**Categories with highest lift:** considered-purchase ($100+ AOV) with longer PDPs
+**Categories with lowest lift:** impulse purchases under $40 with short PDPs
+
+These numbers compound with other CRO improvements. Sticky ATC plus reviews above the fold can deliver 25-30% combined lift versus baseline.
+
+## Implementation options
+
+### Option 1: Theme-native sticky ATC
+
+Many modern Shopify themes (Dawn, Sense, Refresh) include sticky ATC as a built-in option. Check your theme settings before installing apps.
+
+Pros: Free, fast to enable, integrates with your theme aesthetics.
+
+Cons: Limited customization in some themes.
+
+### Option 2: Sticky cart apps
+
+Apps like Sticky Add to Cart Booster, Sticky Tools, or Sticky Cart from Booster Apps. Range from free to $12/month.
+
+Pros: Customizable design, works on most themes.
+
+Cons: Adds another app, possible page speed impact.
+
+### Option 3: Custom theme code
+
+For brands with developer capacity, custom-coded sticky ATC integrated directly into the theme.
+
+Pros: No app dependency, performance-optimized.
+
+Cons: Requires dev work, harder to update.
+
+For most stores: enable theme-native if available, otherwise use a cart app.
+
+## Design choices that matter
+
+### Trigger point
+
+When does the sticky bar appear?
+
+- **On page load:** redundant with the regular ATC, can feel cluttered
+- **At 200-300px scroll:** appears as user starts engaging
+- **At 400-600px scroll (recommended):** appears when regular ATC is out of view
+
+The 400-600px option works best in our tests. Trigger point too early creates redundancy; too late means users have to scroll past the friction point first.
+
+### Bar height
+
+- **40-50px:** too small, button hard to tap accurately
+- **60-80px (recommended):** tappable button, room for context
+- **100px+:** feels intrusive, takes up too much screen real estate
+
+### Content within the bar
+
+What to include:
+
+- Product image thumbnail (left side)
+- Product name truncated (mid)
+- Price (mid or right)
+- Add to cart button (right)
+- Optional: variant selector if simple (color or size)
+
+What to skip:
+
+- Quantity selectors (rarely used at this stage)
+- Shipping promises (already in cart drawer)
+- Promotional banners
+
+### Color and contrast
+
+- **High contrast button:** primary brand color, clearly tappable
+- **Subtle background:** white or light gray, not aggressive
+- **Avoid:** bright reds, urgency colors, animations that could read as ads
+
+### Variant handling
+
+If your product has variants (size, color), the sticky bar should respect the customer's selection. Most apps do this automatically. If the customer hasn't selected a variant, tapping ATC should scroll back up to the variant selector or open a quick-select popup.
+
+## A real implementation example
+
+A footwear client implemented sticky ATC using their theme's native option. Setup:
+
+- Trigger: appears at 500px scroll
+- Bar height: 70px
+- Content: thumbnail + product name + price + ATC button
+- Color: brand green button, white background
+- Variant logic: respects size selected; opens size picker if none selected
+
+After 30 days:
+
+- Mobile CVR before: 2.4%
+- Mobile CVR after: 2.8%
+- 17% lift, statistically significant
+- AOV unchanged (good — sticky ATC affects CVR, not basket size)
+
+Total implementation time: 30 minutes in theme settings.
+
+## What doesn't work
+
+**Sticky ATC that doesn't track scroll position.** Bar appears immediately and stays — feels permanent, not contextual.
+
+**Buttons too small.** Below 44px tap target violates iOS guidelines and feels frustrating.
+
+**Animation on every scroll.** Bar that bounces or fades repeatedly is distracting.
+
+**Extra promotional content in the bar.** "Free shipping!" banners alongside ATC. Pick one purpose: sell the product.
+
+**Hiding the regular ATC entirely.** Customers in the hero section should still see the original ATC. Sticky bar supplements, doesn't replace.
+
+## Sticky ATC versus floating cart
+
+Some stores use a floating cart icon (small bag icon, fixed position) instead of full sticky ATC. The floating cart shows cart contents but doesn't surface the product's ATC.
+
+**Sticky ATC** is product-focused: makes the current product easy to add.
+**Floating cart** is cart-focused: reminds the user of their existing cart.
+
+For PDPs, sticky ATC outperforms floating cart. For category and collection pages, floating cart can work because there's no single product to feature.
+
+Many stores benefit from both, deployed contextually.
+
+## What to do this week
+
+If your theme supports sticky ATC and you don't have it enabled, turn it on this week. If your theme doesn't support it natively, install a sticky cart app and configure based on the design notes above.
+
+For more, see our [above-the-fold tests](/blog/shopify-product-page-above-the-fold-tests), [mobile PDP speed conversion link](/blog/shopify-mobile-pdp-speed-conversion-link), and [checkout conversion leak audit](/blog/shopify-checkout-conversion-leak-audit).
