@@ -1,0 +1,219 @@
+---
+title: "Migrate from Wix to Shopify in 2026: Updated Walkthrough"
+excerpt: "Step-by-step guide to migrating your store from Wix to Shopify. Product transfer, customer migration, redirects, and the cutover sequence that minimizes downtime."
+date: "2026-05-22"
+updated: "2026-05-22"
+category: "Migration"
+tags: ["Migration", "Wix", "Shopify", "Platform Switch"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "Is Wix bad for ecommerce?"
+    answer: "Wix is fine for very small stores with simple needs. As you grow, the limits show — fewer apps, weaker marketing integrations, theme constraints, and harder to integrate with the broader ecommerce ecosystem. Most stores migrate by month 12-24 once revenue justifies the move."
+  - question: "How long does Wix to Shopify migration take?"
+    answer: "1-3 weeks total, with cutover happening in a single day. Most of the time goes into product mapping, redirect setup, and pre-launch testing. Larger catalogs (500+ products) take longer."
+  - question: "Will my domain transfer easily?"
+    answer: "Yes. You can either keep the domain registered with Wix and point DNS to Shopify, or transfer the domain registration entirely. Pointing DNS is simpler. Domain transfer takes 5-7 days but consolidates everything."
+  - question: "What about Wix's design — can I keep the look?"
+    answer: "Not directly. Wix themes don't transfer. You'll rebuild the design in Shopify using a Shopify theme. Most operators find this is actually an upgrade — Shopify themes tend to convert better and load faster."
+  - question: "Will SEO survive the migration?"
+    answer: "Yes, with proper redirects. Without redirects, expect 30-60% search traffic loss within weeks. With proper 301 redirects and a clean rebuild, expect 1-3 weeks of dip and recovery to baseline within 60-90 days."
+---
+
+Wix is a popular starting platform for new ecommerce stores. The drag-and-drop interface is approachable, the templates look modern, and the all-in-one nature is appealing for first-time site owners. The trade-offs become apparent as stores grow — limited app ecosystem, weaker marketing integrations, less flexibility for custom workflows.
+
+Migrating from Wix to Shopify is among the most common platform switches we see. This guide is the updated walkthrough for 2026.
+
+## When migration makes sense
+
+Move to Shopify when:
+
+- You're at $5K+/month revenue and growing
+- You want to integrate apps Wix doesn't support
+- You're investing in paid ads and need better tracking infrastructure
+- You're hitting Wix's customization limits
+- You're planning international expansion
+
+Stay on Wix when:
+
+- You're under $2K/month
+- You're satisfied with current capabilities
+- You don't have time to manage migration
+- You'd rather use the upgrade time on growth instead
+
+Migration is real work. Don't migrate just because Shopify is "better" — migrate when you actually need the capabilities.
+
+## Pre-migration checklist
+
+Before starting:
+
+- Count active products (and total variants)
+- Document current URL structure
+- Export customer list
+- Save 12 months of order history
+- Note active discount codes
+- List third-party integrations
+- Document current theme customizations
+
+## Step 1: Export from Wix
+
+Wix's export options vary by store age and plan tier. Common options:
+
+**Products:** Wix Stores → Catalog → Export. Downloads CSV with product data.
+
+**Customers:** Contacts → Export. CSV with email and contact details.
+
+**Orders:** Wix Stores → Orders → Export. CSV with order history.
+
+If your Wix plan doesn't expose export, you may need to use third-party tools (LitExtension, Cart2Cart) which scrape the data via API access.
+
+## Step 2: Set up Shopify
+
+Standard new-store setup:
+
+- Create Shopify account, choose plan
+- Pick a theme (Dawn is solid; consider premium themes if Wix design was important to your brand)
+- Configure basic settings (taxes, shipping, payments)
+- Don't connect domain yet — Wix store stays live during prep
+
+## Step 3: Import products
+
+Shopify's product CSV format. Map Wix fields to Shopify:
+
+- Product Name → Title
+- Description → Body (preserves HTML if formatted)
+- SKU → Variant SKU
+- Price → Variant Price
+- Compare At Price → Variant Compare At Price
+- Inventory → Variant Inventory Quantity
+- Categories → Tags
+
+Wix variants (size, color, custom options) need conversion. Each variant becomes its own row in Shopify's CSV with a shared product handle.
+
+For complex catalogs, Matrixify (Shopify app) automates the conversion better than manual CSV editing.
+
+## Step 4: Rebuild collections and navigation
+
+Wix's category system doesn't map directly to Shopify's. You'll need to:
+
+- Create Shopify collections matching your Wix categories
+- Set automatic collection rules (by tag) so products self-assign
+- Rebuild main navigation (Online Store → Navigation)
+- Set up footer menu
+
+Plan to spend 3-5 hours on this regardless of catalog size — it's organizational work, not just data transfer.
+
+## Step 5: Customer import
+
+Shopify customer CSV. Customers will need to reset passwords post-migration since Wix password hashes don't transfer.
+
+After import:
+
+- Send customer announcement email with reset password instructions
+- Tag imported customers for segmentation
+- Sync to your email tool (Klaviyo recommended)
+
+## Step 6: Order history
+
+Options for orders:
+
+**Option 1: Keep Wix accessible.** Maintain Wix subscription for 90-180 days post-migration. Reference for order lookups, returns, customer service.
+
+**Option 2: Migrate orders.** Use Matrixify to import historical orders. Preserves customer-side order history view in Shopify.
+
+**Option 3: Archive only.** Export CSVs, store offline, customer service references when needed. Cheapest but most friction.
+
+For most stores: Option 1 first 90 days, then close Wix.
+
+## Step 7: SEO redirects
+
+Critical step. Wix URL patterns vary, but typically look like:
+
+```
+yourstore.com/product-page/product-name
+yourstore.com/category-name
+```
+
+Shopify URLs:
+
+```
+yourstore.com/products/product-handle
+yourstore.com/collections/collection-handle
+```
+
+Set up 301 redirects in Shopify (Online Store → Navigation → URL Redirects):
+
+- Map old URL to new URL for every product
+- Map old category URL to collection URL
+- Handle any custom pages (about, contact, FAQ)
+
+For large catalogs, bulk-import redirects via CSV. Manual entry for under 50 products is fine.
+
+Test redirects before cutover. Use a tool like Screaming Frog to crawl old URLs and verify they 301 to correct destinations.
+
+## Step 8: Email and marketing migration
+
+If you used Wix's built-in email, you're starting fresh on Klaviyo or Mailchimp:
+
+- Export email subscribers from Wix
+- Import to new email tool
+- Rebuild flows (welcome, abandoned cart, post-purchase)
+- Connect to Shopify for behavioral data
+
+For Meta/Google ads: pixels need to be reinstalled on Shopify. Don't lose attribution by forgetting this step.
+
+## Step 9: Cutover day
+
+Sequence:
+
+1. Verify Shopify store is fully ready
+2. Disable Wix checkout (prevents accidental orders to old store)
+3. Update DNS to point domain to Shopify
+4. Wait for DNS propagation (2-24 hours)
+5. Test full purchase flow on live domain
+6. Send customer announcement email
+7. Monitor for issues over 72 hours
+
+Schedule cutover for Tuesday or Wednesday morning. Avoid Friday (issues over weekend), avoid Monday (weekend issues bleeding in).
+
+## Step 10: Post-migration
+
+**Week 1:** Stabilize. Watch for customer service inquiries. Check Search Console for crawl errors.
+
+**Week 2-4:** Optimize. Use Shopify capabilities to improve experience — better collections, app additions, theme refinement.
+
+**Month 2-3:** Marketing recovery. Ad accounts re-stabilize. SEO recovers from migration dip.
+
+**Month 4+:** Growth mode. Now you have the platform to scale.
+
+## Common Wix migration mistakes
+
+**Trying to recreate the Wix design exactly.** Shopify themes work differently. Don't fight the platform.
+
+**Forgetting to update social media links.** Update Instagram, Facebook, TikTok bios with new domain or URLs.
+
+**Skipping pixel reinstall.** Meta and Google pixels need to be installed on Shopify. Don't lose tracking.
+
+**Cutting Wix subscription too soon.** Keep it accessible for 90 days as an order reference.
+
+**Trying to migrate during a sale or busy period.** Don't.
+
+## Cost of migration
+
+DIY: $0 + 25-40 hours of your time.
+
+With Matrixify or migration tools: $30-200 in tooling.
+
+Agency-assisted: $1,500-5,000 depending on complexity.
+
+For most under-300-product stores, DIY is feasible. For complex catalogs or operational migrations, paying an agency saves significant time and reduces risk.
+
+## What to do this week
+
+If you're on Wix and considering migration, pull your product and customer counts. Map your current URL structure (the redirect setup is the most underestimated part of migration).
+
+If migration looks manageable, schedule it for a low-traffic 30-day window. Plan the customer communication early.
+
+For more, see our [migrate from GoDaddy to Shopify](/blog/migrate-from-godaddy-to-shopify), [migrate from Square Online to Shopify](/blog/migrate-from-square-online-to-shopify), and [Shopify vs WooCommerce comparison](/blog/shopify-vs-woocommerce-2026-comparison).
