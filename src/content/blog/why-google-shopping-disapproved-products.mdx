@@ -1,0 +1,186 @@
+---
+title: "Why Did Google Shopping Disapprove My Products? Top 20 Causes and Fixes"
+excerpt: "Google Shopping product disapprovals come from specific causes. Here are the 20 most common reasons products get disapproved and how to fix each."
+date: "2026-06-04"
+updated: "2026-06-04"
+category: "Diagnostic"
+tags: ["Google Shopping", "Disapproval", "Merchant Center", "Diagnostic", "Shopify"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "How long does Google take to approve products?"
+    answer: "1-7 days for new products, hours for re-approvals after fixes. Mass disapprovals on existing accounts usually clear within 48 hours of submitting fixes. If approval is taking longer, there may be additional issues."
+  - question: "Will fixing one product fix others?"
+    answer: "Sometimes. If the cause is account-level (policy violation, weak landing pages broadly), fixing the policy issue fixes many products. If the cause is product-specific (specific image, specific description), each needs individual fix."
+  - question: "What's the most common disapproval reason?"
+    answer: "Image issues — promotional overlays, low resolution, watermarks, or images showing things outside the product. Image disapproval typically affects 30-40% of disapproved products."
+  - question: "Can I appeal a disapproval?"
+    answer: "Yes, through Merchant Center. Appeals work best when you've actually fixed the issue. Appeals just claiming the disapproval is wrong rarely succeed."
+  - question: "How do I prevent future disapprovals?"
+    answer: "Pre-launch checklist for new products covering image quality, GTIN presence, accurate pricing, and landing page consistency. The cost of pre-flight is much lower than the cost of disapprovals during a busy season."
+---
+
+Google Shopping product disapprovals are routine but each one has a specific cause and fix. The frustrating part is that Merchant Center's disapproval messages aren't always clear about which specific issue triggered the flag. This guide covers the 20 most common causes and how to fix each.
+
+## Diagnostic approach
+
+Start in Merchant Center → Products → Diagnostics. Filter by status: Disapproved.
+
+For each disapproved product, you'll see:
+
+- The reason code
+- Affected attribute
+- Status (active disapproval vs. warning)
+- Estimated impact
+
+Group disapprovals by cause. Often a handful of issues affect dozens of products.
+
+## The 20 most common causes
+
+### Image issues (top category)
+
+**1. Promotional overlay on image.** Stripped or disapproved if images show "SALE!" "30% OFF" or similar text.
+
+Fix: Use clean product images. Remove any promotional text, logos, watermarks.
+
+**2. Low-resolution images.** Below 800x800 pixels causes warnings; very low res causes disapprovals.
+
+Fix: Upload images at 1200x1200 minimum, ideally 1600x1600.
+
+**3. Image showing multiple products.** If you're listing one product but the image shows several, Google flags this.
+
+Fix: Single product per primary image. Use additional_image_link for context shots.
+
+**4. Image background issues.** Some categories (apparel, accessories) require white backgrounds. Lifestyle background may flag.
+
+Fix: White or transparent background for primary image. Lifestyle for additional images.
+
+**5. Broken image URLs.** Image link in feed returns 404 or blocked.
+
+Fix: Verify image accessibility. Cloudflare bot protection sometimes blocks Google's crawler — whitelist Google.
+
+### Identifier issues
+
+**6. Missing GTIN on branded product.** If you sell branded products, GTIN is increasingly required.
+
+Fix: Add GTIN. If genuinely unavailable, set identifier_exists to "no" with clear reason.
+
+**7. Invalid GTIN.** GTIN provided but doesn't validate against the brand.
+
+Fix: Verify GTIN with manufacturer. Don't make up GTINs.
+
+**8. Missing brand attribute.** "Generic" or your store name as brand when product has a specific brand.
+
+Fix: Use actual product brand. Don't put store name in brand field.
+
+**9. Missing MPN.** Manufacturer part number required for some unbranded products.
+
+Fix: Add MPN where applicable.
+
+### Pricing issues
+
+**10. Price discrepancy.** Feed price doesn't match landing page price.
+
+Fix: Sync feed and landing page. Even $0.01 mismatches trigger flags.
+
+**11. Sale_price not formatted correctly.** Using regular price field for sale price, or missing effective dates.
+
+Fix: Use sale_price field with appropriate dates.
+
+**12. Price at zero or unrealistically low.** Free items or very-low-priced items trigger flags.
+
+Fix: Verify pricing. Free products need different submission.
+
+### Availability issues
+
+**13. Showing in stock when out of stock.** Inventory mismatch between feed and reality.
+
+Fix: Real-time inventory sync. Don't show in stock when checkout shows OOS.
+
+**14. Pre-order or backorder mislabeled.** Pre-order products need specific availability label.
+
+Fix: Use availability="preorder" with availability_date.
+
+### Landing page issues
+
+**15. Landing page returns 404 or error.** Broken or removed product page.
+
+Fix: Restore page or remove from feed.
+
+**16. Landing page mismatch.** Lands on wrong product or category page.
+
+Fix: Verify each product feed URL goes to that exact PDP.
+
+**17. Landing page disapproval.** Page violates broader policy (excessive popups, requires login, etc.).
+
+Fix: Audit landing page UX.
+
+### Policy issues
+
+**18. Restricted category violation.** Supplement, alcohol, CBD, weapon, etc. requires specific compliance.
+
+Fix: Review restricted category requirements. Ensure compliance.
+
+**19. Healthcare or efficacy claims.** "Cures," "treats," "guaranteed weight loss" — flagged.
+
+Fix: Remove claims from titles, descriptions, and landing pages.
+
+**20. Trademark issues.** Using competitor's brand name without authorization.
+
+Fix: Remove competitor brand mentions. If selling their products legally, ensure brand attribute is the actual brand.
+
+## Mass disapproval scenarios
+
+If 50%+ of your products are suddenly disapproved:
+
+**Check for:**
+
+- Recent Merchant Center policy update affecting your category
+- Recent feed change (script error, attribute mapping break)
+- Account-level warning or flag
+- Domain-level issue (security warning, blacklist)
+
+Fix the systemic issue first, then individual products clear in batches.
+
+## How to fix and resubmit
+
+Once you've fixed the issue:
+
+1. Update the feed (if data issue) or landing page (if content issue)
+2. Wait for next feed update
+3. In Merchant Center, click "Request review" if status doesn't auto-update
+4. Most fixes process within 24-48 hours
+
+If the appeal is denied, the issue likely wasn't actually fixed. Re-diagnose.
+
+## Preventing future disapprovals
+
+Pre-launch checklist for new products:
+
+- Image quality (1200x1200+, no overlays, white background where needed)
+- GTIN provided or identifier_exists=no
+- Brand attribute correct
+- Price matches landing page
+- Availability accurate
+- Description has no policy-violating claims
+- Landing page loads cleanly
+
+Spending 5 minutes pre-flighting saves days of disapproval recovery.
+
+## What to do this week
+
+If you have current disapprovals:
+
+- Pull a Diagnostics report from Merchant Center
+- Group by reason code
+- Fix the largest groups first
+- Resubmit and monitor
+
+If you don't have current disapprovals but want to prevent them:
+
+- Implement the pre-launch checklist
+- Audit existing products against current policy
+
+For more, see our [Google Shopping feed optimization checklist](/blog/google-shopping-feed-optimization-checklist-2026), [Google PMax asset groups guide](/blog/google-pmax-asset-groups-shopify-structure), and [why Meta ad account restricted](/blog/why-meta-ad-account-restricted-recovery).

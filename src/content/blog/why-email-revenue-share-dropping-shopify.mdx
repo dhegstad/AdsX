@@ -1,0 +1,228 @@
+---
+title: "Why Is My Email Revenue Share Dropping? Deliverability and Flow Diagnosis"
+excerpt: "Email revenue declining as a share of total revenue often signals deliverability issues, list decay, or flow performance drops. Here's how to diagnose."
+date: "2026-06-06"
+updated: "2026-06-06"
+category: "Diagnostic"
+tags: ["Email Marketing", "Deliverability", "Klaviyo", "Diagnostic", "Shopify"]
+author:
+  name: "AdsX Team"
+  role: "Email Marketing Specialists"
+featured: false
+faqs:
+  - question: "What's a healthy email revenue share?"
+    answer: "20-35% of total revenue is healthy for established DTC brands. Above 40%, you may be over-dependent. Below 15%, you're likely under-investing in email or have a deliverability issue."
+  - question: "How do I check if my emails are landing in spam?"
+    answer: "Send through tools like GlockApps or Mail Tester. Check inbox placement across major providers (Gmail, Outlook, Yahoo). Below 80% inbox placement is a serious deliverability issue."
+  - question: "What's the most common deliverability problem?"
+    answer: "Sending to unengaged subscribers. Lists with high unengaged rates trigger spam filtering broadly, hurting placement to engaged subscribers too. Regular list cleanup matters."
+  - question: "Should I use SMS to compensate for email decline?"
+    answer: "SMS is complementary, not a replacement. SMS open rates are higher but capacity is lower (you can send fewer SMS than emails before customers opt out). Both matter."
+  - question: "How fast can I recover deliverability?"
+    answer: "Days for minor issues, weeks for major ones. List cleanup shows results in 2-3 sends. Reputation recovery (after spam complaints) takes 4-8 weeks of disciplined sending."
+---
+
+Email revenue declining as a share of total revenue is one of the most overlooked DTC issues. Total revenue might still grow because paid ads compensate, but the email channel — usually the highest-ROI marketing investment — is degrading. The decline accelerates if not addressed.
+
+This guide covers the diagnostic for email revenue share decline.
+
+## First, calibrate
+
+Healthy email revenue share for DTC:
+
+- 20-35% of total revenue: healthy
+- 35-45%: well-developed program
+- Above 45%: possibly over-dependent
+- 10-20%: under-developed but functional
+- Below 10%: serious issue
+
+Compare your current share to your historical average. The trend matters more than absolute number.
+
+## Diagnostic 1: Deliverability
+
+Most common cause of email decline.
+
+Signs:
+
+- Open rates declining month over month
+- Click-through rates also declining
+- Recent ISP-specific drops (Gmail open rate suddenly tanks, Yahoo holds)
+- Spam complaint rate above 0.1%
+
+Test:
+
+- Send through GlockApps or Mail Tester
+- Check inbox placement
+- Review Klaviyo's deliverability metrics
+- Check sender reputation in Google Postmaster Tools
+
+Fix:
+
+- Suppress unengaged subscribers (90+ days no opens, 180 days no clicks)
+- Re-engage before suppression with sunset flow
+- Authenticate domain (DKIM, SPF, DMARC)
+- Improve sender reputation gradually with cleaner list
+
+## Diagnostic 2: List decay
+
+Lists naturally decay 20-30% per year. If you're not adding subscribers faster than you're losing engagement:
+
+Signs:
+
+- Active list size shrinking
+- Engagement rates declining despite stable send volume
+- New subscriber acquisition slowing
+
+Fix:
+
+- Audit signup capture mechanisms (popups, exit intent, account creation)
+- Test signup offer (lead magnet, discount, content)
+- Multi-channel capture (SMS in addition to email)
+
+## Diagnostic 3: Flow performance decline
+
+Automated flows (welcome, abandoned cart, post-purchase) degrade over time without maintenance:
+
+Signs:
+
+- Specific flow conversion rates dropping
+- Recent flow edits that may have hurt performance
+- Outdated content in flows
+
+Fix:
+
+- Audit each flow's conversion rate vs. 6 months ago
+- Refresh creative and copy in flows
+- A/B test flow improvements
+- Add new flows where missing (browse abandonment, win-back, etc.)
+
+## Diagnostic 4: Send frequency issues
+
+Too few sends = leaving revenue on the table. Too many = list fatigue and deliverability damage.
+
+Signs:
+
+- Recently increased frequency, engagement dropping
+- Recently decreased frequency, revenue dropping
+- Frequency stable, engagement still dropping (deliverability)
+
+Fix:
+
+- Aim for 2-4 broadcast sends per week + flows
+- Segment to send relevant content rather than blasting list
+- Use engagement-based segmentation (active vs. lapsed)
+
+## Diagnostic 5: Content quality
+
+Email content that doesn't deliver value gets ignored:
+
+Signs:
+
+- Lower clicks on every send regardless of subject line
+- Higher unsubscribe rates
+- Subscribers responding to flows but not broadcasts
+
+Fix:
+
+- Audit recent broadcast content
+- Mix promotional with educational/branded
+- Improve creative quality
+- Match content to audience interests via segmentation
+
+## Diagnostic 6: Subject line quality
+
+Subject lines drive opens. Low opens cascade to low everything.
+
+Signs:
+
+- Open rate dropping significantly across all sends
+- Higher than usual variance in open rates between sends
+
+Fix:
+
+- A/B test subject lines weekly
+- Avoid spam-trigger words
+- Keep subject lines under 50 characters
+- Personalize where appropriate (first name, product name)
+
+## Diagnostic 7: SMS overlap
+
+If you've added SMS recently, it may be cannibalizing email:
+
+Signs:
+
+- Email engagement dropping coincident with SMS launch
+- Customers opting out of email but staying on SMS
+
+Fix:
+
+- Coordinate cadence between channels (don't send both same day for same campaign)
+- Different content tracks for each channel
+- Let subscribers choose channel preferences
+
+## Diagnostic 8: Welcome series performance
+
+Welcome series often drives 20-30% of email revenue. If it's underperforming:
+
+Signs:
+
+- Welcome flow conversion rate below 10%
+- High unsubscribe rate within first 7 days
+- Outdated welcome content
+
+Fix:
+
+- Refresh welcome flow content
+- Test welcome offer
+- Test number of welcome emails (3-5 typically optimal)
+
+## Diagnostic 9: Abandoned cart performance
+
+Another major email revenue source. If declining:
+
+Signs:
+
+- Cart abandonment recovery rate dropping
+- Specific cart flows underperforming
+- Cart link click rates dropping
+
+Fix:
+
+- Refresh abandoned cart creative
+- Test offer escalation in second/third email
+- Verify cart links work correctly
+
+## Diagnostic 10: Email tool issues
+
+Less common but real:
+
+- Recent migration issues
+- Tracking setup problems
+- API or integration breaking
+
+Audit your email tool's reporting integrity. Check for tracking gaps.
+
+## A diagnostic walkthrough
+
+If your email revenue share is dropping:
+
+1. Calculate current share vs. 6 months ago
+2. Check deliverability (open rate trend, inbox placement)
+3. Check list size trend
+4. Audit flow performance individually
+5. Audit broadcast performance
+6. Check for tooling or integration issues
+
+Most decline is one of: deliverability, flow degradation, or list decay.
+
+## What to do this week
+
+If your email revenue share is dropping:
+
+- Run a deliverability test
+- Pull flow performance metrics
+- List cleanup if not done in 90+ days
+
+If healthy, audit quarterly to maintain.
+
+For more, see our [Shopify email automation flows](/blog/shopify-email-automation-flows), [Klaviyo setup complete guide](/blog/shopify-klaviyo-setup-complete-guide), and [why ROAS down but revenue up explained](/blog/why-roas-down-but-revenue-up-explained).

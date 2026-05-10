@@ -1,0 +1,123 @@
+---
+title: "Why Is PMax Spending on My Brand Terms? Diagnosis and Fix"
+excerpt: "Performance Max cannibalizing your branded search traffic is one of the most expensive blind spots in Google Ads. Here's how to diagnose and fix it."
+date: "2026-06-05"
+updated: "2026-06-05"
+category: "Diagnostic"
+tags: ["Google Ads", "PMax", "Brand Cannibalization", "Diagnostic", "Shopify"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "How can I tell if PMax is bidding on my brand terms?"
+    answer: "Check your branded search campaign impression share trend over the last 90 days. If it's declining while PMax conversion volume is rising, PMax is intercepting brand traffic. Also check Google Ads search terms reports for branded queries appearing in PMax's data."
+  - question: "Will excluding brand terms from PMax hurt overall performance?"
+    answer: "It will reduce PMax's reported revenue (because that revenue was inflated by branded traffic). Total Google performance usually improves because brand search recovers and you stop paying yourself. Net positive for blended Google ROAS in most accounts."
+  - question: "What's the brand exclusion option in PMax?"
+    answer: "A campaign-level setting (now generally available) that lets you specify brand keywords PMax shouldn't bid on. Add your brand name and common variations. PMax respects the exclusion."
+  - question: "How fast will I see the fix work?"
+    answer: "Within 7-14 days. PMax conversions drop (the cannibalized brand traffic moving back to brand search). Brand campaign impression share recovers. CPC on brand terms decreases. Net Google performance typically holds steady or improves."
+  - question: "Should I run PMax at all if it cannibalizes brand?"
+    answer: "Yes — PMax does work for non-brand acquisition. Just exclude brand to keep PMax doing its actual job (acquiring new customers) and let brand search do its job (defending existing demand)."
+---
+
+PMax cannibalizing branded search is one of the highest-impact, least-discussed issues in Google Ads. Most accounts running PMax for 6+ months have some level of brand cannibalization. The dashboard makes PMax look great while real performance suffers. This guide covers diagnosis and the specific fix.
+
+## How cannibalization happens
+
+PMax's "Final URL expansion" and broad audience signals let it bid on virtually any query. When users search "[your brand]," PMax can serve a Shopping ad alongside or instead of your branded search campaign.
+
+The result:
+
+- PMax wins clicks that brand search would have won at lower CPC
+- Conversions credited to PMax in dashboards
+- Brand search loses impression share
+- Total Google CPC creeps up
+- Blended performance doesn't actually improve — credit just shifts
+
+## Diagnosis
+
+### Test 1: Branded campaign impression share trend
+
+Pull a 90-day chart of your branded search campaign's impression share. If it's declining, brand cannibalization is happening somewhere.
+
+### Test 2: PMax search categories report
+
+In PMax campaign view, check the Insights tab → Search categories. If branded queries appear, PMax is bidding on them.
+
+### Test 3: Branded campaign CPC trend
+
+Branded CPCs rising means more competition in the auction. Often that competition is your own PMax.
+
+### Test 4: Total Google performance vs. component campaigns
+
+If branded search and PMax both report strong ROAS but blended Google ROAS is flat, you've got attribution shifting without actual incremental gain.
+
+## The fix
+
+Use PMax's brand exclusion feature (generally available since 2025).
+
+In PMax campaign settings:
+
+1. Find "Brand exclusions" section
+2. Add your brand name
+3. Add common variations:
+   - Brand with and without spaces
+   - Common misspellings
+   - Brand + product type combos ("[Brand] sofa")
+4. Apply
+
+Optional: also exclude competitor brands you don't want PMax bidding on.
+
+## What to expect after the fix
+
+**Week 1:**
+- PMax conversion volume drops 8-15%
+- Branded campaign impression share rises
+- Branded CPC starts decreasing
+
+**Week 2:**
+- PMax stabilizes at lower volume but cleaner ROAS
+- Branded campaign performance recovers
+- Total Google revenue holds or rises slightly
+
+**Week 3+:**
+- Honest reporting in both campaigns
+- Net Google ROAS often improves 10-15%
+
+If PMax revenue drops and total Google revenue also drops materially, PMax was your only acquisition channel and was funded by cannibalized brand traffic. That's a separate issue worth addressing — invest in non-brand acquisition channels.
+
+## Adjacent issues to check
+
+While you're auditing PMax cannibalization, also verify:
+
+**Search campaigns competing with each other.** Generic search and brand search shouldn't bid on overlapping queries.
+
+**PMax bidding on competitor brand terms.** Use brand exclusions list to add competitors if you don't want this.
+
+**PMax YouTube and Display placement.** PMax's placements are bundled. If you don't want these, separate campaigns.
+
+**Final URL expansion.** Off by default for many setups but worth checking.
+
+## Common reasons operators don't fix this
+
+**"PMax shows great ROAS, why mess with it?"** Because the ROAS is partly stolen from brand search.
+
+**"Brand search is small, who cares?"** Often it's bigger than dashboards show — incrementality testing reveals the gap.
+
+**"Brand exclusions might break PMax."** They don't. PMax adapts to any audience constraint.
+
+**"My agency hasn't mentioned this."** Many agencies don't proactively look for it. Ask.
+
+## What to do this week
+
+Pull the diagnostic data:
+
+- Branded campaign impression share trend (90 days)
+- PMax search categories report
+- Branded CPC trend
+
+If signals are present, enable brand exclusions. Watch for 14 days. The math will work out.
+
+For more, see our [Google PMax structure guide](/blog/google-pmax-asset-groups-shopify-structure), [Search vs PMax cannibalization](/blog/shopify-google-ads-search-vs-pmax-cannibalization), and [Google Shopping feed optimization](/blog/google-shopping-feed-optimization-checklist-2026).

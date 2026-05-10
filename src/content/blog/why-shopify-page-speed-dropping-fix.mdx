@@ -1,0 +1,196 @@
+---
+title: "Why Did My Shopify Page Speed Drop? Theme, App, and Image Audit"
+excerpt: "Sudden Shopify page speed drops have specific causes. Here's the diagnostic for theme issues, app bloat, image problems, and the fixes that recover speed."
+date: "2026-06-05"
+updated: "2026-06-05"
+category: "Diagnostic"
+tags: ["Page Speed", "Performance", "Diagnostic", "Shopify", "Core Web Vitals"]
+author:
+  name: "AdsX Team"
+  role: "Conversion Specialists"
+featured: false
+faqs:
+  - question: "How do I tell if my page speed actually got worse or if I'm imagining it?"
+    answer: "Check Google Search Console's Core Web Vitals report month-over-month. Real User Monitoring (RUM) data shows actual user experience changes. Don't rely on lab tests (PageSpeed Insights) alone — they can vary significantly run-to-run."
+  - question: "Most common cause of speed drops?"
+    answer: "Recently installed apps. Each app loads JavaScript, often blocking. We've seen single app installs add 1-2 seconds to LCP. App audit is the first diagnostic step."
+  - question: "Should I uninstall apps to recover speed?"
+    answer: "Yes, the unused ones. Most stores have 5-10 apps installed that aren't actively delivering value. Uninstall those. For apps you need, check if they have lazy-load options or alternative installations."
+  - question: "Does Shopify itself cause speed issues?"
+    answer: "Rarely. Shopify's core platform is fast. Speed issues are almost always theme customizations, apps, images, or third-party scripts (chat, analytics, etc.). Don't blame Shopify for things it didn't cause."
+  - question: "How quickly can I improve speed?"
+    answer: "Some fixes are immediate (image compression). Others take time as Google reindexes. RUM data updates within 28 days. Lab test scores can improve immediately after fixes."
+---
+
+Shopify page speed dropping is one of those problems that sneaks up on you. The store works the way it always has from your end. Conversion rates start declining without obvious cause. You eventually run a speed test and discover LCP doubled in the last 90 days.
+
+The good news: speed issues have specific causes that are diagnosable and fixable. This guide walks through the diagnostic.
+
+## First, verify the speed drop is real
+
+Don't trust a single lab test. Check:
+
+**Google Search Console → Core Web Vitals.** Real User Monitoring data over time. Trends matter more than point-in-time tests.
+
+**Shopify's native speed report.** Online Store → Themes → Speed. Trended data.
+
+**PageSpeed Insights** with multiple runs. Take an average; single runs are noisy.
+
+Confirm the trend before diagnosing cause.
+
+## Diagnostic 1: Recent app installs
+
+The most common cause of sudden speed drops.
+
+Check your app history:
+
+- Settings → Apps and sales channels → Installed apps
+- Sort by recently installed
+- Note any apps installed in the past 90 days
+
+For each recent app:
+
+- Is it actively delivering value?
+- Does it have alternative load options?
+- Is there a leaner alternative?
+
+Test impact: temporarily disable a recent app, retest speed. If LCP improves materially, that app was a culprit.
+
+## Diagnostic 2: Theme customizations
+
+If you've made theme edits or installed a custom theme, this can affect performance.
+
+Check:
+
+- Recent theme version (newer themes are faster)
+- Custom JavaScript added
+- Custom CSS added
+- Liquid template changes
+
+Test: switch to default Dawn theme temporarily. If speed recovers, your customizations are part of the problem.
+
+Fix:
+
+- Revert non-essential customizations
+- Move custom code to async loading where possible
+- Update to current theme version
+
+## Diagnostic 3: Image bloat
+
+Images are usually the largest single contributor to LCP.
+
+Check:
+
+- Hero images on homepage and PDP — file sizes (target under 200KB each)
+- Product gallery images — appropriately sized
+- Image format (WebP preferred, AVIF supported in newer browsers)
+
+Test: view source on PDP, check image URLs and sizes.
+
+Fix:
+
+- Compress images (Shopify's native serving handles WebP automatically in modern themes)
+- Resize images to actual display size (don't load 3000px images for 600px containers)
+- Use responsive image srcset
+
+## Diagnostic 4: Third-party scripts
+
+Scripts from outside Shopify add up:
+
+- Chat widgets (Intercom, Drift, etc.)
+- Analytics layers (GA4, Triple Whale, etc.)
+- Heatmap tools (Hotjar, Microsoft Clarity)
+- Pop-up tools (Justuno, OptinMonster)
+- Reviews widgets
+- Tag managers
+
+Each adds JavaScript that can block or delay rendering.
+
+Test: temporarily disable a script, retest. Identify worst offenders.
+
+Fix:
+
+- Use a tag manager to control script load order
+- Defer non-critical scripts
+- Remove scripts not actively delivering value
+
+## Diagnostic 5: Font loading
+
+Custom fonts that block rendering:
+
+Check: page source for font loading tags. Look for `font-display` property.
+
+Fix:
+
+- Use `font-display: swap` (renders fallback while custom font loads)
+- Preload critical fonts
+- Limit font weights to 2-3 maximum
+
+## Diagnostic 6: Hero video
+
+Video on the homepage adds significant load weight.
+
+Test: temporarily replace video with static image, retest.
+
+Fix:
+
+- Compress video aggressively (under 2MB for 5-second loops)
+- Use poster image while video loads
+- Consider lazy-loading video below initial render
+
+## Diagnostic 7: Cart drawer or sticky elements
+
+Some cart drawers and sticky elements load heavy JavaScript.
+
+Test: check whether your cart drawer is loading on every page or just when activated.
+
+Fix:
+
+- Lazy-load cart drawer until interaction
+- Switch to lighter cart drawer implementation if needed
+
+## Diagnostic 8: Product page complexity
+
+Heavy PDPs with many sections, embedded videos, complex galleries can be slow.
+
+Test: simplify a test PDP, check if speed improves significantly.
+
+Fix:
+
+- Move below-fold content to lazy-load
+- Simplify product gallery (limit to first 5-6 images, lazy-load rest)
+- Defer non-critical sections
+
+## A diagnostic walkthrough
+
+If your speed has dropped:
+
+1. Verify the drop in RUM data (Search Console or Shopify report)
+2. List apps installed in last 90 days
+3. List theme changes in last 90 days
+4. Audit hero image and PDP image file sizes
+5. Audit third-party scripts
+6. Disable items one at a time to identify primary causes
+
+Most accounts have 2-3 contributing causes that compound to the noticeable drop. Address the biggest one first, retest, address next.
+
+## Tools for speed diagnosis
+
+**PageSpeed Insights** — lab and field data
+**Google Search Console** — Core Web Vitals trend
+**WebPageTest** — detailed waterfall
+**Shopify's native speed report** — trended platform-specific data
+**Real device testing** — your actual phone with throttled connection
+
+## What to do this week
+
+If your speed has dropped:
+
+- Confirm in Search Console
+- Audit recent apps
+- Audit images on hero pages
+- Test fixes one at a time
+
+If your speed is healthy, audit quarterly to maintain it.
+
+For more, see our [mobile PDP speed conversion link post](/blog/shopify-mobile-pdp-speed-conversion-link), [above-the-fold tests](/blog/shopify-product-page-above-the-fold-tests), and [checkout conversion leak audit](/blog/shopify-checkout-conversion-leak-audit).
