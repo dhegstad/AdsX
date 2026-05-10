@@ -1,0 +1,146 @@
+---
+title: "Google Shopping Feed Optimization Checklist for 2026 (40 Points)"
+excerpt: "A 40-point audit for Google Shopping product feeds: titles, descriptions, attributes, GTIN coverage, and the policy compliance gaps most Shopify stores miss."
+date: "2026-05-07"
+updated: "2026-05-07"
+category: "Paid Ads"
+tags: ["Google Shopping", "Product Feed", "Merchant Center", "Shopify", "Feed Optimization"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "How often should I update my Google Shopping feed?"
+    answer: "Daily at minimum. Real-time is better. Outdated price or inventory data triggers disapprovals fast — a product that shows out of stock at checkout when the feed says available will get suspended after enough flags. Shopify's native Google channel updates roughly every 30 minutes, which is fine for most stores."
+  - question: "What's the most impactful feed change I can make?"
+    answer: "Title structure. Putting your most important keywords first (product type → brand → key attribute → product name) typically lifts impression share 20-40% within two weeks. Most Shopify stores let Shopify auto-generate titles, which means brand-first formatting that Google's match algorithm under-weights."
+  - question: "Do I need GTINs on every product?"
+    answer: "If you sell branded products, yes — and Google increasingly enforces this. Missing GTINs on branded items can trigger disapprovals and lower bid eligibility. For your own private label or custom products, mark identifier_exists as 'no' so Google doesn't expect a GTIN."
+  - question: "What's the difference between a primary feed and a supplemental feed?"
+    answer: "Primary feed is your full product list. Supplemental feeds let you override or add specific attributes to subsets of products without rebuilding the whole feed. Most Shopify stores benefit from a supplemental feed for custom titles and a separate one for promotional pricing during sales."
+  - question: "Why are some products approved but not showing impressions?"
+    answer: "Approved doesn't mean competitive. Check the price competitiveness report and the product status report — products can be 'active' but priced out of the auction. Title quality, GTIN presence, and feed completeness all factor into bid eligibility independently of approval status."
+---
+
+The product feed is the foundation of Google Shopping performance. Bad feed, bad campaigns — there's no creative or bidding workaround for products that Google's algorithm can't categorize, can't trust, or can't show without a disclaimer.
+
+This checklist is what we run on every new client account before we touch a campaign. About 80% of Shopify stores fail at least 15 of these items the first time through. Working through the list typically lifts impression share 30-50% within a month, before any bidding or structure changes.
+
+## Title and description (10 points)
+
+1. **Titles lead with the most important keyword.** "Men's Running Shoes — Brand X Air Pace 2 Black Size 10" beats "Brand X Air Pace 2." Google's match algorithm weights the front of the title disproportionately.
+
+2. **Titles include product type, brand, and at least one differentiating attribute.** Color, size, material, or model — whichever is most relevant.
+
+3. **Titles are under 150 characters.** They get truncated above that, but the algorithm still sees the full string. Don't waste good keywords past character 70 either — that's the visible portion in most placements.
+
+4. **Avoid promotional language in titles.** "Sale," "Best," "Free Shipping," and "$X off" trigger disapprovals or get stripped.
+
+5. **Avoid all-caps and excessive symbols.** "BEST DEAL!!!" gets your feed flagged.
+
+6. **Descriptions are 500-1,000 characters.** Below 200 characters, Google reads it as thin. Above 1,500, you're padding.
+
+7. **Descriptions include keywords your titles couldn't fit.** Material, fit, use cases, audience, technical specs.
+
+8. **Descriptions are unique per product.** Copy-pasted descriptions across SKUs hurt the whole feed's quality score.
+
+9. **No HTML in descriptions.** Plain text. Shopify sometimes pushes HTML through; check your description fields manually.
+
+10. **Descriptions match landing page content.** Mismatch = trust signal degradation.
+
+## Identifiers and attributes (10 points)
+
+11. **GTIN provided on all branded products.** Manufacturer barcode, UPC, EAN, or ISBN. Required for branded items in most categories.
+
+12. **Brand attribute populated.** "Generic" or your store name is wrong unless you actually own the brand.
+
+13. **MPN populated where GTIN isn't available.** Manufacturer part number. Required for unbranded but identifiable products.
+
+14. **identifier_exists = no** for true private-label products that have no GTIN, MPN, or recognized brand. Don't fake GTINs — Google checks.
+
+15. **Color attribute matches Google's accepted values.** "Navy Blue" not "Naval Indigo Heather." Use Google's color taxonomy.
+
+16. **Size attribute uses standardized values.** "M" not "Medium-ish." Use the standard size system for your product type.
+
+17. **Material attribute populated for relevant categories.** Apparel, accessories, home goods — required or strongly recommended.
+
+18. **Gender attribute populated for apparel.** "Male," "Female," or "Unisex." Wrong values get products served to the wrong audiences.
+
+19. **Age group attribute populated for apparel and toys.** "Adult," "Kids," "Toddler," "Infant," "Newborn."
+
+20. **Custom labels populated (custom_label_0 through custom_label_4).** Use these for campaign segmentation — bestsellers, margin tiers, seasonality, new arrivals.
+
+## Pricing and availability (8 points)
+
+21. **Price matches landing page exactly.** A $0.01 mismatch can trigger price discrepancy disapproval.
+
+22. **Sale price uses sale_price field, not price.** Shopify's native channel handles this; custom feeds sometimes don't.
+
+23. **Sale price effective dates set when running a promotion.** Tells Google the duration of the discount.
+
+24. **Availability accurate to within 30 minutes of inventory change.** "In stock" on a sold-out product = disapproval risk.
+
+25. **Out-of-stock products mark as such, don't get removed.** Removed products lose accumulated performance data when they come back. Set availability = out of stock instead.
+
+26. **Currency matches the target country.** USD for US, GBP for UK, etc.
+
+27. **Tax setup correctly for shipping destinations.** Most Shopify stores have this auto-handled, but verify.
+
+28. **Shipping cost set in Merchant Center or feed.** Don't surprise Google with shipping costs that show only at checkout.
+
+## Image quality (5 points)
+
+29. **Image at 800x800 minimum, ideally 1600x1600.** Google penalizes low-resolution feeds.
+
+30. **White or transparent background for primary image** in most categories. Lifestyle shots in additional_image_link.
+
+31. **No watermarks, logos, or promotional overlays on primary image.** Stripped or disapproved.
+
+32. **At least 3 images per product.** Lifestyle, multiple angles, scale references.
+
+33. **Image URLs accessible and not blocked.** Cloudflare or hotlinking protection sometimes blocks Google's crawler. Verify with the URL inspection tool.
+
+## Category and structure (4 points)
+
+34. **Google product category populated.** Use the most specific category available, not the top-level. "Apparel & Accessories > Clothing > Activewear > Running Apparel" beats "Apparel & Accessories."
+
+35. **Product type populated with your own taxonomy.** This is your category, not Google's. Use it for feed segmentation.
+
+36. **Item group ID set for variant products.** Without it, Google sees each variant as an unrelated product and ranking signals split.
+
+37. **Variants share consistent core attributes.** Brand, model, base name should match across variants of the same product.
+
+## Compliance and policy (3 points)
+
+38. **Restricted categories handled correctly.** Supplements, alcohol, CBD, firearms, and adult content all have specific rules. Audit your category against current Merchant Center policy.
+
+39. **Healthcare and beauty claims removed from titles and descriptions.** "Cures acne" gets you suspended. "Targets blemishes" might be fine depending on country.
+
+40. **Trademark issues cleared.** If you sell competitors' products legally, make sure brand attributes are accurate. If you're using a competitor's brand name without authorization, expect a takedown.
+
+## How to actually run this audit
+
+Don't try to do all 40 in one session. Block out three two-hour windows over a week:
+
+**Session 1:** Run through the title and description checklist on your top 50 SKUs by revenue. These are the products driving 70-80% of your Shopping spend. Fix titles first — biggest impact.
+
+**Session 2:** Identifiers and attributes. Pull a feed export from Merchant Center, sort by missing GTIN/brand/color, fix the obvious gaps.
+
+**Session 3:** Pricing, availability, and images. This is mostly mechanical — find broken images, mismatched prices, stale availability.
+
+The compliance items don't usually need ongoing work — set them up once and audit quarterly.
+
+## Tools that help
+
+- **Merchant Center Diagnostics:** start here for any active issues
+- **Shopify's Google channel:** handles the basics, but limits customization
+- **Feedonomics, GoDataFeed, or DataFeedWatch:** for feed manipulation beyond what Shopify exposes
+- **Sembrance or Adsbot:** for bid-side optimization that depends on a clean feed
+
+For most stores under $50K/month spend, Shopify's native channel plus a supplemental feed for custom titles is enough. Above that, dedicated feed management software pays for itself in recovered impressions.
+
+## What to do this week
+
+Pick the top 25 SKUs by revenue. Audit just their titles. Rewrite the ones that lead with brand instead of product type. Push the new feed. Watch the impression share over the next two weeks. That alone gets you 60% of the lift this checklist offers.
+
+For more, see our [PMax asset group structure guide](/blog/google-pmax-asset-groups-shopify-structure), our take on [search vs PMax cannibalization](/blog/shopify-google-ads-search-vs-pmax-cannibalization), and the [Bing Ads still cheap in 2026](/blog/bing-ads-shopify-still-cheap-2026) post for an under-leveraged channel.

@@ -1,0 +1,162 @@
+---
+title: "Shopify Meta Pixel vs Conversions API in 2026: Full Migration Guide"
+excerpt: "How to migrate Shopify stores from browser-side pixel tracking to Conversions API, including deduplication, EMQ scoring, and which third-party tool to pick."
+date: "2026-05-06"
+updated: "2026-05-06"
+category: "Paid Ads"
+tags: ["Conversions API", "CAPI", "Meta Pixel", "Shopify", "Tracking"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "Do I still need the Meta Pixel if I have Conversions API?"
+    answer: "Yes. Run them in parallel with deduplication. The browser pixel still catches signal that server-side misses (and vice versa). The combination is what gets your event match quality high. Pixel-only is dead, but server-only isn't ready either."
+  - question: "What's a good event match quality score?"
+    answer: "7.0 or higher across your key events. Below 6.0 you're handing Meta noisy signal and ASC+ performance suffers measurably. The biggest score lifts come from sending hashed email, hashed phone, and external_id (Shopify customer ID) on every event."
+  - question: "Will Shopify's native Meta integration be enough?"
+    answer: "For most stores under $50K/month in Meta spend, yes. The native integration sends the core events server-side and handles deduplication. Above $50K/month, you'll want a partner like Elevar or Stape for finer control over event triggers, custom data, and consent management."
+  - question: "How do I check if my Conversions API is actually working?"
+    answer: "In Meta Events Manager, look at each event's connection method. You should see both 'Browser' and 'Server' for purchase, add to cart, and initiate checkout. Click into each event and check the deduplication rate — it should be 70%+. Anything lower means events aren't matching properly."
+  - question: "Does CAPI fix the iOS 14 tracking problem?"
+    answer: "It mitigates it. CAPI sends server-side data Meta can use even when the browser pixel is blocked. But it doesn't fully restore pre-iOS-14 attribution because Meta still has to do probabilistic matching on opted-out users. Expect to recover 30-50% of lost signal, not 100%."
+---
+
+If you're still running Shopify on browser-side pixel only, you're sending Meta a fraction of the signal it expects in 2026. ASC+, advantage audiences, and even basic optimization all lean harder on server-side data than they did three years ago. Stores that haven't migrated to Conversions API are quietly underperforming and blaming creative.
+
+This guide walks through the migration path we use for client stores, including which integration to pick, how to validate it's working, and the mistakes that turn a "complete" CAPI setup into a broken one.
+
+## Why CAPI matters now
+
+A few stats that matter:
+
+- iOS 17+ continues to expand tracking restrictions. Browser pixel signal coverage has dropped to ~60-70% of actual events for most DTC stores.
+- ASC+ specifically penalizes accounts with weak signal. We've measured 15-25% ROAS gaps between accounts with 8.0+ EMQ versus accounts at 5.0.
+- Privacy regulations (GDPR, CCPA, and the new state-level US laws) are easier to comply with via server-side because you control what data is sent and when.
+
+The short version: CAPI isn't a "nice to have" anymore. It's the table-stakes infrastructure for getting decent performance out of Meta in 2026.
+
+## The three setup options
+
+You've got three real paths for Shopify CAPI:
+
+### 1. Shopify's native Meta integration
+
+What it is: Meta channel app inside Shopify, sends server-side events automatically.
+
+Pros: Free, fastest setup (10 minutes), maintained by Shopify and Meta.
+
+Cons: Limited control over which events fire, no custom parameters, basic deduplication only.
+
+Good for: Stores under $50K/month spend, simple product catalogs, owners without technical resources.
+
+### 2. Third-party CAPI partner (Elevar, Stape, Littledata)
+
+What it is: A third-party service that sits between Shopify and Meta, sending hardened server-side events.
+
+Pros: Better deduplication, custom data parameters, consent management, debugging tools, multi-platform (also feeds Google, TikTok, Klaviyo, etc.).
+
+Cons: $40-300/month depending on volume, slightly more setup time.
+
+Good for: Stores over $50K/month spend, brands running multiple ad platforms, teams that need clean attribution data.
+
+### 3. Custom server-side implementation
+
+What it is: Your own server posting events directly to the Meta Conversions API.
+
+Pros: Complete control, no monthly cost beyond infrastructure.
+
+Cons: Engineering time, ongoing maintenance, you own the bugs.
+
+Good for: Almost no one. The third-party partners have solved this problem for less than the cost of an engineer's time.
+
+## What we recommend for most clients
+
+Stores under $50K/month: Shopify native integration plus the standard pixel.
+
+Stores $50K-$500K/month: Elevar or Stape on top of Shopify's integration. We use Elevar most often because the consent management is cleaner.
+
+Stores over $500K/month: Elevar (or equivalent) plus a dedicated analytics engineer or partner who owns the data layer.
+
+## Setup, step by step
+
+We'll walk through Elevar since that's the path 70% of our client base ends up on. The native Shopify integration is mostly self-explanatory — install the Meta channel, connect your pixel, done.
+
+### Step 1: Install Elevar in Shopify
+
+From the Shopify App Store. The trial is free for 14 days which is enough to validate the setup before committing.
+
+### Step 2: Connect your Meta pixel and dataset ID
+
+In Elevar, paste in your Meta pixel ID and the conversions API access token (you'll generate this in Meta Events Manager).
+
+### Step 3: Enable consent management
+
+If you have any EU traffic, you need consent gating. Elevar's consent management mode integrates with the consent banner most Shopify stores already use (or installs one if you don't have one).
+
+### Step 4: Configure events
+
+Default events to enable: Page View, View Content, Add to Cart, Initiate Checkout, Purchase. Skip Add to Wishlist unless you're in fashion or home goods where it matters.
+
+### Step 5: Set up identifiers
+
+This is where most operators leave EMQ on the table. Make sure these fields are being passed on every event:
+
+- Hashed email (em)
+- Hashed phone (ph)
+- External ID (Shopify customer ID, ex)
+- Click ID (fbc)
+- Browser ID (fbp)
+
+In Elevar, all of these are toggles. Enable them all.
+
+### Step 6: Validate deduplication
+
+Browser pixel and CAPI should be sending the same purchase event with the same event_id so Meta knows they're the same purchase. Without this, Meta double-counts and your reported numbers go up while real performance doesn't.
+
+### Step 7: Test with a real purchase
+
+Buy something from your own store. Check Meta Events Manager → Test Events. You should see the purchase event come in twice (once from browser, once from server) with the same event_id.
+
+### Step 8: Check EMQ in 48 hours
+
+After 48 hours of real traffic, go to Events Manager → Data Sources → your pixel → Diagnostics. Each event has an EMQ score. Aim for 7.0+.
+
+## How to fix low EMQ
+
+If you're sitting at 5.0-6.0 EMQ:
+
+- **Add hashed email and phone.** This is usually the biggest lift. Email alone gets most stores to 7+.
+- **Add external_id.** Shopify customer ID, hashed.
+- **Pass click_id (fbc) on every event, not just landing.** Cookie persistence issues hide this. Confirm fbc is in the event payload all the way to purchase.
+- **Validate IP and user agent are passing.** Server-side events need these to match browser events.
+- **Audit deduplication.** Mismatched event_ids tank EMQ even if all the data is there.
+
+## Common mistakes
+
+**Running both browser pixel and CAPI without deduplication.** This double-counts every event. Your ROAS in Ads Manager looks great. Your actual revenue doesn't move. We've fixed this in audits and watched reported ROAS drop 40% — to its actual level.
+
+**Sending PII unhashed.** Meta requires SHA-256 hashed values for email, phone, and identifiers. Sending them in plaintext means Meta drops them. Elevar and the native integration handle this automatically; custom implementations sometimes don't.
+
+**Forgetting consent gating.** EU customers need to consent before you can send their data to Meta. No consent + sending data = GDPR fine waiting to happen. Elevar's consent mode handles this; the native integration's coverage is thinner.
+
+**Not validating after Shopify theme changes.** Theme updates can break event firing. Re-check your CAPI status after every major theme push.
+
+**Treating EMQ 6.0 as "good enough."** It isn't. Every 1-point EMQ improvement is worth measurable ROAS. Push to 8.0+ even if it means another week of debugging.
+
+## What changes after migration
+
+We typically see, in the first 30 days post-migration:
+
+- 15-25% more events captured in Ads Manager
+- 10-20% better ROAS reported (some real improvement, some better attribution)
+- ASC+ stabilization on lower budgets
+- Better audience match for lookalikes (more seeds = better seed quality)
+
+The reported ROAS lift is partly artificial — you're capturing events that always existed but weren't visible before. Your actual revenue won't jump. But Meta now has the signal to optimize correctly, which is where the real performance gain comes from over the following month.
+
+## What to do this week
+
+Audit your Events Manager. If you don't see "Server" as a connection method on your purchase event, you're not on CAPI. Install the Meta channel app today as a baseline. Then evaluate whether you need a third-party partner based on your spend level.
+
+For more on Meta strategy, see our [Advantage+ Shopping playbook](/blog/meta-advantage-plus-shopping-campaign-playbook), [Meta CBO vs ABO guide](/blog/meta-ads-cbo-vs-abo-shopify-2026), and our [first-party data strategy guide](/blog/shopify-first-party-data-strategy-post-cookie).
