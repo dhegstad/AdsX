@@ -22,6 +22,12 @@ const navigation = {
     { name: "Free Audit", href: "/tools/free-audit" },
     { name: "Pricing", href: "/pricing" },
   ],
+  agency: [
+    { name: "Shopify AI Ads Agency", href: "/shopify-ai-ads-agency" },
+    { name: "Shopify Paid Ads Agency", href: "/shopify-paid-ads-agency" },
+    { name: "ChatGPT Ads Agency", href: "/chatgpt-ads-agency" },
+    { name: "DTC AI Ads Agency", href: "/dtc-ai-ads-agency" },
+  ],
   explore: [
     { name: "Glossary", href: "/glossary" },
     { name: "Platforms", href: "/platforms" },
@@ -46,7 +52,7 @@ export function Footer() {
       theme === "dark" ? "border-white/10 bg-black" : "border-neutral-200 bg-white"
     )}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
@@ -99,6 +105,31 @@ export function Footer() {
             )}>Industries</h3>
             <ul className="mt-4 space-y-3">
               {navigation.industries.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "text-sm transition-colors",
+                      theme === "dark"
+                        ? "text-white/40 hover:text-white"
+                        : "text-neutral-500 hover:text-neutral-900"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Agency */}
+          <div>
+            <h3 className={cn(
+              "text-sm font-semibold",
+              theme === "dark" ? "text-white/80" : "text-neutral-700"
+            )}>Agency</h3>
+            <ul className="mt-4 space-y-3">
+              {navigation.agency.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}

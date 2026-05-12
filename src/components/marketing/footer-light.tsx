@@ -2,10 +2,10 @@ import Link from "next/link";
 
 const navigation = {
   services: [
-    { name: "AI Search Strategy", href: "/services" },
-    { name: "ChatGPT Ads", href: "/services" },
-    { name: "Content Optimization", href: "/services" },
-    { name: "Visibility Tracking", href: "/services" },
+    { name: "Shopify AI Ads Agency", href: "/shopify-ai-ads-agency" },
+    { name: "Shopify Paid Ads Agency", href: "/shopify-paid-ads-agency" },
+    { name: "ChatGPT Ads Agency", href: "/chatgpt-ads-agency" },
+    { name: "DTC AI Ads Agency", href: "/dtc-ai-ads-agency" },
   ],
   company: [
     { name: "About", href: "/about" },

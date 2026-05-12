@@ -80,6 +80,31 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },
+      // Agency landing pages (commercial buyer intent)
+      {
+        url: `${baseUrl}/shopify-ai-ads-agency`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.95,
+      },
+      {
+        url: `${baseUrl}/shopify-paid-ads-agency`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.95,
+      },
+      {
+        url: `${baseUrl}/chatgpt-ads-agency`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.95,
+      },
+      {
+        url: `${baseUrl}/dtc-ai-ads-agency`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.95,
+      },
       {
         url: `${baseUrl}/case-studies`,
         lastModified: CORE_PAGES_UPDATED,
