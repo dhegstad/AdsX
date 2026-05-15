@@ -34,9 +34,9 @@ export const curatedLists: CuratedList[] = [
   // Tools Category
   {
     slug: "ai-visibility-tools",
-    title: "Best AI Visibility Tools",
-    headline: "The Best AI Visibility Tools for 2026",
-    description: "Comprehensive guide to the best tools for monitoring and improving your brand's visibility across ChatGPT, Claude, Perplexity, and other AI assistants.",
+    title: "AI Visibility Tool Comparison: 8 Best Tools for ChatGPT, Claude & Perplexity (2026)",
+    headline: "The Best AI Visibility Tool for 2026 (8 Compared)",
+    description: "Which AI visibility tool should you actually use? We compared 8 tools that track brand mentions across ChatGPT, Claude, Perplexity, and Gemini — pricing, platform coverage, and which one fits each use case.",
     intro: "As AI assistants become primary discovery channels, brands need tools to understand and optimize their AI presence. This curated list covers the best tools for monitoring how your brand appears in AI responses, tracking recommendation frequency, and identifying optimization opportunities.",
     methodology: "We evaluated tools based on AI platform coverage, accuracy of visibility tracking, actionability of insights, ease of use, and value for investment. Our team tested each tool across multiple industries and brand sizes to ensure recommendations apply broadly.",
     items: [
@@ -102,7 +102,7 @@ export const curatedLists: CuratedList[] = [
         answer: "SEO tools focus on search engine rankings and traffic. AI visibility tools focus on how AI assistants understand and recommend your brand, which uses different signals and requires different optimization strategies.",
       },
     ],
-    keywords: ["best AI visibility tools", "AI monitoring tools", "ChatGPT visibility tools", "AI optimization software"],
+    keywords: ["ai visibility tool", "best AI visibility tools", "AI monitoring tools", "ChatGPT visibility tools", "AI optimization software", "AI visibility tracking", "LLM monitoring tool"],
     category: "tools",
     lastUpdated: "2026-02-01",
   },
