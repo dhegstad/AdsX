@@ -45,6 +45,27 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
       },
+      // OpenAI's search crawler (powers ChatGPT search citations) — distinct from GPTBot (training)
+      {
+        userAgent: 'OAI-SearchBot',
+        allow: '/',
+        disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
+      },
+      {
+        userAgent: 'Applebot-Extended',
+        allow: '/',
+        disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
+      },
+      {
+        userAgent: 'Amazonbot',
+        allow: '/',
+        disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
+      },
+      {
+        userAgent: 'Meta-ExternalAgent',
+        allow: '/',
+        disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
+      },
     ],
     sitemap: 'https://www.adsx.com/sitemap.xml',
     host: 'https://www.adsx.com',

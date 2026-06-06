@@ -1,0 +1,109 @@
+---
+title: "Shopify Updates April 2026: What Changed for Merchants"
+excerpt: "Shopify's April 2026 updates brought native B2B to Basic/Grow/Advanced plans, Sidekick Pulse, the Scripts sunset, and API 2026-04. Here's what to action."
+date: "2026-06-06"
+category: "Trending"
+tags: ["Shopify", "Shopify updates", "B2B", "Sidekick", "AI commerce", "Shopify Functions", "ecommerce"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+updated: "2026-06-06"
+faqs:
+  - question: "Which Shopify plans got native B2B features in April 2026?"
+    answer: "Shopify extended foundational B2B features to merchants on the Basic, Grow, and Advanced plans at no extra cost. These tools were previously exclusive to Shopify Plus, so for the first time non-Plus merchants can sell wholesale natively without third-party apps."
+  - question: "When do Shopify Scripts stop working?"
+    answer: "As of April 15, 2026 you can no longer create, edit, or publish Shopify Scripts. Scripts stop executing entirely on June 30, 2026. Merchants and developers should migrate any remaining Scripts to Shopify Functions or a public app before that date."
+  - question: "What is Sidekick Pulse?"
+    answer: "Sidekick Pulse is a Sidekick capability that surfaces proactive recommendations from your store data without you having to prompt it. Instead of waiting for a question, Sidekick suggests actions based on what it sees in your shop."
+  - question: "What changed in the Shopify API version 2026-04?"
+    answer: "The 2026-04 GraphQL Admin API added support for multiple product discounts on a single cart line (to ease Scripts migration), app-owned metaobjects that no longer require access scopes, a mandatory @idempotent directive on inventory adjustments and refunds, and discount tags. It launched alongside the Hydrogen April 2026 release."
+---
+
+April 2026 was one of the most consequential months for Shopify merchants in recent memory, and not because of a single splashy launch. It was the month Shopify quietly redrew the line between its "small" and "enterprise" tiers, handing native B2B selling to merchants on Basic, Grow, and Advanced plans for the first time. For the better part of four years, those wholesale tools lived only on Shopify Plus. Now they're table stakes.
+
+At the same time, the platform pushed harder on AI with Sidekick Pulse and natural-language theme editing, drew a hard deadline under the long-running Shopify Scripts deprecation, and shipped the API 2026-04 release that developers have to reckon with. If you run a store, build apps, or manage clients on Shopify, April had at least one update that touches your roadmap. Here's the accurate rundown of what actually shipped and what you should action now.
+
+![A laptop on a desk displaying ecommerce store analytics](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80)
+
+## Native B2B comes to Basic, Grow, and Advanced plans
+
+The headline change: on April 2, 2026, Shopify announced it was bringing foundational B2B features to merchants on the Basic, Grow, and Advanced plans at no extra cost. These capabilities had previously been exclusive to Shopify Plus, refined over nearly four years on that tier before being extended downward.
+
+For non-Plus merchants, that unlocks a genuine set of wholesale tools natively, without bolting on a third-party app:
+
+- **Company profiles** for wholesale buyers, so B2B accounts are modeled differently from retail customers
+- **Up to three custom catalogs** with tailored pricing for different buyer segments
+- **Volume discounts and quantity rules** to handle tiered, bulk-oriented pricing
+- **Vaulted credit cards** so repeat buyers don't re-enter payment details
+- **Payment terms** (net terms) for buyers who don't pay at checkout
+
+Shopify's VP of Product, Samir Pradhan, framed the move around demand merchants are already seeing: "Merchants are telling us wholesale buyers are already asking to purchase their products," adding that bringing these capabilities to more merchants makes it easier "to seize one of their biggest opportunities to grow." Shopify also cited that merchants using these B2B features have reported up to 33% increases in self-serve orders within six months and up to 20% increases in reorder frequency.
+
+The practical takeaway: if you've been paying for a wholesale app or considering a separate B2B storefront, re-evaluate. The native path is now available a couple of plan tiers down from Plus. If you're weighing whether to launch on the platform at all, you can [start a free Shopify trial](https://shopify.pxf.io/c/6318547/3797171/13624) and test the B2B tooling before committing.
+
+## Sidekick Pulse and natural-language theme editing
+
+Shopify's AI assistant, Sidekick, got two meaningful upgrades in April. The first is **Sidekick Pulse**, which surfaces proactive recommendations pulled from your store data without you having to ask. The shift is subtle but important: instead of being a chat box you query, Sidekick now nudges you toward actions based on what it observes in your shop.
+
+The second is **natural-language theme editing**. In the theme editor, you can click on an element and tell Sidekick something like "make this button rounded" or "add more padding here," and it adjusts the underlying theme settings directly. It's best suited to simple styling tweaks like colors, spacing, and font sizes rather than deep structural changes, and it's aimed squarely at non-technical merchants who'd otherwise be hunting through settings panels.
+
+These build on the broader AI push Shopify has been running across its 2026 Editions. If you want the wider context on where the platform is heading, our breakdown of the [Shopify Editions 2026 new features](/blog/shopify-editions-2026-new-features) and the [Summer '26 Edition Horizons](/blog/shopify-summer-26-edition-horizons) covers the arc. And if AI commerce surfaces are on your radar, see how stores are becoming [discoverable through agentic storefronts and ChatGPT](/blog/shopify-agentic-storefronts-chatgpt-discoverable-2026).
+
+## The Shopify Scripts sunset is now real
+
+April is when the long-telegraphed end of Shopify Scripts went from "someday" to "this quarter." The deprecation timeline hardened into firm dates:
+
+- **April 15, 2026** — you can no longer create, edit, or publish Scripts
+- **June 30, 2026** — Scripts stop executing entirely
+
+If you still run any checkout, shipping, or payment customization on Scripts, you're now in the migration window with a hard cliff at the end of June. The supported path forward is **Shopify Functions** (or a public app that uses them). To make that migration smoother, the new API release added support for multiple product discounts on a single cart line, which was previously a gap that made some Scripts logic hard to reproduce in Functions.
+
+Don't let this one slip. After June 30, anything still running on Scripts simply stops working, with no grace period implied in the announcement.
+
+## API 2026-04 and the developer changes that matter
+
+The 2026-04 GraphQL Admin API release landed in April alongside the Hydrogen April 2026 release. The changes that warrant attention:
+
+- **Multiple product discounts per cart line** — directly supports the Scripts-to-Functions migration described above
+- **App-owned metaobjects without access scopes** — apps can use their own metaobjects in 2026-04+ without requiring extra scopes
+- **Mandatory `@idempotent` directive** on inventory adjustments and refunds, to make those operations safe to retry
+- **Discount tags** for organizing promotions
+
+On the storefront side, the **Hydrogen April 2026 release** updated to Storefront API 2026-04, made the Storefront API proxy mandatory, and moved to a backend consent mode (replacing the older `_tracking_consent` cookie pattern). Apps and Hydrogen storefronts not already using the proxy need to update their request pattern.
+
+Two more developer-facing items: a new UI extension testing library (`@shopify/ui-extensions-tester`) lets you write unit tests across Checkout, Admin, Customer Accounts, and POS surfaces without a running Shopify host, and a new CSS variable, `--shopify-safe-area-inset-bottom`, prevents content from overlapping Shopify Mobile's bottom bar (live April 15).
+
+## Analytics, POS, and Capital
+
+A few merchant-facing operational updates rounded out the month:
+
+- **Analytics targets** — merchants can now define numerical targets for analytics metrics and track progress against them via a visual gauge, pin targets to the dashboard, and manage them from a dedicated index page. Expanded insights also added Sessions and Fulfillments metrics for merchants with sufficient order volume.
+- **POS returns in the cart** — returns, refunds, and exchanges now happen inside the cart in Shopify POS rather than through a separate workflow, giving staff one consolidated path and less screen-switching.
+- **Shopify Capital remittance via Shopify Payments** — Shopify rolled out Capital remittance through Shopify Payments to eligible merchants across the entire United States, so repayment happens directly through Shopify Payments.
+
+## April 2026 updates at a glance
+
+| Update | What it does | Who it's for | Action needed |
+|---|---|---|---|
+| Native B2B on Basic/Grow/Advanced | Company profiles, catalogs, volume pricing, payment terms, vaulted cards | Non-Plus merchants | Re-evaluate wholesale apps |
+| Sidekick Pulse | Proactive, unprompted recommendations from store data | All plans | Review suggestions |
+| Natural-language theme editing | Edit theme settings via plain-language prompts | Non-technical merchants | Optional, try it |
+| Scripts sunset | No edits after Apr 15; stops running Jun 30 | Anyone using Scripts | Migrate to Functions now |
+| API 2026-04 | Multi-discount cart lines, @idempotent, discount tags, app-owned metaobjects | Developers | Update apps |
+| Hydrogen April 2026 | Storefront API 2026-04, mandatory proxy, backend consent | Headless/Hydrogen devs | Update request pattern |
+| Analytics targets | Numeric goals with visual gauge | All merchants | Set targets |
+| POS returns in cart | Unified return/refund/exchange flow | Retail merchants | None |
+| Capital via Shopify Payments | US-wide remittance through Shopify Payments | Eligible US merchants | None |
+
+## What this means for AI search and discoverability
+
+The Sidekick Pulse and agentic-commerce direction matters beyond convenience. As AI assistants increasingly mediate how shoppers find products, merchants need to think about whether their catalog and content are surfaceable by these systems, not just by Google. If you're tracking that shift, our [AI search monthly update for March 2026](/blog/ai-search-monthly-update-march-2026) and our guide to [building a Shopify store with AI](/blog/build-shopify-store-with-ai) are useful companions.
+
+Worth a quick gut check: do you actually show up when an AI assistant answers a buying question in your category? [Run a free AI visibility audit](/tools/free-audit) to see where you stand.
+
+## The Bottom Line
+
+April 2026's most important Shopify change isn't an AI feature, it's the democratization of B2B. Wholesale selling on Basic, Grow, and Advanced plans removes a real cost and complexity barrier for merchants who've been turning away wholesale demand or paying for workarounds. Pair that with Sidekick Pulse's proactive recommendations and you have a platform pushing both upmarket capability and AI assistance to its broad base.
+
+But the most time-sensitive item is the Scripts sunset. Edits stopped on April 15 and execution ends June 30, so any store still relying on Scripts needs a Functions migration on the calendar now, not in Q3. Developers should also plan for API 2026-04 and the mandatory Hydrogen Storefront API proxy. Action the migrations, explore the new B2B tools, and let Sidekick start earning its keep.
