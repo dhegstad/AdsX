@@ -120,6 +120,7 @@ export default function RootLayout({
       <head>
         <Analytics />
         <ThemeScript />
+        <meta name="google-adsense-account" content="ca-pub-4637978439012917" />
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4637978439012917"
