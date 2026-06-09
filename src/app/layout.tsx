@@ -10,6 +10,7 @@ import {
   SchemaScript,
 } from "@/lib/seo/schemas";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -119,6 +120,12 @@ export default function RootLayout({
       <head>
         <Analytics />
         <ThemeScript />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4637978439012917"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <SchemaScript schema={createOrganizationSchema()} />
         <SchemaScript schema={createWebsiteSchema()} />
       </head>
