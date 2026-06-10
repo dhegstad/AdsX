@@ -118,6 +118,12 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },
+      {
+        url: `${baseUrl}/tools/roas-calculator`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+      },
       // Pillar guides
       {
         url: `${baseUrl}/guides/shopify-ai-advertising`,
