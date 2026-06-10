@@ -1,0 +1,255 @@
+---
+title: "tROAS vs Maximize Conversions: When to Switch (Shopify)"
+excerpt: "tROAS vs Maximize Conversions: the exact conversion threshold, how to set your first tROAS target, and which strategy scales Shopify stores profitably."
+date: "2026-06-10"
+category: "Comparison"
+tags: ["Google Ads", "Smart Bidding", "tROAS", "Bid Strategy", "Media Buying"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "What is the difference between tROAS and Maximize Conversions?"
+    answer: "Maximize Conversions tells Google to spend your full budget and get as many conversions as possible, without caring about the revenue each conversion generates. tROAS (Target ROAS) tells Google to maximize conversion value while hitting a specific return on ad spend target. Use Maximize Conversions when you are still building volume or have no ROAS constraint; switch to tROAS once you have 30+ conversions per month and a clear profitability target."
+  - question: "How many conversions do you need before switching to tROAS?"
+    answer: "Google's official recommendation is at least 50 conversions in the past 30 days at the campaign level before enabling tROAS. In practice, most Shopify stores see stable performance when they have 30-50 monthly conversions before switching. Below that threshold, the algorithm has too little signal to accurately predict conversion value, which causes erratic bidding and wasted spend. Start with Maximize Conversion Value (no target) and add the ROAS constraint once volume is consistent."
+  - question: "What happens if you set your tROAS too high?"
+    answer: "Setting tROAS too high causes Google to bid conservatively, restrict impressions to only the highest-predicted-value queries, and ultimately underspend your budget. Campaigns can enter a low-volume loop where reduced data makes the algorithm even less confident, which tightens bids further. A good rule: start with a tROAS target 20-30% below your historical actual ROAS, then raise it by 10-15% increments every two weeks if performance holds."
+  - question: "Can you use tROAS with Google Performance Max?"
+    answer: "Yes. Performance Max supports both Maximize Conversion Value (without a target) and Maximize Conversion Value with a tROAS. The same volume thresholds apply — PMax needs sufficient conversion history to use tROAS effectively. Many Shopify advertisers run PMax on Maximize Conversion Value during ramp-up, then layer in a tROAS target once the campaign has 50+ conversions in a 30-day window."
+  - question: "Is Maximize Conversion Value the same as tROAS?"
+    answer: "Not exactly. Maximize Conversion Value is a bidding objective that tells Google to get the highest total value from your budget with no return constraint. tROAS is Maximize Conversion Value with an added efficiency constraint — you are asking Google to maximize value while hitting a specific ROAS floor. Think of Maximize Conversion Value as the unconstrained version and tROAS as the profit-gated version of the same core objective."
+  - question: "When should a Shopify store switch from Maximize Conversions to tROAS?"
+    answer: "Switch when three conditions are true: you have 30-50+ conversions per month, you have a defined profitability target tied to your margin, and your campaigns have exited the learning phase. If any of these are missing — low volume, no ROAS target, or still in learning — stay on Maximize Conversions or Maximize Conversion Value. Switching too early is one of the most common Smart Bidding mistakes DTC brands make."
+---
+
+The choice between tROAS and Maximize Conversions is not a preference — it is a data question. If your campaign has the conversion volume to support a value constraint, tROAS gives you efficiency at scale. If it does not, tROAS will strangle your spend and inflate your CPA. The correct strategy depends on where your account sits right now, not where you want it to be.
+
+![Google Ads Smart Bidding strategy dashboard showing bid strategy options](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## tROAS vs Maximize Conversions: The Core Difference
+
+Both strategies live under the same Smart Bidding umbrella, and both use Google's machine learning to set bids in real time. The fundamental difference is the constraint you attach:
+
+**Maximize Conversions** — spend the full budget, maximize the number of conversion events, ignore what each conversion is worth.
+
+**Maximize Conversion Value** — spend the full budget, maximize the total revenue value generated, still no efficiency floor.
+
+**tROAS (Target ROAS)** — maximize conversion value while maintaining a specified return on ad spend. If Google cannot find opportunities at or above your target, it reduces bids or does not enter the auction.
+
+The practical implication: Maximize Conversions will always spend your budget. tROAS may significantly underspend if market conditions or your target do not align.
+
+### Where Maximize Conversion Value Fits In
+
+A common source of confusion is the three-way split between "Maximize Conversions," "Maximize Conversion Value," and "tROAS." Google's UI has evolved these labels over time, and many advertisers conflate them.
+
+| Strategy | Conversion Signal | Value Signal | Efficiency Constraint |
+|---|---|---|---|
+| Maximize Conversions | Count of events | No | None — spend budget |
+| Maximize Conversion Value | Revenue value | Yes | None — spend budget |
+| tROAS | Revenue value | Yes | ROAS floor required |
+| tCPA (Target CPA) | Count of events | No | CPA ceiling required |
+
+For Shopify stores sending purchase events with revenue values, the relevant comparison is **Maximize Conversion Value vs tROAS**. Both use revenue as the optimization signal; only tROAS adds an efficiency gate.
+
+---
+
+## When to Use Maximize Conversion Value (No Target)
+
+Maximize Conversion Value without a ROAS target is the right starting point for most Shopify campaigns. Use it when:
+
+- **You have fewer than 30 conversions per month.** The algorithm needs volume to model value accurately. Thin data plus a strict ROAS target equals erratic bidding.
+- **You are launching a new campaign or entering a new market.** The first 30-60 days are about building the conversion history that makes tROAS viable.
+- **Your conversion values are highly variable.** If your AOV swings between $30 and $800 depending on the product mix, tROAS can become unpredictable. Stabilize your value signal first.
+- **You are running a time-sensitive promotion.** During BFCM or a flash sale, removing the ROAS constraint lets Google spend aggressively while conversion rates are elevated.
+
+The risk with unconstrained Maximize Conversion Value: Google will find conversions, but it will not optimize for efficiency. You may get great volume at a 1.5x ROAS when your breakeven is 2.5x. That is why this mode is a ramp, not a destination.
+
+---
+
+## When to Switch to tROAS
+
+tROAS is the right choice when you have enough data for the algorithm to be reliable and a clear profitability target that needs enforcing. The switch criteria, in order of priority:
+
+### Conversion Volume Threshold
+
+Google's internal documentation recommends 50 conversions in the past 30 days at the campaign level. The real-world floor most Shopify accounts need is **30 purchase conversions per month** before tROAS produces stable results. Below 30, the algorithm lacks sufficient signal to predict conversion value accurately, which causes over-bidding on low-value queries and under-bidding on high-value ones.
+
+If you are running Performance Max, the same 30-50 threshold applies per asset group group of products — which is why splitting PMax too granularly early on can trap every individual campaign below the viability floor.
+
+### A Defined ROAS Target
+
+You need a target derived from your margin structure, not guessed from a competitor benchmark. The formula:
+
+```
+Breakeven ROAS = 1 / Gross Margin Percentage
+Target ROAS = 1 / (Gross Margin % - Desired Net Margin %)
+```
+
+**Worked example:**
+- Gross margin: 55%
+- Desired net margin after ad spend: 20%
+- Target ROAS = 1 / (0.55 - 0.20) = 1 / 0.35 = **2.86x**
+
+Set your tROAS to 2.86x and Google will only pursue conversion opportunities it predicts will return $2.86 or more per $1 spent. See our [target ROAS formula guide](/blog/target-roas-from-profit-margin-formula) for the full margin-to-target walkthrough.
+
+### Campaign Has Exited the Learning Phase
+
+Google's learning phase lasts approximately 7 days or until 50 conversions are recorded, whichever comes first. Switching bid strategies mid-learning resets the clock. Always wait for a stable "eligible" status in the bid strategy column before layering in a tROAS constraint.
+
+---
+
+## The tROAS Target-Setting Formula: Start Conservative
+
+One of the most common mistakes Shopify advertisers make when switching to tROAS is setting the target at their desired ROAS instead of their historical ROAS. The algorithm interprets a very high target as "be extremely selective" — which translates to dramatically reduced impressions and spend.
+
+**Recommended starting approach:**
+
+1. Calculate your last 30-day actual ROAS from the campaign you are switching.
+2. Set your initial tROAS at 20-30% below that actual figure.
+3. Monitor for 7-14 days. If volume is stable and actual ROAS is at or above target, increase by 10-15%.
+4. Repeat in two-week increments until you reach your profitability target.
+
+**Worked example:**
+
+| Week | Actual ROAS (last 30d) | tROAS Target Set | Result |
+|---|---|---|---|
+| Baseline | 3.8x | — (Maximize Conv. Value) | 140 conversions |
+| Week 1-2 | 3.8x | 3.0x (start conservative) | 128 conversions |
+| Week 3-4 | 3.6x | 3.3x (+10%) | 118 conversions |
+| Week 5-6 | 3.5x | 3.5x (+6%) | 107 conversions |
+| Week 7-8 | 3.7x | 3.8x (+8%) | 102 conversions — profitable floor hit |
+
+Conversion volume declines slightly as tROAS tightens — this is expected and acceptable if margin improves. The goal is not maximum conversions; it is maximum profitable conversions.
+
+---
+
+## Smart Bidding Strategy Selection Framework
+
+Use this decision tree to identify the right strategy for your current state:
+
+| Condition | Recommended Strategy |
+|---|---|
+| Under 30 conversions/month | Maximize Conversions (focus on volume) |
+| 30-50 conversions/month, no ROAS target | Maximize Conversion Value (no target) |
+| 30-50 conversions/month, clear ROAS target | Start tROAS at actual ROAS minus 25% |
+| 50+ conversions/month, scaling | tROAS at profitability target |
+| Time-sensitive sale (BFCM, flash) | Temporarily remove tROAS constraint |
+| New campaign launch | Maximize Conversions for 30+ days first |
+| PMax under 50 conversions/asset group | Maximize Conversion Value until threshold |
+
+---
+
+## tROAS in Practice: Shopify Account Structures
+
+How you structure your campaigns affects whether tROAS is viable at the campaign level. Common structures and their implications:
+
+### Single Campaign, All Products
+
+If your Shopify catalog is in one campaign, you may hit the conversion volume threshold quickly. tROAS is viable earlier. The tradeoff: Google optimizes across all products, which often means high-selling SKUs dominate spend and low-volume products get starved.
+
+### Segmented by Product Category
+
+Splitting campaigns by category (apparel, accessories, home goods) is common for mid-size Shopify stores. Each campaign needs its own 30-conversion threshold before enabling tROAS. If your accessories campaign drives 80 conversions per month but your home goods campaign drives only 15, use tROAS on accessories and keep Maximize Conversion Value on home goods.
+
+### Performance Max with Standard Shopping
+
+If you run both PMax and Standard Shopping, note that bid strategy interactions between the two can be significant. PMax generally takes priority in the auction. See our guide on [Google Search vs PMax cannibalization](/blog/shopify-google-ads-search-vs-pmax-cannibalization) for how to structure them cleanly. On the bidding side: set tROAS consistently on both, or allow PMax to run Maximize Conversion Value while Standard Shopping holds the efficiency floor with tROAS.
+
+---
+
+## Common tROAS Mistakes Shopify Brands Make
+
+### Setting tROAS Too High Too Fast
+
+The most frequent error. You see a 4.5x actual ROAS and immediately set tROAS to 5.0x "because you want to be profitable." Google responds by pulling back impressions dramatically. Conversion volume drops 40-60% within a week, and now you have a thin-signal campaign that is even harder to stabilize.
+
+### Changing tROAS Too Frequently
+
+Each adjustment triggers a mini learning period. Brands that tweak tROAS every 3-4 days based on short windows of data never allow the algorithm to stabilize. Make adjustments no more than once per two weeks, and only after reviewing at least 14 days of data.
+
+### Ignoring Conversion Value Accuracy
+
+tROAS is only as good as the revenue values being passed to Google. If your Shopify purchase event is passing $0, incorrectly deduplicating, or only tracking a subset of orders, the algorithm is optimizing toward a distorted signal. Audit your conversion tracking in GA4 and Google Ads before enabling tROAS. Our [Shopify Google Ads setup guide](/blog/shopify-google-ads-guide) covers conversion tracking configuration in detail.
+
+### Running tROAS on Brand Campaigns
+
+Brand search campaigns already convert at high rates and low CPCs. Adding a tROAS constraint to brand traffic often restricts budget on your highest-intent queries. Most accounts benefit from keeping brand campaigns on Maximize Conversions or a moderate tCPA and reserving tROAS for non-brand and Shopping campaigns.
+
+---
+
+## Maximize Conversions vs tROAS: The Budget Question
+
+A factor that rarely gets mentioned: budget sufficiency relative to your tROAS target.
+
+If your daily budget is $100 and your tROAS target is 4.0x, Google needs to find at least $400 in revenue opportunities per day at that efficiency. In competitive niches with moderate search volume, this constraint may be impossible to satisfy — so Google will underspend.
+
+A practical check: take your daily budget, multiply by your tROAS target, and ask whether your category realistically generates that revenue per day from Google Ads. If not, either increase the budget or lower the tROAS target first.
+
+**Budget viability check:**
+```
+Required Daily Revenue = Daily Budget x tROAS Target
+$150 budget x 4.0x tROAS = $600 required daily revenue from ads
+```
+
+If your category and historical data support $600/day in ad-attributed revenue at that efficiency, tROAS is viable. If historical revenue has been $200-300/day, your tROAS target is too aggressive for the budget.
+
+---
+
+## Switching from tROAS Back to Maximize Conversion Value
+
+Sometimes you need to go the other direction — loosening the constraint. Do this when:
+
+- Actual ROAS has been consistently above target for 30+ days (you have headroom to scale)
+- You are entering a seasonal peak and want to capture volume without an efficiency ceiling
+- A major competitor exits the auction or you have a significant sale event
+
+When removing a tROAS constraint, expect conversion volume to increase and average ROAS to decline. Have a clear plan for when you will re-add the constraint — typically after the peak window closes or after 30 days of new volume data is established.
+
+For a full picture of how these strategies interact with your attribution model and blended ROAS reporting, see our guide on [Shopify attribution models](/blog/shopify-attribution-models-explained) and [ROAS benchmarks by industry](/blog/shopify-roas-benchmarks-by-industry).
+
+---
+
+## tROAS vs Maximize Conversions: Quick Reference Summary
+
+| Factor | Maximize Conversions | tROAS |
+|---|---|---|
+| Conversion volume needed | Any (lower threshold) | 30-50+ per month |
+| Budget utilization | Spends full budget | May underspend if target too aggressive |
+| Primary optimization goal | Conversion count | Conversion value at target efficiency |
+| Best for | New campaigns, ramp-up, sales events | Established campaigns with profit targets |
+| Risk if misused | Low ROAS, unprofitable spend | Underspend, volume collapse |
+| Learning phase impact | Shorter | Longer; disrupted by frequent target changes |
+
+---
+
+## Conclusion
+
+The tROAS vs Maximize Conversions decision is not about which strategy is "better" — it is about which strategy matches your current account state. Most Shopify brands should start on Maximize Conversions or Maximize Conversion Value to build data, then migrate to tROAS once conversion volume crosses 30-50 per month and profitability targets are clearly defined.
+
+When you do switch, start your tROAS target 20-30% below your historical actual ROAS and raise it slowly. Aggressive targets kill volume before the algorithm can learn, and that is a hole that takes months to climb out of. Patience in the first 60 days of tROAS activation pays dividends at scale.
+
+If you are running [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) and want a faster path to profitable Google Ads, the right bid strategy is only one piece. Your conversion tracking accuracy, campaign structure, and creative quality all determine whether Smart Bidding has the signal it needs to work.
+
+---
+
+## Frequently Asked Questions
+
+**What is the difference between tROAS and Maximize Conversions?**
+Maximize Conversions tells Google to spend your full budget and get as many conversions as possible, without caring about the revenue each conversion generates. tROAS (Target ROAS) tells Google to maximize conversion value while hitting a specific return on ad spend target. Use Maximize Conversions when you are still building volume or have no ROAS constraint; switch to tROAS once you have 30+ conversions per month and a clear profitability target.
+
+**How many conversions do you need before switching to tROAS?**
+Google's official recommendation is at least 50 conversions in the past 30 days at the campaign level before enabling tROAS. In practice, most Shopify stores see stable performance when they have 30-50 monthly conversions before switching. Below that threshold, the algorithm has too little signal to accurately predict conversion value, which causes erratic bidding and wasted spend. Start with Maximize Conversion Value (no target) and add the ROAS constraint once volume is consistent.
+
+**What happens if you set your tROAS too high?**
+Setting tROAS too high causes Google to bid conservatively, restrict impressions to only the highest-predicted-value queries, and ultimately underspend your budget. Campaigns can enter a low-volume loop where reduced data makes the algorithm even less confident, which tightens bids further. A good rule: start with a tROAS target 20-30% below your historical actual ROAS, then raise it by 10-15% increments every two weeks if performance holds.
+
+**Can you use tROAS with Google Performance Max?**
+Yes. Performance Max supports both Maximize Conversion Value (without a target) and Maximize Conversion Value with a tROAS. The same volume thresholds apply — PMax needs sufficient conversion history to use tROAS effectively. Many Shopify advertisers run PMax on Maximize Conversion Value during ramp-up, then layer in a tROAS target once the campaign has 50+ conversions in a 30-day window.
+
+**Is Maximize Conversion Value the same as tROAS?**
+Not exactly. Maximize Conversion Value is a bidding objective that tells Google to get the highest total value from your budget with no return constraint. tROAS is Maximize Conversion Value with an added efficiency constraint — you are asking Google to maximize value while hitting a specific ROAS floor. Think of Maximize Conversion Value as the unconstrained version and tROAS as the profit-gated version of the same core objective.
+
+**When should a Shopify store switch from Maximize Conversions to tROAS?**
+Switch when three conditions are true: you have 30-50+ conversions per month, you have a defined profitability target tied to your margin, and your campaigns have exited the learning phase. If any of these are missing — low volume, no ROAS target, or still in learning — stay on Maximize Conversions or Maximize Conversion Value. Switching too early is one of the most common Smart Bidding mistakes DTC brands make.

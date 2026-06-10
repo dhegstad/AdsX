@@ -1,0 +1,190 @@
+---
+title: "PMax tROAS Target Formula: Fix Delivery in 2 Weeks"
+excerpt: "Setting your PMax tROAS target too high kills delivery. Learn the exact formula, benchmarks, and step-up schedule to hit ROAS goals without strangling spend."
+date: "2026-06-10"
+category: "Paid Ads"
+tags: ["Google Ads", "Performance Max", "tROAS", "Bid Strategy", "Shopify"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "What is the right tROAS target to set for PMax?"
+    answer: "Start your PMax tROAS target at 20-30% below your historical actual ROAS. If your campaign has been delivering a 4.0 ROAS, set your initial tROAS at 2.8-3.2. This gives the algorithm room to explore while still enforcing an efficiency floor. Raise the target in 10-15% increments every two weeks only if impression share, spend, and conversion value all hold or improve."
+  - question: "Why is my PMax not spending with a tROAS target set?"
+    answer: "PMax refuses to spend when it cannot find inventory that meets your tROAS constraint. The most common causes are: the tROAS target is set above historical actual ROAS, the campaign has fewer than 30-50 conversions in the past 30 days (not enough signal), the budget ceiling is too low relative to the target, or asset quality is poor enough that Google cannot serve competitive placements. Lower the tROAS target by 20-30% and check conversion volume first."
+  - question: "Should I set a tROAS on PMax or use Maximize Conversion Value?"
+    answer: "Use Maximize Conversion Value (no tROAS) for the first 30-60 days or until you have 50 conversions in a 30-day window. Adding a tROAS constraint before you have sufficient signal gives the algorithm a constraint it cannot reliably satisfy, which causes underdelivery. Once you have volume and a stable actual ROAS baseline, introduce the target at 20-30% below that baseline."
+  - question: "How often should I adjust my PMax tROAS target?"
+    answer: "No more than once every two weeks. Google's bidding model needs 5-7 days to re-stabilize after any target change, and it typically takes 10-14 days to see meaningful data on the new target. Adjusting more frequently keeps the campaign in a perpetual semi-learning state. Set a calendar reminder and evaluate impression share, conversion value, and actual ROAS before any move."
+  - question: "What happens if I set my tROAS target too high in Performance Max?"
+    answer: "Google restricts bidding to only the inventory it predicts will hit your ROAS floor. This narrows impressions sharply, reduces clicks, and often causes the campaign to underspend. In some cases it creates a negative feedback loop: less data makes the algorithm less confident, which tightens bids further, which generates less data. The symptom is a campaign with a budget that is never fully spent but an actual ROAS that looks deceptively good on low volume."
+  - question: "Can I use different tROAS targets for different asset groups in PMax?"
+    answer: "No. tROAS is a campaign-level bid strategy in Performance Max — it applies to the entire campaign, not individual asset groups. If you need materially different ROAS floors for different product lines (for example, a 2.0 floor for a low-margin commodity product and a 5.0 floor for a high-margin hero SKU), you should separate those into different PMax campaigns each with their own tROAS target."
+---
+
+Your PMax tROAS target is probably wrong — and not because the number itself is unreasonable, but because it was set relative to a goal rather than your historical data. The fix is mechanical: anchor the target to your actual ROAS baseline, give the algorithm room to operate, and step up in controlled increments.
+
+![Performance Max campaign dashboard with bidding strategy settings](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## How PMax tROAS Targets Actually Work
+
+Performance Max uses a single bid strategy at the campaign level: Maximize Conversion Value. When you add a tROAS target, you are adding a constraint to that objective. Google's algorithm will try to maximize total conversion value from your budget but will refuse bids on inventory it predicts will not meet your ROAS floor.
+
+The critical distinction: Google bids on predicted ROAS, not actual ROAS. It uses historical conversion value data from your account, your asset quality, audience signals, and real-time auction signals to estimate whether a given impression will generate enough revenue to meet your target. When your target is set above what the algorithm can reliably predict, it simply does not bid — and your campaign underspends.
+
+This is why the complaint "PMax not spending, target ROAS set too high" is one of the most common PMax issues Shopify advertisers hit. The campaign looks healthy in the interface (no errors, budget showing available), but impression share is 20-40% of what it was before the target was added.
+
+### The Prediction Gap Problem
+
+There is always a gap between your actual ROAS and what the algorithm can consistently predict at auction time. Google's own internal research suggests that predicted ROAS at the impression level has meaningful variance — individual auctions can swing substantially above or below your historical average. When your target sits at or above your historical actual ROAS, a large percentage of otherwise winnable impressions fall below the predicted floor and get skipped.
+
+The practical result: a tROAS of 4.0 on a campaign that has historically delivered 4.0 ROAS will underdeliver. You need to target below your actual ROAS to leave room for auction-level variance.
+
+## The Right Formula for Setting Your Initial tROAS
+
+Before setting any target, you need two numbers: your 30-day actual ROAS and your break-even ROAS. Your tROAS target must live between these two values.
+
+**Break-even ROAS formula:**
+
+```
+Break-Even ROAS = 1 / Gross Margin
+```
+
+If your gross margin (after COGS, before ad spend) is 50%, your break-even ROAS is 2.0. If it is 40%, break-even is 2.5. This is the floor — anything below this and you are spending ad dollars to lose money on each sale.
+
+**Initial tROAS target formula:**
+
+```
+Initial tROAS = Actual 30-Day ROAS x 0.75
+```
+
+Set your starting target at 75% of your historical actual ROAS, as long as that number stays above your break-even ROAS.
+
+### Worked Example
+
+A Shopify apparel brand has the following data:
+
+- 30-day actual ROAS: 5.2
+- Gross margin: 55% (break-even ROAS = 1.82)
+- Monthly conversions: 74
+
+Initial tROAS target calculation:
+
+```
+5.2 x 0.75 = 3.9
+```
+
+Is 3.9 above the break-even ROAS of 1.82? Yes. So the correct starting tROAS is **3.9**, not 5.0, not 5.2.
+
+If the same brand set a tROAS of 5.5 (above historical actual), the campaign would almost certainly underspend. At 5.0 (matching historical), it would likely underspend by 30-40%.
+
+## Step-Up Schedule: Raising tROAS Without Stalling Delivery
+
+Once your campaign has been running for two weeks at the initial target and you have confirmed it is spending its full daily budget, you can begin stepping up. The rule is incremental and time-gated.
+
+| Week | Action | Maximum Increase |
+|------|--------|-----------------|
+| 1-2 | Set initial target at 75% of actual ROAS | Baseline |
+| 3-4 | Evaluate spend rate and actual ROAS. If budget is fully spent and actual ROAS is at or above target, increase by 10%. | +10% of current target |
+| 5-6 | Repeat evaluation. If still fully spending, increase by another 10%. | +10% |
+| 7-8 | Continue if performance holds. | +10% |
+| 9+ | Slow increments to 5% per two-week period as you approach your actual ROAS ceiling. | +5% |
+
+Following the apparel example above: starting target of 3.9 steps up to 4.3 after two weeks (if spend holds), then 4.7, then 5.1 — approaching the historical actual ROAS of 5.2 over 6-8 weeks rather than in one jump.
+
+The two-week minimum between adjustments is non-negotiable. Google's algorithm needs 5-7 days to stabilize after any change, and you need at least 7 more days of data to evaluate whether performance is genuinely stable or just showing short-run variance.
+
+## Diagnosing PMax Not Spending at Your tROAS Target
+
+If your PMax campaign is underdelivering with a tROAS set, work through this checklist in order:
+
+### 1. Check Conversion Volume
+
+Pull the last 30 days of conversion data at the campaign level. If you have fewer than 30 conversions, the algorithm does not have enough signal to use tROAS effectively. The solution is not to lower the target — it is to remove the target entirely, run on Maximize Conversion Value, and reintroduce tROAS once volume exceeds 30-50 conversions per month.
+
+See our guide on [PMax vs Standard Shopping](/blog/google-pmax-vs-standard-shopping-2026) for when to use each format during ramp-up. For the full tROAS vs. Maximize Conversion Value decision framework, see [tROAS vs. Maximize Conversions for Shopify](/blog/google-ads-troas-vs-maximize-conversions-shopify).
+
+### 2. Compare tROAS Target to Actual ROAS
+
+Pull your campaign's actual ROAS for the 30 days before you added the tROAS target. If your target is above that number, you are asking the algorithm to do something it has not historically been able to do. Lower the target to 75% of that baseline.
+
+### 3. Check Budget vs. tROAS Interaction
+
+A tROAS that would require a very high CPC to achieve while staying within a low daily budget is contradictory. If your daily budget is $50 and your tROAS target requires average order value of $150 at a 4.0 ROAS, that implies a max CPA of roughly $37.50 — which may be below the actual CPC the algorithm needs to win auctions. Raise the budget or lower the tROAS target.
+
+### 4. Evaluate Asset Quality
+
+Google's auction eligibility is partly based on asset quality. Low-quality headlines, generic descriptions, and poor product images reduce the algorithm's ability to serve competitive placements — which means fewer predicted-high-ROAS impressions are available to bid on. Check asset group ratings in the PMax overview and prioritize improving any groups marked "Low" or "Poor."
+
+See [Google PMax Asset Groups for Shopify](/blog/google-pmax-asset-groups-shopify-structure) for the structure that supports healthy auction eligibility.
+
+### 5. Check Seasonal or Category Demand
+
+If demand in your category has dropped (seasonality, economic conditions, SERP changes), there may simply be fewer auctions where your products appear, regardless of tROAS setting. Compare impression share and auction insight data against the prior 30-day period to rule this out before assuming the tROAS target is the problem.
+
+## Common tROAS Mistakes on PMax (And What They Cost You)
+
+| Mistake | Typical Impact | Fix |
+|---------|---------------|-----|
+| Setting tROAS above historical actual ROAS | 40-70% budget not spent | Reset to 75% of actual ROAS |
+| Adding tROAS before 30 conversions/month | Erratic delivery, inflated apparent ROAS on tiny volume | Remove target, build volume first |
+| Adjusting tROAS more than once every 2 weeks | Campaign never exits semi-learning state | Enforce two-week minimum between changes |
+| Using one tROAS for products with different margins | Low-margin products crowd out high-margin SKUs | Separate campaigns by margin band |
+| Matching tROAS exactly to break-even ROAS | Any auction variance causes a loss | Keep target at least 0.5 above break-even |
+
+## PMax tROAS and Brand Term Cannibalization
+
+One underappreciated dynamic: when your tROAS target is set conservatively, PMax often shifts spend toward brand and retargeting traffic because these segments have higher predicted ROAS. The algorithm is doing exactly what you asked — finding high-ROAS inventory — but it is doing it by harvesting existing intent rather than generating new demand.
+
+This means a technically successful tROAS campaign (fully spending, hitting target) may be producing misleading performance data. The actual ROAS is high because you are paying to capture people who would have bought anyway.
+
+If you see PMax hitting tROAS targets comfortably but new customer acquisition numbers are flat or declining, this is likely the cause. Solutions include raising the tROAS target slightly to push the algorithm toward harder-to-convert new audiences, using audience bid modifiers to suppress known customers, or running a separate prospecting campaign without a tROAS constraint.
+
+See our dedicated guide on [why PMax spends on brand terms and how to fix it](/blog/why-pmax-spending-on-brand-terms-fix).
+
+## tROAS Target Setting by Shopify Store Stage
+
+The right tROAS approach depends heavily on where your store is in its growth stage. Early-stage stores with thin conversion history need a fundamentally different setup than scaled stores with 200+ monthly transactions.
+
+| Store Stage | Monthly Conversions | Recommended Strategy | Notes |
+|-------------|--------------------|--------------------|-------|
+| Launch (0-3 months) | Less than 20 | Maximize Conversion Value, no target | Build signal before any constraint |
+| Ramp-up (3-9 months) | 20-50 | Maximize Conversion Value, no target | Still building reliable history |
+| Growth (9+ months) | 50-150 | tROAS at 70-80% of actual ROAS | Introduce target, step up conservatively |
+| Scale (established) | 150+ | tROAS at 80-90% of actual ROAS | More signal = tighter target viable |
+
+For an in-depth look at how these stages interact with your overall Google Ads setup, see the [Shopify Google Ads Guide](/blog/shopify-google-ads-guide).
+
+## When to Use Separate PMax Campaigns for tROAS Control
+
+A single PMax campaign with one tROAS target is the right structure for most Shopify stores. But there are specific situations where separate campaigns with different tROAS targets make sense:
+
+**Split when you have products with materially different margins.** If your best-margin product category has a 65% gross margin (break-even ROAS of 1.54) and your lowest-margin category has a 25% gross margin (break-even ROAS of 4.0), a single tROAS of 3.5 will simultaneously over-constrain your high-margin products and under-protect your low-margin products. Separate campaigns let you set 2.5 for high-margin and 5.0 for low-margin.
+
+**Split when one product line dwarfs the others in revenue.** If one SKU or category represents 70%+ of revenue, a single campaign's tROAS will optimize almost entirely for that product while the rest of the catalog gets erratic coverage. Isolate the hero product in its own campaign.
+
+**Do not split for audience targeting alone.** PMax determines audience serving algorithmically. Splitting by audience segment (prospecting vs. retargeting) is generally counterproductive because it fragments the signal pool.
+
+For the broader search vs. PMax budget allocation question, see [Google Search Ads vs. PMax Cannibalization](/blog/shopify-google-ads-search-vs-pmax-cannibalization).
+
+## What to Check After Each tROAS Adjustment
+
+After any tROAS change, monitor these four metrics for the following 14 days before deciding whether to hold, raise, or pull back:
+
+1. **Budget utilization rate** — Is the campaign spending its full daily budget? Under 80% utilization means the target may be too restrictive.
+2. **Impression share** — Has it changed by more than 15% in either direction? A drop suggests the constraint is limiting auction eligibility.
+3. **Actual ROAS vs. target** — Is actual ROAS within 0.5 of your target? Significantly above target on low volume means the algorithm is cherry-picking easy conversions.
+4. **Conversion value total** — Even if ROAS looks good, is total revenue increasing, flat, or declining? The goal is efficiency and volume, not efficiency alone.
+
+For broader attribution context on whether your ROAS numbers are measuring the right things, see [Shopify Attribution Models Explained](/blog/shopify-attribution-models-explained) and [Blended ROAS vs. Platform ROAS](/blog/blended-roas-vs-platform-roas-reconciliation).
+
+## Conclusion
+
+Setting a PMax tROAS target is not about picking the number you want — it is about anchoring to what the algorithm has actually delivered and giving it a constraint it can satisfy. The formula: start at 75% of your 30-day actual ROAS, confirm full budget utilization, and step up 10% every two weeks as performance holds.
+
+The two most expensive mistakes are setting the target at or above your actual ROAS on day one, and adjusting more frequently than every two weeks. Both keep PMax in a perpetual semi-learning state with fragmented bidding signals and fewer profitable impressions.
+
+If your PMax is not spending with a tROAS set, work through three checks in order: conversion volume (30-50/month minimum), whether the target exceeds historical actual ROAS, and budget-to-target math. One of these three causes is responsible in almost every case.
+

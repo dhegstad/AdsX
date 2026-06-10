@@ -1,0 +1,263 @@
+---
+title: "PMax Negative Keywords: Cut Waste 15–30% (Full Guide)"
+excerpt: "Add PMax negative keywords, brand exclusions, and search themes to slash wasted spend by 15–30%—without breaking your campaign's optimization engine."
+date: "2026-06-10"
+category: "Guide"
+tags: ["Google Ads", "PMax", "Negative Keywords", "Search Themes", "Paid Ads"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "Can you add negative keywords to a PMax campaign?"
+    answer: "Yes, but not directly at the campaign level in every account. You can add account-level negative keywords that apply to all campaigns including PMax, use campaign-level negatives (now broadly available in newer interfaces), or apply brand exclusions via campaign settings. Search themes at the asset group level provide a positive signal layer—they don't block spend but guide it toward your target traffic."
+  - question: "What are search themes in PMax and how do they help?"
+    answer: "Search themes are keyword-like inputs you add at the asset group level to signal to Google what queries are most relevant. They act as hints, not hard constraints. Adding 5–10 tightly focused search themes narrows the traffic distribution and reduces wasted spend on irrelevant queries—especially effective during the first 30 days when the campaign lacks conversion data."
+  - question: "How do I exclude my brand from PMax?"
+    answer: "Use the brand exclusion setting inside your PMax campaign settings. Add your brand name and common misspellings. This prevents PMax from bidding on brand queries, pushing that traffic back to your dedicated brand search campaign. Brand exclusions are semantically aware—adding your brand name suppresses brand review, discount, and comparison queries automatically."
+  - question: "What is the difference between account-level negatives and campaign-level negatives for PMax?"
+    answer: "Account-level negative keyword lists apply across all campaigns including PMax—they're the most reliable and widely available blocking method. Campaign-level negatives for PMax are now available in most newer account interfaces and apply only to that specific campaign, giving surgical control when running multiple PMax campaigns for different product lines."
+  - question: "Do negative keywords hurt PMax performance?"
+    answer: "Targeted negatives—blocking job seeker intent, free/DIY alternatives, and clearly irrelevant categories—improve efficiency without hurting volume. Overly aggressive negatives, such as blocking broad commercial intent terms, can starve PMax of signal and raise CPA. The goal is blocking waste, not restricting legitimate discovery."
+  - question: "How many search themes should I add per PMax asset group?"
+    answer: "Google allows 1 to 25 search themes per asset group, but 5 to 10 tightly focused themes consistently outperform both extremes. Under-theming leaves PMax in full exploration mode. Over-theming with vague or overlapping signals dilutes the guidance. Group themes by product category and buyer intent to match each asset group's product set."
+---
+
+PMax negative keywords and search themes are the two most underused controls in Performance Max. Used together, they cut waste by 15–30% in most accounts without touching the bidding strategy or conversion targets that power PMax's optimization engine.
+
+![Performance Max campaign controls and optimization dashboard](https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=1200&q=80)
+
+## Why PMax negative keywords require a different strategy
+
+Standard Search campaigns give you match-type-level control over every keyword. PMax strips that away — Google decides where your budget goes based on audience signals, asset performance, and conversion data. But that flexibility comes at a cost: PMax will happily spend on branded queries, competitor names, irrelevant product categories, and job-seeker traffic if you let it.
+
+The control levers available in PMax fall into three categories:
+
+1. **Account-level negative keyword lists** — block traffic across all campaigns
+2. **Brand exclusions** — campaign-level brand query suppression
+3. **Search themes** — positive signals that guide (but don't lock) PMax's query matching
+
+Understanding which lever to use for which problem is the entire game.
+
+---
+
+## Account-level negatives for PMax
+
+Account-level negative keywords are the most reliable and widely available form of blocking in PMax. Any keyword added to an account-level negative keyword list applies to all campaigns, including all PMax campaigns in that account.
+
+### How to set up account-level negatives
+
+Navigate to **Tools and Settings, then Shared Library, then Negative keyword lists**. Create a list, add your negatives, then attach it to the PMax campaign under the campaign's "Negative keywords" section.
+
+### What to block at the account level
+
+| Negative Category | Examples | Reason to Exclude |
+|---|---|---|
+| Job seeker intent | "jobs," "hiring," "salary," "careers" | Wasted spend, zero purchase intent |
+| Informational research | "how does [product] work," "what is [product]" | Pre-purchase, low conversion probability |
+| Competitor brand names | "[Competitor] reviews," "[Competitor] promo code" | Irrelevant or misaligned intent |
+| Wholesale / B2B at wrong scale | "bulk order 10,000 units," "wholesale supplier" | Wrong buyer profile for DTC |
+| DIY / Free alternatives | "free template," "DIY [product]" | Signals non-buyer intent |
+| Wrong geography signals | City names outside delivery zones | If you have geo restrictions |
+
+For a [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) DTC brand, a starting negative list of 40–80 terms is normal. Audit your search terms report in Search campaigns and Shopping campaigns for the past 90 days — most waste patterns are already visible there.
+
+### Account-level negatives: match type rules
+
+Negative keywords at the account level use standard match types:
+
+- **Exact match** `[keyword]` — blocks only that exact query
+- **Phrase match** `"keyword"` — blocks queries containing that phrase in order
+- **Broad match** `keyword` — blocks queries with the keyword in any order
+
+For most PMax exclusion work, phrase match is the most useful. Using `"jobs"` blocks "marketing jobs," "Amazon jobs near me," and similar — without blocking a query like "what jobs does this product do."
+
+---
+
+## Brand exclusions: the highest-ROI PMax lever
+
+If you're running a brand search campaign alongside PMax, brand exclusions are non-negotiable. PMax will cannibalize brand traffic — bidding on `[your brand]` and `[your brand] discount` queries — inflating its own ROAS while actually converting customers who would have purchased anyway.
+
+The effect is an illusion of PMax performance built on warm traffic. Remove brand from PMax, and you'll see PMax's reported ROAS drop while total account efficiency improves.
+
+For a full diagnostic on whether this is already happening in your account, see the guide to [why PMax spends on brand terms and how to fix it](/blog/why-pmax-spending-on-brand-terms-fix).
+
+### How to set brand exclusions in PMax
+
+1. Open the PMax campaign
+2. Go to **Settings, then Brand exclusions**
+3. Search for your brand name — Google will suggest brand variations
+4. Add all relevant brand and sub-brand terms
+
+Brand exclusions are semantically aware — they're not just keyword matches. Google's system understands brand intent. Adding your brand name suppresses "brand reviews," "brand discount code," and "brand vs competitor" queries without requiring you to list every variation manually.
+
+### What a brand exclusion does to your metrics
+
+Expect these shifts in the 14 days after implementing brand exclusions:
+
+| Metric | What Happens |
+|---|---|
+| PMax ROAS | Drops 15–40% (was inflated by brand) |
+| PMax conversion volume | Drops proportionally |
+| Brand search campaign impressions | Increases — traffic returns |
+| Brand search CPC | Decreases — less internal auction competition |
+| Total account ROAS | Flat or improves |
+| Net revenue | Flat or improves |
+
+The short-term PMax metric decline is expected and correct. Do not pull back PMax budget based on this drop alone — evaluate total account performance at the 30-day mark.
+
+---
+
+## Campaign-level negative keywords in PMax
+
+Campaign-level negatives for PMax are now broadly available in the Google Ads interface. To check if your account has access, navigate into a PMax campaign and look for **Negative keywords** under the campaign settings sidebar.
+
+Campaign-level negatives function identically to Search campaign negatives — they apply only to that specific PMax campaign, giving you more surgical control when running multiple PMax campaigns for different product lines.
+
+### When campaign-level negatives matter more than account-level
+
+If you're running two PMax campaigns — one for your apparel line and one for accessories — you might want to prevent the apparel PMax from spending on queries relevant only to accessories. Account-level negatives would block both. Campaign-level negatives let you route, not just block.
+
+This pairs closely with how you structure [PMax asset groups for Shopify stores](/blog/google-pmax-asset-groups-shopify-structure) — the segmentation logic that works for asset groups also applies to campaign-level traffic routing via negatives.
+
+---
+
+## Search themes: guiding PMax, not blocking it
+
+Search themes are the inverse of negatives. Instead of blocking irrelevant traffic, search themes tell PMax what kind of traffic you want to prioritize. They live at the asset group level, not the campaign level.
+
+Think of search themes as the equivalent of keyword targeting in Smart Bidding campaigns — except they're signals, not hard constraints. PMax can still show ads outside your search themes when it identifies high-conversion probability, but themes meaningfully narrow the distribution.
+
+### Search themes vs. keywords: what's different
+
+| Factor | Traditional Keywords | PMax Search Themes |
+|---|---|---|
+| Match control | Exact, phrase, broad | Signal-based — no match type |
+| Negative option | Yes — block specific queries | No — only positive guidance |
+| Placement | Campaign/ad group | Asset group |
+| Override capability | You control | Google can override if signal is strong |
+| Minimum effective count | 1 | 5–10 recommended |
+
+### How to add search themes to PMax asset groups
+
+1. Open the PMax campaign and navigate to an asset group
+2. Select **Edit asset group**
+3. Scroll to **Search themes** — below audience signals
+4. Enter queries that represent your target traffic
+
+The interface accepts up to 25 themes per asset group. Use themes that reflect actual queries, not just product category labels. `"men's running shoes under $100"` is a better theme than `"shoes"`.
+
+### Search theme strategy by asset group type
+
+The best search themes map closely to the product category and buyer intent the asset group is built around. Here is a worked example for a fitness DTC brand running two asset groups:
+
+**Asset Group 1 — Protein Supplements**
+
+Search themes to add:
+- `whey protein powder for muscle gain`
+- `best protein powder for women`
+- `protein powder without artificial sweeteners`
+- `high protein post workout shake`
+- `grass fed whey protein`
+
+**Asset Group 2 — Resistance Bands**
+
+Search themes to add:
+- `resistance bands for home gym`
+- `loop bands glute workout`
+- `heavy resistance bands set`
+- `fabric resistance bands vs latex`
+- `resistance band exercises for beginners`
+
+Without themes, both asset groups compete for each other's traffic and Google allocates based purely on which group's assets convert cheapest — often a single high-performing SKU.
+
+---
+
+## The interaction between search themes and negatives
+
+Search themes and negatives work in layers, not in competition:
+
+1. **Negatives are hard blocks** — no matter what signals or themes exist, negative keywords prevent matching on those queries
+2. **Search themes are soft guidance** — they increase the probability of matching relevant queries but don't guarantee exclusivity
+3. **Brand exclusions are semantic blocks** — they operate at a different layer and override both themes and standard signals for brand queries
+
+The practical implication: run all three. Block job seekers, competitors, and irrelevant categories with negatives. Guide PMax toward your target buyer with search themes. Exclude brand from PMax with brand exclusions. These three layers together produce a controlled PMax campaign rather than a free-running budget spender.
+
+---
+
+## Diagnosing PMax traffic quality without full keyword visibility
+
+PMax doesn't expose full search term-level data the way Search campaigns do. The practical workaround is to cross-reference three data sources:
+
+**1. Search terms report in Search campaigns**
+Queries that appear in your Search campaign reports tell you what's converting via keyword targeting. Poor performers in Search are likely poor in PMax — add them to negatives.
+
+**2. Google Analytics 4 — Organic search terms**
+GA4's organic terms show what non-paid queries drive traffic to the same landing pages PMax uses. High-volume informational queries that don't convert organically signal the same waste pattern in PMax.
+
+**3. PMax Insights tab**
+The PMax Insights tab shows "search categories" your campaign matched. These are aggregate categories, not individual queries, but they expose intent types (informational, comparison, specific product categories). Heavy spend in a category that doesn't align with your product is the signal to build negatives around that category's likely query patterns.
+
+This diagnostic pairs well with [understanding PMax vs. Search cannibalization in your Google Ads account](/blog/shopify-google-ads-search-vs-pmax-cannibalization) — especially when PMax and Search overlap on the same queries.
+
+---
+
+## PMax negative keyword build: a starter framework
+
+For a Shopify brand running PMax for the first time or auditing an existing campaign, this is the sequence that produces results:
+
+**Week 1 — Brand exclusions**
+Set brand exclusions before anything else. This is the fastest win and has the clearest positive impact on account efficiency.
+
+**Week 2 — Account-level negatives: intent blocking**
+Add job seeker terms, free/DIY alternatives, and clearly irrelevant categories. Keep this list under 100 terms — precision matters more than volume.
+
+**Week 2 — Search themes**
+Add 5–10 search themes per asset group, closely matched to each group's product category and buyer intent stage.
+
+**Week 4 — Campaign-level negatives (if available)**
+After the first 30 days of conversion data, add campaign-level negatives for cross-contamination between PMax campaigns if you're running multiple.
+
+**Ongoing — Monthly audit**
+Review the Insights tab monthly. Add negatives based on low-quality search categories. Refresh search themes based on what's converting in Search campaigns.
+
+---
+
+## Common PMax negative keyword mistakes
+
+**Mistake 1: Adding too many broad negatives**
+Blocking `buy`, `cheap`, `discount`, or `sale` at broad match removes high-intent purchase queries. Keep negatives targeted at intent type mismatches, not price-sensitivity signals.
+
+**Mistake 2: Not applying negatives to PMax specifically**
+Many accounts have robust Search campaign negative lists that were never attached to PMax campaigns. Check your shared negative keyword lists and confirm each one is applied to your PMax campaigns.
+
+**Mistake 3: Relying only on search themes without negatives**
+Search themes guide positive traffic. They don't prevent PMax from matching on irrelevant queries when those queries show conversion signals elsewhere. You need both layers.
+
+**Mistake 4: Removing brand exclusions after a performance dip**
+The post-exclusion PMax ROAS drop is expected. Removing brand exclusions to "recover" PMax metrics is one of the most common ways accounts waste branded budget. Hold the exclusion for 30 days and evaluate total account metrics, not PMax metrics alone.
+
+---
+
+## What controlled PMax actually looks like
+
+A well-controlled PMax campaign for a Shopify brand with $20K/month spend typically looks like this:
+
+- **Brand exclusions:** active, covering brand name and top misspellings
+- **Account-level negatives:** 50–80 terms, focused on intent mismatches
+- **Search themes:** 5–10 per asset group, matched to product category and buyer stage
+- **Asset group structure:** 2–4 groups, segmented by product line (see the [PMax asset group structure guide for Shopify](/blog/google-pmax-asset-groups-shopify-structure))
+- **Monthly maintenance:** 1–2 hour audit of Insights tab, new negatives added, themes refreshed quarterly
+
+This setup is not complex — it takes an afternoon to implement from scratch. But most accounts running PMax have none of it, which is why PMax's reputation for wasted spend is so persistent.
+
+Combine these controls with a [paid ads budget allocation strategy](/blog/paid-ads-budget-allocation-by-revenue-stage) that segments brand and non-brand spend clearly, and PMax becomes a genuine acquisition channel rather than a budget black box.
+
+---
+
+## Conclusion
+
+PMax negative keywords, brand exclusions, and search themes are not workarounds for a broken campaign type — they are the fundamental controls that make PMax work correctly. Without them, PMax optimizes for whatever converts cheapest: branded traffic, existing customers, and low-intent queries.
+
+With brand exclusions applied, account-level negatives in place, and search themes guiding each asset group, PMax behaves as designed — finding new customers across Google's full inventory at a target CPA. The setup takes hours, not weeks, and the efficiency gain is visible within the first 30 days.

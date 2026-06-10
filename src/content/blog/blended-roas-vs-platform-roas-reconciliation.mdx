@@ -1,0 +1,230 @@
+---
+title: "Blended ROAS vs Platform ROAS: Stop the Lying Number"
+excerpt: "Platform ROAS lies structurally. Learn how blended ROAS vs platform ROAS diverge, calculate the overlap ratio, and find your real profitability in 30 minutes."
+date: "2026-06-10"
+category: "Diagnostic"
+tags: ["ROAS", "Blended ROAS", "Attribution", "Media Buying", "Measurement"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "What is blended ROAS and how is it calculated?"
+    answer: "Blended ROAS (also called MER or marketing efficiency ratio) is total store revenue divided by total ad spend across all channels. Formula: Blended ROAS = Total Revenue / Total Ad Spend. If your Shopify store did $80,000 in revenue last month and you spent $20,000 across Meta, Google, and TikTok, your blended ROAS is 4.0x. It is the only metric that cannot be gamed by attribution windows or cross-channel double-counting."
+  - question: "Why is platform ROAS almost always higher than blended ROAS?"
+    answer: "Platform ROAS is overstated primarily because of double-counting: both Meta and Google claim credit for the same conversion when a shopper sees a Meta ad and clicks a Google Shopping ad before buying. Additionally, platforms use their own attribution windows (Meta defaults to 7-day click / 1-day view) that capture conversions that would have happened organically. The gap between platform ROAS and blended ROAS typically ranges from 20% to 60% for multi-channel DTC brands."
+  - question: "What is a good blended ROAS for a Shopify DTC brand?"
+    answer: "A healthy blended ROAS depends on your gross margin. A general benchmark: brands with 50-60% gross margins should target a blended ROAS of 3.0-4.0x to be profitable after overhead. High-margin brands (beauty, supplements at 70%+ margins) can sustain 2.5-3.0x blended ROAS. Low-margin brands (electronics, commodity goods below 40% margins) need 5.0x or higher. Calculate your breakeven blended ROAS first: 1 divided by your gross margin percentage."
+  - question: "How do I reconcile Meta ROAS with Google ROAS against blended ROAS?"
+    answer: "Start with your Shopify revenue as ground truth. Sum all platform-reported revenue, then calculate your attribution overlap ratio: (Meta Reported Revenue + Google Reported Revenue) divided by Shopify Revenue. A ratio above 1.3 means you have significant double-counting. Use blended ROAS to judge channel mix and overall efficiency, then use platform ROAS only for in-platform optimization decisions like bid adjustments and budget pacing."
+  - question: "Should I use last-click or data-driven attribution to reconcile platform ROAS?"
+    answer: "Neither is perfect for reconciliation purposes. Last-click undervalues top-of-funnel channels (Meta, TikTok) that initiate the purchase journey. Data-driven attribution is better for understanding channel contribution but still double-counts at the platform level. For reconciliation, use blended ROAS as your primary metric and supplement with incrementality tests (Meta's Conversion Lift, Google's Conversion Lift Studies) to measure true channel contribution."
+  - question: "What is the difference between ROAS and MER?"
+    answer: "ROAS (return on ad spend) is typically calculated per channel using platform-reported conversions. MER (marketing efficiency ratio) is interchangeable with blended ROAS: total revenue divided by total ad spend, pulling data from your store backend rather than ad platforms. MER is preferred by many media buyers because it is immune to attribution manipulation and gives a clean top-down view of paid media efficiency. Both use the same formula when applied at the account-wide level."
+---
+
+Platform ROAS is a lie — not maliciously, but structurally. When Meta reports 6.2x ROAS and Google reports 5.8x simultaneously, but your Shopify store only shows a 3.9x return on total spend, one of these numbers is your business reality. The others are platforms crediting themselves for revenue they may have shared, influenced partially, or not touched at all.
+
+Reconciling blended ROAS versus platform ROAS is the single most important measurement habit a DTC media buyer can build in 2026.
+
+![Attribution reconciliation dashboard showing blended vs platform ROAS discrepancy](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## Blended ROAS vs Platform ROAS: Why the Gap Exists
+
+Before you can reconcile the numbers, you need to understand why they diverge in the first place. There are four structural reasons platform ROAS is almost always higher than blended ROAS.
+
+### 1. Cross-Channel Double Counting
+
+This is the biggest culprit. A shopper sees your Meta video ad on Tuesday, clicks a Google Shopping ad on Thursday, and buys. Meta claims the conversion via its 7-day click window. Google claims the conversion via its last-click model. Your Shopify store records one order worth $120.
+
+Platform total reported revenue: $240. Actual revenue: $120. You just doubled your apparent ROAS.
+
+For multi-channel DTC brands spending on Meta, Google, and TikTok simultaneously, the double-count inflation typically runs 25-50%. For brands with strong branded search (where Google captures most last-clicks), the gap skews even higher.
+
+### 2. View-Through Attribution
+
+Meta's default attribution window includes 1-day view — meaning any user who saw your ad (without clicking) and bought within 24 hours is counted as a Meta conversion. For high-traffic brands, this inflates Meta ROAS by 15-35% depending on audience overlap.
+
+Google's Performance Max has its own version of this problem: it captures assisted conversions from display and YouTube impressions that users would likely have completed anyway.
+
+### 3. Organic Cannibalization
+
+Both platforms claim credit for customers who would have bought organically via email, direct traffic, or word of mouth. A loyal customer who gets a retargeting ad and buys the same day is counted as a paid conversion — even if they had a purchase tab open already.
+
+This is particularly acute for retargeting campaigns. Some brands run [Shopify retargeting ads](/blog/shopify-retargeting-ads-strategy) and find that 40-60% of "conversions" were from existing customers in the purchase window regardless of ads.
+
+### 4. Attribution Window Mismatches
+
+Meta defaults to 7-day click / 1-day view. Google defaults to 30-day click. TikTok defaults to 7-day click / 1-day view. Shopify reports revenue when the order is placed — no attribution window.
+
+When you compare Meta's reported ROAS to your blended ROAS, you're comparing apples to swimming pools.
+
+---
+
+## The Blended ROAS Formula
+
+Blended ROAS (also called MER — marketing efficiency ratio) uses your store backend as the data source, not ad platforms.
+
+```
+Blended ROAS = Total Store Revenue / Total Ad Spend
+```
+
+**Worked example:**
+
+| Metric | Value |
+|---|---|
+| Shopify total revenue (30 days) | $180,000 |
+| Meta ad spend | $22,000 |
+| Google Ads spend | $14,000 |
+| TikTok Ads spend | $4,000 |
+| Total ad spend | $40,000 |
+| **Blended ROAS** | **4.5x** |
+
+Now look at what the platforms report:
+
+| Platform | Reported Revenue | Reported ROAS |
+|---|---|---|
+| Meta Ads Manager | $132,000 | 6.0x |
+| Google Ads | $84,000 | 6.0x |
+| TikTok Ads | $16,000 | 4.0x |
+| **Platform Total** | **$232,000** | — |
+| **Shopify Actual** | **$180,000** | — |
+
+The attribution overlap ratio here is 232,000 / 180,000 = **1.29x** — meaning platforms are claiming 29% more revenue than your store generated. That is a below-average gap. Many brands see 1.4x-1.6x.
+
+---
+
+## How to Run the Reconciliation
+
+A proper reconciliation takes under 30 minutes. Do it monthly at minimum, weekly if you're scaling aggressively.
+
+### Step 1: Set Your Revenue Source of Truth
+
+Your Shopify store analytics is ground truth. Pull total revenue for the period from your Shopify admin or a tool like Triple Whale or Northbeam — not from any ad platform. Revenue includes all orders, all channels (paid, organic, email, direct).
+
+If you want a paid-only comparison, subtract email revenue and organic direct revenue. Most brands skip this refinement and use total store revenue, which is fine for the top-down blended ROAS calculation.
+
+### Step 2: Pull Spend from Each Platform
+
+Pull spend directly from each platform's billing summary — not the campaign reporting view, which can differ slightly due to daily spend caps and account-level adjustments. Sum to get total ad spend.
+
+### Step 3: Calculate Blended ROAS
+
+Divide Shopify revenue by total ad spend. This is your north star metric.
+
+### Step 4: Calculate the Attribution Overlap Ratio
+
+Sum all platform-reported revenues. Divide by Shopify revenue.
+
+```
+Overlap Ratio = Sum(Platform Reported Revenue) / Shopify Revenue
+```
+
+An overlap ratio below 1.15 is healthy and suggests mostly single-channel customer journeys or tight attribution windows. An overlap ratio above 1.5 means you have a serious double-counting problem and platform ROAS is nearly meaningless for channel-level decisions.
+
+### Step 5: Calculate Each Channel's Adjusted ROAS
+
+To approximate true channel contribution, apply a haircut to each platform's reported ROAS proportional to the overlap ratio.
+
+```
+Adjusted Channel ROAS = Platform ROAS / Overlap Ratio
+```
+
+Using the example above (overlap ratio 1.29):
+- Meta adjusted: 6.0x / 1.29 = **4.65x**
+- Google adjusted: 6.0x / 1.29 = **4.65x**
+- TikTok adjusted: 4.0x / 1.29 = **3.10x**
+
+These adjusted numbers will never be perfectly accurate — they are useful directional benchmarks for channel mix decisions, not for bid optimization.
+
+---
+
+## Platform ROAS vs Blended ROAS: When to Use Each
+
+One of the most common mistakes media buyers make is using the wrong metric for the wrong decision.
+
+| Decision | Use This Metric | Why |
+|---|---|---|
+| Overall budget sizing and profitability | Blended ROAS | Immune to platform attribution games |
+| In-platform bid adjustments (tROAS campaigns) | Platform ROAS | Platforms optimize against their own signals |
+| Channel budget allocation between Meta and Google | Adjusted channel ROAS or incrementality | Neither platform ROAS is directly comparable |
+| Month-over-month efficiency trending | Blended ROAS | Consistent methodology across changes |
+| Creative performance testing within Meta | Meta platform ROAS | Relative comparison within same platform is valid |
+| Determining if paid ads are profitable | Blended ROAS | Only metric that reflects cash economics |
+
+The clearest way to think about it: **blended ROAS tells you if you should keep spending. Platform ROAS tells you where to spend within what you've decided to spend.**
+
+---
+
+## The Incrementality Layer: Going Beyond Reconciliation
+
+Reconciliation tells you the gap. Incrementality testing tells you which channel caused the purchase.
+
+Meta's Conversion Lift Studies run a holdout group and measure incremental revenue. If Meta platform ROAS is 6.0x but only 40% of conversions were incremental, your true incrementality ROAS is 6.0x x 0.4 = **2.4x** — a number that changes budget allocation dramatically.
+
+Google's Geo Lift experiments work similarly: run ads in select DMAs, pause in comparable DMAs, measure the revenue difference.
+
+For how MMM, MTA, and GA4 attribution compare, see our guide on [MMM vs MTA vs GA4 attribution for e-commerce](/blog/mmm-vs-mta-vs-ga4-attribution-ecommerce).
+
+---
+
+## Common Mistakes When Interpreting the Gap
+
+**Mistake 1: Panicking when blended ROAS is lower than platform ROAS.**
+This is structurally expected. The question is whether the gap is widening or stable over time. A widening gap (overlap ratio growing from 1.3 to 1.7 over three months) signals something changed — usually an attribution window expansion, a new retargeting campaign, or cross-channel overlap increasing as you scale.
+
+**Mistake 2: Using blended ROAS to evaluate individual channels.**
+If you pause Meta entirely, blended ROAS might rise short-term (Meta often has weaker direct ROAS than Google branded search). But revenue can drop sharply four to six weeks later when Google branded search volume falls because you killed the top-of-funnel demand Meta was generating. Blended ROAS is an account-level metric, not a channel-scoring tool.
+
+**Mistake 3: Comparing platform ROAS across platforms directly.**
+Meta ROAS and Google ROAS use different attribution models, different windows, and different population pools. A 5.0x Meta ROAS is not equivalent to a 5.0x Google ROAS. Comparing them without adjustment is like comparing lap times on different tracks.
+
+**Mistake 4: Ignoring new customer ROAS (nCAC).**
+Blended ROAS includes returning customers, which flatters the number. If 60% of your "paid" conversions are existing customers rebuying, your actual customer acquisition efficiency is much weaker than blended ROAS shows. Track new-customer ROAS separately: Shopify new customer orders divided by top-of-funnel ad spend (prospecting campaigns only).
+
+---
+
+## Building a Simple ROAS Reconciliation Dashboard
+
+You do not need expensive MTA software to run this reconciliation. A shared spreadsheet updated weekly with five inputs works well for most brands under $500K/month in ad spend.
+
+Required inputs:
+1. Shopify total revenue (from admin analytics)
+2. Meta total spend (from billing summary)
+3. Google total spend (from billing summary)
+4. TikTok total spend (if running)
+5. Each platform's reported revenue (from campaign reporting)
+
+Calculate automatically:
+- Blended ROAS = Shopify Revenue / Total Spend
+- Overlap ratio = Sum(Platform Revenue) / Shopify Revenue
+- Adjusted ROAS per channel = Platform ROAS / Overlap Ratio
+- Contribution percentage per channel = Platform Spend / Total Spend
+
+Track these weekly and trend them. The insight is not in any single snapshot — it's in whether the gap is stable, shrinking (your attribution is improving), or growing (something changed in your funnel or channel mix).
+
+For context on how to structure your overall account to make this reconciliation cleaner, see our guide on [Meta ads account structure](/blog/meta-ads-account-structure-rebuild-2026) and [Google Shopping vs PMax cannibalization](/blog/shopify-google-ads-search-vs-pmax-cannibalization).
+
+---
+
+## Choosing Your Single Source of Truth
+
+Every growth team faces the same attribution debate: which number do we report to the CEO?
+
+The answer is blended ROAS. Use it as your north star for total spend sizing and business health. Let platform ROAS drive in-platform bid decisions. Let incrementality studies govern channel mix at least quarterly.
+
+Brands that get this wrong cut Meta because platform ROAS looks weaker than Google's, then watch branded search volume crater six weeks later. They optimized the metric, not the outcome.
+
+For a deeper look at how [Shopify attribution models](/blog/shopify-attribution-models-explained) differ from platform reporting, that guide explains why your Shopify admin and your ad platforms will never perfectly agree.
+
+Running a [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store? Most brands discover their effective blended ROAS is 1.5-2.0x points lower than platform dashboards suggest. That gap is the difference between a profitable scaling strategy and an expensive one.
+
+---
+
+## Conclusion
+
+Platform ROAS will always be higher than blended ROAS. That is not a bug — it is the structural result of cross-channel overlap, view-through attribution, and organic cannibalization. The skill is not eliminating the gap but quantifying it with the overlap ratio and using the right metric for each decision.
+
+Blended ROAS answers "should we keep spending?" Platform ROAS answers "where do bids go?" Incrementality tests answer "which channel actually caused this growth?" Together, these three lenses give you a complete picture. Relying on any one alone leaves you flying with one instrument.
+

@@ -1,0 +1,240 @@
+---
+title: "Google Ads Wasted Spend Audit: Cut 20–40% in 30 Minutes"
+excerpt: "Run a Google Ads wasted spend audit in 30 minutes: find zero-conversion queries, add negatives, and recover $500–$5,000/month for your Shopify brand."
+date: "2026-06-10"
+category: "Diagnostic"
+tags: ["Google Ads", "Negative Keywords", "Wasted Spend", "Search Terms Audit", "PPC"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "How do I find wasted spend in Google Ads?"
+    answer: "Open the Search Terms report under Keywords in your Google Ads account. Sort by Cost descending, then filter for queries with zero conversions over the last 30–90 days. Any query spending more than your target CPA without converting is wasted spend. Add the worst offenders as exact-match or phrase-match negatives immediately."
+  - question: "What percentage of Google Ads spend is typically wasted?"
+    answer: "Industry benchmarks suggest 20–40% of Google Ads search budgets can be attributed to irrelevant or low-intent queries. For Shopify brands running broad-match or smart-bidding campaigns without tightly maintained negative keyword lists, the figure is often at the higher end of that range."
+  - question: "How often should I audit my search terms report?"
+    answer: "For budgets under $5,000/month, audit weekly during the first 90 days of a campaign, then every two weeks once the negative list is mature. For budgets above $10,000/month, a weekly audit is the minimum — high-spend accounts accumulate junk queries faster and the dollar impact of ignoring them is significant."
+  - question: "What is a good negative keyword list size for a Shopify store?"
+    answer: "A well-maintained Shopify Google Ads account typically carries 150–400 campaign-level negatives and 50–100 account-level negatives. Fewer than 100 total negatives on a running search campaign almost always indicates untouched wasted spend. The goal is not a big list — it is an accurate list built from real search term data."
+  - question: "How do I calculate the ROI of adding negative keywords?"
+    answer: "Take the monthly spend on zero-conversion queries from your search terms report. Multiply by your average conversion rate across converting terms. That is the revenue you could be generating if that budget were redirected. Even redirecting $500/month of junk spend to converting queries often yields $1,500–$4,000 in additional revenue at typical Shopify ROAS levels of 3–8x."
+  - question: "Can Performance Max campaigns be audited the same way?"
+    answer: "Not directly — PMax does not expose a full search terms report. You can view search categories and some individual queries under the Insights tab, but the visibility is limited. For PMax wasted spend, focus on brand exclusion lists, negative keyword themes via the campaign settings, and ensuring your standard Shopping or Search campaigns are not being cannibalized. See our guide on PMax negative keywords for the full workflow."
+---
+
+A Google Ads wasted spend audit takes less time than most media buyers expect, and the payoff is immediate. You stop paying for clicks that were never going to convert and redirect that budget toward queries that do. For most Shopify and DTC brands running search campaigns, a focused 30-minute pass through the search terms report surfaces $500 to $5,000+ in recoverable monthly spend — without touching bids, budgets, or creative.
+
+![Google Ads dashboard showing campaign metrics and spend analysis](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80)
+
+## Google Ads Wasted Spend Audit: What You're Actually Looking For
+
+Before opening the interface, understand the core problem: Google's broad match and Smart Bidding systems are designed to expand your reach. That expansion is beneficial when it surfaces high-intent queries you hadn't considered. It is harmful when it burns budget on queries that signal zero purchase intent — competitor brand names you haven't excluded, informational queries ("how does X work"), or product categories adjacent to yours but outside your catalog.
+
+The search terms report is the single most actionable report in Google Ads for e-commerce. It shows the actual queries that triggered your ads, the spend on each, and whether conversions resulted. Your job in this audit is to identify every query spending money without returning revenue, then make a decision: add it as a negative or acknowledge it as a branding/awareness cost you're choosing to accept.
+
+### What "Wasted" Means in This Context
+
+Not every zero-conversion click is wasted. A query might be low-volume and legitimately in your funnel. Wasted spend specifically means:
+
+- Queries with zero conversions AND spend above your target CPA
+- Queries clearly irrelevant to your product (wrong category, wrong audience, wrong intent)
+- Branded queries from competitors you don't want to show for
+- Informational or research-phase queries where purchase intent is near zero
+
+---
+
+## Step 1: Pull the Right Data Window (5 Minutes)
+
+Open Google Ads, navigate to **Keywords** in the left sidebar, and click **Search Terms**.
+
+Set the date range to the last **60 days** for accounts spending under $3,000/month. For accounts spending $5,000/month or more, use the last **30 days** — you'll have enough data and the recent queries will be more relevant to your current match type and bidding setup.
+
+**Columns to add if not already visible:**
+
+- Impressions
+- Clicks
+- Cost
+- Conversions
+- Conv. value
+- Search term match type
+
+Export to Google Sheets or download as CSV. Working in a spreadsheet is faster than filtering in the interface.
+
+---
+
+## Step 2: Sort and Score Every Query (10 Minutes)
+
+In your spreadsheet, add a column called **Wasted Spend Flag** with this logic:
+
+```
+IF Cost > YOUR_TARGET_CPA AND Conversions = 0, flag as "Audit"
+```
+
+For most Shopify brands, target CPA sits between $15 and $80 depending on product price. If you don't have a firm CPA target, use this benchmark: spend more than 1.5x your average order value on a query with zero conversions and it earns an automatic flag.
+
+### Wasted Spend Benchmark Table
+
+| Monthly Budget | Flag Threshold (per query) | Expected Junk Queries | Est. Monthly Wasted Spend |
+|---|---|---|---|
+| $1,000 | $15–$25 | 10–30 queries | $80–$300 |
+| $3,000 | $25–$40 | 25–60 queries | $300–$900 |
+| $5,000 | $30–$50 | 40–100 queries | $600–$1,800 |
+| $10,000+ | $40–$80 | 80–200 queries | $1,500–$4,500 |
+
+These are conservative estimates. Accounts with heavy broad match exposure or recently launched campaigns without a starter negative list often run 2–3x these figures.
+
+---
+
+## Step 3: Categorize the Junk Queries (5 Minutes)
+
+Sort your flagged queries into four buckets. This matters because the fix is different for each.
+
+**Bucket 1 — Wrong Category**
+Queries about products you don't sell. Example: you sell premium pet supplements and you're showing for "cheap dog food." Add the head term and its variants as exact-match negatives at the campaign level.
+
+**Bucket 2 — Competitor Brand Names**
+If you're not intentionally running conquest campaigns, add all competitor brand names to a dedicated negative list. For [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) brands in crowded categories like supplements, skincare, or apparel, competitor bleed can represent 10–15% of search impressions.
+
+**Bucket 3 — Informational / Research Intent**
+Queries with words like "how to," "what is," "reviews of," "vs," "best X for Y." These people are not ready to buy. They may convert eventually via retargeting, but paying $2–$4 per click for someone in research mode is a poor allocation when your converting queries cost $1–$2 per click.
+
+**Bucket 4 — Geographic or Demographic Mismatch**
+Queries that include locations you don't serve, or terms that signal an audience outside your price point ("free," "discount code," "wholesale pricing"). These are phrase-level negatives.
+
+---
+
+## Step 4: Build and Apply Negatives (7 Minutes)
+
+**Priority order for adding negatives:**
+
+1. Exact match negatives for high-spend, zero-conversion queries — these stop bleeding immediately
+2. Phrase match negatives for informational intent patterns ("how to," "diy," "tutorial") — these catch the full category
+3. Broad match negatives only for single-word irrelevant terms you're confident about
+
+**Where to add them:**
+
+- **Account-level negative list**: Queries that should never trigger any ad in your account (competitor brands, categories you'll never sell)
+- **Campaign-level negatives**: Queries relevant only to this campaign's product set
+- **Ad group-level negatives**: Rarely needed unless you're running tightly themed ad groups and a query fits one but not another
+
+**The formula for calculating the recovery value of your negative additions:**
+
+```
+Recovery Value = (Wasted Monthly Spend) x (Converting Query Conversion Rate) x (Average Order Value)
+```
+
+**Worked example:**
+- Wasted spend: $800/month identified in audit
+- Converting query conversion rate: 3.5%
+- Average order value: $65
+
+```
+Recovery Value = $800 x 0.035 x $65 = $1,820/month
+```
+
+That $800 in freed-up budget, redirected toward queries already converting at 3.5%, generates $1,820 in additional revenue — a 2.3x multiplier on the audit itself.
+
+---
+
+## Step 5: Set Up a Repeatable Process (3 Minutes)
+
+A one-time audit recovers spend. A repeatable audit keeps it recovered.
+
+Build a recurring calendar event every **7 days** (weekly for accounts over $3,000/month) or **14 days** (for smaller accounts) to run this same workflow. Each session will take less time as your negative list matures — the first audit takes 30 minutes, subsequent audits take 10–15 minutes once the obvious junk is removed.
+
+Create a shared Google Sheet with two tabs:
+- **Active Negatives**: Every negative keyword added, the date, the reason, and which level it was added at
+- **Search Term Log**: The flagged queries from each audit, for reference and to spot patterns
+
+The log reveals something more valuable than individual negatives: it shows you which **match types** are generating the most waste. If 80% of your junk queries come from broad match terms, that's a structural fix — not a negative keyword fix.
+
+---
+
+## Common Patterns and What They Signal
+
+### Pattern 1: High Spend on Branded Terms You Already Own
+
+If you're spending significantly on your own brand name queries and they're converting well, that's intentional brand defense. If those queries are appearing in non-brand campaigns, you have a segmentation problem. See our guide on [why PMax is spending on brand terms](/blog/why-pmax-spending-on-brand-terms-fix) for the fix.
+
+### Pattern 2: Strong Impression Share but Weak Conversion Rate
+
+You're reaching the right queries but something downstream is breaking. The search terms audit will confirm whether the queries are relevant — if they are, the issue is landing page or offer, not match type.
+
+### Pattern 3: Massive Spend on a Small Number of Queries
+
+Five queries consuming 60% of your spend is a bidding problem, not a search terms problem. Check whether Smart Bidding is over-indexing on queries it incorrectly predicts will convert. Switching to a [tROAS vs. Maximize Conversions](/blog/google-ads-troas-vs-maximize-conversions-shopify) strategy may be the underlying fix.
+
+### Pattern 4: Competitor Names Driving High Clicks
+
+A common oversight on Shopify brands that run broad match without a starter negative list. The queries look like this: "competitor alternative," "competitor vs your brand," or just "competitor + product category." These clicks are expensive and rarely convert for non-brand campaigns.
+
+---
+
+## Advanced: Cross-Reference with PMax Insights
+
+If you're running Performance Max alongside search campaigns, the search terms report only shows search campaign data. PMax has its own partial visibility under Insights — search categories rather than individual queries.
+
+For a complete picture of PMax wasted spend, use the [PMax negative keywords and search themes guide](/blog/google-pmax-negative-keywords-search-themes) and pair it with the [PMax vs. Standard Shopping comparison](/blog/google-pmax-vs-standard-shopping-2026) to decide whether you should even be running certain SKUs through PMax at all.
+
+The interaction between search and PMax is also worth auditing separately: if both campaign types are bidding on the same queries, you're inflating your own CPCs. The [Search vs. PMax cannibalization guide](/blog/shopify-google-ads-search-vs-pmax-cannibalization) walks through how to structure your campaigns to prevent this.
+
+---
+
+## Budget Reallocation: Where the Recovered Spend Should Go
+
+Finding $1,000 in wasted spend is only half the job. That budget needs a destination that outperforms where it was.
+
+**Best reallocation targets (in order of priority):**
+
+1. **Increase bids on your top 10 converting queries** — raise impression share on what's already working
+2. **Expand exact-match coverage on high-converting query variants** — if "premium product for use case" converts well, bid on the 5–10 closest variants
+3. **Test new product-line campaigns** that haven't had budget to accumulate conversion data
+
+Avoid reflexively moving search budget to Performance Max as a "set and forget" solution. PMax requires its own [asset group structure](/blog/google-pmax-asset-groups-shopify-structure) and audience signals to perform efficiently — dropping raw budget into it without that groundwork wastes the recovered spend differently.
+
+---
+
+## 30-Minute Audit Checklist
+
+| Step | Action | Time |
+|---|---|---|
+| 1 | Pull search terms report (60 or 30 days) | 3 min |
+| 2 | Export to spreadsheet | 2 min |
+| 3 | Sort by Cost, flag zero-conversion queries above CPA | 5 min |
+| 4 | Categorize flagged queries into 4 buckets | 5 min |
+| 5 | Add exact-match negatives (Bucket 1 and 2) | 7 min |
+| 6 | Add phrase-match negatives (Bucket 3 and 4) | 5 min |
+| 7 | Log all changes in your tracking sheet | 3 min |
+| **Total** | | **30 min** |
+
+---
+
+## Conclusion
+
+A Google Ads wasted spend audit is the highest-return 30 minutes a Shopify media buyer can spend. The search terms report tells you exactly where your budget is going — and for most accounts that haven't run a structured audit in the last 90 days, 20–35% of that spend is on queries that will never convert. The fix is not complicated: pull the data, categorize the waste, add negatives, and set a recurring reminder to repeat.
+
+Pair this audit with a broader look at your [paid ads budget allocation](/blog/paid-ads-budget-allocation-by-revenue-stage) and your [ROAS benchmarks by industry](/blog/shopify-roas-benchmarks-by-industry) to make sure the recovered budget is going to your highest-leverage campaigns.
+
+---
+
+## Frequently Asked Questions
+
+**How do I find wasted spend in Google Ads?**
+Open the Search Terms report under Keywords in your Google Ads account. Sort by Cost descending, then filter for queries with zero conversions over the last 30–90 days. Any query spending more than your target CPA without converting is wasted spend. Add the worst offenders as exact-match or phrase-match negatives immediately.
+
+**What percentage of Google Ads spend is typically wasted?**
+Industry benchmarks suggest 20–40% of Google Ads search budgets can be attributed to irrelevant or low-intent queries. For Shopify brands running broad-match or smart-bidding campaigns without tightly maintained negative keyword lists, the figure is often at the higher end of that range.
+
+**How often should I audit my search terms report?**
+For budgets under $5,000/month, audit weekly during the first 90 days of a campaign, then every two weeks once the negative list is mature. For budgets above $10,000/month, a weekly audit is the minimum — high-spend accounts accumulate junk queries faster and the dollar impact of ignoring them is significant.
+
+**What is a good negative keyword list size for a Shopify store?**
+A well-maintained Shopify Google Ads account typically carries 150–400 campaign-level negatives and 50–100 account-level negatives. Fewer than 100 total negatives on a running search campaign almost always indicates untouched wasted spend. The goal is not a big list — it is an accurate list built from real search term data.
+
+**How do I calculate the ROI of adding negative keywords?**
+Take the monthly spend on zero-conversion queries from your search terms report. Multiply by your average conversion rate across converting terms. That is the revenue you could be generating if that budget were redirected. Even redirecting $500/month of junk spend to converting queries often yields $1,500–$4,000 in additional revenue at typical Shopify ROAS levels of 3–8x.
+
+**Can Performance Max campaigns be audited the same way?**
+Not directly — PMax does not expose a full search terms report. You can view search categories and some individual queries under the Insights tab, but the visibility is limited. For PMax wasted spend, focus on brand exclusion lists, negative keyword themes via the campaign settings, and ensuring your standard Shopping or Search campaigns are not being cannibalized. See our guide on [PMax negative keywords](/blog/google-pmax-negative-keywords-search-themes) for the full workflow.

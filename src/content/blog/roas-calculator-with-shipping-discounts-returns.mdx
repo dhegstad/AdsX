@@ -1,0 +1,238 @@
+---
+title: "True ROAS After Returns: The Number Killing Your Margins"
+excerpt: "Your 4.2x ROAS could be hiding a 2.8x reality. Calculate true ROAS after returns, discounts, and shipping to see your real contribution ROAS—and fix it."
+date: "2026-06-10"
+category: "Guide"
+tags: ["ROAS", "Returns", "Contribution Margin", "Shipping Costs", "Media Buying"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-10"
+faqs:
+  - question: "What is true ROAS after returns?"
+    answer: "True ROAS after returns—also called net ROAS or contribution ROAS—adjusts your ad platform's reported revenue figure by subtracting returned orders, refunded amounts, shipping subsidies, and discount code redemptions. This gives you the actual revenue that contributed to gross profit, not the inflated top-line number your ad platform claims. For most DTC brands, true ROAS runs 15–35% lower than reported ROAS."
+  - question: "How do I calculate contribution ROAS?"
+    answer: "Contribution ROAS = (Gross Revenue - Returns - Discount Redemptions - Outbound Shipping Subsidy) / Ad Spend. Start with the revenue your ad platform reports, then subtract: the average return rate multiplied by AOV, the average discount depth multiplied by discounted order volume, and any free or subsidized shipping cost you absorb. Divide the result by total ad spend for that period."
+  - question: "What is a good true ROAS for a Shopify DTC brand?"
+    answer: "A good contribution ROAS for a Shopify DTC brand is typically 2.5–4.0x after accounting for returns, discounts, and shipping. The right target depends on your gross margin—brands with 70%+ gross margin can operate profitably at 2.0x contribution ROAS, while brands at 40% gross margin often need 3.5x or higher to cover COGS, fulfillment, and overhead before turning a profit."
+  - question: "How much does return rate affect ROAS?"
+    answer: "A 20% return rate reduces effective revenue by 20%, which translates directly into a ROAS deflation of roughly 20%. For example, a reported 4.0x ROAS with a 20% return rate becomes a 3.2x net ROAS—before accounting for shipping or discounts. Apparel and footwear brands, which often see 25–40% return rates, can see reported ROAS overstate real performance by nearly half."
+  - question: "Should I optimize Meta and Google ad campaigns to contribution ROAS?"
+    answer: "Yes, for mature accounts. Using contribution ROAS as your optimization target prevents you from chasing revenue that disappears in the return cycle. Pass your contribution ROAS target back into your bidding strategy as a custom tROAS value. For Meta, use the Conversions API to pass a net revenue value event instead of gross order value—this trains the algorithm on real economics, not inflated top-line numbers."
+  - question: "What is the difference between ROAS and contribution ROAS?"
+    answer: "Reported ROAS uses gross revenue as recorded by the ad platform at the moment of purchase—before any deductions. Contribution ROAS uses net realized revenue: gross revenue minus returns, refunds, discount redemptions, and shipping subsidies you absorb. Contribution ROAS is closer to the revenue figure that actually hits your P&L and is the number that should drive budget decisions and bidding targets."
+---
+
+Your ad platform reports 4.2x ROAS. Your bank account tells a different story. True ROAS after returns—the number that actually measures whether your paid ads are profitable—can run 30% or more below what Meta or Google shows you. Returned orders, discount codes, and shipping subsidies quietly drain the difference, and most media buyers never see it until a profitable-looking quarter turns into a cash-flow crisis.
+
+This guide gives you the exact contribution ROAS formula, benchmarks by vertical, a step-by-step worked example, and how to wire the adjustment into your reporting stack so you're making budget decisions on real economics.
+
+![Ecommerce analytics dashboard showing revenue and ROAS metrics](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## Why True ROAS After Returns Is the Only ROAS That Matters
+
+Ad platforms—Meta, Google, TikTok—record revenue at the moment a conversion fires. That means they count the $180 order that gets returned next week as $180 in revenue forever. They don't reduce your ROAS when the customer calls for a refund. They don't subtract the $12 in outbound shipping you subsidized. They don't back out the 20% discount code the customer used.
+
+You can be running a 4.0x reported ROAS with a -5% contribution margin if your unit economics are bad enough. This happens constantly in apparel, footwear, and consumer electronics—categories with high return rates and aggressive discounting.
+
+The three adjustments that separate reported ROAS from contribution ROAS are:
+
+1. **Return rate** — the percentage of revenue-generating orders that come back
+2. **Discount redemptions** — the revenue you "gave away" via promo codes
+3. **Shipping subsidy** — the outbound shipping cost you absorb on free-shipping orders
+
+Each one is predictable, measurable, and fixable in your reporting.
+
+## The Contribution ROAS Formula
+
+The formula is straightforward once you know what to plug in:
+
+```
+Contribution ROAS = Net Revenue / Ad Spend
+
+Net Revenue = Gross Revenue
+              - (Gross Revenue × Return Rate)
+              - Discount Redemptions
+              - Outbound Shipping Subsidy
+```
+
+Or in a single expression:
+
+```
+Contribution ROAS = [Gross Revenue × (1 - Return Rate) - Discounts - Shipping Subsidy] / Ad Spend
+```
+
+Every variable is available in your Shopify analytics or your BI tool. You do not need a data science team to run this calculation weekly.
+
+### Worked Example: A $50K Ad Spend Month
+
+Assume a mid-size Shopify apparel brand with the following metrics for May:
+
+- **Ad Spend:** $50,000
+- **Reported Revenue (platform):** $210,000
+- **Reported ROAS:** 4.2x
+- **Return Rate:** 22%
+- **Average Discount Depth (orders with codes):** 18% off, on 40% of orders
+- **Average Outbound Shipping Subsidy:** $8.50 per order, on 65% of orders
+- **Total Orders:** 1,400
+
+Step-by-step calculation:
+
+**Step 1 — Subtract returns:**
+$210,000 × (1 - 0.22) = $163,800 net of returns
+
+**Step 2 — Subtract discount redemptions:**
+1,400 orders × 0.40 = 560 discounted orders
+Average order value = $210,000 / 1,400 = $150
+560 orders × $150 × 0.18 discount depth = $15,120 in discount value
+$163,800 - $15,120 = $148,680
+
+**Step 3 — Subtract shipping subsidy:**
+1,400 orders × 0.65 = 910 subsidized orders
+910 × $8.50 = $7,735
+$148,680 - $7,735 = $140,945 net realized revenue
+
+**Step 4 — Calculate contribution ROAS:**
+$140,945 / $50,000 = **2.82x contribution ROAS**
+
+The platform reported 4.2x. The real number after the economics shake out is 2.82x—a 33% overstatement. Depending on this brand's COGS and overhead, the difference between those two numbers could be the difference between a profitable and unprofitable month.
+
+## Benchmark: Reported vs. Contribution ROAS by Vertical
+
+The gap between reported and contribution ROAS varies sharply by category. Here are typical ranges based on DTC brand economics:
+
+| Vertical | Avg Return Rate | Avg Discount Depth | Reported ROAS | Contribution ROAS | Gap |
+|---|---|---|---|---|---|
+| Apparel / Fashion | 25–35% | 15–25% | 4.0x | 2.4–2.8x | 30–40% |
+| Footwear | 30–40% | 10–20% | 3.8x | 2.1–2.6x | 32–45% |
+| Beauty / Skincare | 5–10% | 10–15% | 3.5x | 3.0–3.2x | 9–14% |
+| Home Goods | 8–15% | 8–12% | 3.2x | 2.7–3.0x | 6–16% |
+| Consumer Electronics | 15–25% | 5–10% | 3.0x | 2.2–2.5x | 17–27% |
+| Supplements / CPG | 3–7% | 12–18% | 4.2x | 3.5–3.9x | 7–17% |
+| Pet Products | 4–8% | 8–12% | 3.8x | 3.4–3.6x | 5–11% |
+
+Apparel and footwear brands are most at risk of operating on misleading ROAS figures. If you're in either category and making budget decisions based on platform-reported ROAS, you're almost certainly overspending.
+
+## How Each Adjustment Works in Practice
+
+### Accounting for Return Rate
+
+Your Shopify admin shows return rate in the Orders section. For ads-attributed returns specifically, match return orders back to UTM source or Shopify's attribution data. If you can't isolate ad-driven returns, apply your blended return rate as a conservative estimate.
+
+Return rate should be calculated on a 30-day lag minimum—some categories see 60% of returns happen in weeks 3–6 after purchase. Running the adjustment on last month's data with current-month return data gives you a more accurate read than trying to real-time-adjust.
+
+**Formula for return adjustment:**
+Net Revenue (post-return) = Gross Revenue × (1 - Return Rate)
+
+### Accounting for Discount Code Redemptions
+
+Shopify's Discounts report shows redemption volume and discount value per code. Pull this monthly and segment by channel if possible—many brands run different discount depths for email vs. paid social, and conflating them distorts your channel-level math.
+
+Watch for two compounding effects:
+- **Discount-stacking** — customers applying multiple codes (if your theme allows it)
+- **Influencer codes** — often higher depth (25–30%) and higher volume during campaign periods
+
+**Formula for discount adjustment:**
+Discount Redemption Value = Sum of (Order Value × Discount %) for all discounted orders in period
+
+### Accounting for Shipping Subsidy
+
+Outbound shipping subsidy is the cost you pay the carrier minus what the customer paid. If you offer free shipping over $75 and your carrier rate is $9.50 on average, every order above that threshold costs you $9.50 that isn't in your COGS line—it's absorbed as a fulfillment subsidy.
+
+Pull your actual carrier costs from Shopify Shipping, ShipBob, or your 3PL's reporting. Divide total carrier spend by total outbound shipments to get your per-order shipping cost. Multiply by the number of free-shipping-eligible orders to get your monthly subsidy.
+
+**Formula for shipping subsidy:**
+Shipping Subsidy = Orders on Free Shipping × (Carrier Cost per Order - Customer Paid Shipping)
+
+## Building Contribution ROAS Into Your Reporting Stack
+
+### Option 1: Shopify + Spreadsheet (Manual, Weekly)
+
+Export from Shopify: gross revenue, discount redemptions, shipping revenue collected, and return/refund data. Export carrier costs from your shipping provider. Build a Google Sheet with the contribution ROAS formula applied to each channel's attributed revenue. Takes 30 minutes to set up, 10 minutes per week to update.
+
+### Option 2: Pass Net Order Value via Conversions API
+
+For Meta, you can pass a custom `value` parameter through the Conversions API that reflects net order value instead of gross. This means Meta's algorithm trains on real economics. Calculate net order value at the event level:
+
+```
+Net Order Value = Order Total - Estimated Return Reserve - Discount Applied - Shipping Subsidy
+```
+
+Apply a return reserve (e.g., 22% of order value for an apparel brand) rather than waiting for actual returns, since the conversion event fires in real time. This is the most sophisticated approach and the one that actually improves algorithmic efficiency over time. For context on why your pixel data alone isn't enough, see [Shopify Meta Pixel vs. Conversions API](/blog/shopify-meta-pixel-vs-conversions-api-2026).
+
+### Option 3: BI Tool Integration (Triple Whale, Northbeam, Custom)
+
+Tools like Triple Whale have native return-rate adjustments. Enable the "Net New Revenue" view and input your return rate by product category. This surfaces contribution-adjusted ROAS at the campaign, ad set, and ad level—making it actionable for optimization rather than just reporting.
+
+## Setting the Right Contribution ROAS Target
+
+Once you know your contribution ROAS, you need a target that accounts for gross margin. The minimum viable contribution ROAS to break even on your ad spend depends on your gross margin after COGS only (before fulfillment and overhead):
+
+```
+Minimum Viable Contribution ROAS = 1 / Gross Margin %
+```
+
+At 50% gross margin: minimum contribution ROAS = 2.0x
+At 40% gross margin: minimum contribution ROAS = 2.5x
+At 60% gross margin: minimum contribution ROAS = 1.67x
+
+To actually generate profit on your ad spend—not just break even—you need contribution ROAS comfortably above this threshold. Most Shopify brands should target contribution ROAS at 1.5–2.0x the break-even multiple. For a 50% margin brand, that means targeting 3.0–4.0x contribution ROAS.
+
+For a fuller view of how ROAS targets vary by brand stage and channel, see [Shopify ROAS Benchmarks by Industry](/blog/shopify-roas-benchmarks-by-industry) and [Paid Ads Budget Allocation by Revenue Stage](/blog/paid-ads-budget-allocation-by-revenue-stage).
+
+## Common Mistakes When Calculating True ROAS
+
+**Mistake 1: Using return rate from all orders, not ad-attributed orders.** Organic/email customers often have lower return rates than paid social customers (who may have been targeted opportunistically rather than intent-driven). Segment if possible.
+
+**Mistake 2: Applying current-month returns to current-month revenue.** Returns lag purchases by 2–6 weeks. Applying June returns to June ad spend misattributes the timing. Use a rolling 30-day or 60-day return window matched to purchase cohorts.
+
+**Mistake 3: Ignoring partial refunds.** Shopify allows partial refunds. A $150 order refunded $40 for a missing item still shows as $150 in revenue in some reports. Make sure your data pull captures net order value after partial refunds, not just full returns.
+
+**Mistake 4: Double-counting shipping.** If your COGS already includes inbound shipping to your 3PL, don't add it again. The subsidy to subtract is only the outbound carrier cost minus what the customer paid.
+
+## From Reporting to Action: What to Do With Contribution ROAS
+
+Knowing your contribution ROAS is only useful if you act on it. Three places to plug it in:
+
+**1. Bidding targets.** If your target ROAS in Meta or Google is set at 4.0x based on reported revenue, but contribution ROAS runs 30% below that, your real target should be set higher—around 5.5–6.0x reported ROAS to achieve a 4.0x contribution ROAS. This is counterintuitive but critical. See [Meta Ads CBO vs. ABO for Shopify](/blog/meta-ads-cbo-vs-abo-shopify-2026) for how bidding strategy intersects with ROAS targets.
+
+**2. Channel allocation.** If Meta shows a higher contribution ROAS than Google after adjustments—because Meta customers return less or discount less—that's a signal to reallocate budget, not just look at reported ROAS side by side.
+
+**3. Creative and offer decisions.** Heavy discount codes improve reported ROAS (more conversions) while crushing contribution ROAS (lower net revenue per order). Tracking contribution ROAS by offer type will show you whether your 20%-off campaigns are actually profitable or just moving volume. This connects directly to creative testing strategy covered in the [Shopify Ad Creative Testing Framework](/blog/shopify-ad-creative-testing-framework).
+
+For broader attribution context—especially if you're seeing discrepancies across platforms—[Shopify Attribution Models Explained](/blog/shopify-attribution-models-explained) is worth reading alongside this.
+
+## Conclusion
+
+Reported ROAS is a vanity metric if you're running a brand with meaningful return rates, discount codes, or shipping subsidies. The 4.2x your ad platform shows can mask a 2.8x contribution ROAS—and at scale, that gap is the difference between a business that's growing and one that's burning cash faster than it realizes.
+
+Run the contribution ROAS formula on last month's data today. If the gap between your reported and contribution ROAS is more than 20%, you have a unit economics problem that scaling ad spend will only make worse. Fix the inputs—tighten return windows, audit discount depth, price shipping into your offer math—and then rebuild your ROAS targets from the contribution number up.
+
+---
+
+## Frequently Asked Questions
+
+**What is true ROAS after returns?**
+
+True ROAS after returns—also called net ROAS or contribution ROAS—adjusts your ad platform's reported revenue figure by subtracting returned orders, refunded amounts, shipping subsidies, and discount code redemptions. This gives you the actual revenue that contributed to gross profit, not the inflated top-line number your ad platform claims. For most DTC brands, true ROAS runs 15–35% lower than reported ROAS.
+
+**How do I calculate contribution ROAS?**
+
+Contribution ROAS = (Gross Revenue - Returns - Discount Redemptions - Outbound Shipping Subsidy) / Ad Spend. Start with the revenue your ad platform reports, then subtract: the average return rate multiplied by AOV, the average discount depth multiplied by discounted order volume, and any free or subsidized shipping cost you absorb. Divide the result by total ad spend for that period.
+
+**What is a good true ROAS for a Shopify DTC brand?**
+
+A good contribution ROAS for a Shopify DTC brand is typically 2.5–4.0x after accounting for returns, discounts, and shipping. The right target depends on your gross margin—brands with 70%+ gross margin can operate profitably at 2.0x contribution ROAS, while brands at 40% gross margin often need 3.5x or higher to cover COGS, fulfillment, and overhead before turning a profit.
+
+**How much does return rate affect ROAS?**
+
+A 20% return rate reduces effective revenue by 20%, which translates directly into a ROAS deflation of roughly 20%. For example, a reported 4.0x ROAS with a 20% return rate becomes a 3.2x net ROAS—before accounting for shipping or discounts. Apparel and footwear brands, which often see 25–40% return rates, can see reported ROAS overstate real performance by nearly half.
+
+**Should I optimize Meta and Google ad campaigns to contribution ROAS?**
+
+Yes, for mature accounts. Using contribution ROAS as your optimization target prevents you from chasing revenue that disappears in the return cycle. Pass your contribution ROAS target back into your bidding strategy as a custom tROAS value. For Meta, use the Conversions API to pass a net revenue value event instead of gross order value—this trains the algorithm on real economics, not inflated top-line numbers.
+
+**What is the difference between ROAS and contribution ROAS?**
+
+Reported ROAS uses gross revenue as recorded by the ad platform at the moment of purchase—before any deductions. Contribution ROAS uses net realized revenue: gross revenue minus returns, refunds, discount redemptions, and shipping subsidies you absorb. Contribution ROAS is closer to the revenue figure that actually hits your P&L and is the number that should drive budget decisions and bidding targets.
