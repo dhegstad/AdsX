@@ -6,20 +6,15 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
-  // Redirect non-www to www for SEO consistency
   async redirects() {
     return [
-      {
-        source: "/:path*",
-        has: [
-          {
-            type: "host",
-            value: "adsx.com",
-          },
-        ],
-        destination: "https://www.adsx.com/:path*",
-        permanent: true,
-      },
+      // NOTE: No apex (adsx.com) -> www redirect. Google AdSense only accepts
+      // the bare top-level domain (adsx.com) and its verification crawler does
+      // NOT follow redirects, so the apex must serve content directly (HTTP 200).
+      // www remains canonical via the canonical/og tags + metadataBase, so SEO
+      // consolidation is preserved without a redirect. (The matching Vercel
+      // domain-level redirect on adsx.com was also removed.)
+
       // Legacy site redirects — old HTML/PDF/HTM pages from previous adsx.com site
       // Exact matches for known legacy paths
       {
