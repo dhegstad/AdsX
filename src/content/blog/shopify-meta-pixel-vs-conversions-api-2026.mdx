@@ -30,7 +30,7 @@ This guide walks through the migration path we use for client stores, including 
 
 A few stats that matter:
 
-- iOS 17+ continues to expand tracking restrictions. Browser pixel signal coverage has dropped to ~60-70% of actual events for most DTC stores.
+- [iOS 17+ continues to expand tracking restrictions](/blog/ios-attribution-gap-shopify-tracking-fix). Browser pixel signal coverage has dropped to ~60-70% of actual events for most DTC stores.
 - ASC+ specifically penalizes accounts with weak signal. We've measured 15-25% ROAS gaps between accounts with 8.0+ EMQ versus accounts at 5.0.
 - Privacy regulations (GDPR, CCPA, and the new state-level US laws) are easier to comply with via server-side because you control what data is sent and when.
 
@@ -134,7 +134,7 @@ If you're sitting at 5.0-6.0 EMQ:
 
 ## Common mistakes
 
-**Running both browser pixel and CAPI without deduplication.** This double-counts every event. Your ROAS in Ads Manager looks great. Your actual revenue doesn't move. We've fixed this in audits and watched reported ROAS drop 40% — to its actual level.
+**Running both browser pixel and CAPI without deduplication.** This [double-counts every event](/blog/google-ads-conversion-tracking-double-counting-fix). Your ROAS in Ads Manager looks great. Your actual revenue doesn't move. We've fixed this in audits and watched reported ROAS drop 40% — to its actual level.
 
 **Sending PII unhashed.** Meta requires SHA-256 hashed values for email, phone, and identifiers. Sending them in plaintext means Meta drops them. Elevar and the native integration handle this automatically; custom implementations sometimes don't.
 
@@ -153,7 +153,7 @@ We typically see, in the first 30 days post-migration:
 - ASC+ stabilization on lower budgets
 - Better audience match for lookalikes (more seeds = better seed quality)
 
-The reported ROAS lift is partly artificial — you're capturing events that always existed but weren't visible before. Your actual revenue won't jump. But Meta now has the signal to optimize correctly, which is where the real performance gain comes from over the following month.
+The [reported ROAS lift is partly artificial](/blog/meta-ads-retargeting-roas-overstated-fix) — you're capturing events that always existed but weren't visible before. Your actual revenue won't jump. But Meta now has the signal to optimize correctly, which is where the real performance gain comes from over the following month.
 
 ## What to do this week
 
