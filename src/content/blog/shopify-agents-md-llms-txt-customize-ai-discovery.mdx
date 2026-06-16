@@ -1,0 +1,96 @@
+---
+title: "Shopify agents.md & llms.txt: Control What AI Says About You"
+excerpt: "On May 28, 2026, Shopify gave merchants theme-level control over the files AI agents read. Here's how to use agents.md and llms.txt to shape your store's AI answers."
+date: "2026-06-09"
+updated: "2026-06-09"
+category: "Guide"
+tags: ["Shopify", "AEO", "AI Search", "llms.txt", "agents.md", "AI Discovery"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "What did Shopify launch on May 28, 2026?"
+    answer: "Shopify gave merchants and developers theme-level control over the files AI agents read from a store. You can now add Liquid templates — templates/agents.md.liquid, templates/llms.txt.liquid, and templates/llms-full.txt.liquid — under Online Store > Themes > Edit code. This lets you shape exactly what ChatGPT, Gemini, and other AI agents see when they read your store."
+  - question: "What is the difference between agents.md and llms.txt?"
+    answer: "Think of llms.txt and llms-full.txt as a structured map of your store's content for AI, and agents.md as guidance for how an agent should interact with or represent your store. The system falls back to the agents.md template, then to Shopify's auto-generated default, so you can provide as much or as little as you want and Shopify fills the gaps."
+  - question: "Does editing these files replace SEO or paid ads?"
+    answer: "No. These files shape how AI agents read and represent your store, which is answer-engine optimization. They complement traditional SEO and paid visibility rather than replacing either. AI discovery is earned and unpredictable; paid ads are bought and controllable. You want both, and clean agent files make your owned and earned visibility stronger."
+  - question: "How do these files interact with my product data?"
+    answer: "They sit alongside your structured product data, they don't override it. Shopify's product catalog still feeds prices, availability, and attributes. The agents.md and llms.txt templates let you add context, priorities, and framing — what to highlight, how to describe your brand, which collections matter most — so agents represent you the way you intend rather than guessing."
+  - question: "Where do I add these files?"
+    answer: "Go to Online Store > Themes > Edit code and add the Liquid templates: templates/agents.md.liquid, templates/llms.txt.liquid, and templates/llms-full.txt.liquid. Because they're Liquid templates, you can pull in dynamic store data rather than hardcoding everything. Start small and expand as you see how agents respond."
+---
+
+On May 28, 2026, Shopify quietly handed merchants something the AEO crowd has wanted for a while: **theme-level control over the files AI agents read from your store**. You can now add Liquid templates — `templates/agents.md.liquid`, `templates/llms.txt.liquid`, and `templates/llms-full.txt.liquid` — under **Online Store > Themes > Edit code**, and the system falls back to the `agents.md` template, then to Shopify's auto-generated default.
+
+In plain terms: you now get to influence what ChatGPT, Gemini, and other AI agents say about your store instead of leaving it entirely to their interpretation. For brands fighting to be the one an agent recommends, this is implementation-level answer-engine optimization, finally with a knob you control.
+
+![Code editor with structured content files for AI agents](https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&q=80)
+
+## What changed on May 28
+
+Until now, AI agents that crawled your Shopify store read whatever Shopify auto-generated plus your public pages. You had limited say over the framing. The May 28 release adds three editable Liquid templates:
+
+- **`templates/llms.txt.liquid`** — a concise, structured map of your store for AI to read.
+- **`templates/llms-full.txt.liquid`** — an expanded version with more detail.
+- **`templates/agents.md.liquid`** — guidance aimed at how an agent should interact with and represent your store.
+
+The fallback order matters: the system uses your templates where you provide them, then falls back to the `agents.md` template, then to Shopify's auto-generated default. So you're never starting from zero. You override only what you want to control and let Shopify handle the rest.
+
+Because these are **Liquid** templates, you can pull in live store data — collections, featured products, policies — rather than hardcoding a static file that goes stale the moment you change your catalog.
+
+## Why this matters for discovery
+
+AI assistants are becoming a real discovery surface, a shift we track across posts like [how to get recommended by ChatGPT](/blog/how-to-get-recommended-by-chatgpt) and the [Claude AI optimization guide](/blog/claude-ai-optimization-guide). When a shopper asks an assistant "what's a good store for X," the assistant reads available signals and decides how to describe and rank you.
+
+If you leave that to the default, you're trusting the agent's guess. With these templates, you can:
+
+- **Lead with what makes you different** instead of a generic product dump.
+- **Prioritize your best collections** so agents surface what actually converts.
+- **State the facts you want quoted** — shipping terms, guarantees, materials, sourcing — so the agent's answer is accurate and on-brand.
+
+## How it interacts with your product data
+
+A common misread: these files do not replace your product catalog. Shopify's structured product data still feeds prices, availability, and attributes to agents. The `agents.md` and `llms.txt` templates sit **alongside** that data and add context and framing.
+
+So your job splits into two layers. Keep the structured catalog clean and accurate, the foundation we stress in the [Shopify checkout conversion leak audit](/blog/shopify-checkout-conversion-leak-audit) and across our agentic-commerce coverage. Then use the new templates to add the narrative — who you are, what to highlight, how to describe the brand — that raw catalog fields can't carry.
+
+## What to put in these files
+
+Keep it tight and true. Agents reward clarity, not keyword stuffing.
+
+For **llms.txt**, a clean structured map:
+
+- A one-line description of what you sell and who it's for.
+- Your top collections and flagship products, linked.
+- Key policies: shipping, returns, guarantees.
+- Links to your most useful content — buyer guides, comparisons, sizing.
+
+For **llms-full.txt**, expand the above with more detail per item: the why behind a flagship product, the materials, the differentiators.
+
+For **agents.md**, guidance and framing:
+
+- How you want the brand described in one or two sentences.
+- What to emphasize (e.g., sustainability, fast shipping, a niche specialty).
+- Any accuracy guardrails — facts you want stated correctly.
+
+Resist the urge to oversell. AI assistants weight trustworthy, specific, consistent information. Honest and precise beats hypey every time.
+
+## Where this fits with paid visibility
+
+Be clear-eyed about what AEO does and doesn't do. Optimizing these files improves how agents *represent* you, but AI discovery is earned and unpredictable. You don't control when or whether an assistant surfaces your store, and you can't dial it up the way you can dial up ad spend.
+
+That's exactly why this **complements, not replaces, paid visibility**. Paid ads are bought and controllable; AI recommendations are earned and shaped. The smart play is both: clean agent files to win the recommendations you can earn, and paid campaigns to guarantee the reach you can't. Once AI traffic starts arriving, the next job is [converting AI shopping traffic](/blog/converting-ai-shopping-traffic-ecommerce) once it lands.
+
+## What to do this week
+
+1. **Go to Online Store > Themes > Edit code** and add the three Liquid templates.
+2. **Start with `llms.txt`** — a clean, structured map of your store. Keep it short.
+3. **Write a tight `agents.md`** with one or two sentences of brand framing and your accuracy guardrails.
+4. **Use Liquid to pull live data** for collections and featured products so the files don't go stale.
+5. **Test how agents describe you** before and after, then refine. Treat it like an iterative SEO file, not a one-time setup.
+
+If you're not on Shopify yet and want this level of native AI control, you can [start a Shopify trial](https://shopify.pxf.io/c/6318547/3797171/13624) and configure your agent files from the start. For the strategy layer behind these files, see [how to get recommended by ChatGPT](/blog/how-to-get-recommended-by-chatgpt).
+
+You finally get a say in what AI tells shoppers about your store. The merchants who fill these files with clear, honest, specific signals will be the ones agents describe accurately and recommend confidently. The ones who leave the default will keep wondering why the assistant got their brand slightly wrong.

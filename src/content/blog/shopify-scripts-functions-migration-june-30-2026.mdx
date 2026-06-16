@@ -1,0 +1,98 @@
+---
+title: "Shopify Scripts Die June 30, 2026: Migrate to Functions Now"
+excerpt: "Shopify Scripts stop executing June 30, 2026, with no storefront warning. Here's the urgent migration checklist to protect your discount, shipping, and payment logic."
+date: "2026-06-15"
+updated: "2026-06-15"
+category: "Guide"
+tags: ["Shopify", "Shopify Scripts", "Shopify Functions", "Checkout", "Migration", "Discounts"]
+author:
+  name: "AdsX Team"
+  role: "Paid Media Specialists"
+featured: false
+faqs:
+  - question: "When exactly do Shopify Scripts stop working?"
+    answer: "Shopify posted the deprecation changelog on April 9, 2026. As of April 15, 2026 you can no longer create or edit Scripts. On June 30, 2026, all existing Scripts stop executing entirely. After that date, any checkout, shipping, payment, or discount logic that lived in a Script simply does not run."
+  - question: "What replaces Shopify Scripts?"
+    answer: "Shopify Functions. Functions are compiled to WebAssembly, run in roughly sub-5ms with no cold starts, and cover the same surfaces Scripts did: discounts, shipping, payment customizations, and checkout logic. They are more performant and more flexible than the old sandboxed Ruby Scripts, but they require migration work and often a Functions-based app."
+  - question: "How do I find which Scripts I'm running?"
+    answer: "Use Shopify's Scripts customizations report. It identifies your active Scripts and maps each one to the Function or public app that can replace it. Run it first so you know the full scope of what has to move before June 30 instead of discovering broken logic in production."
+  - question: "Will my store warn shoppers if a Script breaks?"
+    answer: "No. There is no storefront warning when Scripts stop executing. A discount silently fails to apply, a shipping rate quietly disappears, or a payment method shows up that shouldn't. Shoppers see a worse experience and you see lower conversion, but nothing flags the cause. That silence is exactly why this migration is dangerous to ignore."
+  - question: "Why does this matter for paid ads specifically?"
+    answer: "Broken Script logic kills the conversion you paid to acquire. If a promo code you advertised stops applying on June 30, every click you bought for that campaign lands on a checkout that fails the offer. ROAS collapses, carts abandon, and your tracking shows traffic with no sales. Paid traffic makes the cost of silent breakage immediate and expensive."
+---
+
+On April 9, 2026, Shopify posted the changelog that ends Shopify Scripts for good. The timeline is short and the consequences are quiet: as of April 15, 2026 you can no longer create or edit Scripts, and on **June 30, 2026 every existing Script stops executing**. If you run any discount, shipping, payment, or checkout logic through the old sandboxed Ruby Scripts, you have until the end of June to move it to Shopify Functions or it simply stops working.
+
+The reason this is urgent rather than routine: there is **no storefront warning when Scripts fail**. Nothing breaks loudly. A discount just doesn't apply. A shipping rate vanishes. And if you're spending money to send traffic to that checkout, you'll feel it in your ROAS before you understand the cause.
+
+![Shopify checkout and discount configuration on a laptop](https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=1200&q=80)
+
+## What's actually changing
+
+Shopify Scripts were sandboxed Ruby snippets that let merchants and Plus stores customize the cart and checkout: tiered discounts, "buy X get Y," shipping rate rules, payment method gating, and more. They've been on borrowed time, and the April 9 changelog made the end date concrete.
+
+Three dates matter:
+
+- **April 9, 2026** — deprecation announced.
+- **April 15, 2026** — you can no longer create or edit Scripts. Existing ones keep running for now.
+- **June 30, 2026** — all Scripts stop executing. Permanently.
+
+The replacement is **Shopify Functions**: logic compiled to WebAssembly that runs in roughly **sub-5ms with no cold starts**. Functions are faster and more capable than Scripts, but they are not a toggle. Most merchants migrate either by installing a public app that delivers the same behavior or by deploying a custom Function. Either way, it's work, and the clock is the problem.
+
+## Why paid-traffic merchants should care most
+
+If you don't run ads, broken Script logic is a slow leak. If you do, it's a hole in the boat.
+
+Here's the mechanism. You build a campaign around a promo code or a free-shipping threshold. You spend to drive qualified shoppers to a product page. They add to cart, head to checkout, and the discount Script that's supposed to fire on June 30 onward simply doesn't. The shopper sees full price or no free shipping, gets confused or annoyed, and abandons. You paid for that click. You got nothing back, and your analytics show traffic with no conversions and no obvious reason.
+
+This is the same silent-leak problem we break down in the [Shopify checkout conversion leak audit](/blog/shopify-checkout-conversion-leak-audit) and [how to optimize Shopify checkout](/blog/how-to-optimize-shopify-checkout). The difference is that on June 30 the leak opens on a fixed date for everyone still on Scripts at once.
+
+## Step 1: Run the Scripts customizations report
+
+Shopify provides a **Scripts customizations report** that identifies your active Scripts and maps each one to the Function or public app that can replace it. Run this first. Do not guess at your inventory of Scripts from memory, because many stores accumulated them over years through agencies, apps, and one-off tweaks.
+
+The report tells you two things you need: what logic you're actually running, and what the recommended replacement path is for each piece. That converts a vague "we should migrate" into a concrete list you can assign and finish.
+
+## Step 2: Triage by revenue risk
+
+Not all Scripts are equal. Sort yours by how directly they touch money and conversion:
+
+- **Discount Scripts** — promo codes, automatic discounts, tiered and volume pricing. Highest risk for paid campaigns. If you advertise an offer, the Script behind it is mission-critical.
+- **Shipping Scripts** — free-shipping thresholds, rate rules, surcharges. These influence cart economics and abandonment.
+- **Payment Scripts** — hiding or reordering payment methods, gating by cart contents. Breakage here can expose methods you intended to restrict.
+- **Checkout/validation logic** — quantity limits, regional rules, gift-with-purchase.
+
+Anything tied to an active ad campaign jumps to the top regardless of category.
+
+## Step 3: Migrate to Functions (or apps) and test in checkout
+
+For each Script, either deploy the mapped public app or build the equivalent Function. Functions are compiled WebAssembly, so the performance is excellent, but the behavior needs to be verified, not assumed.
+
+Test in a real checkout, not just the admin. Place test orders that exercise each rule: hit the discount threshold, drop below it, try the edge cases your old Script handled. Confirm the discount applies, the shipping rate shows, the payment method behaves. Because there's no failure warning, your test order is the warning.
+
+If you work with a developer or agency, this is also a good moment to consolidate. Years of stacked Scripts often hide redundant or conflicting logic that Functions let you clean up.
+
+## Step 4: Watch the analytics around June 30
+
+Even after you migrate, treat the changeover window as a monitoring period. Keep an eye on:
+
+- Checkout completion rate and cart abandonment day over day across June 30.
+- Discount-code redemption counts for any code tied to a live campaign.
+- ROAS on campaigns that depend on an advertised offer.
+
+A sudden dip right at the cutover is your signal that something didn't carry over. For tightening the whole funnel that paid traffic flows into, our [meta ads account structure rebuild](/blog/meta-ads-account-structure-rebuild-2026) pairs well with a clean checkout.
+
+## What to do this week
+
+You have roughly two weeks. Here's the order:
+
+1. **Run the Scripts customizations report today.** Get the full inventory.
+2. **Flag every Script tied to a live or planned ad campaign.** Those are non-negotiable to migrate first.
+3. **Deploy the mapped app or Function for each, and place real test orders.** Verify in checkout, not just admin.
+4. **Schedule monitoring for June 29–July 2.** Watch checkout completion, discount redemptions, and ROAS.
+5. **Don't launch a new promo-code campaign across June 30** until you've confirmed the discount logic runs on Functions.
+
+If you're evaluating platforms and aren't on Shopify yet, you can [start a Shopify trial](https://shopify.pxf.io/c/6318547/3797171/13624) to build on Functions from day one and skip the migration entirely. For the bigger Summer '26 picture this deprecation sits inside, see our [Shopify Summer '26 AI merchandising preview](/blog/shopify-summer-26-ai-collection-sort-merchandising).
+
+The Scripts era ends June 30, 2026. The stores that migrate calmly this month will never notice. The ones that don't will spend July explaining to themselves why a checkout they paid to fill suddenly stopped converting.
