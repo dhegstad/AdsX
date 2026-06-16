@@ -33,13 +33,9 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
   const offset = parseInt(searchParams.get("offset") || "0");
 
-  // Get all site URLs from sitemap (core pages + all blog chunks)
-  const { generateSitemaps } = await import("@/app/sitemap");
-  const sitemapIds = await generateSitemaps();
-  const allEntries = await Promise.all(
-    sitemapIds.map((s) => sitemap(s))
-  );
-  const allUrls = allEntries.flat().map((entry) => entry.url);
+  // Get all site URLs from the sitemap (single file: core + programmatic + blog)
+  const allEntries = await sitemap();
+  const allUrls = allEntries.map((entry) => entry.url);
 
   const total = allUrls.length;
   const paginatedUrls = allUrls.slice(offset, offset + limit);

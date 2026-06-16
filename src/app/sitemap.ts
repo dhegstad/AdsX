@@ -16,26 +16,10 @@ import { getAllLists } from '@/lib/curated-lists';
 import { getAllProducts } from '@/lib/sell-products';
 import { getAllReports } from '@/lib/research-reports';
 
-const BLOG_POSTS_PER_SITEMAP = 200;
-
-export async function generateSitemaps() {
-  const posts = getAllPosts();
-  const blogSitemapCount = Math.ceil(posts.length / BLOG_POSTS_PER_SITEMAP);
-
-  // ID 0 = core + programmatic pages, IDs 1+ = blog post chunks
-  const ids = [{ id: 0 }];
-  for (let i = 1; i <= blogSitemapCount; i++) {
-    ids.push({ id: i });
-  }
-  return ids;
-}
-
-export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
-  // Next.js 16 passes `id` as a Promise<number> (async params). Without awaiting
-  // it, `id` was an unresolved object, so `id === 0` never matched and the chunk
-  // arithmetic was NaN — every sitemap rendered an empty <urlset>, leaving Google
-  // with no sitemap for 1,100+ pages. Awaiting it yields the real chunk index.
-  const sid = Number(await (id as unknown as Promise<number>));
+// Single sitemap served at /sitemap.xml. With ~1,450 URLs we are far under the
+// 50,000-URL / 50MB per-file limit, so there is no need to split into chunks via
+// generateSitemaps() (which also avoids the Next 16 async-id pitfall entirely).
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.adsx.com';
 
   // Use a fixed date for static/programmatic pages so Google doesn't see
@@ -51,9 +35,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
     ? new Date(allPosts[0].date)
     : CORE_PAGES_UPDATED;
 
-  // Sitemap 0: all non-blog URLs
-  if (sid === 0) {
-    return [
+  const urls: MetadataRoute.Sitemap = [
       // Core pages
       {
         url: baseUrl,
@@ -306,21 +288,17 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
         changeFrequency: 'yearly' as const,
         priority: 0.3,
       },
-    ].filter((entry, index, self) =>
-      index === self.findIndex((e) => e.url === entry.url)
-    );
-  }
+    // All blog posts
+    ...allPosts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+  ];
 
-  // Sitemaps 1+: blog post chunks (200 per sitemap)
-  const posts = allPosts.length > 0 ? allPosts : getAllPosts();
-  const start = (sid - 1) * BLOG_POSTS_PER_SITEMAP;
-  const end = start + BLOG_POSTS_PER_SITEMAP;
-  const chunk = posts.slice(start, end);
-
-  return chunk.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  // De-dupe by URL.
+  return urls.filter((entry, index, self) =>
+    index === self.findIndex((e) => e.url === entry.url)
+  );
 }
