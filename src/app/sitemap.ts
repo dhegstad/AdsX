@@ -31,6 +31,11 @@ export async function generateSitemaps() {
 }
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+  // Next.js 16 passes `id` as a Promise<number> (async params). Without awaiting
+  // it, `id` was an unresolved object, so `id === 0` never matched and the chunk
+  // arithmetic was NaN — every sitemap rendered an empty <urlset>, leaving Google
+  // with no sitemap for 1,100+ pages. Awaiting it yields the real chunk index.
+  const sid = Number(await (id as unknown as Promise<number>));
   const baseUrl = 'https://www.adsx.com';
 
   // Use a fixed date for static/programmatic pages so Google doesn't see
@@ -47,7 +52,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
     : CORE_PAGES_UPDATED;
 
   // Sitemap 0: all non-blog URLs
-  if (id === 0) {
+  if (sid === 0) {
     return [
       // Core pages
       {
@@ -308,7 +313,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
 
   // Sitemaps 1+: blog post chunks (200 per sitemap)
   const posts = allPosts.length > 0 ? allPosts : getAllPosts();
-  const start = (id - 1) * BLOG_POSTS_PER_SITEMAP;
+  const start = (sid - 1) * BLOG_POSTS_PER_SITEMAP;
   const end = start + BLOG_POSTS_PER_SITEMAP;
   const chunk = posts.slice(start, end);
 

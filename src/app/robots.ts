@@ -1,4 +1,20 @@
 import { MetadataRoute } from 'next';
+import { getAllPosts } from '@/lib/blog';
+
+// Must match BLOG_POSTS_PER_SITEMAP in sitemap.ts.
+const BLOG_POSTS_PER_SITEMAP = 200;
+
+// Next's generateSitemaps does not expose an index at /sitemap.xml (that URL
+// 404s), so point robots directly at every child sitemap (0 = core/programmatic,
+// 1+ = blog chunks).
+function sitemapUrls(): string[] {
+  const blogChunks = Math.ceil(getAllPosts().length / BLOG_POSTS_PER_SITEMAP);
+  const urls = ['https://www.adsx.com/sitemap/0.xml'];
+  for (let i = 1; i <= blogChunks; i++) {
+    urls.push(`https://www.adsx.com/sitemap/${i}.xml`);
+  }
+  return urls;
+}
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -67,7 +83,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/login', '/signup', '/dashboard', '/v0/'],
       },
     ],
-    sitemap: 'https://www.adsx.com/sitemap.xml',
+    sitemap: sitemapUrls(),
     host: 'https://www.adsx.com',
   };
 }
