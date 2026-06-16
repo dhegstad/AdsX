@@ -13,6 +13,36 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+// Hosts that next/image is allowed to optimize (must mirror next.config.ts
+// remotePatterns). We only promote an in-body image to a listing thumbnail when
+// it comes from one of these hosts, so cards never point at an image the
+// optimizer will reject.
+const THUMBNAIL_HOSTS = new Set([
+  "images.unsplash.com",
+  "storage.googleapis.com",
+  "cdn.shopify.com",
+]);
+
+// Pull the first usable in-body markdown image (`![alt](url)`) to use as the
+// listing thumbnail when a post has no explicit frontmatter `image`. Skips
+// non-http and disallowed hosts (e.g. chart images) so the listing falls back
+// to a gradient placeholder instead of a broken card image.
+export function extractFirstImage(content: string): string | undefined {
+  const re = /!\[[^\]]*\]\(\s*(https?:\/\/[^\s)]+)/g;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(content)) !== null) {
+    const url = match[1];
+    try {
+      if (THUMBNAIL_HOSTS.has(new URL(url).hostname)) {
+        return url;
+      }
+    } catch {
+      // ignore malformed URLs
+    }
+  }
+  return undefined;
+}
+
 export interface FAQItem {
   question: string;
   answer: string;
@@ -89,7 +119,7 @@ export function getAllPosts(): BlogPostMeta[] {
       category: data.category || "Uncategorized",
       tags: data.tags || [],
       author: data.author || { name: "AdsX Team", role: "AI Search Experts" },
-      image: data.image,
+      image: data.image || extractFirstImage(content),
       readingTime: stats.text,
       featured: data.featured || false,
     };

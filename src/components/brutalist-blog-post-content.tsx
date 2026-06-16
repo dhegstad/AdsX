@@ -16,6 +16,21 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+// Extract a YouTube video id from watch/short/embed URL forms. Used to turn a
+// bare YouTube link on its own line into a responsive embed.
+function getYouTubeId(url: string): string | null {
+  const patterns = [
+    /youtube\.com\/watch\?v=([\w-]{11})/,
+    /youtu\.be\/([\w-]{11})/,
+    /youtube\.com\/embed\/([\w-]{11})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
 interface TocHeading {
   id: string;
   text: string;
@@ -309,6 +324,28 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                   },
                   a: ({ href, children, ...props }) => {
                     const isExternal = href?.startsWith("http");
+                    // A bare YouTube link on its own line becomes a responsive embed.
+                    const ytId = href ? getYouTubeId(href) : null;
+                    const isBareLink = !!href && String(children) === href;
+                    if (ytId && isBareLink) {
+                      return (
+                        <span className="my-8 block">
+                          <span
+                            className="relative block w-full overflow-hidden border border-[#333]"
+                            style={{ paddingBottom: "56.25%" }}
+                          >
+                            <iframe
+                              className="absolute inset-0 h-full w-full"
+                              src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+                              title="Embedded video"
+                              loading="lazy"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </span>
+                        </span>
+                      );
+                    }
                     return (
                       <a
                         href={href}

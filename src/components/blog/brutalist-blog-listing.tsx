@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPostMeta } from "@/lib/blog";
 
@@ -6,6 +7,62 @@ interface Category {
   category: string;
   slug: string;
   count: number;
+}
+
+// Deterministic gradient palette for posts with no in-body image, so every card
+// has a distinct thumbnail without per-post work. Index is derived from the slug
+// so the same post always gets the same gradient.
+const THUMB_GRADIENTS = [
+  "linear-gradient(135deg, #064e3b 0%, #0a0a0a 100%)",
+  "linear-gradient(135deg, #0c4a6e 0%, #0a0a0a 100%)",
+  "linear-gradient(135deg, #4c1d95 0%, #0a0a0a 100%)",
+  "linear-gradient(135deg, #7c2d12 0%, #0a0a0a 100%)",
+  "linear-gradient(135deg, #134e4a 0%, #0a0a0a 100%)",
+  "linear-gradient(135deg, #1e3a8a 0%, #0a0a0a 100%)",
+];
+
+function gradientFor(slug: string): string {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+  return THUMB_GRADIENTS[hash % THUMB_GRADIENTS.length];
+}
+
+// Listing thumbnail: optimized image when the post has one, otherwise a
+// deterministic gradient placeholder stamped with the category label.
+function CardThumbnail({
+  post,
+  sizes,
+  priority = false,
+}: {
+  post: BlogPostMeta;
+  sizes: string;
+  priority?: boolean;
+}) {
+  if (post.image) {
+    return (
+      <Image
+        src={post.image}
+        alt={post.title}
+        fill
+        priority={priority}
+        className="object-cover"
+        sizes={sizes}
+      />
+    );
+  }
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center"
+      style={{ background: gradientFor(post.slug) }}
+    >
+      <span
+        className="px-3 text-center text-sm tracking-widest text-white/70 uppercase"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        {post.category}
+      </span>
+    </div>
+  );
 }
 
 interface BrutalistBlogListingProps {
@@ -115,6 +172,9 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
             </span>
           </div>
           <Link href={`/blog/${featuredPost.slug}`} className="block group">
+            <div className="relative aspect-[2/1] md:aspect-[3/1] overflow-hidden border-b border-[#333]">
+              <CardThumbnail post={featuredPost} sizes="100vw" priority />
+            </div>
             <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-[#333] bg-[#111] group-hover:bg-[#1a1a1a] transition-colors">
                 <div
@@ -219,8 +279,12 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="blog-card border-r border-b border-[#333] p-6 flex flex-col group hover:bg-[#EAEAEA] transition-colors"
+              className="blog-card border-r border-b border-[#333] flex flex-col group hover:bg-[#EAEAEA] transition-colors"
             >
+              <div className="relative aspect-[16/9] overflow-hidden border-b border-[#333]">
+                <CardThumbnail post={post} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
               <div className="flex justify-between items-start mb-4">
                 <span
                   className="text-xs text-[#888] group-hover:text-[#333]"
@@ -266,6 +330,7 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
                 >
                   READ →
                 </span>
+              </div>
               </div>
             </Link>
           ))}
