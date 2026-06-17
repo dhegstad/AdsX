@@ -63,6 +63,14 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      // Blog consolidation: unpublished a duplicate agentic-commerce thesis post
+      // that overlapped the existing complete guide. 301 so any crawled/shared
+      // URL lands on the canonical post instead of 404ing.
+      {
+        source: "/blog/ai-unbundling-shopify-storefront-builders-buyers",
+        destination: "/blog/agentic-commerce-shopify-complete-guide",
+        permanent: true,
+      },
     ];
   },
   experimental: {
