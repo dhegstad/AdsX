@@ -1,0 +1,111 @@
+---
+title: "Mantle Is Shutting Down: What Shopify App Partners Do Next"
+excerpt: "Mantle, the revenue platform for Shopify app partners, announced it is winding down on June 16, 2026. Here are the deadlines that matter and how to migrate billing, analytics, and data before they go dark."
+date: "2026-06-16"
+category: "Research"
+tags: ["Shopify", "Shopify Apps", "Mantle", "App Developers", "Billing", "Migration"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-06-16"
+faqs:
+  - question: "Is Mantle shutting down?"
+    answer: "Yes. On June 16, 2026, Mantle announced it is winding down over the coming months. The company described it as a complete shutdown of all Mantle properties, including the dashboard, APIs, and MCPs, followed by the eventual destruction of data. Mantle confirmed the business is not being sold or transferred to another owner."
+  - question: "When does Mantle stop working?"
+    answer: "There are two deadlines. Accounts that do not use Mantle Billing wind down 60 days after the announcement, on August 14, 2026. Accounts that use Mantle Billing have until September 30, 2026, and that later date covers the entire account, including analytics, helpdesk, and email, not just billing."
+  - question: "What should I do if I use Mantle Billing?"
+    answer: "Mantle recommends moving to Shopify's App Pricing and migrating your billing to the Shopify Billing API before September 30, 2026. Because billing is what collects revenue from your customers, treat this as the highest-priority migration. Export your customer, subscription, and revenue data, and contact Mantle support, which is staying staffed through the transition."
+  - question: "What happens to my data in Mantle?"
+    answer: "Mantle stated the wind down ends in eventual destruction of data, and that data will not switch hands. Export everything you need, customer records, subscription history, revenue reports, email contacts, and affiliate data, before your account's deadline (August 14 or September 30, 2026)."
+  - question: "What can replace Mantle for Shopify apps?"
+    answer: "For billing, Shopify's native App Pricing and the Shopify Billing API are the direct replacement Mantle points partners toward. Mantle bundled several products, so you may need separate tools for the rest: analytics and reporting, email marketing, affiliate programs, and a help desk. Map each Mantle product you rely on to a standalone replacement."
+---
+
+On June 16, 2026, Mantle told its customers it is winding down. For the hundreds of Shopify app businesses that run billing, analytics, email, and support through Mantle, this is not a feature deprecation. It is a countdown to your tooling going dark.
+
+If you build Shopify apps and depend on Mantle for anything load-bearing, especially billing, you have work to do and a hard deadline to do it by.
+
+![Mantle is winding down its revenue platform for Shopify app partners](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## What Mantle Was
+
+Mantle was the business layer for Shopify apps. Founded in 2023 in Ottawa and built, in its own words, "by Shopify alumni for Shopify App Partners," the venture-backed company set out to give app developers everything they needed to run the commercial side of an app in one place.
+
+Over time that grew into a wide suite:
+
+- **Billing and plans**, including hosted billing and usage-based "flex" billing
+- **Reports and analytics** tuned to the quirks of the Shopify Partner ecosystem, like filtering customers by Shopify plan and tracking how revenue flows from merchants through Shopify payouts
+- **Email marketing, flows, and affiliate programs**
+- **A help desk, knowledge base, and a Sales CRM**
+- **Mantle AI, plus a CLI and MCP** for wiring all of it into your own app
+
+It was a genuinely ambitious product, and the people who used it liked it. That is exactly why the wind down stings for the partners who built on top of it.
+
+## What's Happening
+
+Mantle's notice is blunt about the scope:
+
+> "After a lot of thought, we've made the difficult decision to wind down Mantle over the coming months... This wind down will be a complete shutdown of all Mantle properties and eventual destruction of data. You don't have to worry about it switching hands."
+
+In plain terms: the dashboard, the APIs, and the MCPs are all going away. There is no acquirer taking over the lights. Any critical dependency you have on Mantle has to be migrated, or it breaks.
+
+## The Dates That Matter
+
+Mantle split its customers into two tracks. Find yours and write the deadline down.
+
+| Your account | Everything shuts off | What's covered |
+|---|---|---|
+| **Not using Mantle Billing** | **August 14, 2026** (60 days from the announcement) | Analytics, email, helpdesk, affiliates, flows |
+| **Using Mantle Billing** | **September 30, 2026** | The whole account: billing, analytics, helpdesk, and email all keep working until this date |
+
+The billing distinction is the important one. Mantle is giving billing partners extra runway because billing is the piece that actually collects money from your customers. If that migration is rushed or botched, you do not just lose a dashboard, you lose revenue and risk failed charges for your own users.
+
+## Who This Hits
+
+To be clear about who is affected: Mantle's customers are **Shopify app developers and partners**, the people who build and sell apps in the Shopify App Store, not merchants running storefronts. If you are a merchant, your store is unaffected. If you are a partner who wired Mantle into your app's billing, onboarding emails, affiliate program, or support desk, this is your problem to manage over the next few months.
+
+## What This Signals
+
+A few takeaways for anyone building in the Shopify ecosystem:
+
+**Native gravity is real.** Mantle is steering billing partners straight to **Shopify's own App Pricing and Billing API.** When the platform owner offers the core primitive natively, third-party layers on top of it live on borrowed time. Build on native rails where you can, and treat third-party middleware as a convenience you could replace, not a foundation you can't.
+
+**Own your data exits.** The partners who will move fastest are the ones who already export their customer and revenue data on a schedule. If a critical tool can erase your history with 60 days' notice, you want your own copy long before the notice arrives.
+
+**Bundles concentrate risk.** Mantle's strength was doing billing, analytics, email, affiliates, and support in one place. The flip side is that one shutdown notice now hits five workflows at once. Consolidation is convenient until the thing you consolidated into winds down.
+
+## Your Migration Checklist
+
+Work this in priority order. Billing first, because it is the one that costs you money if it breaks.
+
+1. **Migrate billing to Shopify's Billing API.** Move your plans and subscriptions onto [Shopify's native App Pricing](https://shopify.dev/docs/apps/launch/billing) before September 30, 2026. Test new subscriptions, upgrades, downgrades, and cancellations end to end before you cut over. This is the migration that protects revenue.
+2. **Export everything, now.** Pull your customer records, subscription and billing history, revenue and churn reports, [email marketing](/blog/shopify-email-marketing-guide) contacts and unsubscribe groups, and [affiliate program](/blog/shopify-affiliate-program-setup-guide) data. Do this well ahead of your August 14 or September 30 deadline, not the week of.
+3. **Replace each product you actually use.** Mantle was a suite, so map every piece you depend on to a standalone tool: analytics and reporting, email, affiliates, help desk, and CRM. Check our roundups of [Shopify subscription and billing apps](/blog/best-shopify-subscription-apps-2026) and our [Shopify app development guide](/blog/shopify-app-development-guide) for replacements.
+4. **Tell your own customers if their experience changes.** If billing or subscription management will look different to your app's users, get ahead of it with a short, clear heads-up. Surprise billing changes generate support tickets and churn.
+5. **Use Mantle support while it's there.** Mantle confirmed its support team is "staying on through the transition." Front-load your migration questions while a human is still answering them.
+
+## How AdsX Fits In
+
+AdsX is an AI-search and paid-ads agency for Shopify and e-commerce brands, so a tooling shutdown is not our lane to migrate for you. But the deeper lesson applies to every business in this ecosystem, app partners and merchants alike: the channels and tools you rent can change the rules overnight, so the durable asset is demand you own.
+
+For app partners, that means visibility you control, ranking in the Shopify App Store and getting recommended by AI assistants like ChatGPT and Perplexity when developers and merchants ask for tools, instead of depending entirely on any single platform's distribution.
+
+[Run a free AI visibility audit](/tools/free-audit) to see how AI search engines describe your product today, or [talk to our team](/contact) about building demand that does not disappear when a vendor does.
+
+---
+
+*Mantle's wind down is a hard moment for the partners who built on it, and a reminder for everyone else: in a platform ecosystem, own your billing rails, own your data, and own your demand. Migrate early, and don't wait for the deadline week to find out what breaks.*
+
+**Sources:**
+- [Mantle is winding down (official notice)](https://docs.heymantle.com/migrating-off-mantle/wind-down)
+- [Mantle](https://www.heymantle.com/)
+- [Mantle pricing: Revenue operations for Shopify apps](https://heymantle.com/pricing/)
+- [Jordan Graham on X: "Made with 💛 by Shopify alumni for Shopify App Partners"](https://x.com/l8r_graham/status/1699853990811390165)
+- [Shopify App Billing API documentation](https://shopify.dev/docs/apps/launch/billing)
+
+## Related reading
+
+- [Shopify App Development Guide: Build, Launch, and Grow](/blog/shopify-app-development-guide)
+- [Shopify Affiliate Program Setup Guide](/blog/shopify-affiliate-program-setup-guide)
+- [Best Shopify Subscription Apps in 2026](/blog/best-shopify-subscription-apps-2026)
