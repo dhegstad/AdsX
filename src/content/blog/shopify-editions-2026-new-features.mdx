@@ -1,6 +1,6 @@
 ---
-title: "Shopify Editions 2026: 47 New Features Ranked by Impact"
-excerpt: "All 47 Shopify Editions 2026 features ranked by revenue impact: the 12 worth adopting now, the 35 you can skip, and 3 quietly important ones nobody is talking about."
+title: "Shopify Editions 2026: 150+ New Features Ranked by Impact"
+excerpt: "Shopify Editions 2026 ranked by impact, now with the Summer '26 Everywhere Edition's 150+ updates and the June 30 Scripts deadline you can't miss."
 date: "2026-03-12"
 category: "Guide"
 tags: ["Shopify","AI Features","E-commerce Technology"]
@@ -8,7 +8,7 @@ author:
   name: "AdsX Team"
   role: "AI Search Specialists"
 featured: false
-updated: "2026-03-12"
+updated: "2026-06-18"
 faqs:
   - question: "What are Shopify Editions and how often do they happen?"
     answer: "Shopify Editions are Shopify's biannual product announcements where the company reveals new features, tools, and platform improvements. They typically occur twice per year, with announcements in the winter and summer timeframes. Each Editions release includes dozens to over a hundred individual updates ranging from small quality-of-life improvements to major new platform capabilities. Not all features are available immediately at announcement; some roll out over the following weeks or months. Merchants can track the rollout status of each feature in Shopify's changelog and admin notifications."
@@ -18,6 +18,10 @@ faqs:
     answer: "Most new features are automatically available in your Shopify admin once they roll out to your store. Check your Shopify admin dashboard for notifications about new features. Some features require manual activation in your store settings. For theme-related features, you may need to update your theme to the latest version or add new sections through the theme editor. For API-related features, developers can access updated documentation at shopify.dev. If a feature requires a specific Shopify plan upgrade, you will see the plan requirement noted in the feature description. Shopify also provides detailed setup guides for each major new feature in their help center."
   - question: "Will the new AI features in Shopify replace the need for third-party AI apps?"
     answer: "Shopify's built-in AI features handle common tasks like product description generation, email subject line suggestions, and basic content creation competently. However, they are designed for broad applicability rather than deep specialization. Third-party AI apps and external AI tools like Claude still offer advantages for merchants who need highly customized brand voice consistency, complex multi-step automation workflows, advanced analytics and data interpretation, and sophisticated customer service AI. The best approach for most merchants is to use Shopify's native AI for quick, simple tasks and supplement with specialized third-party tools for more complex or brand-specific requirements."
+  - question: "When is the Shopify Scripts deadline?"
+    answer: "Shopify Scripts is fully removed on June 30, 2026, as part of the Summer '26 Everywhere Edition. Any discount, shipping, or payment customization still running on the legacy Scripts engine stops working on July 1, 2026. Migrate that logic to Shopify Functions before the deadline. This mainly affects Shopify Plus merchants that built custom checkout or discount rules on Scripts. Do not wait until the final week, since testing migrated Functions in a development store takes time."
+  - question: "What is the Shopify Summer '26 Everywhere Edition?"
+    answer: "The Everywhere Edition is Shopify's Summer 2026 Editions release, announced June 17, 2026 with 150+ updates. Its theme is commerce showing up everywhere a customer is, especially inside AI assistants. The headline changes are agentic commerce going default-on (the Universal Commerce Protocol is now enabled on every store, plus a new Agentic section in the admin), native AI merchandising and Campaign Autopilot, Checkout Components reaching general availability on Plus, native A/B testing, and the retirement of legacy Scripts on June 30, 2026."
   - question: "How do the new checkout improvements affect my conversion rate?"
     answer: "Shopify's checkout improvements are designed to reduce friction and increase conversion rates. Based on Shopify's internal testing data, features like one-page checkout, Shop Pay acceleration, and improved autofill capabilities have shown conversion rate improvements of 5-15% for merchants who implement them. The most impactful change is the continued expansion of Shop Pay, which converts at nearly twice the rate of standard guest checkout because it pre-fills customer information and provides one-tap purchasing. To maximize the impact of checkout improvements, ensure you have Shop Pay enabled, accept all major payment methods, and have not added unnecessary custom fields to your checkout flow."
 ---
@@ -27,6 +31,44 @@ faqs:
 This guide covers every major feature from the 2026 Shopify Editions announcements, explains what each feature actually does (cutting through the marketing language), and provides actionable guidance on implementing the updates that matter most for your store.
 
 ![Modern technology workspace showing software dashboard with commerce analytics](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## The Latest: Summer '26 "Everywhere Edition" (150+ Updates)
+
+On June 17, 2026, Shopify shipped its biggest drop of the year: the **Summer '26 "Everywhere Edition," with 150+ updates**, announced by CEO Tobi Lütke. The theme is commerce showing up *everywhere* a customer is, and in 2026 that increasingly means inside AI assistants rather than on your homepage. Here are the changes that actually matter, grouped by what they do.
+
+### Agentic commerce goes default-on
+
+This is the headline shift, and the one to act on if you care about AI-driven sales:
+
+- **The Universal Commerce Protocol (UCP) is now enabled by default on every Shopify store.** UCP is the standard that lets AI shopping agents read your catalog and build carts, so your products are discoverable to agents out of the box rather than after a custom build.
+- **There is now an "Agentic" section in every admin** — one place to manage your AI channels, see how your products surface to agents, and track agent-driven performance.
+- **A unified Catalog** spanning billions of products powers that AI-agent discovery.
+
+If you want the deeper playbook here, see our [agentic commerce guide](/blog/agentic-commerce-shopify-complete-guide) and the [Storefront MCP field guide](/blog/shopify-storefront-mcp-merchant-field-guide).
+
+### AI moves deeper into the admin
+
+- **Native AI merchandising** automates collection and category management, replacing some rules-engine apps.
+- **Campaign Autopilot** runs AI-powered marketing campaigns from inside the Shopify admin.
+- **Sidekick expansion and a new retail AI Sales Associate** push the assistant across both admin and POS.
+
+### Checkout and payments
+
+- **Checkout Components are now generally available on Shopify Plus** — composable, custom checkout without going fully headless.
+- **Native A/B testing** for themes and checkout configurations is built in, cutting reliance on third-party testing apps.
+- **Shop Pay opens to any platform**, alongside expanded local payment methods.
+
+### Retail, B2B, and international
+
+- **POS v11**, unified POS + admin staff permissions, and multi-location pickup in POS.
+- **Native B2B net terms** with automated invoicing.
+- **Multi-currency payouts** expanded to the US, Hong Kong, and Singapore.
+
+### The deadline you cannot ignore: Shopify Scripts ends June 30, 2026
+
+The most urgent item in this Edition is a removal, not an addition. **Legacy Shopify Scripts is fully retired on June 30, 2026.** Any discount, shipping, or payment customization still running on Scripts stops working on July 1 — you have to migrate that logic to **Shopify Functions** before then. If you run a Plus store with custom checkout or discount rules, treat this as a hard deadline, not a suggestion, and leave time to test the migrated Functions in a development store.
+
+*Sources: Shopify Editions (Summer '26 "Everywhere Edition," announced June 17, 2026), as reported across [Digg](https://digg.com/tech/cl8l3oac), [Novadata](https://novadata.io/resources/news/shopify-summer-2026-editions-preview-june-2026), and [Digital Applied](https://www.digitalapplied.com/blog/shopify-summer-2026-editions-merchant-adoption-priority-guide). Exact update counts and rollout dates vary by source — confirm feature availability in your own admin and Shopify's changelog.*
 
 ## AI-Powered Features: Shopify's Biggest Investment
 
