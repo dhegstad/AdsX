@@ -68,6 +68,14 @@ export interface BlogPost {
   featured?: boolean;
   faqs?: FAQItem[];
   tldr?: string;
+  /** Override the Article schema @type. Use "TechArticle" for developer/code guides. */
+  articleType?: "Article" | "TechArticle";
+  /** Optional HowTo steps — emitted as schema.org HowTo for step-by-step tutorials. */
+  howto?: {
+    name?: string;
+    totalTime?: string;
+    steps: { name: string; text: string }[];
+  };
 }
 
 export interface BlogPostMeta {
@@ -158,6 +166,8 @@ export function getPostBySlug(slug: string): BlogPost | null {
     featured: data.featured || false,
     faqs: data.faqs || undefined,
     tldr: data.tldr || undefined,
+    articleType: data.articleType || undefined,
+    howto: data.howto || undefined,
   };
 }
 
@@ -309,6 +319,8 @@ export interface Author {
   avatar?: string;
   twitter?: string;
   linkedin?: string;
+  /** Topics this author is an expert in — emitted as schema.org `knowsAbout` for E-E-A-T. */
+  knowsAbout?: string[];
 }
 
 export const authors: Author[] = [
@@ -327,6 +339,29 @@ export const authors: Author[] = [
     bio: "Dennis Hegstad is the founder and CEO of AdsX, the first advertising agency built for AI search. With a background in performance marketing and e-commerce growth, Dennis identified the shift toward AI-powered product discovery early and built AdsX to help brands capitalize on this new channel. He specializes in AI visibility strategy, Shopify growth, and building scalable paid acquisition systems.",
     linkedin: "dennishegstad",
     twitter: "dennishegstad",
+    knowsAbout: [
+      "AI Search Optimization",
+      "Shopify Growth",
+      "Paid Media",
+      "E-commerce",
+    ],
+  },
+  {
+    slug: "adsx-engineering",
+    name: "AdsX Engineering",
+    role: "Shopify API & Commerce Engineering",
+    bio: "The AdsX engineering team builds the data pipelines that turn a Shopify product catalog into high-performing ad feeds across Google, Meta, and AI shopping agents. We work hands-on with the Shopify Admin GraphQL API, the Product Feed and Catalog APIs, metafields, and bulk operations every day, and these guides document the patterns we use in production.",
+    linkedin: "company/adsx",
+    twitter: "adsx",
+    knowsAbout: [
+      "Shopify Admin API",
+      "Shopify GraphQL API",
+      "Shopify Storefront API",
+      "Product Catalog Management",
+      "Product Feeds",
+      "GraphQL",
+      "E-commerce Engineering",
+    ],
   },
 ];
 

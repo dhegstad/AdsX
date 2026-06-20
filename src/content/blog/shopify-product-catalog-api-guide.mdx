@@ -1,0 +1,190 @@
+---
+title: "Shopify Product Catalog API Guide (2026)"
+excerpt: "How to read, write, and sync your Shopify product catalog with the Admin GraphQL API, productSet, the Product Feed API, and Catalog API — with copy-paste code."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Product Catalog", "Product Feed", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: true
+articleType: "TechArticle"
+faqs:
+  - question: "Is there a single 'Product Catalog API' in Shopify?"
+    answer: "Not exactly. 'Product catalog' is an umbrella for several Shopify Admin GraphQL APIs that work together: the Product, ProductVariant, and Media objects (the canonical catalog), the productSet mutation and Bulk Operations API (for writing at scale), the ProductFeed API (for syncing products to sales and marketing channels), and the Catalog API with PriceList and Publication (for controlling which products and prices publish to which B2B company or market). This guide covers each and when to use it."
+  - question: "Should I use GraphQL or REST for the Shopify product catalog?"
+    answer: "Use GraphQL. Shopify's REST Admin API is legacy as of 2024–2025 and new product features ship to the GraphQL Admin API first. The GraphQL API lets you request exactly the catalog fields you need in one round trip, supports the declarative productSet mutation, and uses a calculated, cost-based rate limit that is more generous for read-heavy catalog work than REST's request-count bucket."
+  - question: "How do I export my entire product catalog past the rate limit?"
+    answer: "Use the Bulk Operations API. Instead of paginating thousands of products synchronously, you submit a single bulkOperationRunQuery mutation, Shopify runs it asynchronously, and you download a JSONL file with the full result set. This is the correct pattern for full-catalog exports that feed Google Merchant Center, Meta catalogs, or AI shopping feeds."
+  - question: "What access scopes do I need to manage a product catalog?"
+    answer: "For reading and writing products you need read_products and write_products. To read channel product feeds you need read_product_listings. For B2B catalogs and price lists you need read_products plus the relevant catalog and price list scopes. Request only the scopes your app actually uses — Shopify's app review and merchants both scrutinize over-broad scope requests."
+  - question: "Why does my product catalog matter for advertising and AI shopping?"
+    answer: "Every ad channel and AI shopping agent consumes catalog data. Google Shopping, Meta Advantage+ catalog ads, and AI assistants like ChatGPT and Perplexity all read product titles, descriptions, images, prices, and identifiers. Incomplete or low-quality catalog data — missing GTINs, thin descriptions, no structured attributes — directly caps ad performance and AI shopping visibility, no matter how good the campaigns are."
+---
+
+The Shopify product catalog API is not one endpoint — it is a set of Admin GraphQL APIs that read, write, and distribute your products. The core pieces are the **Product/ProductVariant objects** (the canonical catalog), the **productSet mutation** and **Bulk Operations API** (write at scale), the **ProductFeed API** (sync to channels), and the **Catalog API** with price lists and publications (control what publishes where). This guide shows when to use each, with runnable code.
+
+If you only take one thing away: **use the GraphQL Admin API, not REST.** REST is legacy as of 2024–2025, and every new catalog capability ships to GraphQL first. This guide assumes the GraphQL Admin API throughout. For authentication, OAuth, and rate-limit fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide); for the read-side browsing API, see the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide).
+
+## The Shopify catalog data model in one table
+
+| Object | What it represents | Key fields |
+|--------|--------------------|------------|
+| `Product` | A sellable item | `title`, `descriptionHtml`, `productType`, `vendor`, `status`, `tags` |
+| `ProductVariant` | A specific SKU of a product | `price`, `sku`, `barcode` (GTIN), `inventoryItem`, `selectedOptions` |
+| `ProductOption` | An axis of variation | `name` (e.g. Size), `values` |
+| `Media` / `MediaImage` | Images and video | `image.url`, `alt` |
+| `InventoryItem` / `InventoryLevel` | Stock per location | `available`, `location` |
+| `Metafield` / `Metaobject` | Custom catalog data | `namespace`, `key`, `value` |
+
+The hierarchy is **Product → Variants → InventoryItems**, with Media and Metafields hanging off the Product. Get this model right and every downstream feed becomes straightforward.
+
+## Reading the catalog: products and variants
+
+A typical catalog read pulls products with their variants and the fields a feed needs. Request exactly what you need — GraphQL bills by query cost, so over-fetching wastes your rate-limit budget.
+
+```graphql
+query CatalogPage($cursor: String) {
+  products(first: 50, after: $cursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      descriptionHtml
+      productType
+      vendor
+      status
+      featuredMedia { ... on MediaImage { image { url altText } } }
+      variants(first: 100) {
+        nodes {
+          id
+          sku
+          barcode
+          price
+          inventoryQuantity
+          selectedOptions { name value }
+        }
+      }
+    }
+  }
+}
+```
+
+Paginate with the `endCursor` until `hasNextPage` is false. For a handful of common reads — single product by handle, products by collection, low-inventory variants — grab them from the [Shopify Catalog GraphQL Query Cookbook](/blog/shopify-catalog-graphql-query-cookbook).
+
+### When the catalog is large: Bulk Operations
+
+Synchronous pagination is fine for a few hundred products. For thousands, use the **Bulk Operations API**: submit one query, let Shopify run it asynchronously, then download a JSONL file with every product and variant flattened.
+
+```graphql
+mutation {
+  bulkOperationRunQuery(
+    query: """
+    { products { edges { node { id title
+        variants { edges { node { id sku barcode price } } } } } }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Poll `currentBulkOperation` until `status` is `COMPLETED`, then fetch the `url` and stream the JSONL. This is the right pattern for full-catalog exports that power Google Merchant Center, Meta catalogs, or AI shopping feeds — it sidesteps the rate limit entirely.
+
+## Writing the catalog at scale: productSet
+
+The modern way to create or update products is the **`productSet` mutation**. It is *declarative*: you describe the desired end state of a product — its variants, options, and media — and Shopify reconciles it. That makes it ideal for syncing from an external source of truth (a PIM, an ERP, a spreadsheet) because you do not have to diff and orchestrate individual create/update/delete calls.
+
+```graphql
+mutation UpsertProduct($input: ProductSetInput!) {
+  productSet(input: $input) {
+    product { id title }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "input": {
+    "title": "Merino Wool Beanie",
+    "productType": "Hats",
+    "vendor": "Northbound",
+    "status": "ACTIVE",
+    "productOptions": [{ "name": "Color", "values": [{ "name": "Charcoal" }, { "name": "Rust" }] }],
+    "variants": [
+      { "optionValues": [{ "optionName": "Color", "name": "Charcoal" }], "sku": "BEANIE-CHAR", "barcode": "0080000000017", "price": "32.00" },
+      { "optionValues": [{ "optionName": "Color", "name": "Rust" }], "sku": "BEANIE-RUST", "barcode": "0080000000024", "price": "32.00" }
+    ]
+  }
+}
+```
+
+Use `productSet` over the older `productCreate`/`productUpdate` + `productVariantsBulkUpdate` dance whenever you are syncing from an authoritative external catalog. Reach for the granular mutations only when you need to patch a single field without describing the whole product.
+
+## Distributing the catalog: the Product Feed API
+
+The **ProductFeed API** generates channel-specific product feeds — the bridge between your catalog and the places people (and AI agents) actually buy. You create a feed for a publication, then run a full sync to populate it.
+
+```graphql
+mutation CreateFeed($input: ProductFeedInput!) {
+  productFeedCreate(input: $input) {
+    productFeed { id status country language }
+    userErrors { field message }
+  }
+}
+```
+
+After creating the feed, call `productFullSync` to push the catalog, and listen for the `product_feeds/full_sync_finish` webhook to know when it is done. Reading feeds requires the `read_product_listings` scope. This API is what makes your catalog available to sales and marketing channels in a structured, channel-aware way rather than a brittle CSV export.
+
+## Controlling what publishes where: the Catalog API
+
+For B2B and international selling, the **Catalog API** controls *which* products and *what* prices are visible to *which* context. A `Catalog` ties together a `Publication` (which products are available) and a `PriceList` (what they cost) for a specific company location (B2B) or market.
+
+```graphql
+query Catalogs {
+  catalogs(first: 20, type: COMPANY_LOCATION) {
+    nodes {
+      title
+      status
+      priceList { name currency }
+      publication { id }
+    }
+  }
+}
+```
+
+Use this when one store serves multiple audiences at different prices — wholesale buyers, regional markets, or member tiers — without duplicating products. To manage per-sales-channel availability for the standard storefront, the `publishablePublish` mutation is the lighter-weight tool.
+
+## Extending the catalog: metafields and metaobjects
+
+Native fields rarely cover everything a rich feed needs — material, care instructions, certifications, model dimensions, or AI-readable attributes. **Metafields** attach custom data to products and variants; **metaobjects** model structured, reusable entities (a size chart, a fabric definition) you reference from many products. Both are fully API-driven. For creating and displaying them, see the [Shopify metafields guide](/blog/shopify-custom-metafields-guide).
+
+Well-structured metafields are also one of the highest-leverage things you can do for discovery: they are exactly the attributes AI shopping agents look for. See [preparing your product feed for AI agents](/blog/preparing-your-product-feed-for-ai-agents) for the structuring patterns.
+
+## Keeping feeds in sync: webhooks
+
+A feed is only as good as its freshness. Subscribe to catalog webhooks so your downstream feeds update the moment the catalog changes:
+
+- `products/create`, `products/update`, `products/delete` — catalog changes
+- `inventory_levels/update` — stock changes (critical for ads; out-of-stock products waste spend)
+- `product_feeds/full_sync_finish` — feed sync completion
+
+Process these idempotently and debounce bursts — a bulk edit in the Shopify admin can fire thousands of `products/update` events in seconds.
+
+## Why this matters for ads and AI shopping
+
+Your catalog is the raw material of every ad. Google Shopping, Meta Advantage+ catalog ads, and AI shopping agents (ChatGPT, Perplexity, Google AI Overviews) all consume the same fields: titles, descriptions, images, prices, and identifiers like GTIN/barcode. Missing GTINs, thin descriptions, or absent structured attributes cap performance no matter how well campaigns are managed — clean catalog data is the cheapest ROAS lever most stores never pull.
+
+This is the work AdsX does day to day: turning a Shopify catalog into high-performing feeds across paid and AI channels. If you want that handled end to end, see our [Shopify AI advertising guide](/guides/shopify-ai-advertising) or [how we work with stores](/services).
+
+## Next steps
+
+1. Pull a full catalog export with Bulk Operations and audit it for missing GTINs, images, and descriptions.
+2. Move any external-source sync to the declarative `productSet` mutation.
+3. Stand up a ProductFeed for each channel and wire `inventory_levels/update` webhooks.
+4. Enrich with metafields for the attributes ads and AI agents need.
+
+Bookmark the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) for copy-paste GraphQL as you build.

@@ -71,6 +71,34 @@ const nextConfig: NextConfig = {
         destination: "/blog/agentic-commerce-shopify-complete-guide",
         permanent: true,
       },
+      // Duplicate-post consolidation (2026-06): each pair below competed for the
+      // same query and split authority. We kept the more comprehensive URL and
+      // 301 the thinner near-duplicate into it.
+      {
+        source: "/blog/shopify-free-trial-guide",
+        destination: "/blog/shopify-free-trial-2026-complete-guide",
+        permanent: true,
+      },
+      {
+        source: "/blog/shopify-sms-marketing-complete-guide",
+        destination: "/blog/shopify-sms-marketing-guide",
+        permanent: true,
+      },
+      {
+        source: "/blog/shopify-vs-bigcommerce-2026-comparison",
+        destination: "/blog/shopify-vs-bigcommerce-comparison",
+        permanent: true,
+      },
+      {
+        source: "/blog/shopify-vs-ecwid-2026",
+        destination: "/blog/shopify-vs-ecwid-comparison",
+        permanent: true,
+      },
+      {
+        source: "/blog/shopify-vs-woocommerce-2026-comparison",
+        destination: "/blog/shopify-vs-woocommerce-comparison",
+        permanent: true,
+      },
     ];
   },
   experimental: {
