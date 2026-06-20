@@ -55,14 +55,22 @@ function extractHeadings(markdown: string): TocHeading[] {
   return headings;
 }
 
+interface AuthorInfo {
+  slug: string;
+  name: string;
+  role: string;
+  bio: string;
+}
+
 interface BrutalistBlogPostContentProps {
   post: BlogPost;
   slug: string;
   relatedPosts: BlogPostMeta[];
   relatedPages?: RelatedPage[];
+  author?: AuthorInfo | null;
 }
 
-export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPages = [] }: BrutalistBlogPostContentProps) {
+export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPages = [], author = null }: BrutalistBlogPostContentProps) {
   const tocHeadings = extractHeadings(post.content);
 
   return (
@@ -529,6 +537,53 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
           ← BACK TO BLOG
         </Link>
       </div>
+
+      {/* Author Bio (E-E-A-T) */}
+      {author && (
+        <div className="border-b border-[#333] p-6 md:p-8 bg-[#0d0d0d]">
+          <div
+            className="text-xs tracking-widest text-[#10b981] mb-4"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            ABOUT THE AUTHOR
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 shrink-0 border border-[#10b981] flex items-center justify-center">
+              <span
+                className="text-[#10b981] text-sm"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {author.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </span>
+            </div>
+            <div className="max-w-3xl">
+              <Link
+                href={`/blog/author/${author.slug}`}
+                className="font-semibold hover:text-[#10b981] transition-colors"
+              >
+                {author.name}
+              </Link>
+              <div
+                className="text-xs text-[#888] mb-2"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {author.role.toUpperCase()}
+              </div>
+              <p className="text-sm text-[#aaa] leading-relaxed">{author.bio}</p>
+              <Link
+                href={`/blog/author/${author.slug}`}
+                className="inline-block mt-3 text-xs tracking-wider text-[#10b981] hover:text-[#EAEAEA] transition-colors"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                MORE BY {author.name.toUpperCase()} →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (

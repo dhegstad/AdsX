@@ -13,21 +13,35 @@ export function createArticleSchema(config: {
   modifiedTime?: string;
   author: string;
   authorRole?: string;
+  /** Author E-E-A-T fields — when provided, the author resolves to a full Person entity. */
+  authorBio?: string;
+  authorUrl?: string;
+  authorSameAs?: string[];
+  authorKnowsAbout?: string[];
   image?: string;
   tags?: string[];
   category?: string;
   faqs?: { question: string; answer: string }[];
+  /** "Article" (default) or "TechArticle" for developer/code guides. */
+  articleType?: "Article" | "TechArticle";
 }) {
+  const isOrg = config.author === "AdsX Team";
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": config.articleType || "Article",
     headline: config.title,
     description: config.description,
     image: config.image || `${SITE_URL}/blog/${config.slug}/opengraph-image`,
     author: {
-      "@type": config.author === "AdsX Team" ? "Organization" : "Person",
+      "@type": isOrg ? "Organization" : "Person",
       name: config.author,
       ...(config.authorRole && { jobTitle: config.authorRole }),
+      ...(config.authorBio && { description: config.authorBio }),
+      ...(config.authorUrl && { url: config.authorUrl }),
+      ...(config.authorSameAs?.length && { sameAs: config.authorSameAs }),
+      ...(config.authorKnowsAbout?.length && {
+        knowsAbout: config.authorKnowsAbout,
+      }),
     },
     publisher: {
       "@type": "Organization",
@@ -55,6 +69,30 @@ export function createArticleSchema(config: {
         },
       })),
     }),
+  };
+}
+
+/**
+ * Creates HowTo structured data for step-by-step tutorials.
+ */
+export function createHowToSchema(config: {
+  name: string;
+  description?: string;
+  totalTime?: string;
+  steps: { name: string; text: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: config.name,
+    ...(config.description && { description: config.description }),
+    ...(config.totalTime && { totalTime: config.totalTime }),
+    step: config.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
   };
 }
 

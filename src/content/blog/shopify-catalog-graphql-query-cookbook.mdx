@@ -1,0 +1,292 @@
+---
+title: "Shopify Catalog GraphQL Query Cookbook (2026)"
+excerpt: "Copy-paste Shopify Admin GraphQL queries & mutations for the product catalog: reads, productSet writes, bulk exports, product feeds, price lists, and webhooks."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Product Catalog", "Code Snippets", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Which Shopify API version do these queries target?"
+    answer: "These snippets target the stable Shopify Admin GraphQL API (2025 release cycle) and use patterns that are forward-compatible: connection-based pagination with pageInfo/endCursor, the productSet declarative mutation, and the Bulk Operations API. Always pin an explicit API version in your endpoint URL (for example /admin/api/2025-07/graphql.json) and read Shopify's changelog before upgrading, since fields occasionally move between versions."
+  - question: "How do I paginate products in GraphQL?"
+    answer: "Use cursor-based pagination. Request the products connection with first: N and a pageInfo block containing hasNextPage and endCursor. On each subsequent call, pass the previous endCursor as the after argument. Loop until hasNextPage is false. For exports larger than a few hundred products, switch to the Bulk Operations API instead of synchronous pagination."
+  - question: "What is the difference between productSet and productUpdate?"
+    answer: "productUpdate patches specific fields on an existing product you identify by ID. productSet is declarative: you describe the complete desired state of a product — including its options, variants, and media — and Shopify reconciles the difference, creating or updating as needed. Use productSet when syncing from an external source of truth, and productUpdate for targeted single-field patches."
+---
+
+This is a working reference of copy-paste Shopify Admin GraphQL snippets for product catalog work. For the conceptual overview of how these APIs fit together — Product objects, productSet, the Product Feed API, and the Catalog API — start with the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).
+
+Every snippet targets the **GraphQL Admin API**. Pin an explicit version in your endpoint (e.g. `/admin/api/2025-07/graphql.json`) and request only the fields you need — GraphQL bills by calculated query cost.
+
+## Reads
+
+### Get a single product by handle
+
+```graphql
+query ProductByHandle($handle: String!) {
+  productByIdentifier(identifier: { handle: $handle }) {
+    id
+    title
+    descriptionHtml
+    status
+    variants(first: 100) { nodes { id sku barcode price } }
+  }
+}
+```
+
+### Paginate the full product list
+
+```graphql
+query Products($cursor: String) {
+  products(first: 100, after: $cursor, sortKey: UPDATED_AT) {
+    pageInfo { hasNextPage endCursor }
+    nodes { id title handle status updatedAt }
+  }
+}
+```
+
+### Filter with a search query (status, type, tag)
+
+```graphql
+query ActiveHats($cursor: String) {
+  products(first: 50, after: $cursor, query: "status:active AND product_type:Hats") {
+    pageInfo { hasNextPage endCursor }
+    nodes { id title productType }
+  }
+}
+```
+
+### Products in a collection
+
+```graphql
+query CollectionProducts($id: ID!, $cursor: String) {
+  collection(id: $id) {
+    products(first: 100, after: $cursor) {
+      pageInfo { hasNextPage endCursor }
+      nodes { id title }
+    }
+  }
+}
+```
+
+### Variants low on inventory (feed hygiene)
+
+```graphql
+query LowStock {
+  productVariants(first: 100, query: "inventory_quantity:<5") {
+    nodes { id sku displayName inventoryQuantity product { title } }
+  }
+}
+```
+
+### Pull every feed-critical field for one product
+
+```graphql
+query FeedFields($id: ID!) {
+  product(id: $id) {
+    id title descriptionHtml productType vendor tags
+    featuredMedia { ... on MediaImage { image { url altText } } }
+    variants(first: 100) {
+      nodes { sku barcode price compareAtPrice inventoryQuantity selectedOptions { name value } }
+    }
+    metafields(first: 20) { nodes { namespace key value } }
+  }
+}
+```
+
+## Writes
+
+### Create or update a product declaratively (productSet)
+
+```graphql
+mutation UpsertProduct($input: ProductSetInput!) {
+  productSet(input: $input) {
+    product { id title }
+    userErrors { field message }
+  }
+}
+```
+
+### Patch a single field (productUpdate)
+
+```graphql
+mutation Retitle($id: ID!, $title: String!) {
+  productUpdate(product: { id: $id, title: $title }) {
+    product { id title }
+    userErrors { field message }
+  }
+}
+```
+
+### Bulk-update variant prices
+
+```graphql
+mutation Reprice($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+  productVariantsBulkUpdate(productId: $productId, variants: $variants) {
+    productVariants { id price }
+    userErrors { field message }
+  }
+}
+```
+
+### Attach an image to a product
+
+```graphql
+mutation AddImage($productId: ID!, $media: [CreateMediaInput!]!) {
+  productCreateMedia(productId: $productId, media: $media) {
+    media { ... on MediaImage { id image { url } } }
+    mediaUserErrors { field message }
+  }
+}
+```
+
+### Set a metafield on a product
+
+```graphql
+mutation SetMetafield($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields { id namespace key value }
+    userErrors { field message }
+  }
+}
+```
+
+## Bulk export the whole catalog
+
+### Start a bulk query
+
+```graphql
+mutation BulkExport {
+  bulkOperationRunQuery(
+    query: """
+    { products { edges { node { id title
+        variants { edges { node { id sku barcode price inventoryQuantity } } } } } }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+### Poll for completion, then download
+
+```graphql
+query BulkStatus {
+  currentBulkOperation {
+    id
+    status
+    objectCount
+    url
+  }
+}
+```
+
+When `status` is `COMPLETED`, stream the JSONL file at `url`. Each line is one object; child nodes (variants) reference their parent by `__parentId`.
+
+## Product feeds (channel distribution)
+
+### List existing feeds
+
+```graphql
+query Feeds {
+  productFeeds(first: 20) {
+    nodes { id status country language }
+  }
+}
+```
+
+### Create a feed and trigger a full sync
+
+```graphql
+mutation CreateFeed($input: ProductFeedInput!) {
+  productFeedCreate(input: $input) {
+    productFeed { id status }
+    userErrors { field message }
+  }
+}
+
+mutation FullSync($id: ID!) {
+  productFullSync(id: $id) {
+    userErrors { field message }
+  }
+}
+```
+
+## Catalogs and price lists (B2B / Markets)
+
+### List company-location catalogs
+
+```graphql
+query Catalogs {
+  catalogs(first: 20, type: COMPANY_LOCATION) {
+    nodes { title status priceList { name currency } }
+  }
+}
+```
+
+### Read a price list's fixed prices
+
+```graphql
+query PriceListPrices($id: ID!) {
+  priceList(id: $id) {
+    name
+    currency
+    prices(first: 100) {
+      nodes { variant { sku } price { amount currencyCode } }
+    }
+  }
+}
+```
+
+### Publish a product to a sales channel
+
+```graphql
+mutation Publish($id: ID!, $input: [PublicationInput!]!) {
+  publishablePublish(id: $id, input: $input) {
+    publishable { availablePublicationsCount { count } }
+    userErrors { field message }
+  }
+}
+```
+
+## Webhooks (keep feeds fresh)
+
+### Subscribe to product updates
+
+```graphql
+mutation SubscribeProductUpdate($callbackUrl: URL!) {
+  webhookSubscriptionCreate(
+    topic: PRODUCTS_UPDATE
+    webhookSubscription: { callbackUrl: $callbackUrl, format: JSON }
+  ) {
+    webhookSubscription { id topic }
+    userErrors { field message }
+  }
+}
+```
+
+Subscribe to `PRODUCTS_CREATE`, `PRODUCTS_UPDATE`, `PRODUCTS_DELETE`, and `INVENTORY_LEVELS_UPDATE` the same way. Process events idempotently and debounce bursts.
+
+## Handling rate limits
+
+The GraphQL Admin API uses a calculated, cost-based limit. Every response includes `extensions.cost` with `requestedQueryCost`, `actualQueryCost`, and a `throttleStatus` bucket. Read it and back off when `currentlyAvailable` runs low:
+
+```json
+{
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 112,
+      "actualQueryCost": 51,
+      "throttleStatus": { "maximumAvailable": 2000, "currentlyAvailable": 1949, "restoreRate": 100 }
+    }
+  }
+}
+```
+
+For anything that would burn a large share of the bucket, use Bulk Operations instead. For OAuth, scopes, and the deeper rate-limit model, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide); for the strategy of turning this catalog data into ad and AI-shopping performance, see the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).
