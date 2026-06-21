@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FAQSchema } from "@/components/seo/structured-data";
+import { createFAQSchema, SchemaScript } from "@/lib/seo/schemas";
 import { MobileMenuButton } from "@/components/home/mobile-menu";
 import { ParallaxHero } from "@/components/home/parallax-hero";
 import styles from "./home.module.css";
@@ -85,10 +85,45 @@ const stats = [
   { label: "ZERO-CLICK", value: "60%" },
 ];
 
+// Homepage FAQ — rendered visibly below AND used to generate the FAQPage schema
+// from a single source of truth (keeps structured data valid).
+const homeFaqs = [
+  {
+    question: "How long until we see results?",
+    answer:
+      "Most clients see measurable improvements in AI visibility within 4-6 weeks. Sponsored placements can drive traffic immediately, while organic AI optimization compounds over time as models update their training data.",
+  },
+  {
+    question: "What's the minimum engagement?",
+    answer:
+      "We require a 3-month minimum to give our strategies time to take effect. After that, you can continue month-to-month with 30 days notice to cancel.",
+  },
+  {
+    question: "Do you guarantee placements in ChatGPT responses?",
+    answer:
+      "We can guarantee sponsored ad placements through official channels. For organic mentions, we optimize your content and digital presence to maximize the likelihood of being recommended, but no one can guarantee specific AI outputs.",
+  },
+  {
+    question: "How do you measure AI visibility?",
+    answer:
+      "We use proprietary monitoring tools that query AI platforms thousands of times daily across relevant prompts in your category. We track mention frequency, sentiment, positioning, and competitive share of voice.",
+  },
+  {
+    question: "What industries do you work with?",
+    answer:
+      "We work primarily with B2B SaaS, fintech, e-commerce, and professional services. Any brand where customers research solutions through AI assistants is a good fit.",
+  },
+  {
+    question: "How is this different from traditional SEO?",
+    answer:
+      "Traditional SEO optimizes for search engine crawlers and ranking algorithms. AI optimization focuses on how LLMs understand, categorize, and recommend your brand. The tactics overlap but the strategies are fundamentally different.",
+  },
+];
+
 export default function HomePage() {
   return (
     <>
-      <FAQSchema />
+      <SchemaScript schema={createFAQSchema(homeFaqs)} />
 
       <div className={`${styles.vPage} min-h-screen bg-[#080808] text-[#EAEAEA]`} style={{ fontFamily: "var(--font-body)" }}>
         <div className={styles.noiseOverlay} />
@@ -310,6 +345,26 @@ export default function HomePage() {
                   >
                     <div className="w-2 h-2 bg-[#10b981]" />
                     {platform.toUpperCase()}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQ */}
+            <div className="border-b border-[#333] p-8 md:p-12 bg-[#080808]">
+              <h2
+                className="text-2xl md:text-3xl uppercase mb-8"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Frequently asked questions
+              </h2>
+              <div className="max-w-3xl mx-auto divide-y divide-[#222]">
+                {homeFaqs.map((faq) => (
+                  <div key={faq.question} className="py-5">
+                    <h3 className="text-base md:text-lg mb-2 text-[#EAEAEA]">
+                      {faq.question}
+                    </h3>
+                    <p className="text-sm text-[#888] leading-relaxed">{faq.answer}</p>
                   </div>
                 ))}
               </div>

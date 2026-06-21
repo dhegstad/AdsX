@@ -1,0 +1,141 @@
+---
+title: "Shopify Admin API vs Storefront API (2026)"
+excerpt: "Shopify Admin API vs Storefront API for product catalog data: when to use each, how auth and rate limits differ, and GraphQL examples for both."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Admin API", "Storefront API", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Should I use the Shopify Admin API or Storefront API for product data?"
+    answer: "Use the Admin API when you need to read and write the full catalog from a server — creating products, updating prices, syncing inventory, or exporting feeds. Use the Storefront API when you are building a buyer-facing experience, like a headless or custom front end, that only needs to read published products and present them to shoppers. Many apps use both: Admin to manage the catalog, Storefront to display it."
+  - question: "Are the Shopify Admin API and Storefront API both GraphQL?"
+    answer: "Yes. Both have GraphQL endpoints, so you write similar query syntax against each. The difference is scope and intent, not the query language. The Admin GraphQL API exposes the full merchant catalog plus mutations to write it; the Storefront GraphQL API exposes only published, buyer-facing data optimized for read-heavy storefront traffic. Shopify's REST Admin API still exists but is legacy, and new features ship to GraphQL first."
+  - question: "How does authentication differ between the two APIs?"
+    answer: "The Admin API authenticates with an access token obtained through OAuth (for public/custom apps) or a custom app admin token, and it must be called server-side because the token grants write access to store data. The Storefront API uses a separate Storefront access token — a public token safe to ship to a browser or mobile client, or a private token for server-side calls — and is scoped only to buyer-facing reads."
+  - question: "Can I read all my products with the Storefront API?"
+    answer: "Only the products that are published to the sales channel tied to your Storefront access token, and only the buyer-facing fields. The Storefront API will not return unpublished or draft products, internal cost data, or admin-only fields. For a complete catalog export including drafts, archived items, and inventory across locations, use the Admin GraphQL API, paginating with cursors or using the Bulk Operations API for large catalogs."
+---
+
+If you need to read and write your full catalog from a server — creating products, updating prices, syncing inventory, or building feeds — use the **Admin API**. If you are building a buyer-facing experience like a headless or custom front end that only needs to display published products to shoppers, use the **Storefront API**. Most production setups use both.
+
+That is the short answer. The longer answer matters because picking the wrong API means either over-privileged tokens leaking into a browser or a server app that cannot do half of what you need. This post compares the two for product catalog data specifically. For the full catalog data model, see the pillar [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide), and for copy-paste queries, the [Shopify Catalog GraphQL Query Cookbook](/blog/shopify-catalog-graphql-query-cookbook).
+
+## Admin API vs Storefront API at a glance
+
+| | Admin API | Storefront API |
+|---|---|---|
+| **Purpose** | Manage the store and its catalog | Display the catalog to buyers |
+| **Read / write** | Read **and** write (queries + mutations) | Read-only for catalog (plus cart/checkout mutations) |
+| **Auth** | OAuth access token or custom app admin token | Public **or** private Storefront access token |
+| **Where it runs** | Server-side only | Browser, mobile, or server (public token is client-safe) |
+| **Rate limiting** | Calculated, cost-based query budget | Optimized for high-volume buyer reads |
+| **Best for** | Apps, integrations, back-office tooling | Headless storefronts, custom front ends, mobile apps |
+| **Catalog use cases** | Create/update products, prices, inventory, media, feeds, drafts | Browse published products, collections, variants, prices |
+
+Both are GraphQL APIs. The syntax you write looks similar; the difference is what data each exposes and who is allowed to call it.
+
+## The Admin API: full catalog read and write
+
+The Admin GraphQL API is the system of record for your catalog. It exposes every product, variant, image, metafield, and inventory level — including drafts and archived items — and it lets you **write** them with mutations like `productSet`, `productUpdate`, and `inventorySetQuantities`.
+
+Because Admin tokens can change store data and read sensitive fields (cost, internal notes, customer-linked data), you must call the Admin API **server-side**. Never ship an Admin access token to a browser.
+
+Here is a read query against the Admin API:
+
+```graphql
+# POST https://your-store.myshopify.com/admin/api/2026-01/graphql.json
+# Header: X-Shopify-Access-Token: {admin access token}
+query AdminProducts {
+  products(first: 10, query: "status:active") {
+    nodes {
+      id
+      title
+      status            # ACTIVE / DRAFT / ARCHIVED — admin-only
+      descriptionHtml
+      totalInventory
+      variants(first: 5) {
+        nodes {
+          id
+          sku
+          price
+          inventoryItem { unitCost { amount } }  # cost — admin-only
+        }
+      }
+    }
+    pageInfo { hasNextPage endCursor }
+  }
+}
+```
+
+Notice the fields that exist only here: `status`, `unitCost`, draft products. Now the write side — the same token can mutate the catalog:
+
+```graphql
+mutation UpdatePrice($input: ProductVariantsBulkInput!) {
+  productVariantsBulkUpdate(productId: "gid://shopify/Product/123", variants: [$input]) {
+    productVariants { id price }
+    userErrors { field message }
+  }
+}
+```
+
+The Admin API uses a **calculated, cost-based rate limit**: every query is assigned a cost based on the fields and connections it requests, and you spend against a leaky-bucket budget that refills over time. Read-heavy work is cheaper than expensive nested queries, and for full-catalog exports you should reach for the Bulk Operations API instead of synchronous pagination. Auth, scopes, and rate-limit mechanics are covered in depth in the [Shopify Admin API guide](/blog/shopify-admin-api-guide).
+
+## The Storefront API: buyer-facing reads
+
+The Storefront GraphQL API is built for the front end. It exposes only the **published, buyer-facing slice** of your catalog — products published to the relevant sales channel, their collections, variants, prices, and media — plus cart and checkout mutations for the buying flow. It does **not** expose drafts, cost, or admin-only fields.
+
+Crucially, the Storefront API authenticates with a separate **Storefront access token**. The public version is safe to embed in a browser or mobile app; a private token can be used for server-side rendering. This is what makes headless storefronts, custom front ends, and mobile apps possible without exposing admin credentials.
+
+```graphql
+# POST https://your-store.myshopify.com/api/2026-01/graphql.json
+# Header: X-Shopify-Storefront-Access-Token: {storefront access token}
+query StorefrontProducts {
+  products(first: 10) {
+    nodes {
+      id
+      title
+      description
+      featuredImage { url altText }
+      priceRange {
+        minVariantPrice { amount currencyCode }
+      }
+      variants(first: 5) {
+        nodes {
+          id
+          title
+          availableForSale
+          price { amount currencyCode }
+        }
+      }
+    }
+  }
+}
+```
+
+Compare this with the Admin query above. There is no `status`, no `unitCost`, no draft data — only what a shopper should see. Prices come back as money objects with `currencyCode`, and `availableForSale` reflects buyer-facing availability. You can also pass **buyer context** (country, language, buyer identity) so prices, availability, and translations resolve correctly for that shopper. The API is tuned for high-volume buyer reads, so it serves storefront traffic far more efficiently than the Admin API would. Full setup is in the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide).
+
+## When to use which
+
+Decide by **who is calling** and **what they need to do**:
+
+- **Building anything that writes catalog data** — product creation, price updates, inventory sync, feed generation, bulk imports? Admin API, server-side, always.
+- **Building anything a shopper touches** — a headless React/Next storefront, a mobile app, a custom checkout, a "shop" widget? Storefront API, with a Storefront access token.
+- **Need draft, archived, or cost data, or fields no buyer should see?** Admin API only — the Storefront API does not expose them.
+- **Need a token in client-side code?** Storefront public token only. An Admin token in a browser is a security incident.
+
+In practice you usually use **both**. A typical headless store runs a server-side sync that pulls or pushes the full catalog through the **Admin API** (managing products, prices, inventory, and feeds), while the front end reads published products through the **Storefront API** to render product and collection pages for buyers. Admin manages; Storefront displays.
+
+A common mistake is trying to power a storefront entirely from the Admin API. It works in a demo, but you end up proxying admin-privileged calls through your server for every page view, fighting cost-based rate limits, and risking token exposure. The Storefront API exists precisely so buyer-facing reads do not have to go through admin credentials.
+
+The other mistake is expecting the Storefront API to manage the catalog. It cannot create or edit products, see drafts, or read inventory across all locations. The moment you need to write or see the full catalog, that is Admin API territory.
+
+If you would rather not build and maintain this plumbing yourself — catalog sync, feed quality, and the API integrations that feed ad channels and AI shopping — see [how we work with stores](/services).
+
+## Bottom line
+
+For **product catalog data**: the **Admin API** is your read-and-write, server-side system of record — full catalog, OAuth/access-token auth, calculated cost-based rate limits, and the only place that exposes drafts, cost, and inventory. The **Storefront API** is your read-only, buyer-facing layer — a client-safe Storefront access token, buyer context, and reads optimized for storefront traffic. Both are GraphQL. Use Admin to **manage** the catalog and Storefront to **display** it, and most real stores use the two together.

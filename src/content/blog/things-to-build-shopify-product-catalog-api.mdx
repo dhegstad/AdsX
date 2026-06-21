@@ -1,0 +1,96 @@
+---
+title: "15 Things to Build With Shopify's Catalog API"
+excerpt: "15 concrete app and tool ideas for the Shopify product catalog API — feed syncs, AI shopping feeds, B2B price lists, audits, and more for developers."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "Product Catalog", "App Ideas", "Build Ideas", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Which Shopify APIs make up the 'product catalog API'?"
+    answer: "There is no single endpoint. The catalog stack is the Admin GraphQL Product, ProductVariant, and Media objects (the canonical data), the productSet mutation and Bulk Operations API for writing at scale, the ProductFeed API for syncing products to sales and marketing channels, the Catalog API with PriceList and Publication for B2B and market-specific pricing, the Storefront API for read-only catalog browsing, plus metafields and webhooks for custom data and real-time events. Most tools combine several of these."
+  - question: "Do I need a public app to build catalog tools, or will a custom app work?"
+    answer: "Either works. A custom (single-store) app installed from the Shopify admin is the fastest way to build internal feed syncs, audits, and migrations for one merchant. Build a public app distributed through the Shopify App Store only when you want to sell the tool to many merchants — that adds OAuth, billing, app review, and webhook compliance requirements, but unlocks recurring revenue."
+  - question: "What is the right way to export a full catalog for a feed?"
+    answer: "Use the Bulk Operations API. Submit one bulkOperationRunQuery mutation, let Shopify run it asynchronously, then download the JSONL result. This avoids paginating thousands of products against the cost-based rate limit and is the standard pattern for feeding Google Merchant Center, Meta catalogs, and AI shopping feeds."
+  - question: "How do I keep a feed or sync up to date in real time?"
+    answer: "Subscribe to webhooks. The products/create, products/update, and inventory_levels/update topics fire when catalog data changes, so your tool can push only the deltas to downstream channels instead of re-exporting everything. Pair webhooks with a periodic Bulk Operations reconciliation to catch any missed events."
+---
+
+The Shopify catalog APIs — the **Admin GraphQL Product and productSet** objects, the **Bulk Operations API**, the **ProductFeed API**, the **Catalog/PriceList API**, the **Storefront API**, plus **metafields and webhooks** — let you read, write, distribute, and enrich product data. That surface area supports a wide range of tools. Here are 15 concrete things developers and founders can build with them.
+
+For the full data model and code, start with the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) and the [GraphQL query cookbook](/blog/shopify-catalog-graphql-query-cookbook). Every idea below names the specific API, mutation, or object it relies on.
+
+## 1. A Google Merchant Center feed sync
+
+**What it is:** An app that exports the catalog and keeps a Google Shopping product feed continuously in sync. **Why it's valuable:** Manual CSV uploads go stale within hours; merchants lose Shopping impressions on out-of-date prices and stock. **APIs used:** `bulkOperationRunQuery` for the full export, `products/update` and `inventory_levels/update` webhooks for deltas, and the Content API for Shopping on the Google side. See our deep dive on the [Merchant Center sync](/blog/shopify-catalog-google-merchant-center-sync).
+
+## 2. A Meta and TikTok catalog publisher
+
+**What it is:** A connector that maps Shopify products to Meta Advantage+ and TikTok Shopping catalogs. **Why it's valuable:** Each channel wants different field shapes (Meta needs `availability`, `condition`, and `google_product_category`); a publisher normalizes once and pushes everywhere. **APIs used:** Admin GraphQL `products` query (or Bulk Operations), the **ProductFeed API** to read channel-scoped listings, and `publishablePublish` to control which products go to which channel.
+
+## 3. An AI-ready shopping feed generator
+
+**What it is:** A tool that produces a clean, structured feed optimized for AI shopping agents like ChatGPT, Perplexity, and Google's AI surfaces. **Why it's valuable:** AI assistants read titles, descriptions, GTINs, and structured attributes directly; thin or missing data caps AI shopping visibility. **APIs used:** Bulk Operations export plus `metafield` reads for structured attributes, output as schema.org `Product` JSON. See the [AI-ready feed guide](/blog/shopify-catalog-ai-shopping-feed).
+
+## 4. A catalog audit and feed-readiness checker
+
+**What it is:** A read-only scanner that flags products missing GTINs, images, descriptions, or required channel fields before they break a feed. **Why it's valuable:** Disapproved Google and Meta items usually trace back to a handful of fixable data gaps; catching them pre-submission saves wasted ad spend. **APIs used:** Bulk `bulkOperationRunQuery` to pull every product and variant, then rule-checking on `barcode`, `featuredMedia`, `descriptionHtml`, and `productType`.
+
+## 5. A PIM ↔ Shopify two-way sync
+
+**What it is:** A bridge between a Product Information Management system (Akeneo, Plytix, inriver) and Shopify. **Why it's valuable:** Brands manage source-of-truth product data in a PIM and need it reflected in Shopify without manual re-entry. **APIs used:** The **productSet mutation** for declarative, idempotent upserts (it creates or updates a product and its variants, options, and media in one call), Bulk Operations for the inbound read, and webhooks to push Shopify-side edits back to the PIM.
+
+## 6. A bulk price and sale scheduler
+
+**What it is:** An app that schedules price changes and timed sales across the catalog. **Why it's valuable:** Merchants running Black Friday or flash sales need hundreds of prices to flip at a precise time and revert afterward, without staying up at midnight. **APIs used:** The **bulk operations mutation** `bulkOperationRunMutation` with `productVariantsBulkUpdate` to stage price changes, plus a job queue to apply and roll back `compareAtPrice` on schedule.
+
+## 7. A multi-store catalog sync
+
+**What it is:** A tool that mirrors a master catalog across several Shopify stores (regional storefronts, franchise locations, or a wholesale clone). **Why it's valuable:** Maintaining the same products by hand across stores is error-prone and slow. **APIs used:** Bulk Operations to read from the source store and **productSet** to write to each target store, with a stored ID-mapping table so updates target the right product on each shop.
+
+## 8. A B2B price-list manager
+
+**What it is:** A UI for managing wholesale and company-specific pricing. **Why it's valuable:** B2B merchants need per-company catalogs and tiered pricing that Shopify's standard admin exposes only partially. **APIs used:** The **Catalog API** — `catalogCreate`, `priceListCreate`, and `priceListFixedPricesAdd` — to attach a `PriceList` to a `CompanyLocation` catalog, plus `publication` controls for which products each catalog can see.
+
+## 9. A headless catalog browser
+
+**What it is:** A fast, read-only storefront or in-app product browser for a custom frontend or kiosk. **Why it's valuable:** Headless builds and embedded experiences need catalog reads without Admin API scopes or rate-limit pressure. **APIs used:** The **Storefront API** `products` and `collection` queries with `@inContext` directives for localized pricing — designed for unauthenticated, customer-facing reads.
+
+## 10. A metafield and structured-data enricher
+
+**What it is:** A bulk editor that adds structured attributes (material, dimensions, care, certifications) and emits schema.org markup. **Why it's valuable:** Rich attributes improve search relevance, filtering, and AI shopping eligibility far more than freeform descriptions. **APIs used:** `metafieldsSet` and `metaobjectCreate` to write structured data, Bulk Operations to apply it at scale, and metafield definitions to keep types consistent.
+
+## 11. An out-of-stock ads guard
+
+**What it is:** A watcher that pauses or excludes products from ad feeds the moment they sell out, and re-includes them on restock. **Why it's valuable:** Advertising out-of-stock items burns budget and frustrates shoppers; reacting in minutes instead of the next feed pull protects ROAS. **APIs used:** The `inventory_levels/update` and `products/update` **webhooks** to detect zero stock in real time, then `publishableUnpublish` or a feed-exclusion flag to drop the item from channels.
+
+## 12. A product-data quality scorer
+
+**What it is:** A dashboard that grades every product 0–100 on completeness, image quality, description length, and attribute coverage. **Why it's valuable:** Merchants can't fix what they can't see; a single score with a prioritized fix list turns catalog hygiene into an actionable workflow. **APIs used:** Bulk `bulkOperationRunQuery` to score the whole catalog asynchronously, with `metafield` and `media` reads feeding the rubric.
+
+## 13. A catalog migration tool
+
+**What it is:** An importer that moves catalogs from WooCommerce, Magento, BigCommerce, or a legacy Shopify store into Shopify. **Why it's valuable:** Migrations are a high-stakes, error-prone one-time job; a tool that preserves variants, images, SEO handles, and metafields de-risks the cutover. **APIs used:** The **productSet mutation** for idempotent imports (re-runnable without creating duplicates), `stagedUploadsCreate` plus `fileCreate` for media, and Bulk Operations for verification after import.
+
+## 14. A variant and bundle generator
+
+**What it is:** A tool that generates variant matrices (size × color) and product bundles from a base SKU. **Why it's valuable:** Building large option grids or bundle SKUs by hand in the admin is tedious and mistake-prone. **APIs used:** `productOptionsCreate` and `productVariantsBulkCreate` to expand variant axes, plus the bundles component model (`productBundleCreate` / bundle line components) for fixed and customizable bundles.
+
+## 15. A localized catalog translator
+
+**What it is:** An app that translates titles, descriptions, and metafields for each Shopify Market and language. **Why it's valuable:** Localized catalogs lift conversion and unlock market-specific Shopping and AI feeds, but translating thousands of fields manually is impractical. **APIs used:** The **Translations API** `translationsRegister` keyed by translatable content digests, combined with `@inContext` Storefront reads to verify the localized output and Catalog/PriceList for per-market pricing.
+
+## Bonus: a catalog analytics dashboard
+
+**What it is:** A reporting layer that tracks catalog size, publish coverage per channel, price distribution, and data-completeness trends over time. **Why it's valuable:** Founders and merchandisers want to see whether catalog quality and channel reach are improving, not just snapshot it. **APIs used:** Scheduled Bulk Operations exports into a warehouse, the **ProductFeed API** to read per-channel publication status, and webhooks to keep counts current between exports.
+
+## Pick the API that matches the job
+
+The pattern across all 15: **read at scale with Bulk Operations**, **write declaratively with productSet**, **distribute with the ProductFeed and Catalog APIs**, **browse with the Storefront API**, and **stay current with webhooks**. Choose the narrowest API and the fewest scopes that do the job — merchants and Shopify app review both reward least-privilege access.
+
+If you want one of these built, or you want your catalog feeding clean, structured data into Google, Meta, and AI shopping surfaces, [our services](/services) cover Shopify catalog engineering and the paid-ads and AI-feed work that depends on it. Start from the [catalog API guide](/blog/shopify-product-catalog-api-guide) and the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook), then ship.

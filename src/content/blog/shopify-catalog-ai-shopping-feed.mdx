@@ -1,0 +1,198 @@
+---
+title: "Build an AI-Ready Shopify Product Feed (2026)"
+excerpt: "A developer tutorial for building an AI-ready Shopify product feed so AI shopping agents can find, understand, and recommend your products with accurate data."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "AI Shopping", "Product Feed", "AI Visibility", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Build an AI-Ready Shopify Product Feed"
+  steps:
+    - name: "Pull your catalog from Shopify"
+      text: "Export your full product catalog, including metafields, using the Admin GraphQL API and the Bulk Operations API for large stores."
+    - name: "Enrich product data for AI"
+      text: "Fill in complete structured attributes, GTIN/barcode, natural-language descriptions, and materials and dimensions stored in metafields."
+    - name: "Emit structured data"
+      text: "Generate Product and Offer JSON-LD on storefront pages and produce a clean machine-readable feed file."
+    - name: "Keep product pages crawlable"
+      text: "Allow reputable AI and search crawlers to reach your product pages so they can read your structured data."
+    - name: "Keep the feed fresh with webhooks"
+      text: "Subscribe to products/update and inventory_levels/update webhooks so price and availability stay accurate."
+    - name: "Test against AI shopping surfaces"
+      text: "Query ChatGPT, Perplexity, and Google AI Overviews for your products and verify availability and price accuracy."
+faqs:
+  - question: "Do AI shopping agents read my product feed directly, or my storefront?"
+    answer: "Both, depending on the surface. Some AI shopping experiences ingest structured feeds through partner or merchant programs (for example, product feeds submitted to a platform), while others read your live storefront pages and the schema.org JSON-LD embedded in them. Because you cannot control which path a given agent uses, the reliable strategy is to maintain both: a clean machine-readable feed and crawlable product pages with accurate Product and Offer markup that always match."
+  - question: "Why does GTIN or barcode matter so much for AI visibility?"
+    answer: "A GTIN (UPC, EAN, or ISBN) is a globally unique identifier that lets AI agents and search engines match your listing to the same physical product sold elsewhere. This matters for comparison, deduplication, and confidence. When an agent can confirm that your product is the exact item a shopper asked about, it can recommend it accurately; without a reliable identifier, your listing may be treated as ambiguous and skipped in favor of products that are easier to verify."
+  - question: "How fresh does price and inventory data need to be?"
+    answer: "As close to real time as practical. AI shopping surfaces increasingly penalize or filter out listings where the price or availability shown does not match the storefront at click time, because a bad checkout experience reflects on the agent. Use Shopify's products/update and inventory_levels/update webhooks to push changes the moment they happen rather than relying on periodic full re-exports, which can leave stale data live for hours."
+  - question: "Will JSON-LD structured data alone get my products into AI answers?"
+    answer: "No. Structured data is necessary but not sufficient. JSON-LD helps machines parse your product facts unambiguously, but AI surfaces also weigh data completeness, identifier accuracy, freshness, crawlability, and overall trust signals. Treat JSON-LD as one layer in a complete approach that also includes enriched attributes, a maintained feed, accurate inventory, and product pages that AI bots are actually permitted to crawl."
+---
+
+Building an AI-ready Shopify product feed means exporting your full catalog with metafields, enriching it with complete attributes, identifiers, and clear descriptions, emitting schema.org Product and Offer JSON-LD, and keeping price and inventory fresh via webhooks so AI shopping agents can find, understand, and recommend your products accurately.
+
+AI shopping surfaces such as ChatGPT shopping, Perplexity, and Google AI Overviews are starting to mediate real purchase decisions. They do not browse the way humans do — they consume structured data, identifiers, and feeds, then reason over them. If your Shopify catalog is incomplete, ambiguous, or stale, agents will quietly recommend a competitor whose data they trust more. This tutorial walks through building a feed and structured-data layer that AI agents can actually use.
+
+This is a developer companion to our [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) and the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook). For the marketing-strategy view, see [preparing your product feed for AI agents](/blog/preparing-your-product-feed-for-ai-agents).
+
+## 1. Pull your catalog from Shopify
+
+Start from a single source of truth: your Shopify catalog, including metafields. For small stores, a paginated Admin GraphQL query is enough. For anything beyond a few hundred products, use the Bulk Operations API so you do not hammer the synchronous API or hit rate limits.
+
+A direct read with metafields looks like this:
+
+```graphql
+query Products($cursor: String) {
+  products(first: 100, after: $cursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      descriptionHtml
+      productType
+      vendor
+      status
+      onlineStoreUrl
+      metafields(first: 20) {
+        nodes { namespace key value type }
+      }
+      variants(first: 50) {
+        nodes {
+          id
+          sku
+          barcode
+          price
+          inventoryQuantity
+          selectedOptions { name value }
+        }
+      }
+    }
+  }
+}
+```
+
+For a full export, kick off a bulk operation and poll for the result URL:
+
+```graphql
+mutation {
+  bulkOperationRunQuery(
+    query: """
+    {
+      products {
+        edges {
+          node {
+            id
+            title
+            descriptionHtml
+            vendor
+            onlineStoreUrl
+            variants { edges { node { sku barcode price inventoryQuantity } } }
+            metafields { edges { node { namespace key value type } } }
+          }
+        }
+      }
+    }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Bulk operations return a JSONL file you download once `status` is `COMPLETED`. That JSONL becomes the raw input to your enrichment and feed-build steps.
+
+## 2. Enrich the data so AI agents can understand it
+
+A raw export is rarely AI-ready. Agents reward completeness and unambiguous facts. For every product and variant, aim for:
+
+- **Complete structured attributes** — category, color, size, gender/age group where relevant, condition, and quantity. Empty or inconsistent attributes make a product hard to match against a shopper's intent.
+- **A GTIN/barcode** on every variant. A globally unique identifier lets an agent confirm your item is the exact product the shopper asked about, and is often the difference between being recommended and being skipped as ambiguous.
+- **Clear natural-language descriptions.** Agents read prose, not just fields. Describe what the product is, who it is for, and concrete use cases in plain sentences — not keyword soup.
+- **Materials, dimensions, and specs via metafields.** Store these as typed metafields (for example `specs.material`, `specs.dimensions`, `specs.weight`) so they are queryable and exportable. See our [Shopify metafields guide](/blog/shopify-custom-metafields-guide) for setting up definitions.
+
+Why this matters: AI agents compare products on specific, verifiable data points. A listing with a real GTIN, complete attributes, and a description that answers "what is this and who is it for" can be evaluated and recommended. A listing with only marketing copy and missing fields gets filtered out before it is ever considered.
+
+Normalize this enriched record into a single internal product object before you emit anything downstream — that keeps your feed file and your JSON-LD perfectly consistent.
+
+## 3. Emit structured data and a machine-readable feed
+
+Now produce two outputs from the same normalized object.
+
+First, **schema.org Product + Offer JSON-LD** on every storefront product page:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Merino Wool Crew Sweater",
+  "description": "A midweight 100% merino wool crew-neck sweater for everyday layering.",
+  "sku": "MW-CREW-NVY-M",
+  "gtin13": "0850001234567",
+  "brand": { "@type": "Brand", "name": "Northbound" },
+  "material": "100% Merino Wool",
+  "color": "Navy",
+  "size": "M",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://store.example.com/products/merino-crew?variant=123",
+    "priceCurrency": "USD",
+    "price": "89.00",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+```
+
+Keep the JSON-LD values identical to what the page renders — mismatches erode trust and can get listings dropped. For deeper schema patterns, see our [schema markup](/blog/preparing-your-product-feed-for-ai-agents) coverage and the [metafields guide](/blog/shopify-custom-metafields-guide) for sourcing those fields.
+
+Second, **a clean machine-readable feed file** (JSON or a well-formed product feed) with one record per variant, including stable IDs, GTIN, price, currency, availability, attributes, and the canonical product URL. Serve it at a stable endpoint and regenerate it on a schedule plus on webhook events.
+
+Finally, **keep your product pages crawlable for AI bots.** Structured data is useless if the bots reading these surfaces cannot fetch the page. Confirm your `robots.txt` does not block reputable AI/search crawlers from product URLs, return real `200` responses for live products, and avoid hiding price or availability behind client-side rendering that an agent may not execute.
+
+## 4. Keep it fresh with webhooks
+
+A feed is only as good as its accuracy at the moment an agent reads it. Rather than re-exporting the whole catalog every few hours, push changes the instant they happen.
+
+Subscribe to the relevant Admin webhooks:
+
+```graphql
+mutation {
+  webhookSubscriptionCreate(
+    topic: PRODUCTS_UPDATE
+    webhookSubscription: {
+      callbackUrl: "https://feed.example.com/webhooks/products-update"
+      format: JSON
+    }
+  ) {
+    webhookSubscription { id }
+    userErrors { field message }
+  }
+}
+```
+
+Repeat for `INVENTORY_LEVELS_UPDATE` so stock changes propagate immediately. In each handler, re-fetch the affected product, re-run enrichment, and update both the JSON-LD source data and the feed record. Verify the webhook HMAC, respond quickly, and process asynchronously so Shopify does not retry or disable the subscription. This is the difference between an agent showing "in stock, $89" that is true at click time and one that sends a shopper to a sold-out page.
+
+## 5. Test against real AI shopping surfaces
+
+Treat AI visibility as something you measure, not assume. Build a small testing matrix covering your top 15–20 products and run it regularly:
+
+- **Query the surfaces directly.** Ask ChatGPT, Perplexity, and watch Google AI Overviews with purchase-intent prompts in your categories ("best midweight merino sweater under $100").
+- **Check whether you appear**, how accurately the agent describes your product, and which competitors show up alongside you.
+- **Validate availability and price accuracy.** Confirm the agent reports the same price and stock status as your live storefront. Discrepancies point to a stale feed or a webhook that is not firing.
+- **Validate your structured data** with a rich-results testing tool to catch JSON-LD errors before they cost you visibility.
+
+Log results over time so you can connect feed improvements to changes in how often, and how accurately, AI surfaces recommend you.
+
+## Next steps
+
+You now have a repeatable pipeline: pull with the Admin GraphQL and Bulk Operations APIs, enrich with complete attributes and identifiers, emit Product/Offer JSON-LD plus a clean feed, keep it fresh with webhooks, and test against live AI surfaces. Wire it into CI so every catalog change rebuilds the feed and revalidates the schema.
+
+To go deeper on the API mechanics, work through the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) and grab ready-made queries from the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook). When you are ready to turn AI visibility into measurable demand, read our [Shopify AI advertising guide](/guides/shopify-ai-advertising).

@@ -1,0 +1,222 @@
+---
+title: "Sync Shopify Catalog to Meta Product Catalog"
+excerpt: "A developer tutorial to sync your Shopify product catalog to a Meta product catalog for Advantage+ catalog ads, with Admin GraphQL and items_batch code."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "Meta Ads", "Product Catalog", "Advantage+", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Sync a Shopify product catalog to a Meta product catalog"
+  steps:
+    - name: "Pull the catalog from Shopify"
+      text: "Read products and variants from the Shopify Admin GraphQL API, using cursor pagination for small stores and the Bulk Operations API to export the full catalog as JSONL."
+    - name: "Map Shopify fields to Meta fields"
+      text: "Transform each Shopify variant into a Meta catalog item: id, title, description, availability, condition, price, link, image_link, brand, google_product_category, and additional_image_link."
+    - name: "Choose a delivery method"
+      text: "Push items with the Graph API items_batch endpoint for real-time control, or host a product feed file that Meta fetches on a schedule for simpler operations."
+    - name: "Upload products to Meta"
+      text: "Send mapped items to /{catalog_id}/items_batch with method UPDATE, batching up to a few thousand requests per call, and capture the handles returned for status checks."
+    - name: "Keep the catalog fresh with webhooks"
+      text: "Subscribe to products/update and inventory_levels/update webhooks, then translate each event into an incremental items_batch UPDATE or DELETE so price and availability stay accurate."
+    - name: "Validate and handle rejections"
+      text: "Poll the batch handle, read item-level errors and warnings, fix required fields and disapprovals, and re-submit only the affected items."
+faqs:
+  - question: "Do I need a hosted feed or can I push items directly to Meta?"
+    answer: "Both work. The Graph API items_batch endpoint lets you push and update items in near real time, which is best when you already run Shopify webhooks and want price and availability to propagate within minutes. A hosted feed file (CSV, TSV, or XML) that Meta fetches on a schedule is simpler to operate and is a good fit when you do not have a backend to receive webhooks. Many teams use a feed for the initial full load and items_batch for incremental updates."
+  - question: "Why do my Advantage+ catalog ads underperform after a sync?"
+    answer: "The most common cause is identifier and availability drift. If the id you send to Meta does not match the content_id fired by your Pixel or Conversions API events, Meta cannot attribute conversions or build effective product sets. If availability says in stock but the product is actually sold out, you pay for clicks that cannot convert. Keep ids stable (use the Shopify variant id consistently) and update availability the moment inventory changes."
+  - question: "Should the Meta item id be the Shopify product id or variant id?"
+    answer: "Use the variant id when you sell variants as distinct purchasable items, because price, availability, and SKU differ per variant and catalog ads show one buyable unit. Whatever you choose, the same identifier must be what your Pixel and Conversions API send as content_id on ViewContent, AddToCart, and Purchase events. Consistency between catalog and signals is what makes Advantage+ work."
+  - question: "How often should I sync inventory and price to Meta?"
+    answer: "Treat price and availability as real-time fields. Drive incremental updates from the inventory_levels/update and products/update Shopify webhooks so changes reach Meta within minutes. Schedule a full reconciliation sync once or twice a day to catch any events that were missed, and run a complete rebuild after large bulk edits or imports."
+---
+
+Sync a Shopify product catalog to a Meta product catalog by exporting products with the Shopify Admin GraphQL API, mapping each variant to Meta's catalog fields (id, availability, price, image_link), and delivering them either through the Graph API items_batch endpoint or a hosted feed. Keep it fresh with Shopify webhooks. Accurate identifiers and availability are what make Advantage+ catalog ads perform.
+
+This is a step-by-step tutorial for the data pipeline behind Advantage+ catalog ads. For the conceptual model of Shopify's catalog APIs, start with the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide), and keep the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) open for copy-paste snippets. The same pipeline shape powers the [Google Merchant Center sync](/blog/shopify-catalog-google-merchant-center-sync) — only the field names and delivery endpoint change.
+
+## 1. Pull the catalog from Shopify
+
+Shopify is your source of truth. For a small store you can paginate the `products` connection synchronously, but for any real catalog use the **Bulk Operations API** — it runs the query asynchronously and hands you a JSONL file with every product and variant, with no query-cost throttling.
+
+```graphql
+mutation StartCatalogExport {
+  bulkOperationRunQuery(
+    query: """
+    {
+      products(query: "status:active") {
+        edges {
+          node {
+            id
+            title
+            descriptionHtml
+            vendor
+            productType
+            onlineStoreUrl
+            featuredImage { url }
+            images(first: 10) { edges { node { url } } }
+            variants {
+              edges {
+                node {
+                  id
+                  sku
+                  price
+                  availableForSale
+                  inventoryQuantity
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Poll `currentBulkOperation` until `status` is `COMPLETED`, then download the `url`. Each line of the JSONL is one object; child rows (variants, images) carry a `__parentId` pointing back to the product, so you reassemble the tree client-side as you stream the file. Pin an explicit API version in your endpoint (for example `/admin/api/2025-07/graphql.json`).
+
+## 2. Map Shopify fields to Meta catalog fields
+
+A Meta catalog item is a flat record. The work is translating one Shopify variant into one Meta item and getting the required fields exactly right. **`id` and `availability` matter most** — they drive matching, attribution, and whether Meta will even serve the product.
+
+| Meta field | Source (Shopify) | Notes |
+| --- | --- | --- |
+| `id` | variant `id` (numeric portion) | Must match the `content_id` your Pixel/CAPI sends. Stable forever. |
+| `title` | product `title` | Up to 200 chars; keep it human, not keyword-stuffed. |
+| `description` | `descriptionHtml` (stripped) | Plain text; 5,000 char max. |
+| `availability` | `availableForSale` / `inventoryQuantity` | `in stock` or `out of stock`. Most performance-critical field. |
+| `condition` | constant or metafield | Usually `new`. |
+| `price` | variant `price` + currency | Format `"19.99 USD"` — amount and ISO currency. |
+| `link` | `onlineStoreUrl` (+ `?variant=`) | Deep link to the buyable variant. |
+| `image_link` | `featuredImage.url` | HTTPS, publicly reachable, no auth. |
+| `brand` | `vendor` | Required for many verticals. |
+| `google_product_category` | mapping from `productType` | Improves targeting and policy classification. |
+| `additional_image_link` | `images` (up to 10) | Comma-separated extra image URLs. |
+
+```js
+function toMetaItem(product, variant) {
+  return {
+    id: variant.id.split("/").pop(),
+    title: product.title,
+    description: stripHtml(product.descriptionHtml).slice(0, 5000),
+    availability:
+      variant.availableForSale && variant.inventoryQuantity > 0
+        ? "in stock"
+        : "out of stock",
+    condition: "new",
+    price: `${variant.price} ${product.currencyCode || "USD"}`,
+    link: `${product.onlineStoreUrl}?variant=${variant.id.split("/").pop()}`,
+    image_link: product.featuredImage?.url,
+    additional_image_link: product.images
+      .map((i) => i.url)
+      .filter((u) => u !== product.featuredImage?.url)
+      .slice(0, 10)
+      .join(","),
+    brand: product.vendor,
+    google_product_category: mapCategory(product.productType),
+  };
+}
+```
+
+## 3. Two ways to deliver the catalog to Meta
+
+You have two delivery mechanisms, and most mature setups use both.
+
+**(a) Graph API batch — `/{catalog_id}/items_batch`.** You POST item records directly. Updates land in near real time, you get per-item error reporting, and it composes cleanly with webhook-driven updates. Use this as your steady-state pipeline.
+
+```js
+async function uploadBatch(catalogId, items, accessToken) {
+  const requests = items.map((item) => ({
+    method: "UPDATE", // UPDATE upserts; use DELETE to remove
+    retailer_id: item.id, // your stable identifier
+    data: item,
+  }));
+
+  const res = await fetch(
+    `https://graph.facebook.com/v21.0/${catalogId}/items_batch`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_token: accessToken,
+        item_type: "PRODUCT_ITEM",
+        requests,
+      }),
+    },
+  );
+  const json = await res.json();
+  return json.handles; // poll these for status
+}
+```
+
+Batch up to a few thousand `requests` per call; chunk larger catalogs and submit sequentially.
+
+**(b) Hosted product feed.** You publish a CSV, TSV, or XML file at a stable URL and configure Meta Commerce Manager to fetch it on a schedule (hourly to daily). Choose this when you do not run a backend that can receive webhooks, when a non-engineer owns the catalog, or for the **initial full load** before switching to `items_batch` for incremental updates. Shopify's own Product Feed API can generate a feed, but a self-hosted file gives you full control over field mapping. The trade-off is freshness: a scheduled feed lags inventory by up to the fetch interval, which is why availability-sensitive stores prefer the batch endpoint.
+
+## 4. Keep it fresh with Shopify webhooks
+
+A daily feed is not good enough for availability. Subscribe to **`products/update`** and **`inventory_levels/update`** webhooks, then convert each event into an incremental `items_batch` call. This is the difference between paying for clicks on sold-out products and not.
+
+```js
+// Express handler — verify HMAC first (omitted), then translate to a Meta update
+app.post("/webhooks/shopify", async (req, res) => {
+  const topic = req.get("X-Shopify-Topic");
+  res.sendStatus(200); // ack fast, process async
+
+  if (topic === "inventory_levels/update") {
+    const { inventory_item_id, available } = req.body;
+    const variant = await lookupVariantByInventoryItem(inventory_item_id);
+    await uploadBatch(CATALOG_ID, [
+      { id: variant.metaId, availability: available > 0 ? "in stock" : "out of stock" },
+    ], TOKEN);
+  }
+
+  if (topic === "products/update") {
+    const product = req.body;
+    const items = product.variants.map((v) => toMetaItem(product, v));
+    await uploadBatch(CATALOG_ID, items, TOKEN);
+  }
+});
+```
+
+Always return `200` immediately and do the Meta call on a queue — Shopify retries and eventually disables endpoints that respond slowly. Run a full reconciliation sync once or twice a day to catch any missed events.
+
+## 5. Validate and handle errors and rejections
+
+`items_batch` is asynchronous: a successful POST only means Meta accepted the request, not that every item passed validation. Poll the returned handle for item-level results.
+
+```js
+async function checkBatch(catalogId, handle, accessToken) {
+  const res = await fetch(
+    `https://graph.facebook.com/v21.0/${catalogId}/check_batch_request_status` +
+      `?handle=${handle}&access_token=${accessToken}`,
+  );
+  const { data } = await res.json();
+  for (const result of data) {
+    if (result.errors?.length) console.error(result.id, result.errors);
+    if (result.warnings?.length) console.warn(result.id, result.warnings);
+  }
+}
+```
+
+The failures you will actually hit: missing required fields (`brand`, `google_product_category`), malformed `price` (amount and currency must both be present), `image_link` that returns a non-200 or is behind auth, and **policy disapprovals** that surface in Commerce Manager rather than the API response. Fix the underlying field, then re-submit only the affected `id`s — never re-push the whole catalog to clear a handful of errors. Log every rejection by `id` so you can tell a transient image-fetch failure from a persistent data problem.
+
+The single highest-leverage habit: keep `id` stable and identical to your Pixel/Conversions API `content_id`, and treat `availability` and `price` as real-time fields. Everything Advantage+ does — product-set targeting, dynamic creative, attribution — depends on those three being correct.
+
+## Next steps
+
+You now have a full pipeline: bulk export from Shopify, a field map, two delivery options, webhook-driven freshness, and validation. From here:
+
+- Mirror the same export and mapping for the [Google Merchant Center sync](/blog/shopify-catalog-google-merchant-center-sync) so both ad platforms read one source of truth.
+- Bookmark the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) for the exact GraphQL reads and the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) for the API model.
+- If you would rather not build and maintain this pipeline, AdsX wires Shopify catalogs into Advantage+ campaigns for you — see the [Shopify AI advertising guide](/guides/shopify-ai-advertising).

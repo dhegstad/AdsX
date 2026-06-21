@@ -1,0 +1,231 @@
+---
+title: "Sync Shopify Catalog to Google Merchant Center"
+excerpt: "Developer tutorial to sync a Shopify catalog to Google Merchant Center: pull products via GraphQL, map attributes, push with the Content API, stay fresh."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "Google Merchant Center", "Product Feed", "Google Shopping", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Sync a Shopify catalog to Google Merchant Center"
+  steps:
+    - name: "Pull the catalog from Shopify"
+      text: "Read products and variants from the Shopify Admin GraphQL API. Use cursor pagination for small stores and the Bulk Operations API for large catalogs."
+    - name: "Map Shopify fields to Merchant Center attributes"
+      text: "Translate Shopify fields into Google product attributes such as id, title, description, link, image_link, price, availability, gtin, brand, and condition."
+    - name: "Transform into a Content API product resource"
+      text: "Build the JSON product resource the Google Content API for Shopping expects, including channel, contentLanguage, targetCountry, and the mapped attributes."
+    - name: "Push via the Content API"
+      text: "Insert products one at a time with products.insert or send up to 1,000 entries per call with the custombatch endpoint for throughput."
+    - name: "Keep the feed fresh with webhooks"
+      text: "Subscribe to Shopify products/update and inventory_levels/update webhooks and re-sync only the changed products and prices in near real time."
+    - name: "Validate and handle errors"
+      text: "Read productstatuses for disapprovals, fix missing required attributes, and retry transient failures with backoff while logging permanent ones."
+faqs:
+  - question: "Do I need the Content API, or can I just upload a feed file?"
+    answer: "Both work. A scheduled feed (CSV/XML fetched by Google, or the Shopify Product Feed API) is simplest for catalogs that change slowly. The Content API for Shopping is the right choice when you need near-real-time updates driven by Shopify webhooks, per-item error handling, and programmatic control over thousands of SKUs. Many teams use the Content API for inventory and price changes and a scheduled feed as a daily backstop."
+  - question: "Why does GTIN matter so much for Google Shopping?"
+    answer: "GTIN (the global trade item number, stored in Shopify as variant.barcode) is a unique product identifier Google uses to match your item to its catalog. Products with valid identifiers are eligible for richer placements, price benchmarks, and better matching, which typically improves impressions and click-through. If a variant genuinely has no GTIN, you must instead supply brand plus mpn, or set identifierExists to false for custom-made goods."
+  - question: "How do I avoid hitting Shopify and Google rate limits during a full sync?"
+    answer: "For Shopify, use the Bulk Operations API for the initial export instead of paginating thousands of products synchronously; it returns a single JSONL file and does not consume the standard query budget the same way. For Google, batch up to 1,000 products per custombatch call rather than calling products.insert per item, and respect the per-day quota. Run full re-syncs off-peak and rely on webhooks for incremental updates."
+  - question: "One variant or one product per Merchant Center item?"
+    answer: "Submit one item per purchasable variant. Each Shopify variant becomes its own Content API product with a unique id (for example the variant ID), its own price, availability, and gtin, while sharing the parent product's title, description, and itemGroupId. The itemGroupId ties variants of the same product together so Google can group sizes and colors."
+---
+
+Syncing a Shopify catalog to Google Merchant Center is a four-stage pipeline: pull products and variants from the Shopify Admin GraphQL API, map each field to a Google product attribute, transform the result into a Content API product resource, and push it to Merchant Center. Shopify webhooks then keep prices and inventory fresh, and the productstatuses endpoint surfaces disapprovals to fix.
+
+This is a build tutorial. For the conceptual model behind these APIs, start with the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide), and keep the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) open for copy-paste GraphQL. If you are still deciding between a managed feed and the API, read [Product Feed API vs CSV](/blog/shopify-product-feed-api-vs-csv) first.
+
+## 1. Pull the catalog from Shopify
+
+Read products and their variants from the **Admin GraphQL API**. For small catalogs, paginate the `products` connection with a cursor. Pull every attribute Google will need in one pass.
+
+```graphql
+query CatalogExport($cursor: String) {
+  products(first: 100, after: $cursor, sortKey: UPDATED_AT) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      descriptionHtml
+      handle
+      status
+      vendor
+      onlineStoreUrl
+      featuredImage { url }
+      variants(first: 100) {
+        nodes {
+          id
+          sku
+          barcode          # GTIN source
+          price
+          availableForSale
+          inventoryQuantity
+        }
+      }
+    }
+  }
+}
+```
+
+Loop until `hasNextPage` is `false`, passing the previous `endCursor` as `after`. For catalogs larger than a few thousand products, switch to the **Bulk Operations API** so you do not pay the per-query cost of synchronous pagination:
+
+```graphql
+mutation {
+  bulkOperationRunQuery(
+    query: """
+    {
+      products {
+        edges { node {
+          id title descriptionHtml handle status vendor onlineStoreUrl
+          featuredImage { url }
+          variants { edges { node { id sku barcode price availableForSale } } }
+        } }
+      }
+    }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Poll `currentBulkOperation` until `status` is `COMPLETED`, then download the JSONL result file from the returned `url`. Each line is one node — products and nested variants arrive as separate records linked by `__parentId`, which you stitch back together client-side.
+
+## 2. Map Shopify fields to Google Merchant Center attributes
+
+Google matches and ranks your items on a fixed set of product attributes. Here is the core mapping. Submit one item per purchasable variant, not one per product.
+
+| Google attribute | Shopify source | Notes |
+| --- | --- | --- |
+| `id` | `variant.id` (or SKU) | Unique and stable per variant |
+| `title` | `product.title` | Append variant option (e.g. size) if it differs |
+| `description` | `product.descriptionHtml` | Strip HTML to plain text |
+| `link` | `product.onlineStoreUrl` | Must be a live, crawlable URL |
+| `image_link` | `product.featuredImage.url` | Use a variant image when one exists |
+| `price` | `variant.price` | Include currency, e.g. `49.99 USD` |
+| `availability` | `variant.availableForSale` | `in_stock` or `out_of_stock` |
+| `gtin` | `variant.barcode` | The product identifier — see below |
+| `brand` | `product.vendor` | Required unless a valid GTIN is present |
+| `condition` | constant `new` | Override for refurbished/used catalogs |
+| `itemGroupId` | `product.id` | Groups variants of the same product |
+| `mpn` | `variant.sku` | Fallback identifier when no GTIN |
+
+**GTIN is the highest-leverage field for Shopping performance.** It is a global, unique identifier Google uses to match your item to its catalog, unlock price benchmarks, and improve placement quality — which lifts impressions and click-through. Store it in Shopify as the variant **barcode** and map it to `gtin`. If a variant truly has no barcode, supply `brand` + `mpn`, or set `identifierExists` to `false` for genuinely custom or handmade goods. Do not invent fake barcodes; invalid GTINs cause disapprovals.
+
+## 3. Transform into a Content API product resource
+
+Build the JSON the **Content API for Shopping** expects. Each variant becomes one product resource:
+
+```js
+function toGoogleProduct(product, variant) {
+  return {
+    offerId: variant.id,                 // becomes the item id
+    title: product.title,
+    description: stripHtml(product.descriptionHtml),
+    link: product.onlineStoreUrl,
+    imageLink: product.featuredImage?.url,
+    contentLanguage: "en",
+    targetCountry: "US",
+    feedLabel: "US",
+    channel: "online",
+    availability: variant.availableForSale ? "in stock" : "out of stock",
+    condition: "new",
+    brand: product.vendor,
+    itemGroupId: product.id,
+    price: { value: variant.price, currency: "USD" },
+    // Identifier: prefer GTIN, fall back to brand+mpn
+    ...(variant.barcode
+      ? { gtin: variant.barcode }
+      : { mpn: variant.sku, identifierExists: !!product.vendor }),
+  };
+}
+```
+
+`stripHtml` should turn `descriptionHtml` into clean plain text — Google rejects markup in `description`. Keep `contentLanguage`, `targetCountry`, and `channel` consistent with how the product is configured in Merchant Center, or inserts will be rejected.
+
+## 4. Push via the Content API
+
+For one-off updates, call `products.insert` (insert is also the update path — re-inserting the same `offerId` overwrites it):
+
+```js
+await content.products.insert({
+  merchantId: MERCHANT_ID,
+  requestBody: toGoogleProduct(product, variant),
+});
+```
+
+For a full sync, batch up to **1,000 entries per call** with `products.custombatch` to stay inside quotas and cut round-trips:
+
+```js
+const entries = variants.map((v, i) => ({
+  batchId: i,
+  merchantId: MERCHANT_ID,
+  method: "insert",
+  product: toGoogleProduct(v.product, v.variant),
+}));
+
+const { data } = await content.products.custombatch({ requestBody: { entries } });
+for (const r of data.entries) {
+  if (r.errors) console.error(`offer ${r.batchId} failed`, r.errors.errors);
+}
+```
+
+Authenticate with a Google service account that has Standard access to the Merchant Center account. Chunk your `entries` array into groups of 1,000 and send them sequentially or with light concurrency.
+
+## 5. Keep it fresh with Shopify webhooks
+
+A nightly full sync is a backstop, not the primary mechanism. Subscribe to Shopify webhooks and push only what changed, so prices and stock in Merchant Center stay within minutes of your store.
+
+```js
+// Express handler — verify HMAC first (omitted for brevity)
+app.post("/webhooks/products-update", async (req, res) => {
+  res.sendStatus(200);                  // ack fast, then process async
+  const product = req.body;
+  for (const variant of product.variants) {
+    await content.products.insert({
+      merchantId: MERCHANT_ID,
+      requestBody: toGoogleProduct(product, variant),
+    });
+  }
+});
+```
+
+Subscribe at minimum to:
+
+- **`products/update`** — title, description, image, price, status changes.
+- **`inventory_levels/update`** — flip `availability` between in/out of stock. Look up the affected variant from the inventory item ID, then re-insert just that item.
+- **`products/delete`** — call `products.delete` so removed SKUs stop serving ads.
+
+Always return `200` immediately and do the Google call on a queue; webhook endpoints that are slow or error out get throttled and eventually removed by Shopify.
+
+## 6. Validate and handle errors
+
+Insertion success does not mean the item is serving. Poll the **`productstatuses`** resource to read item-level approval and disapproval reasons:
+
+```js
+const { data } = await content.productstatuses.get({
+  merchantId: MERCHANT_ID,
+  productId: `online:en:US:${variant.id}`,
+});
+data.itemLevelIssues?.forEach((issue) =>
+  console.warn(issue.attributeName, issue.description, issue.resolution)
+);
+```
+
+Common fixes:
+
+- **Missing required attributes** — most disapprovals are an absent `gtin`/identifier, `brand`, `image_link`, or a non-crawlable `link`. Backfill at the mapping step.
+- **Price/availability mismatch** — Google crawls your landing page; the price and stock there must match the feed. Keep webhooks current.
+- **Invalid identifier** — a malformed barcode. Validate GTIN length/checksum before mapping, or drop to `brand` + `mpn`.
+
+Retry transient `5xx` and quota errors with exponential backoff; log permanent `4xx` validation errors for a human. Track a per-SKU sync state so a failed item gets retried on the next run instead of silently disappearing from your ads.
+
+## Next steps
+
+You now have an end-to-end pipeline: GraphQL export, attribute mapping, Content API push, webhook-driven freshness, and disapproval handling. Harden it with a job queue, GTIN validation, and a daily reconciliation full-sync as a safety net. Then connect it to demand — see how an automated catalog feeds profitable campaigns in the [Shopify AI advertising guide](/guides/shopify-ai-advertising), and revisit the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) when you extend the export to price lists or multiple markets.

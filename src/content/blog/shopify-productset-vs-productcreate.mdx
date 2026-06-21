@@ -1,0 +1,156 @@
+---
+title: "productSet vs productCreate in Shopify (2026)"
+excerpt: "productSet vs productCreate in Shopify's GraphQL Admin API: when to use declarative bulk upsert vs imperative create/update, with copy-paste mutation examples."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "productSet", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the difference between productSet and productCreate?"
+    answer: "productSet is declarative: you describe the complete desired end state of a product — title, options, variants, and media — and Shopify reconciles whatever exists to match, creating or updating as needed. productCreate is imperative: it creates one new product from the input you provide and nothing more. Use productSet to sync products from an external source of truth; use productCreate for one-off creation followed by targeted edits."
+  - question: "Does productSet create products or only update them?"
+    answer: "Both. productSet is an upsert. If you pass an id, Shopify reconciles that existing product to the input you supply. If you omit the id, Shopify creates a new product. That single behavior is what makes it ideal for sync jobs where you don't want to branch your code on whether a record already exists."
+  - question: "Can productSet run synchronously and asynchronously?"
+    answer: "Yes. By default productSet runs synchronously and returns the resulting product. For large products with many variants, pass synchronous: false to run it as a background operation; the mutation then returns a productSetOperation you poll for completion. Synchronous calls have a variant ceiling, so high-variant products should use the asynchronous path."
+  - question: "Will productSet delete variants I leave out of the input?"
+    answer: "Yes — that is the point of a declarative mutation. The variants array you send becomes the full set of variants. Any existing variant not represented in your input is removed during reconciliation. Always send the complete desired variant list, never a partial slice, or you will unintentionally delete inventory-bearing variants."
+---
+
+If you are writing code against Shopify's GraphQL Admin API, the first real decision in any catalog integration is **which write path to use**. The short answer: **`productSet` is declarative** — you describe the desired end state of a product, including its options, variants, and media, and Shopify reconciles whatever exists to match. It is the right tool for syncing products from an external source of truth. **`productCreate` and `productUpdate` are imperative** — they perform one targeted create or patch — and are best for single, surgical operations.
+
+This post compares the two paradigms and gives you copy-paste mutations for each. For the conceptual map of how these objects fit together, see the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For ready-to-run reads and writes, the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) is the companion reference, and the broader [Shopify Admin API guide](/blog/shopify-admin-api-guide) covers auth, versioning, and rate limits.
+
+## The core difference: declarative vs imperative
+
+An **imperative** API asks you to spell out each step. To get a product with three variants into Shopify imperatively, you call `productCreate`, capture the new IDs, then call `productVariantsBulkCreate` or `productVariantsBulkUpdate`. To change that product later you must first know what already exists, compute the delta yourself, and issue the matching add/update/delete calls.
+
+A **declarative** API asks you to describe the result. With `productSet` you send the complete product you *want* — title, `productOptions`, the full `variants` array — and Shopify figures out the difference between current and desired state and applies it. Create, update, and delete of options and variants all happen inside one reconciliation. Your code stops caring whether the product already exists.
+
+## productSet vs productCreate/productUpdate at a glance
+
+| Dimension | productSet | productCreate / productUpdate |
+|---|---|---|
+| **Paradigm** | Declarative (describe end state) | Imperative (perform one action) |
+| **Best for** | Syncing from a PIM, ERP, or spreadsheet source of truth | Targeted single create or field patch |
+| **Variant & option handling** | Full set reconciled in one call (creates, updates, deletes) | Variants handled in separate `productVariantsBulk*` calls |
+| **Idempotency** | High — same input yields same end state, safe to re-run | Low — re-running `productCreate` makes duplicates |
+| **Number of calls** | One mutation per product | Multiple (create + variants + media) |
+| **When NOT to use** | Patching one field on a known product; very high-variant products synchronously | Repeated bulk sync; reconciling deletes |
+
+## productSet: one declarative mutation
+
+Here `productSet` creates or reconciles a product with two options and three variants. Because no `id` is passed, this creates a new product; supply `input.id` and the same call becomes an update.
+
+```graphql
+mutation ProductSet($input: ProductSetInput!) {
+  productSet(input: $input) {
+    product {
+      id
+      title
+      options { name optionValues { name } }
+      variants(first: 50) { nodes { id sku price selectedOptions { name value } } }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "input": {
+    "title": "Trailhead Merino Tee",
+    "status": "ACTIVE",
+    "productOptions": [
+      { "name": "Color", "values": [{ "name": "Slate" }, { "name": "Clay" }] },
+      { "name": "Size", "values": [{ "name": "M" }, { "name": "L" }] }
+    ],
+    "variants": [
+      { "optionValues": [{ "optionName": "Color", "name": "Slate" }, { "optionName": "Size", "name": "M" }], "sku": "TMT-SLT-M", "price": "48.00" },
+      { "optionValues": [{ "optionName": "Color", "name": "Slate" }, { "optionName": "Size", "name": "L" }], "sku": "TMT-SLT-L", "price": "48.00" },
+      { "optionValues": [{ "optionName": "Color", "name": "Clay" }, { "optionName": "Size", "name": "M" }], "sku": "TMT-CLY-M", "price": "48.00" }
+    ]
+  }
+}
+```
+
+Run this twice with the same input and you get the same product — no duplicates. Change the `variants` array and the next run reconciles to match: a removed entry is deleted, a new entry is added, a changed `price` or `sku` is updated. That is the declarative payoff.
+
+For products with many variants, run it asynchronously to avoid the synchronous variant ceiling:
+
+```graphql
+mutation ProductSetAsync($input: ProductSetInput!) {
+  productSet(input: $input, synchronous: false) {
+    productSetOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Then poll the `productSetOperation` by ID until `status` is `COMPLETE`.
+
+## The imperative equivalent
+
+To produce a comparable result without `productSet`, you create the product, then push variants in a second call:
+
+```graphql
+mutation CreateProduct($product: ProductCreateInput!) {
+  productCreate(product: $product) {
+    product { id options { id name } }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "product": {
+    "title": "Trailhead Merino Tee",
+    "status": "ACTIVE",
+    "productOptions": [
+      { "name": "Color", "values": [{ "name": "Slate" }, { "name": "Clay" }] },
+      { "name": "Size", "values": [{ "name": "M" }, { "name": "L" }] }
+    ]
+  }
+}
+```
+
+Capture the returned `product.id`, then attach or edit variants:
+
+```graphql
+mutation BulkVariants($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+  productVariantsBulkUpdate(productId: $productId, variants: $variants) {
+    productVariants { id sku price }
+    userErrors { field message }
+  }
+}
+```
+
+Notice what the imperative flow forces on you: at least two round trips, manual ID plumbing between calls, and — crucially — no built-in reconciliation. If a variant later disappears upstream, *you* must detect it and issue a `productVariantsBulkDelete`. Re-running `productCreate` does not update the existing product; it creates a second one. That is why imperative writes are a poor fit for repeated sync.
+
+## Choose productSet when…
+
+- You sync products from an **external source of truth** — a PIM, ERP, an Akeneo/inriver feed, a supplier API, or even a nightly spreadsheet export. You hold the canonical record and want Shopify to mirror it.
+- You want **idempotent, re-runnable jobs**. A failed sync can simply be retried; the end state is the same.
+- You want option, variant, and media changes (add, update, delete) handled in **one reconciliation** instead of hand-rolled diffs.
+- You are **bulk-importing or migrating** a catalog and don't want to branch on "does this product exist yet?"
+
+## Choose productCreate / productUpdate when…
+
+- You are making a **single, targeted change** — flipping `status` to `ACTIVE`, editing a `descriptionHtml`, or correcting one price — and have the product ID in hand.
+- You want **minimal blast radius**. `productUpdate` only touches the fields you name, so there is no risk of unintentionally reconciling away variants you didn't include.
+- You are building an **interactive admin UI** where a merchant edits one product at a time, and a full declarative payload would be overkill.
+
+A common, healthy pattern is to use both: `productSet` for the bulk nightly sync from your source of truth, and `productUpdate` for real-time, single-field edits triggered by user actions or webhooks.
+
+## Watch the reconciliation gotcha
+
+The most important rule for `productSet`: the `variants` array you send **becomes the entire variant set**. Send a partial list and Shopify will delete the variants you left out — they hold inventory and order history, so this is destructive. Always send the complete desired list. If you only mean to touch one variant, that is exactly the case where `productUpdate` plus `productVariantsBulkUpdate` is the safer, more precise choice.
+
+## Bottom line
+
+Reach for **`productSet`** when Shopify is a *mirror* of data you own elsewhere: it is declarative, idempotent, and collapses create/update/delete into a single reconciling call — perfect for PIM, ERP, supplier-feed, and spreadsheet syncs. Reach for **`productCreate`/`productUpdate`** when you are performing a *specific* action with surgical scope. Pick the paradigm that matches the job and your catalog code gets dramatically simpler. If you'd rather hand the whole catalog-and-ads pipeline to a team that does this daily, [see our services](/services).
