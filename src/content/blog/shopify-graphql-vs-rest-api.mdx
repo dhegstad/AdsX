@@ -1,0 +1,147 @@
+---
+title: "Shopify GraphQL vs REST API (2026)"
+excerpt: "Shopify GraphQL vs REST API compared for catalog work: data fetching, rate limits, versioning, and why GraphQL is the path forward for new builds."
+date: "2026-06-20"
+updated: "2026-06-20"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "REST API", "Migration", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Is the Shopify REST API deprecated?"
+    answer: "Not entirely, but it is now legacy. Shopify designated the REST Admin API as legacy in 2024 and steers all new development to GraphQL. New product and catalog features ship to GraphQL first, and some never reach REST at all. Existing REST endpoints still respond, but you should pin a version, avoid building new integrations on REST, and plan migrations for anything actively maintained."
+  - question: "Why is Shopify GraphQL better than REST for the catalog?"
+    answer: "GraphQL lets you request exactly the fields you need in a single round trip, which eliminates the over-fetching and under-fetching that REST forces on you. It uses a calculated, cost-based rate limit instead of a fixed request bucket, exposes modern catalog mutations like productSet that REST lacks, and receives new features first. For catalog reads and writes at scale, it is faster and more predictable."
+  - question: "How does GraphQL rate limiting differ from REST?"
+    answer: "REST uses a leaky-bucket model that counts whole requests — typically 40 requests with a refill rate of 2 per second on standard plans. GraphQL instead assigns each query a calculated cost based on the fields and connections you request, drawn from a points bucket that refills over time. A small query costs little; a deep, wide query costs more. This rewards requesting only what you need."
+  - question: "Do I have to rewrite my whole app to move from REST to GraphQL?"
+    answer: "No. Migrate incrementally. Both APIs can run side by side against the same store, so you can move one resource at a time — start with the highest-traffic catalog reads, then writes. Map each REST endpoint to its GraphQL query or mutation, switch the calls, and verify field-by-field. There is no flag day; you retire REST calls gradually as you confirm parity."
+---
+
+For new Shopify builds, use the **GraphQL Admin API**. The REST Admin API is now legacy, and product and catalog features ship to GraphQL first — some never reach REST. GraphQL fetches exactly the fields you need in a single request and governs throughput with a calculated, cost-based rate limit instead of a fixed request bucket.
+
+This post compares the two APIs specifically for catalog work and shows how to move reads and writes across. For the conceptual map of how Shopify's catalog APIs fit together, see the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For copy-paste operations, see the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook).
+
+## The short version
+
+Shopify designated the REST Admin API as **legacy in 2024**. That does not mean it stopped working — existing REST endpoints still respond, and many production apps still call them. It means REST is in maintenance mode: it receives no new catalog capabilities, and Shopify directs all new development to GraphQL. If you are starting fresh in 2026, there is no good reason to build a new integration on REST.
+
+The practical consequences show up fastest in the catalog. Modern features — multi-location inventory nuances, the declarative `productSet` mutation, expanded metafield and media handling — are GraphQL-only or arrive there months before (or instead of) REST.
+
+## Comparison: GraphQL vs REST for the catalog
+
+| Dimension | REST Admin API | GraphQL Admin API |
+| --- | --- | --- |
+| **Data fetching** | Fixed response shape; you over-fetch fields you don't need and under-fetch related data (extra calls for variants, metafields, media) | Request exactly the fields you need in one query; related data nested in the same round trip |
+| **Rate limiting** | Leaky-bucket counting whole requests (≈40 bucket, refill 2/sec on standard plans) | Calculated query cost drawn from a points bucket; cheap queries cost little, deep queries cost more |
+| **Versioning** | Date-versioned (`/admin/api/2025-07/...`); quarterly releases | Same date-versioning scheme; identical release cadence |
+| **New-feature availability** | Legacy — new catalog features rarely land here | First-class — new features ship here first, some exclusively |
+| **Payload size** | Larger; you pay for fields you ignore | Smaller; only requested fields are returned |
+| **Learning curve** | Familiar HTTP verbs and resource URLs; easy to start | Steeper — schema, connections, cursors, cost model — but pays off at scale |
+
+The headline trade-off: REST is easier to pick up, GraphQL is more efficient and more capable. For anything beyond a one-off script, the GraphQL learning curve pays for itself quickly.
+
+## Side by side: get products with variants
+
+The same task — fetch products and their variants — exposes the core difference.
+
+**REST** returns a fixed, fat payload. You ask for products and get every field on every product, then often a second call for variants:
+
+```http
+GET /admin/api/2025-07/products.json?limit=50
+```
+
+```jsonc
+// Response (truncated) — every field on every product, whether you want it or not
+{
+  "products": [
+    {
+      "id": 1234567890,
+      "title": "Classic Tee",
+      "body_html": "<p>...</p>",
+      "vendor": "Acme",
+      "product_type": "Shirts",
+      "created_at": "2026-01-01T00:00:00-05:00",
+      "handle": "classic-tee",
+      "updated_at": "2026-06-01T00:00:00-04:00",
+      "status": "active",
+      "tags": "summer, cotton",
+      "variants": [ { "id": 111, "title": "S", "price": "19.99", "sku": "TEE-S", "inventory_quantity": 12, "...": "..." } ],
+      "options": [ "..." ],
+      "images": [ "..." ]
+    }
+  ]
+}
+```
+
+**GraphQL** returns only what you ask for. Here we want each product's title and status plus a handful of variant fields — nothing else comes back:
+
+```graphql
+query ProductsWithVariants($cursor: String) {
+  products(first: 50, after: $cursor, sortKey: UPDATED_AT) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      status
+      variants(first: 100) {
+        nodes { id sku price }
+      }
+    }
+  }
+}
+```
+
+```jsonc
+// Response — exactly the fields requested, nothing extra
+{
+  "data": {
+    "products": {
+      "pageInfo": { "hasNextPage": true, "endCursor": "eyJ..." },
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/1234567890",
+          "title": "Classic Tee",
+          "status": "ACTIVE",
+          "variants": { "nodes": [ { "id": "gid://shopify/ProductVariant/111", "sku": "TEE-S", "price": "19.99" } ] }
+        }
+      ]
+    }
+  }
+}
+```
+
+Two differences matter. First, the GraphQL response carries no `body_html`, `vendor`, `images`, or other fields you didn't request — smaller payloads and less parsing. Second, variants come back in the *same* request, so there is no N+1 pattern of one product call followed by a variants call per product. REST forces that pattern any time the embedded data isn't enough.
+
+GraphQL also identifies records by global ID (`gid://shopify/Product/...`) rather than the bare numeric IDs REST uses — a detail to handle when you map between the two during migration.
+
+## Rate limiting in practice
+
+REST's bucket counts requests, so a chatty integration that makes many small calls burns the bucket fast and starts getting `429`s — even when each call is trivial. GraphQL charges by *calculated cost*: a query's price scales with how many fields and connection nodes it pulls. Request 50 products with 3 variant fields each and you pay a modest cost; request 250 products with every nested connection and you pay far more.
+
+The lesson is the same advice that makes GraphQL efficient in the first place: ask for only what you need. Read the `extensions.cost` block Shopify returns with each response to see `requestedQueryCost`, `actualQueryCost`, and your remaining points, then size your `first:` arguments to stay under budget. For details on the surrounding endpoints and auth, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide).
+
+## Migrating catalog reads and writes from REST
+
+You do not need a rewrite. Both APIs run side by side against the same store, so migrate one resource at a time and verify parity as you go.
+
+**1. Inventory your REST calls.** List every REST endpoint you hit and group by resource (products, variants, inventory, collections, metafields). Rank by traffic.
+
+**2. Move reads first.** Reads are lower risk. Map each `GET` to a GraphQL query, request only the fields the old code actually consumed, and confirm the data matches field-by-field. Pagination changes from `page_info` link headers to cursor-based `pageInfo { hasNextPage endCursor }`. For large exports, switch to the Bulk Operations API rather than synchronous paging.
+
+**3. Then move writes.** This is where GraphQL's advantage is biggest. The modern, GraphQL-only mutation **`productSet`** is declarative: you describe the complete desired state of a product — options, variants, and media — and Shopify reconciles the difference, creating or updating as needed. That replaces brittle sequences of REST `POST`/`PUT` calls (create product, then create each variant, then attach images) with one mutation. It is the right tool when you sync a catalog from an external source of truth. The `productSet` mutation has no REST equivalent — it is a reason to migrate, not just a nice-to-have.
+
+**4. Handle ID translation.** Cache or translate between REST numeric IDs and GraphQL global IDs during the transition so both code paths agree on which record they're touching.
+
+**5. Retire REST gradually.** There is no flag day. As each GraphQL path proves out in production, delete the corresponding REST call. You finish when the inventory from step 1 is empty.
+
+## A non-alarmist note on "legacy"
+
+"Legacy" is not a countdown to a shutdown. Shopify has not announced a hard removal date for the REST Admin API, and breaking changes still follow the versioning and deprecation process. If you have a stable REST integration that works and needs no new catalog features, it will keep running. The point is forward-looking: every new thing you build, and every actively maintained integration, should be on GraphQL. Treat REST migration as planned maintenance, not an emergency.
+
+## Bottom line
+
+GraphQL is the path forward for the Shopify catalog: single-request field selection, cost-based rate limits, first access to new features, and modern mutations like `productSet` that REST simply doesn't have. REST still works and isn't going dark tomorrow, but it's legacy — start new builds on GraphQL and migrate existing catalog reads and writes incrementally. If you'd rather hand the integration and catalog sync work to a team that does it daily, see [our services](/services).
