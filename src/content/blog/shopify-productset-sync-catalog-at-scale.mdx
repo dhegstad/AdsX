@@ -1,0 +1,175 @@
+---
+title: "Sync Your Shopify Catalog at Scale with productSet"
+excerpt: "Use Shopify's productSet mutation to declaratively upsert products, variants, options, and media at scale, with async polling and userErrors handling."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "productSet", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What does 'declarative upsert' mean for the productSet mutation?"
+    answer: "It means you send the full desired end state of a product — its options, variants, and media — and Shopify reconciles the live product to match it in one call. You do not diff the current product or orchestrate separate create, update, and delete mutations. Variants you omit from the input can be removed, and variants you include are created or updated by their option values, so the input is a complete picture, not a patch."
+  - question: "When should productSet run synchronously versus asynchronously?"
+    answer: "Run productSet synchronously (the default) for products with a small number of variants — up to roughly 100 — when you need the product back in the same response. Set synchronous: false for large products approaching the 2,048-variant ceiling: Shopify processes the write in the background, returns a productSetOperation immediately, and you poll that operation for completion. Async avoids timeouts on heavy variant reconciliation."
+  - question: "How do I key productSet to update an existing product instead of creating one?"
+    answer: "Pass an identifier. Include the product's id in ProductSetInput to target a known product, or use the identifier field with a customId (a metafield-backed external ID) or handle so Shopify matches an existing product by that key. If no match is found, productSet creates a new product. This is what makes it safe to run the same sync repeatedly from an external source of truth."
+  - question: "Why must I always read userErrors from productSet?"
+    answer: "A productSet call can return HTTP 200 with a data payload while still having rejected part of your input — a duplicate SKU, an invalid option value, or a variant that violates a constraint. Those failures appear in the userErrors array, not as a thrown error. If you only check for network or GraphQL errors, you will record a sync as successful when variants were silently dropped. Always fail the job when userErrors is non-empty."
+---
+
+To sync a Shopify catalog at scale, use the **`productSet` mutation** — a declarative upsert that takes the full desired state of a product (options, variants, media) and reconciles the live product to match in one call. Key it by `id`, `handle`, or an external `customId`, run it synchronously for small products or with **`synchronous: false`** for large ones, and always read `userErrors`. This is the production build guide.
+
+This is the write-side counterpart to [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql), and it sits under the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). If you are still deciding *whether* to adopt it, read [`productSet` vs `productCreate`](/blog/shopify-productset-vs-productcreate) first — this guide assumes you have already chosen `productSet` and want to run it in production. Everything uses the **GraphQL Admin API** at version `2026-01`.
+
+## What "declarative upsert" actually means
+
+Most Shopify write code is imperative: fetch the product, diff it against your source of truth, then fire `productCreate` or `productUpdate`, plus `productVariantsBulkCreate`, `productVariantsBulkUpdate`, and `productVariantsBulkDelete` to reconcile variants. You own the orchestration, the ordering, and the edge cases.
+
+`productSet` inverts that. You describe the **end state** — "this product should have exactly these two options, these six variants, and this media" — and Shopify computes the diff for you. Variants present in your input are created or updated (matched by their `optionValues`); variants absent from your input are removed. That single property is why `productSet` is the right primitive for syncing from a PIM, ERP, or spreadsheet: your job just mirrors the source, and Shopify handles the reconciliation ([Shopify: `productSet`](https://shopify.dev/docs/api/admin-graphql/latest/mutations/productset)).
+
+## The ProductSetInput shape
+
+`ProductSetInput` is the whole product in one object. The pieces that matter for a sync:
+
+| Field | Purpose | Notes |
+|-------|---------|-------|
+| `id` / `identifier` | Which product to upsert | `id` targets a known product; `identifier` matches by `handle` or `customId` |
+| `title`, `descriptionHtml`, `status`, `vendor`, `productType` | Core product fields | `status` is `ACTIVE` / `DRAFT` / `ARCHIVED` |
+| `productOptions` | Option axes (Size, Color) | Each has `name` and `values` |
+| `variants` | Full variant list | Each keyed by `optionValues`; carries `sku`, `price`, `barcode` |
+| `files` | Media (images, video) | Referenced by `originalSource` URL or existing media `id` |
+
+A create-or-update call keyed by an external ID looks like this:
+
+```graphql
+mutation UpsertProduct($input: ProductSetInput!) {
+  productSet(input: $input) {
+    product {
+      id
+      handle
+      variants(first: 50) { nodes { id sku title } }
+    }
+    userErrors { field message code }
+  }
+}
+```
+
+```js
+const input = {
+  identifier: { customId: { namespace: "sync", key: "external_id", value: "SKU-BEANIE" } },
+  title: "Merino Wool Beanie",
+  status: "ACTIVE",
+  vendor: "Northbound",
+  productType: "Hats",
+  productOptions: [
+    { name: "Color", position: 1, values: [{ name: "Charcoal" }, { name: "Rust" }] },
+  ],
+  variants: [
+    { optionValues: [{ optionName: "Color", name: "Charcoal" }], sku: "BEANIE-CHAR", barcode: "0080000000017", price: "32.00" },
+    { optionValues: [{ optionName: "Color", name: "Rust" }],     sku: "BEANIE-RUST", barcode: "0080000000024", price: "32.00" },
+  ],
+  files: [{ originalSource: "https://cdn.example.com/beanie-charcoal.jpg", contentType: "IMAGE" }],
+};
+```
+
+Because we passed `identifier.customId`, Shopify matches the existing product carrying that metafield and updates it; if none exists, it creates one and stamps the metafield. Re-running the same payload is idempotent — the second call is a no-op diff. To key by the URL handle instead, use `identifier: { handle: "merino-wool-beanie" }`; to target a product you already have, pass `id: "gid://shopify/Product/123"` ([Shopify: `ProductSetInput`](https://shopify.dev/docs/api/admin-graphql/latest/input-objects/ProductSetInput)).
+
+## Synchronous vs async: the variant-count decision
+
+By default `productSet` runs **synchronously** and returns the finished product in the response. That is fine for typical products. But a product can hold up to **2,048 variants**, and reconciling hundreds of them synchronously risks request timeouts. For that, pass `synchronous: false`: Shopify accepts the write, returns a `ProductSetOperation` immediately, and processes it in the background ([Shopify: `productSet`](https://shopify.dev/docs/api/admin-graphql/latest/mutations/productset)).
+
+| Mode | Argument | Returns | Use when |
+|------|----------|---------|----------|
+| Synchronous | default (`synchronous: true`) | `product` inline | Small products (~≤100 variants), need result now |
+| Asynchronous | `synchronous: false` | `productSetOperation { id status }` | Large products, bulk migrations, avoiding timeouts |
+
+The async mutation and its poll query:
+
+```graphql
+mutation UpsertLargeProduct($input: ProductSetInput!) {
+  productSet(synchronous: false, input: $input) {
+    productSetOperation { id status }
+    userErrors { field message code }
+  }
+}
+```
+
+```graphql
+query PollProductSet($id: ID!) {
+  productSetOperation(id: $id) {
+    id
+    status          # CREATED | ACTIVE | COMPLETE
+    product { id handle }
+    userErrors { field message code }
+  }
+}
+```
+
+Poll `productSetOperation` until `status` is `COMPLETE`, then read the resulting `product`. Critically, `userErrors` on the async path can surface **on the operation itself**, not just the initial mutation — so a job that returned an operation id cleanly can still have failed. Check both.
+
+```js
+async function upsertLarge(shop, token, input) {
+  const start = await gql(shop, token, UPSERT_LARGE, { input });
+  const setErrors = start.data.productSet.userErrors;
+  if (setErrors.length) throw new Error(`productSet rejected: ${JSON.stringify(setErrors)}`);
+
+  let op = start.data.productSet.productSetOperation;
+  while (op.status !== "COMPLETE") {
+    await new Promise((r) => setTimeout(r, 2000));
+    op = (await gql(shop, token, POLL_PRODUCT_SET, { id: op.id })).data.productSetOperation;
+    if (op.userErrors?.length) throw new Error(`op failed: ${JSON.stringify(op.userErrors)}`);
+  }
+  return op.product;
+}
+```
+
+## userErrors handling is not optional
+
+`productSet` follows the standard Shopify user-error pattern: a call can return **HTTP 200 with data** and still have rejected part of your input. A duplicate SKU, an option value that does not match any declared option, or a variant violating a constraint lands in `userErrors` with a machine-readable `code` — it does not throw. If your client only catches transport or GraphQL errors, you will log a sync as successful while variants were silently dropped.
+
+The rule: **treat any non-empty `userErrors` as a hard failure** and surface the `field` path so you can trace which variant broke. Do not swallow it, and do not retry blindly — most `productSet` user errors are input problems that a retry will reproduce.
+
+```js
+async function upsert(shop, token, input) {
+  const res = await gql(shop, token, UPSERT_PRODUCT, { input });
+  const { product, userErrors } = res.data.productSet;
+  if (userErrors.length) {
+    // e.g. [{ field: ["variants","1","sku"], message: "SKU has already been taken", code: "..." }]
+    throw new Error(`productSet failed: ${JSON.stringify(userErrors)}`);
+  }
+  return product;
+}
+```
+
+## When to combine productSet with staged uploads and bulk operations
+
+`productSet` upserts **one product per call** (with all its variants and media). It is not itself a bulk endpoint. Two patterns scale it:
+
+- **Staged uploads for media.** Do not pass hotlinked image URLs for a large migration — they can rate-limit or 404 mid-sync. Instead, push assets through `stagedUploadsCreate`, get the staged `resourceUrl`, and reference that in `files.originalSource`. This makes media ingestion reliable and lets Shopify pull from its own staging bucket ([Shopify: staged uploads](https://shopify.dev/docs/api/admin-graphql/latest/mutations/stageduploadscreate)).
+- **Bulk mutations for volume.** To upsert thousands of products, wrap `productSet` in `bulkOperationRunMutation`: you upload a JSONL file where each line is one product's variables, and Shopify runs the mutation per line asynchronously, past the normal rate limit. This is the write-side mirror of the read-side bulk pattern — see [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs) for the JSONL format and polling loop.
+
+| You have | Reach for |
+|----------|-----------|
+| A few products, live edits | `productSet` synchronous, one call each |
+| One product, hundreds of variants | `productSet` with `synchronous: false` |
+| Thousands of products to migrate | `bulkOperationRunMutation` wrapping `productSet` |
+| Images/video to attach | `stagedUploadsCreate` → `files.originalSource` |
+
+The mistake teams make is looping thousands of synchronous `productSet` calls behind a naive sleep, hitting the cost-based rate limit, and building fragile backoff. Past a few hundred products, the bulk mutation is the correct tool — it runs server-side and only the submit and poll calls count against your bucket.
+
+## Why this matters for ads and AI shopping
+
+A declarative sync is not just cleaner code — it is what keeps catalog data *complete*, and completeness is the ceiling on feed performance. Every variant `productSet` reconciles carries the `barcode` (GTIN), `price`, and title that Google Shopping, Meta Advantage+ catalogs, and AI shopping agents read. A sync that drops variants or skips GTINs on `userErrors` you never checked will quietly cap ROAS no matter how good the campaigns are.
+
+That is the work [AdsX](/services) does for Shopify brands — turning a clean, well-synced catalog into high-performing feeds across paid and AI channels. To pressure-test your own catalog before you build on it, run it through the [free feed-readiness audit](/tools/free-audit).
+
+## Next steps
+
+- Still choosing the mutation? Read [`productSet` vs `productCreate`](/blog/shopify-productset-vs-productcreate).
+- Reading instead of writing? See [fetch your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Scaling to thousands of products? See [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

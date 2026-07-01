@@ -1,0 +1,161 @@
+---
+title: "Sync a Shopify Feed in Real Time with Webhooks"
+excerpt: "React to Shopify catalog changes as they happen: subscribe to product and inventory webhooks, verify the HMAC, stay idempotent, and keep a feed in sync."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "Webhooks", "GraphQL", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Which Shopify webhook topics do I need to keep a product feed in sync?"
+    answer: "Subscribe to products/create, products/update, and products/delete to catch title, price, image, and status edits, plus product removals. Add inventory_levels/update to react to stock changes that don't touch the product record, since those flip variants in and out of availability. If you also run bulk snapshot exports, subscribe to bulk_operations/finish to know when a full re-sync is ready to download."
+  - question: "How do I verify a Shopify webhook is authentic?"
+    answer: "Shopify signs every webhook with an HMAC-SHA256 digest of the raw request body, keyed with your app's secret, sent in the X-Shopify-Hmac-Sha256 header. Compute the same digest over the unparsed body, base64-encode it, and compare using a constant-time function like crypto.timingSafeEqual. Verify against the raw bytes before any JSON parsing or body middleware runs — parsing and re-serializing changes the bytes and breaks the signature. Reject any request that fails."
+  - question: "Why do I need idempotency for Shopify webhooks?"
+    answer: "Shopify guarantees at-least-once delivery, so the same event can arrive more than once, and retries can arrive out of order. Without deduplication you double-process edits or apply a stale update over a newer one. Use the X-Shopify-Webhook-Id header to skip duplicates, and compare the payload's updated_at timestamp against what you last stored so an out-of-order retry never overwrites fresher data."
+  - question: "Are webhooks a replacement for a full catalog export?"
+    answer: "No — they are complementary. A bulk export is a complete point-in-time snapshot; webhooks are the live delta stream that keeps that snapshot current between full runs. The durable pattern is to seed your feed with one bulk export, then apply webhook events as they arrive, and periodically re-run the export to reconcile any events dropped during downtime. Webhooks alone can drift; a snapshot alone goes stale."
+---
+
+To keep a downstream feed in sync with a Shopify catalog **in real time**, subscribe to webhooks for the topics that change your data — `products/create`, `products/update`, `products/delete`, and `inventory_levels/update` — verify each delivery's HMAC signature, deduplicate on the webhook ID, and re-fetch only the changed product before writing it to your feed. This is the live counterpart to a bulk export: a snapshot tells you everything once, webhooks tell you what changed the instant it changes.
+
+This is the real-time sync deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. Its sibling is the [full-catalog bulk export guide](/blog/shopify-fetch-entire-product-catalog-graphql) — read that for the snapshot half of the story. Everything here uses the **GraphQL Admin API** at version `2026-01`; webhook subscriptions are managed with `webhookSubscriptionCreate` ([Shopify: webhookSubscriptionCreate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/webhookSubscriptionCreate)).
+
+## Snapshot vs. live: which problem are you solving?
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| One-off full export or migration | Bulk Operations API | One JSONL file with everything |
+| Feed that must reflect edits within seconds | Webhooks + targeted re-fetch | Push delivery, no polling |
+| Reconciling drift after downtime | Bulk export, then resume webhooks | Snapshot repairs missed events |
+| Reacting to stock going to zero | `inventory_levels/update` webhook | Fires without a product edit |
+
+The mistake teams make is re-exporting the entire catalog on a cron every fifteen minutes to catch edits. That is expensive, always stale between runs, and hammers your rate-limit bucket. Webhooks invert the model: Shopify pushes you the delta, and you touch only the one product that changed.
+
+## Step 1: subscribe to the topics that matter
+
+Create a subscription per topic with `webhookSubscriptionCreate`. The `topic` is a `WebhookSubscriptionTopic` enum value, and `callbackUrl` is your HTTPS endpoint. Here we register product updates delivered as JSON over HTTPS ([Shopify: webhook topics](https://shopify.dev/docs/api/webhooks?reference=graphql)).
+
+```graphql
+mutation SubscribeProductUpdate($callbackUrl: URL!) {
+  webhookSubscriptionCreate(
+    topic: PRODUCTS_UPDATE
+    webhookSubscription: {
+      callbackUrl: $callbackUrl
+      format: JSON
+    }
+  ) {
+    webhookSubscription { id topic }
+    userErrors { field message }
+  }
+}
+```
+
+Repeat for each topic you need. These are the ones that keep a feed honest:
+
+| Topic (enum) | Fires when | Feed action |
+|--------------|-----------|-------------|
+| `PRODUCTS_CREATE` | A product is created | Insert the new product |
+| `PRODUCTS_UPDATE` | Title, price, media, or status changes | Re-fetch and upsert |
+| `PRODUCTS_DELETE` | A product is deleted | Remove it from the feed |
+| `INVENTORY_LEVELS_UPDATE` | Stock at a location changes | Flip variant availability |
+| `BULK_OPERATIONS_FINISH` | A bulk export completes | Download and reconcile |
+
+`INVENTORY_LEVELS_UPDATE` is the one people forget: a variant selling out never touches the product record, so a product-only subscription will happily serve out-of-stock items in your ads until the next full export. `BULK_OPERATIONS_FINISH` replaces busy-polling `currentBulkOperation` — Shopify tells you the moment the JSONL is ready ([Shopify: bulk operations](https://shopify.dev/docs/api/usage/bulk-operations/imports)).
+
+Register subscriptions once, at install time, not on every app boot — creating a duplicate subscription for a topic and callback URL returns a `userError` rather than silently stacking deliveries, so read that array and treat "already exists" as success. You can confirm what is currently registered by querying the `webhookSubscriptions` connection, which is worth doing in a health check so a silently-expired subscription doesn't let your feed drift for days before anyone notices.
+
+## Step 2: verify the HMAC before you trust anything
+
+Every delivery carries an `X-Shopify-Hmac-Sha256` header: a base64-encoded HMAC-SHA256 of the **raw request body**, keyed with your app secret. Compute the same digest and compare in constant time. Do this on the unparsed bytes — if a JSON body parser runs first, re-serialization changes the bytes and the signature will never match ([Shopify: verify webhooks](https://shopify.dev/docs/apps/build/webhooks/subscribe/https#step-5-verify-the-webhook)).
+
+```js
+import crypto from "node:crypto";
+
+function verifyWebhook(rawBody, hmacHeader, secret) {
+  const digest = crypto
+    .createHmac("sha256", secret)
+    .update(rawBody, "utf8") // rawBody is a Buffer/string, NOT parsed JSON
+    .digest("base64");
+  const a = Buffer.from(digest);
+  const b = Buffer.from(hmacHeader || "");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+```
+
+In Express, capture the raw body so verification sees the exact bytes Shopify signed:
+
+```js
+app.post(
+  "/webhooks/shopify",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const ok = verifyWebhook(
+      req.body, // Buffer, because express.raw
+      req.get("X-Shopify-Hmac-Sha256"),
+      process.env.SHOPIFY_API_SECRET
+    );
+    if (!ok) return res.sendStatus(401);
+
+    // ACK fast (< 5s), then process off the request path.
+    res.sendStatus(200);
+    enqueue({
+      id: req.get("X-Shopify-Webhook-Id"),
+      topic: req.get("X-Shopify-Topic"),
+      body: JSON.parse(req.body.toString("utf8")),
+    });
+  }
+);
+```
+
+Return `200` immediately. Shopify expects an acknowledgement within roughly five seconds and treats a slow or failing endpoint as a delivery failure, retrying with backoff over the following hours and eventually removing the subscription after repeated failures. Never do the feed write inside the request handler — enqueue and move on. A failed HMAC check should return `401` and nothing else: don't leak why it failed, and don't retry it yourself, since a genuine Shopify delivery will always carry a valid signature.
+
+## Step 3: an event-driven sync architecture
+
+The durable shape is **webhook → queue → targeted re-fetch → feed update**. The endpoint only verifies and enqueues; a worker does the slow work. This decouples Shopify's five-second deadline from however long your feed write takes, and gives you retries and idempotency in one place.
+
+Critically, treat the webhook payload as a **trigger, not a source of truth**. Payloads can arrive out of order, and a thin topic like `inventory_levels/update` doesn't contain the full product. Re-fetch the current product by ID so you always write the latest state:
+
+```js
+async function handleEvent(evt, { shop, token, seen }) {
+  // Idempotency: skip duplicates by webhook id (at-least-once delivery).
+  if (await seen.has(evt.id)) return;
+
+  if (evt.topic === "products/delete") {
+    await feed.remove(evt.body.id);
+  } else {
+    // Re-fetch authoritative state instead of trusting the payload.
+    const product = await gql(shop, token, PRODUCT_BY_ID, {
+      id: `gid://shopify/Product/${evt.body.id}`,
+    });
+    // Guard against out-of-order retries overwriting newer data.
+    if (await feed.isNewer(product.updatedAt, evt.body.id)) {
+      await feed.upsert(product);
+    }
+  }
+  await seen.add(evt.id); // record only after success
+}
+```
+
+Two guarantees make this correct. **Idempotency:** Shopify delivers at-least-once, so the same `X-Shopify-Webhook-Id` can arrive twice — record processed IDs and skip repeats. **Ordering:** retries can land out of order, so compare `updated_at` against what you stored and refuse to overwrite fresher data with a stale replay ([Shopify: webhook best practices](https://shopify.dev/docs/apps/build/webhooks/best-practices)).
+
+## Step 4: reconcile against a snapshot
+
+Webhooks can be missed — during a deploy, an outage, or the window before your subscription existed. That is why the snapshot half of this pair matters: periodically run a [full bulk export](/blog/shopify-fetch-entire-product-catalog-graphql), diff it against your feed, and repair any drift. Webhooks keep you current cheaply; the export is your source of truth that catches whatever the live stream dropped. Trigger the download from the `bulk_operations/finish` webhook rather than polling.
+
+How often you reconcile depends on how much drift you can tolerate. A daily bulk export is enough for most stores, because the webhook stream handles the minute-to-minute changes and the export only has to catch the rare dropped event. High-velocity catalogs — flash sales, frequent restocks, large variant counts — benefit from a tighter cadence, but you almost never need to reconcile more than hourly. The reconciliation job is also the right place to alert: if the diff is consistently large, that is a signal your webhook endpoint is dropping deliveries and needs attention, not a bigger export schedule.
+
+## Where this feeds the money
+
+A feed that updates within seconds of a catalog edit is what keeps ad spend efficient: no bidding on sold-out variants, no serving a price that changed an hour ago. This connects directly to how you [manage product publications](/blog/shopify-manage-product-publications) across sales channels and how you [generate feeds with the productFeed API](/blog/shopify-productfeed-api-generate-feeds) for Google and Meta. The freshness of that sync is the ceiling on ad performance — stale catalog data quietly wastes budget no matter how good the campaigns are, which is exactly the work [AdsX](/services) does for Shopify brands.
+
+## Next steps
+
+- Need the snapshot half? See [fetch your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Syncing to sales channels? See [manage product publications](/blog/shopify-manage-product-publications).
+- Building the delivery feed? See [generate feeds with the productFeed API](/blog/shopify-productfeed-api-generate-feeds).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

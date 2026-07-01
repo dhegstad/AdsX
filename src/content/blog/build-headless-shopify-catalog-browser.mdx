@@ -1,0 +1,261 @@
+---
+title: "Build a Headless Shopify Catalog Browser in Next.js"
+excerpt: "Build a browsable headless catalog on the Shopify Storefront API: fetch products and collections, render a grid, add search, and wire a variant picker."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "Storefront API", "GraphQL", "Next.js", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "HowTo"
+faqs:
+  - question: "Do I need a public or private Storefront API access token for a headless catalog browser?"
+    answer: "Use a public Storefront access token. It is scoped to read-only storefront data — products, collections, and prices — and is safe to expose in client-side code, which is exactly what a browsable catalog needs. You create it by installing a custom app in your store admin and enabling Storefront API access. Reserve the private (delegate) token for server-only rendering where you never ship it to the browser."
+  - question: "Which Storefront API version should I target for a new catalog build?"
+    answer: "Target the latest stable version, which is 2026-01 at the time of writing. The version is part of the endpoint path — /api/2026-01/graphql.json — so pinning it means Shopify will not change field behavior underneath you. Shopify releases a new stable version quarterly and supports each for at least a year, so pin explicitly and schedule an upgrade rather than tracking an unversioned URL."
+  - question: "How do I select a specific variant from the Storefront API?"
+    answer: "Query the product's variants connection and its selectedOptions, which returns each option name and value (for example Size / Large). Render one control per option, track the chosen value in component state, then match the variant whose selectedOptions array equals the user's selections. That matched variant carries the id you pass to checkout and the price and availableForSale flags you display."
+  - question: "Can I fetch the Shopify catalog on the server or does it have to be client-side?"
+    answer: "Both work. Fetching in a React Server Component or getServerSideProps keeps your token off the client and improves first paint, which is best for the grid and product pages. Client-side fetching suits interactive filtering and search-as-you-type. A common split is server-render the initial catalog for SEO and speed, then hydrate client-side queries for search and variant selection."
+---
+
+To build a headless Shopify catalog browser you install a custom app to get a **Storefront API access token**, query the `products` and `collections` connections over GraphQL, and render the results in a small Next.js front end — a product grid, a search box, and a product page with a variant picker. This tutorial builds all three, step by step, with runnable code against Storefront API version **2026-01**. The result is a browsable catalog you can deploy anywhere.
+
+This is the end-to-end build that the [Storefront API catalog-read recipe](/blog/shopify-storefront-api-catalog-read-headless) points to as its implementation — that piece is the reference; this is the working app. For the full API surface, see the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide), and for the wider catalog picture, the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).
+
+## Step 1: Create a Storefront API access token
+
+In your store admin, go to **Settings → Apps and sales channels → Develop apps**, create an app, then under **Configuration** enable **Storefront API** access and grant the `unauthenticated_read_product_listings` scope. Install the app and copy the **public Storefront access token** from the **API credentials** tab. Unlike the Admin API token, this one is read-only and safe to ship to the browser ([Shopify: Storefront API authentication](https://shopify.dev/docs/api/usage/authentication)).
+
+```bash
+# .env.local
+NEXT_PUBLIC_SHOPIFY_DOMAIN=your-store.myshopify.com
+NEXT_PUBLIC_STOREFRONT_TOKEN=your-public-storefront-token
+```
+
+The distinction matters: the Admin API token can read and write orders, customers, and inventory, so it must never touch client code. The public Storefront token can only read the storefront data you enabled, which is why a catalog browser is one of the few places it is fine to expose a Shopify credential in the browser at all. If you would rather keep even the read token server-side, everything below still works — just call the fetch helper from Server Components and route handlers only, which is the default in this build.
+
+## Step 2: Write a tiny Storefront fetch helper
+
+Every request is a `POST` to the versioned GraphQL endpoint with the `X-Shopify-Storefront-Access-Token` header. Wrap it once so the rest of the app just passes a query and variables.
+
+```js
+// lib/storefront.js
+const endpoint = `https://${process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN}/api/2026-01/graphql.json`;
+
+export async function storefront(query, variables = {}) {
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": process.env.NEXT_PUBLIC_STOREFRONT_TOKEN,
+    },
+    body: JSON.stringify({ query, variables }),
+    next: { revalidate: 60 }, // cache the catalog for 60s
+  });
+  const { data, errors } = await res.json();
+  if (errors) throw new Error(errors.map((e) => e.message).join("; "));
+  return data;
+}
+```
+
+The Storefront API is unauthenticated in the OAuth sense — the public token is the only credential, and it grants exactly the read scopes you enabled, nothing more ([Shopify: Storefront API](https://shopify.dev/docs/api/storefront)).
+
+## Step 3: Query products and collections
+
+The `products` connection returns a paginated list; each node exposes `title`, `handle`, a `priceRange`, `featuredImage`, and a `variants` connection. Request only what the grid renders — the Storefront API has a cost budget just like the Admin API.
+
+```graphql
+query CatalogGrid($first: Int!, $cursor: String) {
+  products(first: $first, after: $cursor, sortKey: BEST_SELLING) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      handle
+      title
+      featuredImage { url altText }
+      priceRange {
+        minVariantPrice { amount currencyCode }
+      }
+    }
+  }
+  collections(first: 20) {
+    nodes { id handle title }
+  }
+}
+```
+
+Here are the Storefront fields this build relies on and what each one drives in the UI:
+
+| Storefront field | Type / connection | Used for |
+|------------------|-------------------|----------|
+| `products.nodes` | `Product` connection | The grid list |
+| `product.handle` | `String` | The `/product/[handle]` route |
+| `priceRange.minVariantPrice` | `MoneyV2` | "From $X" price on cards |
+| `featuredImage` | `Image` | Grid thumbnail |
+| `collections.nodes` | `Collection` connection | Category filter buttons |
+| `variants.selectedOptions` | `[SelectedOption!]` | The variant picker |
+| `variant.availableForSale` | `Boolean` | Enable/disable "Add" |
+
+Note the `sortKey: BEST_SELLING` argument — the Storefront API sorts products server-side by a fixed set of keys (`BEST_SELLING`, `PRICE`, `CREATED_AT`, `TITLE`, and `RELEVANCE` when a `query` is present), so you never sort client-side. The `pageInfo { hasNextPage endCursor }` block is what powers "Load more": pass `endCursor` back as the `cursor` variable on the next request until `hasNextPage` is false, exactly the cursor pattern the Storefront API shares with the Admin API ([Shopify: pagination](https://shopify.dev/docs/api/usage/pagination-graphql)).
+
+## Step 4: Render the product grid
+
+Fetch on the server in a Server Component so the token stays off the client and the first paint is fully populated. Map each node to a card that links to its product page by `handle`.
+
+```jsx
+// app/page.jsx
+import { storefront } from "@/lib/storefront";
+import { CATALOG_GRID } from "@/lib/queries";
+import Link from "next/link";
+
+export default async function CatalogPage() {
+  const data = await storefront(CATALOG_GRID, { first: 24 });
+  const { products, collections } = data;
+
+  return (
+    <main>
+      <nav>
+        {collections.nodes.map((c) => (
+          <Link key={c.id} href={`/collection/${c.handle}`}>{c.title}</Link>
+        ))}
+      </nav>
+      <ul className="grid">
+        {products.nodes.map((p) => (
+          <li key={p.id}>
+            <Link href={`/product/${p.handle}`}>
+              <img src={p.featuredImage?.url} alt={p.featuredImage?.altText ?? p.title} />
+              <h3>{p.title}</h3>
+              <span>
+                From {p.priceRange.minVariantPrice.amount}{" "}
+                {p.priceRange.minVariantPrice.currencyCode}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+```
+
+## Step 5: Add search
+
+The Storefront `products` connection accepts a `query` argument using Shopify's [search syntax](https://shopify.dev/docs/api/usage/search-syntax) — `title:*shoe*`, `product_type:Shirt`, `tag:sale`. Wire a client component that debounces input and calls a route handler so the token stays server-side.
+
+```graphql
+query SearchProducts($query: String!) {
+  products(first: 20, query: $query) {
+    nodes { id handle title featuredImage { url altText } }
+  }
+}
+```
+
+```jsx
+// app/search/SearchBox.jsx
+"use client";
+import { useState } from "react";
+
+export default function SearchBox() {
+  const [results, setResults] = useState([]);
+
+  async function onChange(e) {
+    const term = e.target.value.trim();
+    if (!term) return setResults([]);
+    const res = await fetch(`/api/search?q=${encodeURIComponent(term)}`);
+    setResults((await res.json()).products.nodes);
+  }
+
+  return (
+    <div>
+      <input onChange={onChange} placeholder="Search the catalog…" />
+      <ul>{results.map((p) => <li key={p.id}>{p.title}</li>)}</ul>
+    </div>
+  );
+}
+```
+
+The route handler (`app/api/search/route.js`) calls `storefront(SEARCH_PRODUCTS, { query: \`title:*${q}*\` })` and returns the JSON — the public token never reaches the browser this way, and you can rate-limit the endpoint.
+
+## Step 6: Build the product page with a variant picker
+
+Fetch a single product by `handle` with `productByHandle`, pulling each variant's `selectedOptions` so you can render one control per option and match the user's choice back to a variant.
+
+```graphql
+query ProductByHandle($handle: String!) {
+  productByHandle(handle: $handle) {
+    id
+    title
+    descriptionHtml
+    options { name values }
+    variants(first: 100) {
+      nodes {
+        id
+        availableForSale
+        price { amount currencyCode }
+        selectedOptions { name value }
+      }
+    }
+  }
+}
+```
+
+```jsx
+// app/product/[handle]/VariantPicker.jsx
+"use client";
+import { useState } from "react";
+
+export default function VariantPicker({ options, variants }) {
+  const [selected, setSelected] = useState(
+    Object.fromEntries(options.map((o) => [o.name, o.values[0]]))
+  );
+
+  const match = variants.find((v) =>
+    v.selectedOptions.every((o) => selected[o.name] === o.value)
+  );
+
+  return (
+    <div>
+      {options.map((opt) => (
+        <fieldset key={opt.name}>
+          <legend>{opt.name}</legend>
+          {opt.values.map((val) => (
+            <button
+              key={val}
+              aria-pressed={selected[opt.name] === val}
+              onClick={() => setSelected((s) => ({ ...s, [opt.name]: val }))}
+            >
+              {val}
+            </button>
+          ))}
+        </fieldset>
+      ))}
+      <p>
+        {match?.price.amount} {match?.price.currencyCode}
+      </p>
+      <button disabled={!match?.availableForSale}>
+        {match?.availableForSale ? "Add to cart" : "Sold out"}
+      </button>
+    </div>
+  );
+}
+```
+
+The `match` line is the whole trick: a variant is uniquely identified by the set of its `selectedOptions`, so you find it by checking that every selected option value equals the user's choice. That matched `id` is what you later hand to `cartLinesAdd` to start a checkout.
+
+Two refinements make this production-grade. First, disable option values that would produce a sold-out or nonexistent combination by pre-computing which `selectedOptions` sets actually resolve to an `availableForSale` variant — this stops shoppers from selecting "Red / XXL" when it does not exist. Second, cap `variants(first: 100)`: a product with more than 100 variants needs nested pagination, and in practice it is a sign the store is encoding data in variants that belongs in metafields. For most catalogs a single page of variants covers every product.
+
+## Step 7: The working result and deploying it
+
+You now have a browsable catalog: a server-rendered grid, collection filters, search-as-you-type, and product pages with a live variant picker and price. Because the Storefront token is public and read-only, deployment is trivial — push to Vercel, Netlify, or any Node host, set the two environment variables, and it runs. Keep the `revalidate: 60` cache so the catalog stays fresh without hammering the API, and move the search route behind a rate limit before going public.
+
+If your headless storefront is live but not converting, the bottleneck usually is not the code — it is catalog data quality and the ad campaigns pointing at it. That is the work [AdsX](/services) does for Shopify brands: turning a clean catalog into paid-ads and AI-shopping performance.
+
+## Next steps
+
+- Reference for every read query: the [Storefront API catalog-read recipe](/blog/shopify-storefront-api-catalog-read-headless).
+- Choosing between surfaces: [Admin API vs Storefront API for catalog data](/blog/shopify-admin-api-vs-storefront-api).
+- Full API tour: the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide).
+- The catalog big picture: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

@@ -1,0 +1,197 @@
+---
+title: "Shopify GraphQL Rate Limits & Error Handling Reference"
+excerpt: "A copy-paste reference for Shopify Admin GraphQL API rate limits and errors: the cost-based bucket, throttleStatus, error codes, and backoff patterns."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Rate Limits", "Error Handling", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "How does the Shopify GraphQL Admin API rate limit actually work?"
+    answer: "It is a calculated, cost-based limit, not a request count. You get a bucket of 1,000 cost points on standard plans that refills at 50 points per second; Shopify Plus and Commerce Components get larger buckets and faster restore rates. Every query has a cost roughly equal to the fields and connection nodes it returns, and each response reports the exact cost in extensions.cost. When the bucket cannot cover a query, Shopify returns a THROTTLED error instead of running it."
+  - question: "What is the difference between userErrors and top-level errors in a Shopify response?"
+    answer: "Top-level errors is a GraphQL array at the root of the response — it signals the query itself failed: bad syntax, THROTTLED, ACCESS_DENIED, or an internal error, and data is usually null. userErrors is a field you request inside a mutation payload; it reports business-logic failures like an invalid handle or a missing variant while the request itself succeeded (HTTP 200). Always check both: top-level errors first, then userErrors on every mutation."
+  - question: "How should I retry a THROTTLED Shopify GraphQL request?"
+    answer: "Read extensions.cost.throttleStatus from the response and wait until the bucket has enough points before retrying — the deficit divided by restoreRate gives the exact seconds to sleep. Layer exponential backoff with jitter on top for repeated failures, and cap total attempts at four or five. Do not retry immediately or with a fixed sleep; honoring the reported restoreRate is what keeps a bulk catalog job from thrashing against the limit."
+  - question: "Why do catalog jobs get throttled even when I only make a few requests?"
+    answer: "Because the limit is cost-based, not request-based. A single products query that fetches 250 products with nested variants and media can cost 500 to 1,000 points on its own, draining most or all of your bucket in one call. Deep nesting and large first values multiply cost fast. Request only the fields you need, lower page sizes, or move full-catalog reads to the Bulk Operations API, which runs past the normal limit."
+---
+
+The Shopify Admin GraphQL API enforces a **calculated, cost-based rate limit**: a bucket of 1,000 cost points on standard plans that refills at 50 points per second, with larger buckets on Plus. Every query costs points equal to the fields and nodes it returns, each response reports the exact cost in `extensions.cost`, and exceeding the bucket returns a `THROTTLED` error. This page is the pure reference — the numbers, the error codes, and the retry math — for building catalog jobs that never thrash the limit.
+
+This is the reference the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to for limits and errors. The how-tos apply these numbers: see [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs) and [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and API fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide). Every number below links to [shopify.dev](https://shopify.dev/docs/api/usage/rate-limits).
+
+## The cost-based model
+
+GraphQL does not count requests — it counts **query cost**. You have a bucket of points; each query subtracts its cost; the bucket refills continuously. When the bucket cannot cover the next query, Shopify rejects it with `THROTTLED` rather than running a partial query.
+
+| Plan tier | Bucket (max cost) | Restore rate | Notes |
+|-----------|-------------------|--------------|-------|
+| Standard (Basic, Shopify, Advanced) | 1,000 points | 50 points/sec | Default for most stores |
+| Shopify Plus | 2,000 points | 100 points/sec | 2× bucket and restore |
+| Commerce Components | 10,000 points | 500 points/sec | Enterprise tier |
+
+These figures are the current published values ([Shopify: GraphQL rate limits](https://shopify.dev/docs/api/usage/rate-limits)). Treat them as a floor you read at runtime, not hard-coded constants — always trust the `throttleStatus` in the response over any number you cache.
+
+## How query cost is computed
+
+Cost is assessed in two phases. Shopify first computes a **requested cost** from the query shape (before execution), and if that exceeds the bucket the query is rejected outright. After execution it computes the **actual cost** and charges that against your bucket.
+
+| Element | Cost | Rule of thumb |
+|---------|------|---------------|
+| Scalar / object field | 0 | Fields like `id`, `title`, `price` are free |
+| Connection (`products`, `variants`) | 2 + nodes returned | `first: 50` ≈ 2 + 50 |
+| Mutation | 10 | Flat base cost per mutation |
+| `bulkOperationRunQuery` | 10 | The bulk read runs past the bucket |
+
+So a `products(first: 250)` query pulling nested `variants(first: 100)` can cost well into the hundreds — a single call can drain a standard bucket. Requested cost is capped at the maximum bucket size, which is why deeply nested queries fail before they even run ([Shopify: query cost](https://shopify.dev/docs/api/usage/rate-limits#graphql-admin-api-rate-limits)).
+
+## Reading extensions.cost.throttleStatus
+
+Every GraphQL response carries an `extensions.cost` object. This is the single source of truth for pacing — never guess your remaining budget when Shopify hands it to you on every call.
+
+```json
+{
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 202,
+      "actualQueryCost": 62,
+      "throttleStatus": {
+        "maximumAvailable": 1000.0,
+        "currentlyAvailable": 938.0,
+        "restoreRate": 50.0
+      }
+    }
+  }
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `requestedQueryCost` | Estimated cost before execution |
+| `actualQueryCost` | Points actually charged |
+| `throttleStatus.maximumAvailable` | Your bucket ceiling (plan-dependent) |
+| `throttleStatus.currentlyAvailable` | Points left right now |
+| `throttleStatus.restoreRate` | Points refilled per second |
+
+To compute how long until you can afford the next query: `secondsToWait = (nextCost − currentlyAvailable) / restoreRate`. Read this on every response and back off *before* you hit zero.
+
+## Errors: userErrors vs top-level errors
+
+Shopify surfaces failures in two distinct places, and conflating them is the most common catalog-integration bug.
+
+| Kind | Where it appears | HTTP | Meaning |
+|------|------------------|------|---------|
+| Top-level `errors` | Root of the response | 200 (or 4xx/5xx) | The query failed: syntax, `THROTTLED`, `ACCESS_DENIED`, internal error. `data` is usually null. |
+| `userErrors` | Inside a mutation payload | 200 | The request ran, but business logic rejected it: invalid handle, missing variant, validation failure. |
+
+A `THROTTLED` response is a **top-level** error and still returns HTTP 200 — you cannot rely on status codes alone. Always parse both: check `json.errors` first, then check `payload.userErrors` on every mutation you send.
+
+```json
+{
+  "errors": [
+    {
+      "message": "Throttled",
+      "extensions": { "code": "THROTTLED" }
+    }
+  ]
+}
+```
+
+## Common error codes
+
+| Code | Location | Cause | Action |
+|------|----------|-------|--------|
+| `THROTTLED` | Top-level | Bucket cannot cover the query | Back off using `restoreRate`, retry |
+| `MAX_COST_EXCEEDED` | Top-level | Requested cost > bucket ceiling | Reduce `first`, trim fields, split query |
+| `ACCESS_DENIED` | Top-level | Missing scope / unapproved app | Fix OAuth scopes; do not retry |
+| `INTERNAL_SERVER_ERROR` | Top-level | Shopify 5xx / transient | Retry with exponential backoff |
+| `SHOP_INACTIVE` | Top-level | Store frozen or closed | Do not retry; surface to user |
+| Field validation | `userErrors` | Bad input to a mutation | Fix payload; do not retry blindly |
+
+Only `THROTTLED`, `MAX_COST_EXCEEDED` (after shrinking the query), and `INTERNAL_SERVER_ERROR` are retry-worthy. Auth and validation errors are permanent — retrying them just wastes your bucket ([Shopify: error handling](https://shopify.dev/docs/api/usage/rate-limits#avoiding-rate-limit-errors)).
+
+## Retry and backoff strategy
+
+| Failure | Strategy | Max attempts |
+|---------|----------|--------------|
+| `THROTTLED` | Wait `(cost − available) / restoreRate` seconds | 5 |
+| `INTERNAL_SERVER_ERROR` | Exponential backoff + jitter | 4 |
+| `MAX_COST_EXCEEDED` | Shrink query, then one retry | 1 |
+| `ACCESS_DENIED` / validation | None — fail fast | 0 |
+
+The rule: **honor the bucket first, then layer exponential backoff with jitter** for transient 5xx. A retry helper that reads `throttleStatus` sleeps for exactly the right time instead of a fixed guess, so a full-catalog job paces itself against the real limit.
+
+```js
+// Retry-safe GraphQL client that honors the cost bucket.
+async function shopifyGraphQL(shop, token, query, variables = {}, attempt = 0) {
+  const res = await fetch(`https://${shop}/admin/api/2026-01/graphql.json`, {
+    method: "POST",
+    headers: {
+      "X-Shopify-Access-Token": token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  const json = await res.json();
+
+  // 1. Top-level THROTTLED: wait exactly until the bucket can afford a retry.
+  const throttled = json.errors?.some((e) => e.extensions?.code === "THROTTLED");
+  if (throttled) {
+    const status = json.extensions?.cost?.throttleStatus;
+    const needed = json.extensions?.cost?.requestedQueryCost ?? 200;
+    const deficit = Math.max(needed - (status?.currentlyAvailable ?? 0), 0);
+    const restore = status?.restoreRate ?? 50;
+    const waitMs = (deficit / restore) * 1000 + jitter();
+    if (attempt >= 5) throw new Error("Throttled: max retries exceeded");
+    await sleep(waitMs);
+    return shopifyGraphQL(shop, token, query, variables, attempt + 1);
+  }
+
+  // 2. Transient 5xx / internal errors: exponential backoff with jitter.
+  const transient = json.errors?.some(
+    (e) => e.extensions?.code === "INTERNAL_SERVER_ERROR"
+  );
+  if (transient) {
+    if (attempt >= 4) throw new Error("Server error: max retries exceeded");
+    await sleep(2 ** attempt * 1000 + jitter());
+    return shopifyGraphQL(shop, token, query, variables, attempt + 1);
+  }
+
+  // 3. Permanent errors (ACCESS_DENIED, validation): fail fast.
+  if (json.errors?.length) {
+    throw new Error(`GraphQL error: ${JSON.stringify(json.errors)}`);
+  }
+
+  // 4. Proactively pace the NEXT call before the bucket empties.
+  const cost = json.extensions?.cost?.throttleStatus;
+  if (cost && cost.currentlyAvailable < cost.maximumAvailable * 0.2) {
+    const target = cost.maximumAvailable * 0.5;
+    await sleep(((target - cost.currentlyAvailable) / cost.restoreRate) * 1000);
+  }
+
+  return json;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const jitter = () => Math.floor(Math.random() * 250); // avoid thundering herd
+```
+
+The proactive pause in step 4 is what separates a smooth job from a sawtooth of `THROTTLED` retries: instead of sprinting until you hit zero and bouncing off the limit, you glide back to half a bucket whenever you drop below 20%.
+
+## When to stop tuning and go bulk
+
+If you find yourself pushing `first` values down and still throttling, you have outgrown synchronous reads. The [Bulk Operations API](/blog/shopify-bulk-operations-large-catalogs) charges a flat cost and runs the read server-side, past the bucket entirely — the correct tool for full-catalog exports. Rate-limit tuning matters for targeted reads and writes; it is not how you move 50,000 products.
+
+This is also where API hygiene meets revenue: throttled, half-finished catalog jobs produce incomplete feeds, and incomplete feeds cap ad performance and AI shopping visibility no matter how good the campaigns are. Getting the extraction reliable is foundational work — exactly what [AdsX](/services) does for Shopify brands feeding Google, Meta, and AI shopping surfaces.
+
+## Next steps
+
+- Reading the whole catalog? See [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Moving past the limit entirely? See [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs).
+- API fundamentals — auth, versioning, scopes: the [Shopify Admin API guide](/blog/shopify-admin-api-guide).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

@@ -118,6 +118,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },
+      {
+        url: `${baseUrl}/tools/feed-readiness-checker`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+      },
       // Pillar guides
       {
         url: `${baseUrl}/guides/shopify-ai-advertising`,

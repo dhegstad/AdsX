@@ -1,0 +1,182 @@
+---
+title: "Manage Shopify Product Publications Across Sales Channels"
+excerpt: "Control where a product appears with publishablePublish and publishableUnpublish: list current publications, target the Online Store, and fix feed gaps."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Publications", "Sales Channels", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Why doesn't my product show up in a feed even though it's active?"
+    answer: "Product status ACTIVE is necessary but not sufficient — the product must also be published to the sales channel driving that feed. A product can be ACTIVE and still be unpublished from the Online Store or a specific channel, in which case it won't appear in that channel's storefront or export. Query the product's resourcePublications to see exactly which channels it's live on; a missing publication, not the status field, is usually the reason a product is absent from a feed."
+  - question: "What is the difference between publishablePublish and publishablePublishToCurrentChannel?"
+    answer: "Both publish a resource to a sales channel, but publishablePublish takes an explicit list of publication IDs, so you can publish to any channel your app has access to in a single call. publishablePublishToCurrentChannel publishes only to the channel associated with the app making the request — useful when a sales-channel app just needs to make a product live on itself without knowing other publication IDs. Use publishablePublish for orchestration across channels and the current-channel variant for self-publishing."
+  - question: "How do I list which sales channels a product is published to?"
+    answer: "Query the product's resourcePublications connection. Each node exposes the publication (with its name and id) and an isPublished boolean, so you can see both where the product is live and where it exists as an unpublished draft. Use resourcePublicationsV2 or the publishedOnPublication field for narrower checks. This is the authoritative source of channel state — the merchant admin's channel toggles are just a UI over these same publication records."
+  - question: "Does unpublishing a product delete it or change its status?"
+    answer: "No. publishableUnpublish only removes the product from the specified sales channel's publication — it does not delete the product, change its ACTIVE or DRAFT status, or affect other channels. The product remains in your catalog and stays published everywhere you didn't unpublish it. To remove a product from every channel at once you unpublish from each of its publications; to take it out of the catalog entirely you delete or archive it, which is a separate operation."
+---
+
+To manage where a Shopify product appears, you work with **publications** — one per sales channel — and two mutations: `publishablePublish` to make a product live on a channel and `publishableUnpublish` to remove it. Channel publication state is separate from product `status`: an `ACTIVE` product still won't show in a channel's storefront or feed unless it's published there. This guide covers listing a product's `resourcePublications`, publishing and unpublishing across the Online Store and other channels, and why this is the first thing to check when a product goes missing from a feed.
+
+This is the publication-control deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. It covers **sales-channel publication only** — B2B and Markets catalogs with their own price lists are a separate model, covered in [B2B and Markets catalogs](/blog/shopify-catalog-api-b2b-markets). Everything here uses the **GraphQL Admin API** at version `2026-01`; publication management ships to GraphQL and REST is legacy for new work ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+
+## The Publication object
+
+A **Publication** represents a product's relationship to a single sales channel — Online Store, Point of Sale, Shop, the Google & YouTube channel, or a third-party channel app. Each channel a store has installed owns exactly one publication. Publishing a product to a channel creates a publication record linking the two; unpublishing removes it. The publishable mutations operate on any resource that implements the `Publishable` interface — products and collections — so the same calls work across catalog resource types ([Shopify: Publishable interface](https://shopify.dev/docs/api/admin-graphql/latest/interfaces/Publishable)).
+
+The key mental model: **status answers "is this product sellable at all?"; publication answers "is this product live on this specific channel?"** Both must be true for the product to appear. This distinction is the root of most "my product is active but not showing" tickets.
+
+| Concept | Field / mutation | Question it answers |
+|---------|------------------|---------------------|
+| Product status | `Product.status` (`ACTIVE` / `DRAFT` / `ARCHIVED`) | Is the product sellable anywhere? |
+| Publication | `Publication` (one per channel) | Which channels *can* carry it? |
+| Channel state | `resourcePublications` → `isPublished` | Is it *live* on a given channel now? |
+| Make live | `publishablePublish` | Publish to one or more channels |
+| Remove | `publishableUnpublish` | Unpublish from one or more channels |
+
+## List a product's current publications
+
+Before you change anything, read the product's `resourcePublications` connection. Each node gives you the `publication` (with its `name` and `id`) plus an `isPublished` flag and the `publishDate`, so you see both where the product is live and where it merely exists as an unpublished draft ([Shopify: resourcePublications](https://shopify.dev/docs/api/admin-graphql/latest/objects/Product)).
+
+```graphql
+query ProductPublications($id: ID!) {
+  product(id: $id) {
+    id
+    title
+    status
+    resourcePublications(first: 25) {
+      nodes {
+        isPublished
+        publishDate
+        publication {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+To enumerate every channel the store has — not just the ones this product touches — query the top-level `publications` connection. You'll need those publication IDs to publish to a channel the product isn't on yet.
+
+```graphql
+query AllChannels {
+  publications(first: 25) {
+    nodes {
+      id
+      name
+    }
+  }
+}
+```
+
+Cache this channel list; the IDs are stable per store, and you'll reference them in every publish call. If you only need a yes/no answer for a single channel, the narrower `publishedOnPublication(publicationId:)` field on the product returns a boolean without pulling the whole connection — cheaper when you're checking one channel across many products.
+
+One caveat on access: your app can only publish to, unpublish from, or read publications for channels it has permission for. A private integration querying `publications` sees the channels its scopes allow, so if a channel you expect is missing from the list, check the app's granted access before assuming the store lacks that channel.
+
+## Publish to the Online Store and other channels
+
+`publishablePublish` takes the resource `id` and an `input` array of publication targets. Pass one entry per channel you want the product live on — you can publish to the Online Store and a marketplace channel in the same call.
+
+```graphql
+mutation PublishProduct($id: ID!, $input: [PublicationInput!]!) {
+  publishablePublish(id: $id, input: $input) {
+    publishable {
+      publishedOnCurrentPublication
+      resourcePublications(first: 25) {
+        nodes {
+          isPublished
+          publication { name }
+        }
+      }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+```js
+// Publish one product to the Online Store + the Google channel
+const input = [
+  { publicationId: "gid://shopify/Publication/1234567" }, // Online Store
+  { publicationId: "gid://shopify/Publication/7654321" }, // Google & YouTube
+];
+
+const res = await fetch(`https://${shop}/admin/api/2026-01/graphql.json`, {
+  method: "POST",
+  headers: {
+    "X-Shopify-Access-Token": token,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    query: PUBLISH_PRODUCT,
+    variables: { id: productId, input },
+  }),
+});
+
+const json = await res.json();
+const errors = json.data.publishablePublish.userErrors;
+if (errors.length) throw new Error(JSON.stringify(errors));
+```
+
+Always read `userErrors` — a publish can fail silently at the HTTP layer (200 OK) while reporting a channel-level problem, such as trying to publish a `DRAFT` product to a channel that requires `ACTIVE`. The mutation does not change status; it only creates the publication link ([Shopify: publishablePublish](https://shopify.dev/docs/api/admin-graphql/latest/mutations/publishablePublish)).
+
+### publishablePublishToCurrentChannel
+
+If your code runs inside a sales-channel app, you often don't need to know other channels' IDs — you just want the product live on *your* channel. `publishablePublishToCurrentChannel` publishes to the publication tied to the requesting app, no publication ID required.
+
+```graphql
+mutation PublishHere($id: ID!) {
+  publishablePublishToCurrentChannel(id: $id) {
+    publishable { publishedOnCurrentPublication }
+    userErrors { field message }
+  }
+}
+```
+
+Use `publishablePublish` when you're orchestrating across channels from a central integration, and `publishablePublishToCurrentChannel` when a channel app self-publishes ([Shopify: publishablePublishToCurrentChannel](https://shopify.dev/docs/api/admin-graphql/latest/mutations/publishablePublishToCurrentChannel)).
+
+## Unpublish from a channel
+
+`publishableUnpublish` mirrors the publish call: same `id`, same `input` array of publication targets. It removes the product from those channels only. It does **not** delete the product, change its `status`, or touch channels you didn't name.
+
+```graphql
+mutation UnpublishProduct($id: ID!, $input: [PublicationInput!]!) {
+  publishableUnpublish(id: $id, input: $input) {
+    publishable {
+      resourcePublications(first: 25) {
+        nodes {
+          isPublished
+          publication { name }
+        }
+      }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+To pull a product from every channel — for a seasonal delisting, say — read its `resourcePublications`, collect the publication IDs where `isPublished` is true, and pass them all to `publishableUnpublish`. To remove it from the catalog entirely, archive or delete it instead; those are separate operations from channel publication.
+
+## Why channel publication decides whether a product appears in a feed
+
+This is the payoff. A sales-channel feed — an Online Store export, a Google Merchant feed, a marketplace sync — reflects the products **published to that channel**, not merely the products that are `ACTIVE`. A common failure: a product is set `ACTIVE`, everyone assumes it's live, but it was never published to the channel (or was auto-unpublished by a bulk edit or an app), so it silently never enters the feed.
+
+When you build feed generation with the [ProductFeed API](/blog/shopify-productfeed-api-generate-feeds), the channel's publication set is the source list. And because publication state changes independently of the product record, you want to react to it in near-real time — subscribe to [catalog change webhooks](/blog/shopify-catalog-change-webhooks) so a publish/unpublish event triggers a feed refresh instead of waiting for a nightly full sync.
+
+For debugging, the diagnostic order is always: check `status` first, then check `resourcePublications` for the channel in question. If `status` is `ACTIVE` but the channel's `isPublished` is `false` (or the publication is absent entirely), you've found the missing-product cause — one `publishablePublish` call fixes it.
+
+This is also where publication hygiene meets ad performance: products that aren't published to your Google or Meta channel simply can't be advertised through it, no matter how good the campaign. Auditing publication coverage across channels is part of the catalog work [AdsX](/services) does for Shopify brands, because a product that isn't in the feed is a product the ads can't sell.
+
+## Next steps
+
+- Building the feed those publications feed into? See [generate feeds with the ProductFeed API](/blog/shopify-productfeed-api-generate-feeds).
+- Reacting to publish/unpublish events in real time? See [catalog change webhooks](/blog/shopify-catalog-change-webhooks).
+- Selling to B2B or across Markets with per-catalog price lists? That's a separate model — see [B2B and Markets catalogs](/blog/shopify-catalog-api-b2b-markets).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

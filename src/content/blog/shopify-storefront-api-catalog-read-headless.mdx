@@ -1,0 +1,197 @@
+---
+title: "Read the Shopify Catalog with the Storefront API"
+excerpt: "Read products, collections, variants, and market-specific prices from the Shopify Storefront API for headless and custom front ends."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "Storefront API", "GraphQL", "Headless", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the difference between a public and private Storefront API access token?"
+    answer: "A public Storefront access token is safe to ship in browser or mobile code because it grants only unauthenticated, buyer-facing scopes — reading published products, collections, and prices. A private (delegate) access token is server-side only and can carry elevated scopes like unauthenticated_read_customers. For a headless catalog browser, use a public token in the client for reads, and keep any private token behind your own backend so it never reaches the browser."
+  - question: "How do I read market-specific prices from the Storefront API?"
+    answer: "Add the @inContext directive to your query and pass a country and optional language: query @inContext(country: CA, language: FR). Shopify then returns prices, availability, and translated content resolved for that market and locale, honoring the Markets configuration on the store. Without @inContext you get the shop's default context. Always set it explicitly in a multi-market storefront so buyers see the correct currency and localized copy."
+  - question: "Does the Storefront API only return products a buyer can see?"
+    answer: "Yes. The Storefront API is buyer-facing and read-only for catalog data, so it exposes only products and collections published to the sales channel tied to your access token, and only the ACTIVE ones. Draft, archived, and unpublished products never appear. That is by design: it is the customer's view of the catalog, not the source-of-truth admin view. Use the Admin API when you need every product regardless of status."
+  - question: "How does pagination work on Storefront catalog queries?"
+    answer: "The products and collections connections use cursor-based pagination. Request a page with first and read pageInfo { hasNextPage endCursor }, then pass endCursor back as after on the next call until hasNextPage is false. The Storefront API is throttled by request rate rather than the Admin API's calculated cost model, so pace your loop and cache aggressively since catalog reads are highly cacheable at the edge."
+---
+
+The **Storefront API** is Shopify's buyer-facing, read-only GraphQL surface for building headless and custom front ends. You query `products` and `collections` with a Storefront access token and get exactly what a shopper is allowed to see — published products, variant options, prices, and availability — resolved per market with the `@inContext` directive. This guide is catalog-read recipes only: the queries, the fields, pagination, and localized reads.
+
+This is the read side of the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For the full Storefront surface — cart, checkout, customer auth, and token setup — see the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide); this piece deliberately does not restate that. Everything below uses **Storefront GraphQL API version 2026-01** ([Shopify: Storefront API reference](https://shopify.dev/docs/api/storefront)).
+
+## Admin-read vs Storefront-read: which context you're in
+
+The Admin API and Storefront API both read catalog data, but they answer different questions. The Admin API is the merchant's source of truth; the Storefront API is the customer's view. Choosing wrong is the most common headless catalog mistake.
+
+| Concern | Admin API (read) | Storefront API (read) |
+|---------|------------------|-----------------------|
+| Audience | Back office, internal jobs | Buyers, browser, mobile app |
+| Token | Admin access token (server-side) | Storefront token (public or private) |
+| Visibility | Every product, any status | Only published, `ACTIVE` products |
+| Pricing | Base/shop prices | Market-resolved via `@inContext` |
+| Throttling | Calculated query cost | Request-rate based |
+| Endpoint | `/admin/api/2026-01/graphql.json` | `/api/2026-01/graphql.json` |
+
+If you need drafts, unpublished items, or full inventory truth, that's an Admin read — see [Admin API vs Storefront API for catalog data](/blog/shopify-admin-api-vs-storefront-api). If you're rendering a storefront a shopper actually browses, stay on the Storefront API.
+
+## Tokens: public vs private
+
+Two token types authenticate Storefront requests. A **public** access token is meant to be exposed in client-side code — it grants only unauthenticated, buyer-facing scopes and is what you ship in a browser or mobile catalog browser. A **private (delegate)** access token stays server-side and can carry elevated unauthenticated scopes. For catalog reads, a public token is almost always the right call ([Shopify: Storefront authentication](https://shopify.dev/docs/api/usage/authentication)).
+
+Every request sends the token in the `Shopify-Storefront-Access-Token` header:
+
+```js
+async function storefront(shop, token, query, variables = {}) {
+  const res = await fetch(`https://${shop}/api/2026-01/graphql.json`, {
+    method: "POST",
+    headers: {
+      "Shopify-Storefront-Access-Token": token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  return res.json();
+}
+```
+
+## Recipe 1: paginate the product catalog
+
+The `products` connection is your entry point for a headless catalog. Request only the fields the buyer UI renders — the Storefront API filters to published, `ACTIVE` products automatically, so you never leak drafts.
+
+```graphql
+query CatalogPage($cursor: String) {
+  products(first: 24, after: $cursor, sortKey: BEST_SELLING) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      handle
+      title
+      productType
+      vendor
+      availableForSale
+      featuredImage { url altText }
+      priceRange {
+        minVariantPrice { amount currencyCode }
+        maxVariantPrice { amount currencyCode }
+      }
+    }
+  }
+}
+```
+
+Loop until `hasNextPage` is false, passing `endCursor` back as `$cursor`. The Storefront API is throttled by request rate, not the Admin API's cost buckets, so pace the loop and lean on caching — catalog reads are highly cacheable at the CDN edge ([Shopify: Storefront rate limits](https://shopify.dev/docs/api/usage/rate-limits)).
+
+A few field choices matter for a buyer-facing list. `priceRange` gives you a "from $X" label without fetching every variant, which keeps the query cheap on a grid of 24+ cards. `availableForSale` at the product level lets you badge sold-out items in the grid before anyone opens the detail page. And `handle` — not the global `id` — is what you route on, because it maps to the human-readable URL a shopper and Google both expect. Resist the urge to over-fetch variants in a list query; save the full variant matrix for Recipe 2, when the buyer actually lands on a product.
+
+```js
+async function fetchStorefrontCatalog(shop, token) {
+  const products = [];
+  let cursor = null;
+  do {
+    const { data } = await storefront(shop, token, CATALOG_PAGE, { cursor });
+    products.push(...data.products.nodes);
+    cursor = data.products.pageInfo.hasNextPage
+      ? data.products.pageInfo.endCursor
+      : null;
+  } while (cursor);
+  return products;
+}
+```
+
+## Recipe 2: read one product with variants and options
+
+A product detail page needs the full option matrix — every variant, its `selectedOptions`, price, compare-at price, and buyable state. Fetch by `handle`, which is the stable, URL-friendly identifier the Storefront API is built around.
+
+```graphql
+query ProductByHandle($handle: String!) {
+  product(handle: $handle) {
+    id
+    title
+    descriptionHtml
+    options { name values }
+    variants(first: 100) {
+      nodes {
+        id
+        title
+        sku
+        availableForSale
+        quantityAvailable
+        selectedOptions { name value }
+        price { amount currencyCode }
+        compareAtPrice { amount currencyCode }
+      }
+    }
+  }
+}
+```
+
+`options { name values }` gives you the swatches and dropdowns (Size, Color); `selectedOptions` on each variant tells you which combination that variant represents, so the UI can map a buyer's selection to a specific variant `id` for the cart. `availableForSale` and `quantityAvailable` drive the "Add to cart" vs "Sold out" state without exposing the merchant's full inventory ([Shopify: `ProductVariant`](https://shopify.dev/docs/api/storefront/latest/objects/ProductVariant)).
+
+## Recipe 3: read a collection
+
+Collections power category and landing pages. Query a `collection` by handle and page its nested `products` connection exactly like the top-level one.
+
+```graphql
+query CollectionPage($handle: String!, $cursor: String) {
+  collection(handle: $handle) {
+    title
+    descriptionHtml
+    products(first: 24, after: $cursor) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        id
+        handle
+        title
+        featuredImage { url altText }
+        priceRange { minVariantPrice { amount currencyCode } }
+      }
+    }
+  }
+}
+```
+
+Use the top-level `collections(first:)` connection to build navigation menus, and the per-collection `products` connection to render each category page. Both honor the same published-only visibility rules.
+
+Two practical notes. First, a collection's `products` connection accepts the same `first`/`after` cursor pattern, so a large category paginates identically to the top-level catalog — reuse the same loop. Second, prefer querying by `handle` over a global `id` for menus and category routes: handles survive across API versions and match your URL structure, whereas relying on `id` couples your front end to internal identifiers. For faceted filtering inside a collection, layer the `filters` argument on the connection rather than pulling everything and filtering client-side, which wastes both bandwidth and cache.
+
+## Recipe 4: market and language reads with @inContext
+
+For a store using Shopify Markets, prices, availability, and translated content differ per country and language. The `@inContext` directive resolves the whole query in one buyer context — no separate storefront per market.
+
+```graphql
+query LocalizedCatalog($cursor: String) @inContext(country: CA, language: FR) {
+  products(first: 24, after: $cursor) {
+    nodes {
+      title
+      priceRange {
+        minVariantPrice { amount currencyCode }
+      }
+    }
+  }
+}
+```
+
+With `country: CA, language: FR`, prices come back in the Canadian market's currency and titles/descriptions in French where translations exist. Omit `@inContext` and you get the shop's default context, which is a subtle bug in a multi-market storefront — buyers see the wrong currency. Always set it explicitly and pass the buyer's resolved country and language ([Shopify: `@inContext` directive](https://shopify.dev/docs/api/storefront/latest/directives/inContext)).
+
+## What the Storefront catalog will *not* give you
+
+Because it's the buyer's view, the Storefront API omits everything a shopper shouldn't see: draft and archived products, unpublished variants, cost/margin data, and full inventory counts across locations (`quantityAvailable` is a single buyable number, not per-location stock). It's also read-only — you cannot create or edit catalog data through it. When you need the source of truth, or you're building a feed for ads and AI shopping, that's an Admin-side read; the [product catalog API guide](/blog/shopify-product-catalog-api-guide) covers that write/export path.
+
+## From catalog reads to a real front end
+
+These four queries are the backbone of a headless storefront: paginate `products`, resolve a `product` detail page, render a `collection`, and localize with `@inContext`. The next step is wiring them into an actual browsing UI — filtering, faceted search, and variant selection — which is exactly what the [headless Shopify catalog browser](/blog/build-headless-shopify-catalog-browser) walkthrough builds.
+
+Where this meets revenue: a fast, correctly-localized catalog is only half the equation. The other half is the traffic and the data quality feeding your ad and AI shopping channels — the work [AdsX](/services) does for Shopify brands so a headless build actually converts.
+
+## Next steps
+
+- Full Storefront surface (cart, checkout, auth): the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide).
+- Picking a read path: [Admin API vs Storefront API for catalog data](/blog/shopify-admin-api-vs-storefront-api).
+- Build the UI on top of these reads: [headless Shopify catalog browser](/blog/build-headless-shopify-catalog-browser).
+- Surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

@@ -1,0 +1,218 @@
+---
+title: "Add Metafields & Metaobjects to Shopify via the API"
+excerpt: "Write richer, AI-readable product data with Shopify's Admin API: typed metafield definitions, metafieldsSet, metaobjects, and better feed quality."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Metafields", "Metaobjects", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What's the difference between metafieldsSet and metafieldDefinitionCreate?"
+    answer: "metafieldDefinitionCreate registers a typed, reusable definition — a namespace, key, and type that Shopify validates against and exposes in the admin and API. metafieldsSet writes the actual values onto specific products or variants. You define once with metafieldDefinitionCreate, then write many values with metafieldsSet. Writing values without a definition still works, but the metafield stays untyped and invisible in the admin UI, so define first."
+  - question: "When should I use a metaobject instead of a metafield?"
+    answer: "Use a metafield for a single attribute attached to a product or variant — fabric, wattage, care instructions. Use a metaobject when you need a structured, reusable record with multiple fields that many products reference — a size chart, an ingredient, a designer profile, or a warranty policy. Create the record once with metaobjectCreate, then point products at it with a metaobject_reference metafield so one edit updates every product that references it."
+  - question: "Do metafields written via the API show up in product feeds automatically?"
+    answer: "Not automatically. Writing a metafield stores the data, but each feed decides which fields it reads. For Google Merchant Center you map metafields to attributes in the Google & YouTube channel or your feed app; for AI shopping feeds you serialize chosen metafields into the payload yourself. Typed definitions with the standard namespace make this mapping far more reliable, because the values are validated and predictably shaped."
+  - question: "Which metafield type should I use for structured attributes?"
+    answer: "Match the type to the data: single_line_text_field for short strings, list.single_line_text_field for tags, number_decimal or number_integer for measurements, boolean for flags, dimension and weight for physical specs, and metaobject_reference or list.metaobject_reference to link records. Typed values validate on write and serialize cleanly into feeds, which is exactly what AI shopping engines and Merchant Center need to parse your catalog accurately."
+---
+
+To extend a Shopify catalog with structured data over the API you use two building blocks: **metafields** for single typed attributes on products and variants, and **metaobjects** for reusable multi-field records that products reference. You register the shape once with `metafieldDefinitionCreate`, write values with `metafieldsSet`, and create linked records with `metaobjectCreate`. Typed, well-defined attributes are what turn a bare product into feed- and AI-readable data — and that quality caps how well your catalog performs downstream.
+
+This is the API-write companion to the merchant-facing [Shopify custom metafields guide](/blog/shopify-custom-metafields-guide), which covers the admin UI and theme display. Here we stay in code: bulk-writing typed attributes for **feeds**, not clicking through settings. It sits under the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) pillar, and everything uses the **GraphQL Admin API** at version `2026-01`.
+
+## Metafields vs metaobjects: when to reach for which
+
+| | Metafield | Metaobject |
+|---|---|---|
+| Shape | One typed value | A record with many fields |
+| Attached to | A product, variant, collection, etc. | Stands alone; products reference it |
+| Reuse | Value is per-resource | One record referenced by many products |
+| Example | `fabric = "merino wool"` | A size chart shared across a product line |
+| Edit propagation | Edit each product | Edit once, all references update |
+| API to create | `metafieldsSet` | `metaobjectCreate` + reference metafield |
+
+The rule of thumb: if the attribute is a lone value that lives on the product, use a metafield. If it's a structured thing many products share — a size chart, an ingredient, a warranty, a designer — model it as a metaobject and link it with a `metaobject_reference` metafield ([Shopify: metaobjects](https://shopify.dev/docs/apps/build/custom-data/metaobjects)).
+
+## Step 1: define the metafield first
+
+You can write a metafield value without a definition, but it stays untyped, unvalidated, and hidden from the admin UI. Registering a definition with `metafieldDefinitionCreate` gives you validation on write, admin editability, and predictable serialization into feeds — non-negotiable if the data feeds ads or AI.
+
+```graphql
+mutation DefineFabric {
+  metafieldDefinitionCreate(
+    definition: {
+      name: "Fabric"
+      namespace: "specs"
+      key: "fabric"
+      type: "single_line_text_field"
+      ownerType: PRODUCT
+      description: "Primary material, used in feeds and AI shopping"
+    }
+  ) {
+    createdDefinition { id name namespace key type { name } }
+    userErrors { field message code }
+  }
+}
+```
+
+Set `ownerType` to `PRODUCTVARIANT` when the attribute varies by variant (a per-size weight, say) rather than by product. Always read `userErrors` — a duplicate namespace/key or an invalid type comes back here, not as a thrown error.
+
+### Picking the right type
+
+The `type` is where feed quality is won or lost. Typed values validate on write and serialize into clean, parseable output.
+
+| Type | Use for |
+|---|---|
+| `single_line_text_field` | Short strings — fabric, origin |
+| `multi_line_text_field` | Care instructions, longer copy |
+| `list.single_line_text_field` | Repeating tags — features, materials |
+| `number_integer` / `number_decimal` | Wattage, thread count, measurements |
+| `boolean` | Flags — vegan, waterproof |
+| `dimension` / `weight` / `volume` | Physical specs with units |
+| `metaobject_reference` | Link to a metaobject record |
+| `list.metaobject_reference` | Link to many records |
+
+See the full list in the [Shopify metafield types reference](https://shopify.dev/docs/apps/build/custom-data/metafields/list-of-data-types). For how these attributes fit the wider object graph, see the [Shopify product data model reference](/blog/shopify-product-data-model-reference).
+
+## Step 2: write values with metafieldsSet
+
+`metafieldsSet` writes up to 25 metafields per call across any owners, using `MetafieldsSetInput`. Each input needs the `ownerId` (the GID of the product or variant), plus `namespace`, `key`, `type`, and `value`. Matching an existing definition's namespace/key means the value gets that definition's validation.
+
+```graphql
+mutation SetSpecs($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields { id namespace key value type }
+    userErrors { field message code }
+  }
+}
+```
+
+```json
+{
+  "metafields": [
+    {
+      "ownerId": "gid://shopify/Product/1234567890",
+      "namespace": "specs",
+      "key": "fabric",
+      "type": "single_line_text_field",
+      "value": "Merino wool"
+    },
+    {
+      "ownerId": "gid://shopify/Product/1234567890",
+      "namespace": "specs",
+      "key": "features",
+      "type": "list.single_line_text_field",
+      "value": "[\"Machine washable\",\"Temperature regulating\"]"
+    }
+  ]
+}
+```
+
+Two things trip people up. First, `value` is always a **string** — list and JSON types are stringified, so `list.single_line_text_field` takes a JSON-encoded array as text. Second, batch to stay under the GraphQL cost limit: writing thousands of products means chunking into 25-metafield calls and pacing against `extensions.cost.throttleStatus`, exactly the [rate-limit math from the catalog-fetch guide](/blog/shopify-fetch-entire-product-catalog-graphql).
+
+## Step 3: read metafields back on products and variants
+
+Reading is a plain `products` query. Request specific metafields by namespace/key, or page through all of them with the `metafields` connection.
+
+```graphql
+query ReadSpecs($cursor: String) {
+  products(first: 50, after: $cursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      fabric: metafield(namespace: "specs", key: "fabric") { value type }
+      metafields(first: 20) {
+        nodes { namespace key value type }
+      }
+      variants(first: 100) {
+        nodes {
+          id
+          sku
+          weightSpec: metafield(namespace: "specs", key: "weight") { value }
+        }
+      }
+    }
+  }
+}
+```
+
+Aliasing single `metafield(...)` lookups (like `fabric:` above) is the cleanest way to pull the handful of attributes a feed cares about without over-fetching — each named metafield is far cheaper than paging the whole `metafields` connection on every product. Reference-type metafields return the referenced record's GID as the `value`; to hydrate the metaobject's fields you follow the reference with a nested `reference { ... on Metaobject { fields { key value } } }` selection. This read shape is what you serialize into a [Google Merchant Center or AI shopping feed](/blog/shopify-catalog-ai-shopping-feed).
+
+## Step 4: model reusable records with metaobjects
+
+When an attribute is really a structured record shared across products — a size chart, an ingredient, a care policy — a metafield per product duplicates data and drifts. Define a metaobject type once, create records with `metaobjectCreate`, then reference them.
+
+First define the type (once) with `metaobjectDefinitionCreate`:
+
+```graphql
+mutation DefineSizeChart {
+  metaobjectDefinitionCreate(
+    definition: {
+      name: "Size chart"
+      type: "size_chart"
+      fieldDefinitions: [
+        { name: "Label", key: "label", type: "single_line_text_field" }
+        { name: "Measurements", key: "measurements", type: "json" }
+      ]
+    }
+  ) {
+    metaobjectDefinition { id type }
+    userErrors { field message code }
+  }
+}
+```
+
+Then create records with `metaobjectCreate`:
+
+```graphql
+mutation CreateSizeChart {
+  metaobjectCreate(
+    metaobject: {
+      type: "size_chart"
+      handle: "unisex-tops"
+      fields: [
+        { key: "label", value: "Unisex Tops" }
+        { key: "measurements", value: "{\"S\":{\"chest\":36},\"M\":{\"chest\":40}}" }
+      ]
+    }
+  ) {
+    metaobject { id handle type }
+    userErrors { field message code }
+  }
+}
+```
+
+Finally, link products to the record. Create a `metaobject_reference` definition (Step 1 with `type: "metaobject_reference"` and a `validations` entry naming the metaobject type), then write the reference with `metafieldsSet`, passing the metaobject's GID as the `value`:
+
+```json
+{
+  "metafields": [{
+    "ownerId": "gid://shopify/Product/1234567890",
+    "namespace": "specs",
+    "key": "size_chart",
+    "type": "metaobject_reference",
+    "value": "gid://shopify/Metaobject/9988776655"
+  }]
+}
+```
+
+Now one edit to the metaobject updates every product that references it — the whole point of modeling shared data as a record instead of copy-pasting metafields ([Shopify: metaobject references](https://shopify.dev/docs/apps/build/custom-data/metaobjects/build-a-metaobject)).
+
+## Why structured attributes lift feed and AI quality
+
+Bare Shopify products give feeds title, description, price, and image. That's thin. AI shopping engines and Google Merchant Center rank and match on **attributes** — material, dimensions, compatibility, use case — and untyped free text is hard to parse reliably. Typed metafields and referenced metaobjects give those systems clean, validated, machine-readable values, which is why the same catalog with rich structured data gets matched to more queries and surfaces in more AI answers. The mechanics of that payload live in the [AI shopping feed guide](/blog/shopify-catalog-ai-shopping-feed) and the visibility case in [metafields for AI visibility](/blog/shopify-metafields-ai-visibility).
+
+This is where catalog engineering meets revenue: attribute completeness is the ceiling on both ad relevance and AI shopping visibility, and no amount of bidding fixes a thin catalog. Enriching product data with the API is exactly the groundwork [AdsX](/services) does before scaling spend for Shopify brands.
+
+## Next steps
+
+- Merchant-facing setup instead of API writes? See the [Shopify custom metafields guide](/blog/shopify-custom-metafields-guide).
+- Reading the whole catalog at scale: [fetch your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Where these attributes sit in the object graph: the [Shopify product data model reference](/blog/shopify-product-data-model-reference).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

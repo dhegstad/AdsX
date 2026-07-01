@@ -1,0 +1,206 @@
+---
+title: "Bulk-Write Large Catalogs to Shopify Without Throttling"
+excerpt: "Write thousands of Shopify products at once with bulkOperationRunMutation: the staged JSONL upload flow, throttle-safe throughput, and cost monitoring."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Bulk Operations", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "When should I use bulkOperationRunMutation instead of looping productSet calls?"
+    answer: "Use per-record mutations for small or interactive syncs — a few hundred products where you need each result immediately. Switch to bulkOperationRunMutation once you are writing thousands of records, because it runs asynchronously past the normal rate limit and only the submit and poll calls count against your cost bucket. As a rule of thumb, once a synchronous loop takes minutes or keeps hitting the throttle, move it to a bulk mutation with a staged JSONL upload."
+  - question: "What is the stagedUploadsCreate step and why do I need it?"
+    answer: "A bulk mutation reads its input from a JSONL file, not from GraphQL variables, so you must host that file where Shopify can fetch it. stagedUploadsCreate returns a signed upload target — a URL plus form parameters — on Shopify-managed storage. You POST your JSONL there, then pass the returned resource URL as the stagedUploadPath argument to bulkOperationRunMutation. It is a two-request handshake: get the target, upload the file, then run the mutation."
+  - question: "How do I avoid hitting the rate limit while syncing a large catalog?"
+    answer: "The bulk path is the rate-limit strategy: the mutation itself executes server-side, so a 50,000-record write costs only the handful of points needed to submit and poll it. Read extensions.cost.throttleStatus on every non-bulk call and back off when currentlyAvailable drops low. Run one bulk mutation at a time — Shopify allows only a single running bulk operation of each type per shop — and let each finish before submitting the next."
+  - question: "How do I know if a bulk write partially failed?"
+    answer: "When the operation reaches COMPLETED, Shopify exposes both a url with the per-record results and a partialDataUrl for rows that errored. Each result line echoes the mutation's userErrors, so a row can fail validation while the operation as a whole succeeds. Always stream the results file, collect any userErrors, and reconcile them — never assume COMPLETED means every record was written."
+---
+
+To write thousands of products to Shopify without hitting the throttle, use **`bulkOperationRunMutation`**: stage a JSONL file of your inputs with `stagedUploadsCreate`, upload it, then run one mutation that Shopify executes asynchronously server-side. The mutation itself costs almost nothing against your rate-limit bucket, so a 50,000-record sync moves at throughput the synchronous API can never match. This guide covers the full write path — staging, uploading, running, and reconciling results.
+
+This is the **write** companion to the export deep-dive. For pulling the catalog back out — `bulkOperationRunQuery` and JSONL parsing — see [fetch your entire Shopify catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and token fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide), and for the full surface, the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything here uses the **GraphQL Admin API**, version `2026-01`.
+
+## Read vs write: two different bulk tools
+
+Shopify exposes two bulk operations, and teams routinely reach for the wrong one. A bulk *query* reads and returns a JSONL result. A bulk *mutation* consumes a JSONL input you provide and applies it as writes. This piece is entirely about the second.
+
+| You want to... | Use | Input | Output |
+|----------------|-----|-------|--------|
+| Export the catalog | `bulkOperationRunQuery` | A GraphQL query | JSONL result file |
+| Sync thousands of products in | `bulkOperationRunMutation` | JSONL you upload | Per-record result file |
+| Write a few hundred records | Looped `productSet` | GraphQL variables | Inline response |
+
+The export side lives in the [read guide](/blog/shopify-fetch-entire-product-catalog-graphql). If you only need to write a few hundred records interactively, a synchronous loop of [`productSet`](/blog/shopify-productset-sync-catalog-at-scale) is simpler — reach for bulk when the volume makes throttling the bottleneck.
+
+## The write path in four steps
+
+A bulk mutation never takes its data through GraphQL variables. Instead you hand Shopify a **JSONL file** where each line is one mutation's variables, and Shopify replays the mutation over every line. The flow is always the same:
+
+1. `stagedUploadsCreate` — ask Shopify for a signed upload target.
+2. `POST` your JSONL to that target.
+3. `bulkOperationRunMutation` — run the mutation against the uploaded file.
+4. Poll `currentBulkOperation`, then stream the results and reconcile errors.
+
+### Step 1: stage the upload
+
+`stagedUploadsCreate` returns a URL and a set of signed form parameters pointing at Shopify-managed storage. Request a `BULK_MUTATION_VARIABLES` resource so Shopify knows the file is a JSONL input, not a media asset ([Shopify: bulk import data](https://shopify.dev/docs/api/usage/bulk-operations/imports)).
+
+```graphql
+mutation StageUpload {
+  stagedUploadsCreate(input: {
+    resource: BULK_MUTATION_VARIABLES
+    filename: "catalog-sync.jsonl"
+    mimeType: "text/jsonl"
+    httpMethod: POST
+  }) {
+    stagedTargets {
+      url
+      resourceUrl
+      parameters { name value }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+### Step 2: build the JSONL and upload it
+
+Each line is the exact `variables` object one mutation call would receive. Here we sync products with [`productSet`](/blog/shopify-productset-sync-catalog-at-scale), which upserts a product and its variants declaratively — ideal for bulk because it is idempotent on a stable `handle` or `id`.
+
+```js
+import { createReadStream } from "node:fs";
+
+// Each line = the variables for one productSet call.
+function toJsonl(products) {
+  return products
+    .map((p) =>
+      JSON.stringify({
+        input: {
+          handle: p.handle,
+          title: p.title,
+          status: p.status,
+          productOptions: p.options,
+          variants: p.variants.map((v) => ({
+            optionValues: v.optionValues,
+            sku: v.sku,
+            barcode: v.barcode,
+            price: v.price,
+          })),
+        },
+      })
+    )
+    .join("\n");
+}
+
+// Upload to the staged target. The signed parameters must come first.
+async function uploadJsonl(target, jsonl) {
+  const form = new FormData();
+  for (const { name, value } of target.parameters) form.append(name, value);
+  form.append("file", new Blob([jsonl], { type: "text/jsonl" }));
+  const res = await fetch(target.url, { method: "POST", body: form });
+  if (!res.ok) throw new Error(`Staged upload failed: ${res.status}`);
+  return target.resourceUrl; // pass this to bulkOperationRunMutation
+}
+```
+
+### Step 3: run the bulk mutation
+
+Now point `bulkOperationRunMutation` at the uploaded file. You pass the mutation *as a string* plus the `stagedUploadPath` from the previous step. Shopify runs the mutation once per line, asynchronously, with no per-record throttling.
+
+```graphql
+mutation RunBulkSync($stagedPath: String!) {
+  bulkOperationRunMutation(
+    mutation: "mutation call($input: ProductSetInput!) { productSet(input: $input) { product { id } userErrors { field message } } }"
+    stagedUploadPath: $stagedPath
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+The `mutation` string must define exactly the variables each JSONL line supplies — here a single `$input` of type `ProductSetInput!`. If the shapes disagree, every line fails, so keep the JSONL generator and this signature in lockstep.
+
+### Step 4: poll, then reconcile results
+
+Poll `currentBulkOperation` (filtered to the mutation type) until it leaves `RUNNING`. On `COMPLETED` you get a `url` with one result line per input, plus a `partialDataUrl` for rows that errored.
+
+```graphql
+query PollBulkMutation {
+  currentBulkOperation(type: MUTATION) {
+    id
+    status
+    objectCount
+    url
+    partialDataUrl
+  }
+}
+```
+
+```js
+async function runBulkSync(shop, token, products) {
+  const target = await stageUpload(shop, token);
+  const path = await uploadJsonl(target, toJsonl(products));
+  await gql(shop, token, RUN_BULK_SYNC, { stagedPath: path });
+
+  let op;
+  do {
+    await new Promise((r) => setTimeout(r, 5000));
+    op = (await gql(shop, token, POLL_BULK_MUTATION)).data.currentBulkOperation;
+  } while (op.status === "RUNNING" || op.status === "CREATED");
+  if (op.status !== "COMPLETED") throw new Error(`Bulk op ${op.status}`);
+
+  // Stream results; a row can fail validation even when the op COMPLETED.
+  return op.url;
+}
+```
+
+In production, don't busy-poll — subscribe to the `bulk_operations/finish` webhook and process the results when it fires. Then stream the results file line by line (never `JSON.parse` the whole thing) and collect any `userErrors`, exactly as you would when [parsing a bulk export](/blog/shopify-fetch-entire-product-catalog-graphql).
+
+## Watching cost so you never trip the throttle
+
+The whole reason to go bulk is rate-limit headroom. The GraphQL Admin API bills by **calculated cost**, not request count — you have a bucket that refills at a fixed rate, and a bulk mutation's actual work runs server-side, so only the `stagedUploadsCreate`, submit, and poll calls draw down your bucket. That turns a 50,000-record write into a few cheap calls.
+
+Read `extensions.cost.throttleStatus` on every non-bulk call and back off before the bucket empties:
+
+```js
+function backoffFor(json) {
+  const t = json.extensions?.cost?.throttleStatus;
+  if (t && t.currentlyAvailable < 200) {
+    const deficit = 200 - t.currentlyAvailable;
+    return (deficit / t.restoreRate) * 1000; // ms to wait
+  }
+  return 0;
+}
+```
+
+| Field | Meaning | Use it to |
+|-------|---------|-----------|
+| `maximumAvailable` | Bucket size | Know your ceiling |
+| `currentlyAvailable` | Points left now | Decide when to pause |
+| `restoreRate` | Refill per second | Compute the wait |
+
+Two operational limits shape throughput. First, only **one bulk operation of each type runs per shop at a time** — you cannot fan out ten concurrent mutations; you pipeline them, letting each finish before the next submits ([Shopify: bulk operations](https://shopify.dev/docs/api/usage/bulk-operations/imports)). Second, batch generously: one bulk mutation over 50,000 lines beats fifty over 1,000, because the fixed submit-and-poll overhead amortizes across the whole file. For the exact numeric limits, error codes, and retry semantics, see the [Shopify Catalog API rate limits and errors reference](/blog/shopify-catalog-api-rate-limits-errors) rather than hard-coding numbers that change by plan.
+
+## Throughput strategy for very large syncs
+
+- **Diff before you write.** Only stage records that actually changed. A daily sync that ships 2,000 deltas instead of the full 50,000 finishes in a fraction of the time.
+- **Chunk enormous inputs.** JSONL files have a size ceiling; if you exceed it, split into sequential bulk mutations and pipeline them.
+- **Idempotent inputs.** Keying on `handle` or `id` with `productSet` means a retried file re-applies cleanly instead of creating duplicates.
+- **Reconcile every run.** Treat `partialDataUrl` as a work queue: parse the failed rows, fix the data, and re-stage only those.
+
+## From clean sync to revenue
+
+A reliable write path is what keeps your ad and AI feeds trustworthy: if the catalog Shopify holds is stale or half-written, every downstream Google Merchant Center, Meta, and AI shopping feed inherits the gaps. Getting bulk writes right — complete variants, GTINs, prices, and statuses applied atomically — is the same data-quality discipline that caps ad performance. That is exactly the work [AdsX](/services) does for Shopify brands: making the catalog the feeds are built on actually correct.
+
+## Next steps
+
+- Reading instead of writing? See [fetch your entire Shopify catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- The declarative upsert this guide bulk-runs: [`productSet` — sync your catalog at scale](/blog/shopify-productset-sync-catalog-at-scale).
+- Exact limits and error handling: [Shopify Catalog API rate limits and errors](/blog/shopify-catalog-api-rate-limits-errors).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).
