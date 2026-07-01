@@ -1,0 +1,199 @@
+---
+title: "Fetch Your Entire Shopify Catalog with GraphQL"
+excerpt: "Pull every product and variant from Shopify at scale: cursor pagination vs the Bulk Operations API, rate-limit math, JSONL parsing, and retry-safe code."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Bulk Operations", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Should I use cursor pagination or the Bulk Operations API to export my Shopify catalog?"
+    answer: "Use cursor pagination for small or filtered reads — up to a few thousand products, or when you need results synchronously in a single request/response cycle. Use the Bulk Operations API for full-catalog exports: it runs asynchronously past the normal rate limit and returns the entire result set, including nested variants and media, as a downloadable JSONL file. As a rule of thumb, once a paginated export takes more than a minute or risks throttling, switch to a bulk operation."
+  - question: "How does the Shopify GraphQL rate limit work for catalog reads?"
+    answer: "The GraphQL Admin API uses a calculated, cost-based limit, not a request count. Each query has a cost (roughly the number of fields and connection nodes it returns), you start with a bucket of 1,000 cost points on a standard plan, and the bucket refills at 50 points per second. A products query fetching 50 products with their variants can cost 200–500 points, so you can run a few before you must wait for the bucket to refill. The response's extensions.cost object tells you the actual and remaining cost — read it and back off before you hit zero."
+  - question: "How do I parse the JSONL file from a Shopify bulk operation?"
+    answer: "A bulk operation flattens nested connections into a JSONL stream where each line is one object. Parent objects (products) and child objects (variants, media) appear as separate lines; children carry a __parentId field pointing back to the parent's id. Read the file line by line, group children by __parentId, and reassemble the hierarchy in memory. Never load the whole file into memory with a single JSON.parse — stream it line by line so a 200MB export does not crash your process."
+  - question: "Why would I export my whole Shopify catalog?"
+    answer: "Full-catalog exports feed everything downstream: Google Merchant Center and Meta product catalogs for ads, AI shopping feeds for ChatGPT and Perplexity, search indexes, data warehouses, and catalog audits. The quality of that export — complete titles, GTINs, images, and structured attributes — directly caps ad performance and AI shopping visibility, so getting the extraction right is the foundation for every feed you build on top of it."
+---
+
+To fetch your entire Shopify product catalog you have two tools: **cursor-based pagination** on the `products` query for small or filtered pulls, and the **Bulk Operations API** for exporting everything at once, asynchronously, past the rate limit. Use pagination when you need a few thousand products synchronously; use a bulk operation when you need the whole catalog — variants, media, and all — as a downloadable JSONL file. This guide shows both, with retry-safe code and the rate-limit math you need to not get throttled.
+
+This is the extraction deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. For OAuth, tokens, and rate-limit fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide). Everything here uses the **GraphQL Admin API** — REST is legacy as of 2024–2025 and new catalog features ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+
+## Which approach: a quick decision table
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| < ~2,000 products, or a filtered subset | Cursor pagination | Synchronous, simple, fits in one job |
+| Full catalog (all products + variants + media) | Bulk Operations API | Async, no per-page throttling, one JSONL result |
+| Live feed that must reflect edits instantly | Webhooks + targeted reads | Bulk is a snapshot; webhooks keep it current |
+| One-off audit or migration | Bulk Operations API | Cheapest way to get everything once |
+
+The mistake teams make is paginating a 50,000-product catalog synchronously, hitting the throttle every few pages, and building fragile sleep-and-retry loops. That is exactly what the Bulk Operations API exists to replace.
+
+## Approach 1: cursor pagination
+
+The `products` connection returns a `pageInfo` with `hasNextPage` and `endCursor`. You loop, passing `endCursor` back as `after`, until `hasNextPage` is false. Request only the fields your feed needs — GraphQL bills by query cost, so over-fetching burns your rate-limit budget.
+
+```graphql
+query CatalogPage($cursor: String) {
+  products(first: 50, after: $cursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      descriptionHtml
+      productType
+      vendor
+      status
+      featuredMedia { ... on MediaImage { image { url altText } } }
+      variants(first: 100) {
+        nodes { id sku barcode price inventoryQuantity }
+      }
+    }
+  }
+}
+```
+
+The driver loop reads the cost object on every response and backs off before the bucket empties:
+
+```js
+async function fetchAllProducts(shop, token) {
+  const products = [];
+  let cursor = null;
+  do {
+    const res = await fetch(`https://${shop}/admin/api/2026-01/graphql.json`, {
+      method: "POST",
+      headers: {
+        "X-Shopify-Access-Token": token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: CATALOG_PAGE, variables: { cursor } }),
+    });
+    const json = await res.json();
+
+    // Cost-based throttling: refill is ~50 points/sec. Wait if we're low.
+    const cost = json.extensions?.cost?.throttleStatus;
+    if (cost && cost.currentlyAvailable < 200) {
+      const deficit = 200 - cost.currentlyAvailable;
+      await new Promise((r) => setTimeout(r, (deficit / cost.restoreRate) * 1000));
+    }
+
+    const page = json.data.products;
+    products.push(...page.nodes);
+    cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
+  } while (cursor);
+
+  return products;
+}
+```
+
+Two things make this production-safe: reading `extensions.cost.throttleStatus` to pace requests against the real bucket ([Shopify: GraphQL rate limits](https://shopify.dev/docs/api/usage/rate-limits)), and capping `variants(first: 100)` — a product with more than 100 variants needs its own nested pagination, which is a strong signal you should switch to a bulk operation instead.
+
+## Approach 2: the Bulk Operations API
+
+For the whole catalog, submit one `bulkOperationRunQuery`. Shopify runs it asynchronously with no per-page throttling and hands you a single JSONL file with every node — including nested `variants` and `media` — flattened into lines.
+
+```graphql
+mutation {
+  bulkOperationRunQuery(
+    query: """
+      {
+        products {
+          edges {
+            node {
+              id
+              title
+              status
+              variants { edges { node { id sku barcode price } } }
+            }
+          }
+        }
+      }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+```
+
+Then poll `currentBulkOperation` until it completes and exposes a `url`:
+
+```graphql
+query {
+  currentBulkOperation {
+    id
+    status
+    objectCount
+    url
+  }
+}
+```
+
+```js
+async function runBulkExport(shop, token) {
+  await gql(shop, token, START_BULK_EXPORT); // the mutation above
+  // Poll until COMPLETED — prefer the bulk_operations/finish webhook in production.
+  let op;
+  do {
+    await new Promise((r) => setTimeout(r, 5000));
+    op = (await gql(shop, token, POLL_BULK)).data.currentBulkOperation;
+  } while (op.status === "RUNNING" || op.status === "CREATED");
+  if (op.status !== "COMPLETED") throw new Error(`Bulk op ${op.status}`);
+  return op.url; // signed URL to the JSONL result
+}
+```
+
+In production, don't busy-poll — subscribe to the `bulk_operations/finish` webhook and start the download when it fires. See [webhooks for catalog changes](/blog/shopify-product-catalog-api-guide) for the pattern.
+
+## Parsing the JSONL result (the part people get wrong)
+
+The result is **not** a nested JSON document — it's one object per line, with children carrying a `__parentId` back to their parent. Stream it line by line and reassemble; never `JSON.parse` the whole file.
+
+```js
+import readline from "node:readline";
+
+async function assembleCatalog(stream) {
+  const products = new Map();
+  const orphanVariants = [];
+
+  const rl = readline.createInterface({ input: stream });
+  for await (const line of rl) {
+    if (!line.trim()) continue;
+    const obj = JSON.parse(line);
+    if (obj.id.includes("/Product/")) {
+      products.set(obj.id, { ...obj, variants: [] });
+    } else if (obj.__parentId) {
+      const parent = products.get(obj.__parentId);
+      if (parent) parent.variants.push(obj);
+      else orphanVariants.push(obj); // child seen before parent — reattach after
+    }
+  }
+  for (const v of orphanVariants) products.get(v.__parentId)?.variants.push(v);
+  return [...products.values()];
+}
+```
+
+Because a bulk export can be hundreds of megabytes, streaming is not optional — it's the difference between a job that runs in constant memory and one that OOM-kills on a large store.
+
+## Rate-limit math, briefly
+
+The GraphQL Admin API bills by **cost**, not request count: a 1,000-point bucket that refills at 50 points/second on a standard plan. A 50-product page with variants can cost 200–500 points, so you get a handful of pages before you wait. The bulk API sidesteps this entirely — the query runs server-side and only the mutation and poll calls count against your bucket. This is the real reason to prefer bulk for full exports: it's not just convenience, it's an order of magnitude more headroom ([Shopify: rate limits](https://shopify.dev/docs/api/usage/rate-limits)).
+
+## From export to feed
+
+A clean full-catalog export is the raw material for every channel: [Google Merchant Center sync](/blog/shopify-catalog-google-merchant-center-sync), [Meta product catalog sync](/blog/shopify-catalog-meta-product-catalog-sync), and [AI shopping feeds](/blog/shopify-catalog-ai-shopping-feed) for ChatGPT and Perplexity. The completeness of what you extract here — titles, GTINs (`barcode`), images, structured attributes — directly caps how those feeds perform.
+
+That last point is where extraction meets revenue: catalog data quality is the ceiling on ad performance and AI shopping visibility, no matter how good the campaigns are. If your feeds are underperforming, the fix usually starts in the catalog, not the ad account — which is exactly the work [AdsX](/services) does for Shopify brands. To pressure-test your own data, run a product through the [feed-readiness checker](/tools/free-audit).
+
+## Next steps
+
+- Writing at scale instead of reading? See [`productSet`: sync products and variants declaratively](/blog/shopify-productset-vs-productcreate).
+- Choosing between APIs? See [Admin API vs Storefront API for catalog data](/blog/shopify-admin-api-vs-storefront-api).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

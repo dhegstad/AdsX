@@ -1,0 +1,182 @@
+---
+title: "The Shopify Product Data Model: A Field Reference"
+excerpt: "A field-level reference for Shopify's product data model — Product, ProductVariant, options, media, inventory, and metafields — with relationships."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Data Model", "Product Catalog", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the difference between a Product and a ProductVariant in Shopify?"
+    answer: "A Product is the parent concept a shopper browses — a title, description, images, and product type. A ProductVariant is a specific purchasable, inventoried version of that product, defined by a combination of option values like Size: Large and Color: Blue. Price, SKU, barcode, and inventory live on the variant, not the product. Every product has at least one variant, even a single-option product, because the variant is what actually gets added to a cart and sold."
+  - question: "Where does price and inventory live in the Shopify product data model?"
+    answer: "Price, compareAtPrice, SKU, and barcode live on ProductVariant. Inventory is one level deeper: the variant links to an InventoryItem, and stock counts live on InventoryLevel records — one per location per item. So a variant stocked in three warehouses has one InventoryItem and three InventoryLevels. Querying variant.inventoryQuantity gives you the total, but per-location availability requires walking down to InventoryLevel."
+  - question: "What are ProductOptions and how do they relate to variants?"
+    answer: "ProductOptions define the axes of variation — Size, Color, Material — and each option holds a list of ProductOptionValues like Small, Medium, Large. A ProductVariant is the intersection of one value from each option. A product with a Size option (3 values) and a Color option (4 values) can have up to 12 variants. Shopify caps a product at 3 options and 100 variants on standard plans, and 2,048 variants on plans with the expanded limit enabled."
+  - question: "How do metafields and metaobjects extend the Shopify product model?"
+    answer: "Metafields attach typed custom data — dimensions, ingredients, care instructions — directly to a Product, ProductVariant, or other resource. Metaobjects define reusable custom record types (like a Designer or Size Chart) that multiple products can reference through a metafield of type metaobject_reference. Together they let you model catalog data Shopify's core schema does not cover, without a separate database, and both are queryable through the GraphQL Admin API."
+---
+
+The Shopify product data model is a hierarchy: a **Product** groups shared marketing content, one or more **ProductVariants** are the purchasable SKUs, **ProductOptions** define how variants differ, **Media** holds images and video, and **InventoryItem/InventoryLevel** track stock per location. **Metafields** and **Metaobjects** extend any of these with typed custom data. Get the relationships right and every feed, sync, and integration downstream gets easier.
+
+This is the expanded, field-level reference that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) links to — the pillar has a six-row summary; this page is the full schema with a table per object. To extract these objects at scale, see [fetch your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). Everything below uses the **GraphQL Admin API**, where new catalog fields ship first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+
+## The hierarchy at a glance
+
+```text
+Product ─────────────────────────────────────────────
+  ├── title, descriptionHtml, productType, vendor, status, tags
+  ├── options[] ── ProductOption
+  │                  └── optionValues[] ── ProductOptionValue
+  ├── media[] ─── Media (MediaImage | Video | Model3d | ExternalVideo)
+  │                  └── MediaImage.image ── Image (url, altText, dimensions)
+  ├── variants[] ─ ProductVariant
+  │                  ├── price, compareAtPrice, sku, barcode
+  │                  ├── selectedOptions[] (option name → value)
+  │                  └── inventoryItem ── InventoryItem
+  │                                        └── inventoryLevels[] ── InventoryLevel
+  │                                                                   └── location, quantities
+  └── metafields[] ── Metafield ──(metaobject_reference)──▶ Metaobject
+```
+
+Read it top-down: a Product owns options, media, variants, and metafields. Each variant points at exactly one InventoryItem, which fans out to one InventoryLevel per location. Metafields can point sideways to Metaobjects for reusable records. The two rules that trip people up: purchasable data lives on the variant, never the product, and inventory counts live two hops down on InventoryLevel, never on the variant itself. Keep those straight and the rest of the schema follows.
+
+## Product
+
+The **Product** is the parent resource shoppers browse. It carries all content shared across variants — title, description, imagery, and taxonomy — but nothing purchasable. You cannot buy a Product; you buy one of its variants.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | ID | Global GID, e.g. `gid://shopify/Product/123` |
+| `title` | String | Shopper-facing name; the single biggest driver of feed and ad relevance |
+| `descriptionHtml` | HTML | Rich body copy; `description` returns plain text |
+| `handle` | String | URL slug, unique per store |
+| `productType` | String | Free-text merchant category |
+| `vendor` | String | Brand/manufacturer |
+| `status` | ProductStatus | `ACTIVE`, `DRAFT`, or `ARCHIVED` — only `ACTIVE` is buyable |
+| `tags` | [String] | Free-form labels used for collections and filtering |
+| `options` | [ProductOption] | Variation axes (see below) |
+| `variants` | ProductVariantConnection | The purchasable SKUs |
+| `media` | MediaConnection | Images, video, 3D models |
+| `category` | TaxonomyCategory | Shopify's standard product taxonomy node |
+
+**Gotcha:** `status` gates visibility everywhere. A `DRAFT` product silently drops out of feeds and the Storefront API. When products go missing downstream, check status first ([Shopify: Product](https://shopify.dev/docs/api/admin-graphql/latest/objects/Product)).
+
+## ProductVariant
+
+A **ProductVariant** is the atomic sellable unit. Price, SKU, barcode, and the inventory link all live here. Every product has at least one variant — even a single-SKU product ships with one default variant named `Default Title`.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | ID | Variant GID |
+| `title` | String | Auto-composed from option values, e.g. `Large / Blue` |
+| `price` | Money | Current selling price |
+| `compareAtPrice` | Money | Original price for showing a markdown |
+| `sku` | String | Your stock-keeping unit; not enforced unique by Shopify |
+| `barcode` | String | GTIN/UPC/EAN — the key field for Google & Meta feeds |
+| `selectedOptions` | [SelectedOption] | Name/value pairs resolving this variant's options |
+| `inventoryItem` | InventoryItem | Link to the stock-tracking record |
+| `inventoryQuantity` | Int | Total across all locations (read-only) |
+| `availableForSale` | Boolean | Derived from inventory + policy |
+
+```graphql
+query VariantDetail($id: ID!) {
+  productVariant(id: $id) {
+    title
+    price
+    barcode
+    selectedOptions { name value }
+    inventoryItem { id tracked }
+  }
+}
+```
+
+**Gotcha:** `sku` is *not* unique-enforced by Shopify — duplicates are allowed and common after imports. If your integration keys on SKU, deduplicate yourself. And `barcode`, not `sku`, is what maps to `gtin` in ad feeds ([Shopify: ProductVariant](https://shopify.dev/docs/api/admin-graphql/latest/objects/ProductVariant)).
+
+## ProductOption & ProductOptionValue
+
+**ProductOptions** are the axes of variation. Each option (Size, Color, Material) owns a list of **ProductOptionValues**. A variant is the intersection of exactly one value from each option, which is why total variant count is the product of the value counts.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `ProductOption.name` | String | e.g. `Size` |
+| `ProductOption.position` | Int | 1-indexed display order |
+| `ProductOption.optionValues` | [ProductOptionValue] | The allowed values |
+| `ProductOptionValue.name` | String | e.g. `Large` |
+| `ProductOptionValue.linkedMetafieldValue` | String | Set when the option is backed by a metaobject (e.g. a color swatch) |
+
+**Gotcha:** standard plans cap a product at **3 options** and **100 variants**; the expanded limit raises variants to **2,048** but options stay at 3. Options backed by metaobjects (linked options) power swatches and rich pickers ([Shopify: ProductOption](https://shopify.dev/docs/api/admin-graphql/latest/objects/ProductOption)).
+
+## Media, MediaImage & Image
+
+The **Media** connection holds all visual assets. `Media` is an interface implemented by `MediaImage`, `Video`, `ExternalVideo`, and `Model3d`. For images, the actual URL and dimensions live one level deeper on the `Image` object.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `Media.mediaContentType` | MediaContentType | `IMAGE`, `VIDEO`, `MODEL_3D`, `EXTERNAL_VIDEO` |
+| `Media.status` | MediaStatus | `READY`, `PROCESSING`, `FAILED` |
+| `MediaImage.image` | Image | The renderable asset |
+| `Image.url` | URL | Supports transform args (`width`, `height`) |
+| `Image.altText` | String | Alt text — feeds and accessibility read this |
+| `MediaImage.mediaContentType` | MediaContentType | Always `IMAGE` |
+
+```graphql
+query ProductMedia($id: ID!) {
+  product(id: $id) {
+    media(first: 10) {
+      nodes {
+        mediaContentType
+        ... on MediaImage { image { url altText } }
+      }
+    }
+  }
+}
+```
+
+**Gotcha:** newly uploaded media returns `status: PROCESSING` with a null `image.url` until Shopify finishes ingesting it. Poll or subscribe before you export, or images silently drop from feeds ([Shopify: Media](https://shopify.dev/docs/api/admin-graphql/latest/interfaces/Media)).
+
+## InventoryItem & InventoryLevel
+
+Stock is a two-object subtree. Each variant links to one **InventoryItem** (cost, tracking, country of origin), and each item fans out to one **InventoryLevel** per location. Quantities live on the level, broken into named states.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `InventoryItem.tracked` | Boolean | Whether Shopify counts stock |
+| `InventoryItem.unitCost` | Money | Cost of goods (COGS) |
+| `InventoryItem.countryCodeOfOrigin` | CountryCode | Customs/feed attribute |
+| `InventoryLevel.location` | Location | The warehouse/store this level belongs to |
+| `InventoryLevel.quantities` | [InventoryQuantity] | `available`, `on_hand`, `committed`, `incoming` |
+
+**Gotcha:** as of the 2024+ API, quantities are queried by name through the `quantities(names: [...])` argument rather than a single `available` scalar — a common source of "why is my count null" bugs. One InventoryItem, many InventoryLevels: sum them for a store-wide total ([Shopify: InventoryLevel](https://shopify.dev/docs/api/admin-graphql/latest/objects/InventoryLevel)).
+
+## Metafield & Metaobject
+
+**Metafields** attach typed custom data to a Product, ProductVariant, or nearly any resource. **Metaobjects** are standalone, reusable custom records that products reference via a metafield of type `metaobject_reference`. Together they model anything Shopify's core schema omits.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `Metafield.namespace` | String | Groups keys, e.g. `custom` |
+| `Metafield.key` | String | Field name within the namespace |
+| `Metafield.type` | String | Typed: `single_line_text_field`, `number_decimal`, `metaobject_reference`, etc. |
+| `Metafield.value` | String | Always serialized as a string; parse per `type` |
+| `Metaobject.type` | String | The metaobject definition, e.g. `designer` |
+| `Metaobject.fields` | [MetaobjectField] | The record's typed fields |
+
+**Gotcha:** `value` is always a string even for numbers and JSON — deserialize based on `type`. And metafields are only exposed to the Storefront API when their definition is flagged storefront-visible. The full patterns live in [catalog metafields & metaobjects](/blog/shopify-catalog-metafields-metaobjects-api) ([Shopify: Metafield](https://shopify.dev/docs/api/admin-graphql/latest/objects/Metafield)).
+
+## Putting it together
+
+The model is deliberately layered: content on the Product, commerce on the Variant, physical stock on Inventory, and everything custom on Metafields. When a feed underperforms, the cause is almost always a specific node in this tree — a missing `barcode`, a `DRAFT` status, an image still `PROCESSING`, or a null inventory quantity. Knowing exactly which object owns which field is what turns a vague "the feed is broken" into a one-line fix.
+
+That data-quality ceiling is the work [AdsX](/services) does for Shopify brands: the completeness of these objects caps how well ads and AI shopping feeds can ever perform. To see which fields your own catalog is missing, run the [free feed-readiness audit](/tools/free-audit).
+
+## Next steps
+
+- Ready to query these objects? See the [GraphQL query cookbook](/blog/shopify-catalog-graphql-query-cookbook).
+- Extending the model with custom data? See [metafields & metaobjects](/blog/shopify-catalog-metafields-metaobjects-api).
+- Exporting everything at once? See [fetch your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

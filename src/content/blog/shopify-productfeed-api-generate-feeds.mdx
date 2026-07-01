@@ -1,0 +1,166 @@
+---
+title: "Generate Channel Feeds with Shopify ProductFeed API"
+excerpt: "Build channel product feeds with Shopify's ProductFeed API: productFeedCreate, productFullSync, incremental sync, and the bridge to ad channels."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Product Feed", "Ad Channels", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What does productFeedCreate actually create?"
+    answer: "productFeedCreate mints a ProductFeed object bound to a publication (a sales or marketing channel) for a specific country and language. It does not export a file — it registers a live, channel-scoped view of your catalog that Shopify keeps in sync. Once created, the feed has an id and a status, and you drive its contents with productFullSync for the initial load and incremental sync webhooks for ongoing changes. Think of it as subscribing a channel to your catalog rather than generating a document."
+  - question: "What is the difference between a full sync and an incremental sync?"
+    answer: "A full sync, triggered by productFullSync, walks your entire catalog and emits every eligible product to the feed once — you run it when a feed is first created or needs a complete rebuild. Incremental syncs are automatic afterward: whenever a product is created, updated, or unpublished, Shopify fires a product_feeds/incremental_sync webhook with just the changed items. Full sync is the expensive one-time load; incremental sync is the cheap steady state that keeps the channel current without re-processing the whole catalog."
+  - question: "How do I know when a ProductFeed full sync has finished?"
+    answer: "Subscribe to the product_feeds/full_sync_finish webhook. After you call productFullSync, Shopify processes the catalog asynchronously and fires this webhook with the feed id when the load completes. That is the correct moment to mark the channel as ready or to hand off to Google Merchant Center or a Meta catalog. Do not poll on a timer or assume the sync is instant — large catalogs take minutes, and the webhook is the only reliable completion signal."
+  - question: "How does the ProductFeed API connect to my ad performance?"
+    answer: "The feed is the exact data your ad platforms bid on. Google Shopping and Performance Max match queries against feed titles, types, and attributes; Meta Advantage+ builds audiences from feed items; AI shopping surfaces cite feed fields directly. A feed with missing GTINs, truncated titles, or stale inventory silently caps every campaign downstream — no bid strategy recovers data that was never in the feed. Getting productFullSync to emit complete, structured items is upstream of ROAS."
+---
+
+The Shopify **ProductFeed API** (`productFeedCreate` plus `productFullSync`) turns your catalog into a live, channel-scoped feed that Shopify keeps in sync automatically. You create one `ProductFeed` per channel, run a **full sync** to load it, and then let **incremental sync webhooks** keep it current as products change. This is the build guide: real Admin GraphQL, the full-vs-incremental model, and why this feed is the bridge into Google, Meta, and AI ad channels.
+
+Already know you want the API over a hand-rolled export? Good — this is that build. If you are still deciding, read [Product Feed API vs CSV feeds](/blog/shopify-product-feed-api-vs-csv) first; this post does not re-argue that choice, it implements the winner. For the full catalog model and every related surface, start with the pillar [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything below uses the **GraphQL Admin API** at version `2026-01`.
+
+## What a ProductFeed maps to
+
+A `ProductFeed` is not a file — it is a live view of your catalog bound to a **publication**. A publication is Shopify's model for a sales or marketing channel: the Google & YouTube channel, the Facebook & Instagram channel, or your own custom app registered as a channel. One feed per channel, per `country` and `language`.
+
+| Concept | What it is | Why it matters |
+|---------|-----------|----------------|
+| `ProductFeed` | A channel-scoped, localized view of eligible products | The unit an ad channel consumes |
+| Publication | The channel the feed is attached to | Determines which products are eligible |
+| Full sync | One-time emit of the entire eligible catalog | Initial load or full rebuild |
+| Incremental sync | Automatic per-change deltas via webhook | Keeps the channel current cheaply |
+
+Because the feed is tied to a publication, it only ever contains products published to that channel. That is a feature: you can list a subset to Google and a different subset to Meta without maintaining two export pipelines ([Shopify: ProductFeed](https://shopify.dev/docs/api/admin-graphql/2026-01/objects/ProductFeed)).
+
+## Step 1: create the feed
+
+`productFeedCreate` registers the feed for a country and language and returns its `id` and `status`. Run this once per channel/locale.
+
+```graphql
+mutation CreateFeed {
+  productFeedCreate(input: { country: US, language: EN }) {
+    productFeed {
+      id
+      country
+      language
+      status
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+A freshly created feed comes back with `status: INACTIVE` and no products in it yet — creating the feed and *populating* it are two separate steps. Always read `userErrors`: the most common failure is that your app is not set up as a channel or lacks access to the target publication ([Shopify: productFeedCreate](https://shopify.dev/docs/api/admin-graphql/2026-01/mutations/productFeedCreate)). You need the `read_product_listings` scope to work with feeds, plus `read_products`.
+
+## Step 2: run the full sync
+
+`productFullSync` tells Shopify to walk every eligible product and emit it into the feed. This is asynchronous — the mutation returns immediately, and Shopify processes the catalog in the background.
+
+```graphql
+mutation FullSync($id: ID!) {
+  productFullSync(id: $id) {
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+Pass the `id` you got from `productFeedCreate`. Do not treat the mutation's success as "the feed is ready" — success only means the job was accepted. For a large catalog the actual emit takes minutes, and the only reliable completion signal is a webhook (Step 4).
+
+```js
+async function createAndSyncFeed(shop, token) {
+  const created = await gql(shop, token, CREATE_FEED);
+  const errs = created.data.productFeedCreate.userErrors;
+  if (errs.length) throw new Error(JSON.stringify(errs));
+
+  const feed = created.data.productFeedCreate.productFeed;
+  await gql(shop, token, FULL_SYNC, { id: feed.id });
+  // Do NOT poll here. Wait for product_feeds/full_sync_finish (Step 4).
+  return feed.id;
+}
+```
+
+## Step 3: read feed state
+
+`productFeeds` (connection) and `productFeed(id:)` let you inspect what exists. Use them to reconcile on boot — never create a duplicate feed for a channel you already registered.
+
+```graphql
+query ListFeeds {
+  productFeeds(first: 10) {
+    nodes {
+      id
+      country
+      language
+      status
+    }
+  }
+}
+```
+
+A `status` of `ACTIVE` means the feed is populated and syncing; `INACTIVE` means it exists but has not completed a full sync. Reconciling against this on startup is what makes your integration idempotent across restarts and re-installs ([Shopify: productFeeds](https://shopify.dev/docs/api/admin-graphql/2026-01/queries/productFeeds)).
+
+## Step 4: full sync vs incremental sync
+
+This is the heart of the model. A **full sync** is the expensive, complete load you trigger explicitly. **Incremental syncs** are automatic afterward — Shopify emits only what changed.
+
+| | Full sync | Incremental sync |
+|---|-----------|------------------|
+| Trigger | You call `productFullSync` | Automatic on product change |
+| Scope | Entire eligible catalog | Only added/updated/removed items |
+| Completion signal | `product_feeds/full_sync_finish` webhook | `product_feeds/incremental_sync` webhook |
+| When you run it | First load, full rebuild | Continuously, forever |
+| Cost | High (whole catalog) | Low (deltas only) |
+
+Subscribe to both webhooks. `product_feeds/full_sync_finish` fires once when your Step 2 job completes and is your green light to expose the channel or hand off to a downstream platform. `product_feeds/incremental_sync` fires on every subsequent create, update, or unpublish, carrying just the changed products so you never re-process the whole catalog.
+
+```js
+// Webhook handler (Express-style). Verify the HMAC before this runs.
+app.post("/webhooks/product-feeds", (req, res) => {
+  const topic = req.get("X-Shopify-Topic");
+  const payload = req.body;
+
+  if (topic === "product_feeds/full_sync_finish") {
+    markChannelReady(payload.product_feed_id); // hand off to Google/Meta
+  } else if (topic === "product_feeds/incremental_sync") {
+    pushDelta(payload.product_feed_id, payload.products); // update channel
+  }
+  res.sendStatus(200);
+});
+```
+
+The mistake teams make is calling `productFullSync` on a timer to "refresh" the feed. You almost never need to — incremental sync already keeps it current. Reserve a full sync for genuine rebuilds: a schema change, a botched initial load, or re-registering a channel ([Shopify: webhook topics](https://shopify.dev/docs/api/webhooks?reference=graphql)).
+
+## From feed to ad channel: the bridge
+
+Here is why this API matters beyond plumbing. **The feed is the exact data your ad platforms bid on.** When you attach a `ProductFeed` to the Google & YouTube publication, its items become the products Google Shopping and Performance Max match against search queries. Attach it to the Facebook & Instagram channel and those items populate the Meta product catalog that Advantage+ builds audiences from. Point an AI shopping integration at the same catalog and those fields are what ChatGPT and Perplexity surface.
+
+That means every gap in the feed is a gap in campaign performance:
+
+- A **truncated title** limits which queries Google can match — no keyword bid recovers a word that is not in the feed.
+- A **missing GTIN or `barcode`** blocks a product from competitive Shopping auctions entirely.
+- **Stale inventory** in a slow feed serves ads for items that are sold out, burning spend and hurting account quality.
+
+The ProductFeed API's automatic incremental sync is what keeps inventory and price honest in near real time, which is precisely the reliability that manual feeds cannot match — the case made in [Product Feed API vs CSV](/blog/shopify-product-feed-api-vs-csv). Once your feed is syncing, the channel-specific work continues in [Google Merchant Center sync](/blog/shopify-catalog-google-merchant-center-sync), [Meta product catalog sync](/blog/shopify-catalog-meta-product-catalog-sync), and [AI shopping feeds](/blog/shopify-catalog-ai-shopping-feed).
+
+For the AI channels specifically, the feed's structured completeness is even more decisive — LLM shopping surfaces read attributes literally. See [preparing your product feed for AI agents](/blog/preparing-your-product-feed-for-ai-agents) and the [ChatGPT product feed and shopping ads setup guide](/blog/chatgpt-product-feed-shopping-ads-setup-guide) for how those fields get consumed.
+
+## The completeness ceiling
+
+The through-line: your feed data quality is the ceiling on ad performance and AI shopping visibility, no matter how good the campaigns are. A perfectly tuned Performance Max campaign on a feed of half-empty titles will always lose to an average campaign on a complete one. If your Shopify feeds are underperforming, the fix usually starts in the catalog and the sync pipeline, not the ad account — which is exactly the work [AdsX](/services) does for Shopify brands.
+
+## Next steps
+
+- Need the raw catalog behind the feed? See [fetch your entire Shopify catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql).
+- Still weighing the approach? Read [Product Feed API vs CSV feeds](/blog/shopify-product-feed-api-vs-csv).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

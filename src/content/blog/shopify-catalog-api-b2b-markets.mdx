@@ -1,0 +1,195 @@
+---
+title: "Shopify Catalog API for B2B and Markets Pricing"
+excerpt: "Use Shopify's Catalog, PriceList, and Publication objects to control which products and prices publish to each B2B company location or Market region."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Catalog API", "B2B", "Markets"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is a Shopify Catalog and how does it differ from a publication?"
+    answer: "A Catalog binds three things to a context — a market or a B2B company location: a status, an optional PriceList that sets context-specific pricing, and an optional Publication that limits which products are visible. A publication alone controls visibility for a sales channel; a catalog wraps that visibility together with pricing and ties it to a specific buyer context, which a bare publication cannot do."
+  - question: "Do I need a Publication if I only want different prices for a B2B location?"
+    answer: "No. Shopify's docs are explicit: for company-location catalogs that only require custom pricing, create the catalog with a PriceList but without a Publication. When you omit the publication, product availability falls back to the sales channel, and only the pricing changes for that context. Add a publication only when you also need to hide or curate a different product subset for that market or location."
+  - question: "How do I set context-specific pricing for a market or company location?"
+    answer: "Create a PriceList with priceListCreate, giving it a currency and a parent adjustment — a PERCENTAGE_INCREASE or PERCENTAGE_DECREASE relative to base prices — then link it to the catalog by passing catalogId. When the catalog's context is matched at checkout, buyers in that market or company location receive the price list's prices instead of the store's base prices. Fixed per-product overrides layer on top."
+  - question: "How do I read which products and prices a given catalog exposes?"
+    answer: "Query the catalog by ID, or list catalogs filtered by type (MARKET, COMPANY_LOCATION, APP). Each Catalog exposes its status, its linked priceList (id, name, currency, adjustment), and its publication, whose products connection lists exactly what is visible in that context. Reading the catalog is how you audit that a region or B2B branch sees the products and prices you intended before you feed that data to ads."
+---
+
+The **Catalog API** lets you control *which* products and *what* prices publish to a specific buyer context — a B2B company location or a Market region — by binding three objects together: a **Catalog** (the context wrapper), an optional **PriceList** (context-specific pricing), and an optional **Publication** (which products are visible). This guide shows how to create catalogs, attach pricing, associate publications, and read back exactly what a context exposes.
+
+This is the context-control deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. It covers the *B2B and Markets* lane specifically. If you only need to toggle a product's visibility per sales channel with `publishablePublish`, that is a separate mechanic covered in [managing product publications](/blog/shopify-manage-product-publications) — this piece is about catalogs that bundle pricing and visibility into a single named context. Everything uses the **GraphQL Admin API** (version 2026-01).
+
+## The three objects, and how they compose
+
+A **Catalog** is the unit of context. It answers one question: for this market or this company location, which products are visible and at what prices? It composes two optional children ([Shopify: catalogCreate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/catalogCreate)):
+
+| Object | Controls | Required? | Omit it and… |
+|--------|----------|-----------|--------------|
+| Catalog | The context (market or B2B location) + status | Yes | — |
+| PriceList | Context-specific prices (adjustment + fixed overrides) | Optional | Buyers pay base prices |
+| Publication | Which products/collections are visible | Optional | Visibility falls back to the sales channel |
+
+The rule that trips people up: **you do not need a Publication just to change prices.** Shopify's own guidance is that for a company-location catalog needing only custom pricing, you create the catalog with a price list and *no* publication ([Shopify: catalogCreate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/catalogCreate)). Add a publication only when a market or B2B branch should see a *different subset* of products.
+
+## Catalog types
+
+Shopify exposes three concrete catalog types behind the `Catalog` interface. You filter by them when reading, and you pick a context when creating ([Shopify: catalog query](https://shopify.dev/docs/api/admin-graphql/latest/queries/catalog)):
+
+| Type | Context | Typical use |
+|------|---------|-------------|
+| `MarketCatalog` | A market / region | Region-specific pricing and assortment for international selling |
+| `CompanyLocationCatalog` | A B2B company location | Per-branch wholesale pricing and curated products |
+| `AppCatalog` | An app / sales channel | Channel-scoped publishing (managed by the channel app) |
+
+## Step 1: create a catalog for a context
+
+Create a catalog with `catalogCreate`. The `context` field is where you bind it — pass `companyLocationIds` for B2B or `marketIds` for a market. Here is a B2B company-location catalog:
+
+```graphql
+mutation CreateB2BCatalog($input: CatalogCreateInput!) {
+  catalogCreate(input: $input) {
+    catalog {
+      id
+      title
+      status
+      ... on CompanyLocationCatalog {
+        companyLocations(first: 10) { nodes { id name } }
+      }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "input": {
+    "title": "Northeast Distribution — Wholesale",
+    "status": "ACTIVE",
+    "context": {
+      "companyLocationIds": ["gid://shopify/CompanyLocation/1001"]
+    }
+  }
+}
+```
+
+For a Market catalog, the only change is the context — swap `companyLocationIds` for `marketIds` and the returned type is `MarketCatalog`. The `CatalogContextInput` accepts either ([Shopify: CatalogContextInput](https://shopify.dev/docs/api/admin-graphql/latest/input-objects/CatalogContextInput)). `status` is a `CatalogStatus` — `ACTIVE`, `DRAFT`, or `ARCHIVED` — so you can stage a catalog as `DRAFT` and flip it live once its pricing and publication are wired up.
+
+## Step 2: attach context-specific pricing
+
+Prices come from a **PriceList**. Create one with `priceListCreate`, give it a currency and a `parent` adjustment relative to base prices, and link it to the catalog with `catalogId` so the two travel together ([Shopify: priceListCreate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/priceListCreate)):
+
+```graphql
+mutation CreatePriceList($input: PriceListCreateInput!) {
+  priceListCreate(input: $input) {
+    priceList {
+      id
+      name
+      currency
+      parent { adjustment { type value } }
+    }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "input": {
+    "name": "Northeast Wholesale — 15% off",
+    "currency": "USD",
+    "catalogId": "gid://shopify/CompanyLocationCatalog/2002",
+    "parent": {
+      "adjustment": { "type": "PERCENTAGE_DECREASE", "value": 15.0 }
+    }
+  }
+}
+```
+
+The `parent.adjustment` sets a blanket relative price — a 15% wholesale discount here — computed off each variant's base price. When you need per-product overrides that ignore the adjustment (a negotiated contract price on one SKU), layer them on with `priceListFixedPricesByProductUpdate`, which sets a fixed price for every variant of a product on that list ([Shopify: PriceList](https://shopify.dev/docs/api/admin-graphql/latest/objects/PriceList)). Passing `catalogId` here also *unlinks* any price list previously bound to that catalog — a catalog carries exactly one price list.
+
+## Step 3: associate a publication (only if you're curating)
+
+If the context should see a *different* set of products — not just different prices — you associate a **Publication**. You can pass `publicationId` in `CatalogCreateInput` at creation time, or add it later. Omitting it is the common case: availability then follows the sales channel and only pricing changes.
+
+When you do curate, the publication is what you add or remove products from. The per-item mechanics — `publishablePublish` and `publishableUnpublish` to move an individual product in or out of a publication — are covered in [managing product publications](/blog/shopify-manage-product-publications). Keep the responsibilities straight: the **catalog** binds a publication to a context; the **publishable mutations** decide what's inside that publication.
+
+## Adjusting which contexts a catalog serves
+
+A single catalog can serve several company locations or markets. Add or remove contexts without recreating it using `catalogContextUpdate` ([Shopify: catalogContextUpdate](https://shopify.dev/docs/api/admin-graphql/latest/mutations/catalogContextUpdate)):
+
+```graphql
+mutation AddContexts($catalogId: ID!, $add: CatalogContextInput) {
+  catalogContextUpdate(catalogId: $catalogId, contextsToAdd: $add) {
+    catalog { id title status }
+    userErrors { field message }
+  }
+}
+```
+
+```json
+{
+  "catalogId": "gid://shopify/CompanyLocationCatalog/2002",
+  "add": { "companyLocationIds": ["gid://shopify/CompanyLocation/1005"] }
+}
+```
+
+This is how one "Wholesale — 15% off" catalog fans out to every branch that qualifies, instead of duplicating price lists per location.
+
+## Step 4: read what a catalog exposes
+
+Before you trust a context to feed ads, read it back. List catalogs filtered by `type`, or fetch one by ID to see its status, its price list, and — through its publication — the exact products a buyer in that context can see ([Shopify: catalogs query](https://shopify.dev/docs/api/admin-graphql/latest/queries/catalogs)):
+
+```graphql
+query CatalogExposure($id: ID!) {
+  catalog(id: $id) {
+    id
+    title
+    status
+    priceList { id name currency }
+    publication {
+      id
+      products(first: 5) { nodes { id title } }
+    }
+  }
+}
+```
+
+To sweep every B2B catalog at once, list them by type:
+
+```graphql
+query ReadCompanyLocationCatalogs {
+  catalogs(first: 10, type: COMPANY_LOCATION) {
+    nodes {
+      id
+      title
+      status
+      priceList { id name currency }
+      publication { id }
+    }
+  }
+}
+```
+
+A `null` `priceList` means that context is paying base prices; a `null` `publication` means it sees the full sales-channel assortment. Reading this is your audit step — it tells you precisely what a region or branch will expose downstream.
+
+## Why this matters for region-specific ads
+
+The catalog is the source of truth for *what a given audience should see and pay*. That is exactly the data your ad feeds should mirror. If your NA market catalog prices in USD and hides clearance SKUs, your US Google Merchant Center and Meta feeds should carry those same prices and exclusions — not the raw base catalog. Diverging here is how brands end up advertising a price the buyer can't actually get, tanking Quality Score and trust.
+
+To turn a catalog's resolved products and prices into an actual syndicated feed, pair this with the [ProductFeed API for generating feeds](/blog/shopify-productfeed-api-generate-feeds), which produces context-aware feeds per publication. For the underlying shapes — how `Product`, `ProductVariant`, `PriceList`, and `Publication` relate — keep the [product data model reference](/blog/shopify-product-data-model-reference) open alongside this.
+
+Getting catalog-accurate feeds into each region's ad account is precisely the work [AdsX](/services) does for Shopify brands: market- and audience-specific catalogs feeding region-specific campaigns, so the price in the ad matches the price at checkout.
+
+## Next steps
+
+- Toggling individual products in or out of a channel? See [managing product publications](/blog/shopify-manage-product-publications).
+- Turning a catalog into a syndicated feed? See the [ProductFeed API guide](/blog/shopify-productfeed-api-generate-feeds).
+- Need the object shapes? Keep the [product data model reference](/blog/shopify-product-data-model-reference) handy.
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).

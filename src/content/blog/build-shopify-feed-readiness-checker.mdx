@@ -1,0 +1,200 @@
+---
+title: "Build a Shopify Feed-Readiness Checker"
+excerpt: "Build a script that pulls your Shopify catalog and scores every product on ad and AI feed readiness: titles, GTIN, images, and structured data."
+date: "2026-07-01"
+updated: "2026-07-01"
+category: "Developers"
+tags: ["Shopify API", "GraphQL", "Product Feeds", "Catalog Audit", "Developers"]
+author:
+  name: "AdsX Engineering"
+  role: "Shopify API & Commerce Engineering"
+featured: false
+articleType: "HowTo"
+faqs:
+  - question: "What makes a Shopify product 'feed-ready' for ads and AI shopping?"
+    answer: "A feed-ready product has every field that Google Merchant Center, Meta, and AI shopping engines require to accept and rank it: a descriptive title of roughly 30–150 characters, a GTIN in the variant barcode field, at least two images, a description over 150 characters, and structured attributes like productType, vendor, and google_product_category. Missing any of these either disqualifies the item from the feed or suppresses its impressions."
+  - question: "Which Shopify GraphQL field holds the GTIN or barcode?"
+    answer: "The GTIN, UPC, EAN, or ISBN lives on the variant's barcode field in the Admin GraphQL API — there is no separate gtin field. You read it under productVariant.barcode. Google Merchant Center maps this value to its gtin attribute, and products without a valid GTIN are limited in Shopping ads and often excluded from AI shopping results, so scoring barcode presence is the single highest-value check in the audit."
+  - question: "Do I need the Bulk Operations API to audit my whole catalog?"
+    answer: "Not for scoring logic — the scoring is identical whether data arrives by cursor pagination or a bulk operation. Use cursor pagination when auditing a few thousand products in one run. Switch to the Bulk Operations API once a paginated audit risks throttling or takes over a minute; it exports the full catalog, including variants and media, as one JSONL file you score offline. The rubric in this guide runs the same either way."
+  - question: "How should I weight the scoring rubric for my store?"
+    answer: "Weight each check by how hard it blocks the feed. A missing GTIN or a title under 20 characters can disqualify an item outright, so weight those heavily. A thin description or a single image suppresses performance without disqualifying, so weight those moderately. Tune the point values to match the channels you care about — Google Shopping is strict on GTIN, while AI shopping engines reward long descriptions and structured attributes."
+---
+
+A feed-readiness checker is a script that pulls every product from Shopify and scores each one against the fields that ad platforms and AI shopping engines require: **title quality, GTIN presence, image count, description depth, and structured attributes**. It turns a vague "our feeds underperform" into a ranked list of exactly which products are blocking impressions and why. This guide builds one from scratch with a scoring rubric and runnable code. Want the answer without writing code? Run a product through the hosted [feed-readiness checker](/tools/feed-readiness-checker).
+
+This is a build tutorial in the series anchored by the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). It assumes you can already pull products — if not, start with [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). Everything uses the **GraphQL Admin API**, version `2026-01`, because REST is legacy and new catalog fields ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+
+## Step 1: Define the scoring rubric
+
+Score against the fields that actually gate feed acceptance and ranking, not vanity checks. Each rule maps to a real requirement in Google Merchant Center, Meta Commerce Manager, or AI shopping ingestion. Weight each check by how hard it blocks the feed — a missing GTIN can disqualify an item outright, while a thin description only suppresses performance.
+
+| Check | Field | Passing rule | Points | Why it matters |
+|-------|-------|--------------|--------|----------------|
+| Title length | `title` | 30–150 chars | 20 | Short titles lose Shopping and AI relevance; overlong titles get truncated |
+| GTIN present | `variants.barcode` | Non-empty on every variant | 25 | Google limits ads for items without a valid GTIN |
+| Image count | `media` | ≥ 2 images | 15 | Single-image products get lower Shopping CTR and are often rejected |
+| Description depth | `descriptionHtml` | ≥ 150 chars of text | 15 | AI shopping engines rank on descriptive copy |
+| Product type | `productType` | Non-empty | 10 | Feeds map it to `product_type` for categorization |
+| Vendor / brand | `vendor` | Non-empty | 10 | Required as `brand` in Google feeds when no GTIN |
+| Google category | `metafield` | `mm-google-shopping.google_product_category` set | 5 | Improves category matching and eligibility |
+
+A perfect product scores 100. Anything under about 70 has a feed problem worth fixing; anything under 50 is likely being rejected or invisible.
+
+## Step 2: Query the fields the rubric needs
+
+Request exactly the fields the rubric scores — nothing more, because GraphQL bills by query cost and over-fetching burns your rate-limit budget. Note the real field names: the GTIN lives on the variant's `barcode` field ([Shopify: ProductVariant](https://shopify.dev/docs/api/admin-graphql/latest/objects/ProductVariant)), and the Google category comes from a `metafield` you read by namespace and key ([Shopify: metafields](https://shopify.dev/docs/api/admin-graphql/latest/objects/Metafield)).
+
+```graphql
+query AuditPage($cursor: String) {
+  products(first: 50, after: $cursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      title
+      descriptionHtml
+      productType
+      vendor
+      googleCategory: metafield(
+        namespace: "mm-google-shopping"
+        key: "google_product_category"
+      ) { value }
+      media(first: 10) { nodes { mediaContentType } }
+      variants(first: 100) {
+        nodes { id sku barcode }
+      }
+    }
+  }
+}
+```
+
+The `media` connection returns every asset type, so the scorer counts only `IMAGE` nodes ([Shopify: Media](https://shopify.dev/docs/api/admin-graphql/latest/interfaces/Media)). Capping `variants(first: 100)` is deliberate — a product with more than 100 variants signals you should audit from a bulk export instead.
+
+## Step 3: Fetch the catalog page by page
+
+Drive the query with a cursor loop that reads the cost object on every response and backs off before the bucket empties. The GraphQL Admin API bills by a cost-based limit that refills at roughly 50 points per second, so pacing against `extensions.cost.throttleStatus` keeps you from getting throttled ([Shopify: rate limits](https://shopify.dev/docs/api/usage/rate-limits)).
+
+```js
+const API = "2026-01";
+
+async function fetchCatalog(shop, token) {
+  const products = [];
+  let cursor = null;
+  do {
+    const res = await fetch(`https://${shop}/admin/api/${API}/graphql.json`, {
+      method: "POST",
+      headers: {
+        "X-Shopify-Access-Token": token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: AUDIT_PAGE, variables: { cursor } }),
+    });
+    const json = await res.json();
+
+    // Cost-based throttling: refill is ~50 points/sec. Wait if we're low.
+    const status = json.extensions?.cost?.throttleStatus;
+    if (status && status.currentlyAvailable < 200) {
+      const deficit = 200 - status.currentlyAvailable;
+      await new Promise((r) => setTimeout(r, (deficit / status.restoreRate) * 1000));
+    }
+
+    const page = json.data.products;
+    products.push(...page.nodes);
+    cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
+  } while (cursor);
+
+  return products;
+}
+```
+
+For a catalog larger than a few thousand products, swap this loop for a bulk export and score the JSONL offline — the scoring functions in the next step don't change. See [fetching your entire catalog](/blog/shopify-fetch-entire-product-catalog-graphql) for the Bulk Operations pattern.
+
+## Step 4: Implement the scorer
+
+Turn the rubric into pure functions — one per check — so each returns points and a human-readable reason when it fails. Strip HTML before measuring description length so markup doesn't inflate the count.
+
+```js
+const RUBRIC = [
+  { key: "title", max: 20, test: (p) => {
+      const len = (p.title || "").length;
+      if (len >= 30 && len <= 150) return { points: 20 };
+      return { points: 0, reason: `Title ${len} chars (want 30–150)` };
+    } },
+  { key: "gtin", max: 25, test: (p) => {
+      const variants = p.variants.nodes;
+      const missing = variants.filter((v) => !v.barcode).length;
+      if (missing === 0) return { points: 25 };
+      return { points: 0, reason: `${missing}/${variants.length} variants missing GTIN` };
+    } },
+  { key: "images", max: 15, test: (p) => {
+      const imgs = p.media.nodes.filter((m) => m.mediaContentType === "IMAGE").length;
+      if (imgs >= 2) return { points: 15 };
+      return { points: imgs === 1 ? 7 : 0, reason: `${imgs} image(s) (want ≥2)` };
+    } },
+  { key: "description", max: 15, test: (p) => {
+      const text = (p.descriptionHtml || "").replace(/<[^>]*>/g, "").trim();
+      if (text.length >= 150) return { points: 15 };
+      return { points: 0, reason: `Description ${text.length} chars (want ≥150)` };
+    } },
+  { key: "productType", max: 10, test: (p) =>
+      p.productType ? { points: 10 } : { points: 0, reason: "Missing product type" } },
+  { key: "vendor", max: 10, test: (p) =>
+      p.vendor ? { points: 10 } : { points: 0, reason: "Missing vendor/brand" } },
+  { key: "googleCategory", max: 5, test: (p) =>
+      p.googleCategory?.value
+        ? { points: 5 }
+        : { points: 0, reason: "No google_product_category" } },
+];
+
+function scoreProduct(p) {
+  let score = 0;
+  const issues = [];
+  for (const rule of RUBRIC) {
+    const { points, reason } = rule.test(p);
+    score += points;
+    if (reason) issues.push(reason);
+  }
+  return { id: p.id, title: p.title, score, issues };
+}
+```
+
+Each function returns partial credit where it makes sense — a single image scores 7 of 15 rather than zero — so the total reflects how close a product is to feed-ready, not just pass/fail.
+
+## Step 5: Report what's blocking the feed
+
+Score every product, sort worst-first, and roll up the failing checks so you know where to spend effort. A store owner doesn't need 4,000 rows — they need "1,200 products are missing GTINs" and the worst offenders to fix first.
+
+```js
+function report(products) {
+  const scored = products.map(scoreProduct).sort((a, b) => a.score - b.score);
+
+  const summary = {};
+  for (const p of scored) {
+    for (const issue of p.issues) {
+      const bucket = issue.split(" ")[0] === "Title" ? "Title" : issue.slice(0, 24);
+      summary[bucket] = (summary[bucket] || 0) + 1;
+    }
+  }
+
+  const avg = Math.round(scored.reduce((s, p) => s + p.score, 0) / scored.length);
+  console.log(`Catalog feed-readiness: ${avg}/100 average`);
+  console.log(`${scored.filter((p) => p.score < 70).length} products below 70`);
+  console.table(scored.slice(0, 20)); // worst 20
+  return { scored, summary, avg };
+}
+```
+
+Pipe `scored` to CSV or a dashboard and you have a prioritized work queue: the products dragging down your [AI shopping feed](/blog/shopify-catalog-ai-shopping-feed) and your Google and Meta feeds, ranked by how much lift a fix will produce.
+
+## From checker to fix
+
+The checker tells you *what's* broken; fixing it at scale is the next job. Bulk-write corrected titles, barcodes, and metafields back with `productSet` and `productUpdate`, then regenerate feeds — see [generating feeds with the ProductFeed API](/blog/shopify-productfeed-api-generate-feeds). Re-run the checker after each pass and watch the average climb.
+
+That loop — audit, fix, re-score — is exactly the catalog work that caps ad and AI shopping performance. If your feeds underperform, the fix usually starts in the catalog, not the ad account, which is the work [AdsX](/services) does for Shopify brands. To sanity-check a single product without running any of this yourself, use the hosted [feed-readiness checker](/tools/feed-readiness-checker).
+
+## Next steps
+
+- Auditing a large catalog? Fetch it with the [Bulk Operations API](/blog/shopify-fetch-entire-product-catalog-graphql) and score the JSONL offline.
+- Ready to publish? [Generate channel feeds with the ProductFeed API](/blog/shopify-productfeed-api-generate-feeds).
+- Optimizing for AI answers? See [building a Shopify catalog AI shopping feed](/blog/shopify-catalog-ai-shopping-feed).
+- Full surface overview: the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide).
