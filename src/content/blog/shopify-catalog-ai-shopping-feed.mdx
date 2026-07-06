@@ -40,7 +40,7 @@ Building an AI-ready Shopify product feed means exporting your full catalog with
 
 AI shopping surfaces such as ChatGPT shopping, Perplexity, and Google AI Overviews are starting to mediate real purchase decisions. They do not browse the way humans do — they consume structured data, identifiers, and feeds, then reason over them. If your Shopify catalog is incomplete, ambiguous, or stale, agents will quietly recommend a competitor whose data they trust more. This tutorial walks through building a feed and structured-data layer that AI agents can actually use.
 
-This is a developer companion to our [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) and the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook). For the marketing-strategy view, see [preparing your product feed for AI agents](/blog/preparing-your-product-feed-for-ai-agents).
+This is a developer companion to our [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) and the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook). For the marketing-strategy view, see preparing your product feed for AI agents.
 
 ## 1. Pull your catalog from Shopify
 
@@ -116,7 +116,7 @@ A raw export is rarely AI-ready. Agents reward completeness and unambiguous fact
 - **Complete structured attributes** — category, color, size, gender/age group where relevant, condition, and quantity. Empty or inconsistent attributes make a product hard to match against a shopper's intent.
 - **A GTIN/barcode** on every variant. A globally unique identifier lets an agent confirm your item is the exact product the shopper asked about, and is often the difference between being recommended and being skipped as ambiguous.
 - **Clear natural-language descriptions.** Agents read prose, not just fields. Describe what the product is, who it is for, and concrete use cases in plain sentences — not keyword soup.
-- **Materials, dimensions, and specs via metafields.** Store these as typed metafields (for example `specs.material`, `specs.dimensions`, `specs.weight`) so they are queryable and exportable. See our [Shopify metafields guide](/blog/shopify-custom-metafields-guide) for setting up definitions.
+- **Materials, dimensions, and specs via metafields.** Store these as typed metafields (for example `specs.material`, `specs.dimensions`, `specs.weight`) so they are queryable and exportable. See our Shopify metafields guide for setting up definitions.
 
 Why this matters: AI agents compare products on specific, verifiable data points. A listing with a real GTIN, complete attributes, and a description that answers "what is this and who is it for" can be evaluated and recommended. A listing with only marketing copy and missing fields gets filtered out before it is ever considered.
 
@@ -151,7 +151,7 @@ First, **schema.org Product + Offer JSON-LD** on every storefront product page:
 }
 ```
 
-Keep the JSON-LD values identical to what the page renders — mismatches erode trust and can get listings dropped. For deeper schema patterns, see our [schema markup](/blog/preparing-your-product-feed-for-ai-agents) coverage and the [metafields guide](/blog/shopify-custom-metafields-guide) for sourcing those fields.
+Keep the JSON-LD values identical to what the page renders — mismatches erode trust and can get listings dropped. For deeper schema patterns, see our schema markup coverage and the metafields guide for sourcing those fields.
 
 Second, **a clean machine-readable feed file** (JSON or a well-formed product feed) with one record per variant, including stable IDs, GTIN, price, currency, availability, attributes, and the canonical product URL. Serve it at a stable endpoint and regenerate it on a schedule plus on webhook events.
 

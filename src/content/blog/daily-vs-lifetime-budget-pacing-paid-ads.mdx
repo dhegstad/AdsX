@@ -115,7 +115,7 @@ This makes lifetime budgets the correct choice for campaigns where you have stro
 - Your campaign has no defined end date (always-on prospecting or retargeting)
 - You need strict weekly spend control for client billing or P&L management
 - You are testing a new audience or creative and want predictable daily cost per test
-- You are running [Meta ABO (ad set budget optimization)](/blog/meta-ads-cbo-vs-abo-shopify-2026) and need per-audience spend floors
+- You are running Meta ABO (ad set budget optimization) and need per-audience spend floors
 
 ### Use a Lifetime Budget When:
 
@@ -164,7 +164,7 @@ Even with the right budget type, pacing issues happen. Here are the signals to w
 - Audience too narrow for the budget size
 - Bid cap too aggressive for the competitive auction
 - Ad set in the learning phase with insufficient conversion signal
-- Creative fatigue — see [Meta Ads creative fatigue detection rules](/blog/meta-ads-creative-fatigue-detection-rules)
+- Creative fatigue — see Meta Ads creative fatigue detection rules
 
 **Overdelivery beyond platform limits:**
 - Google: total monthly spend exceeds `daily_budget x 30.4` — file a billing dispute
@@ -176,7 +176,7 @@ Even with the right budget type, pacing issues happen. Here are the signals to w
 
 **Erratic day-to-day variance on daily budgets:**
 - Variance of plus or minus 30% day-over-day is within normal overdelivery range
-- Variance exceeding 40% suggests an account structure issue — often too many ad sets competing for the same auction, which signals a [Meta account structure rebuild](/blog/meta-ads-account-structure-rebuild-2026)
+- Variance exceeding 40% suggests an account structure issue — often too many ad sets competing for the same auction, which signals a Meta account structure rebuild
 
 ---
 
@@ -186,13 +186,13 @@ Even with the right budget type, pacing issues happen. Here are the signals to w
 
 Meta's pacing engine is among the most sophisticated. With CBO campaigns, Meta automatically redistributes budget away from underperforming ad sets toward winners intraday — but this only works as intended if you have at least 3–5 ad sets with meaningful audience size (minimum 1–2M per set for Advantage+ audiences).
 
-For [Meta Advantage+ Shopping campaigns](/blog/meta-advantage-plus-shopping-campaign-playbook), Meta strongly recommends lifetime budgets for promotional flights because the ASC algorithm front-loads delivery to high-intent signals around sale events.
+For Meta Advantage+ Shopping campaigns, Meta strongly recommends lifetime budgets for promotional flights because the ASC algorithm front-loads delivery to high-intent signals around sale events.
 
 ### Google Ads
 
 Google's Smart Bidding strategies (Target ROAS, Target CPA) interact directly with budget pacing. If your target ROAS is set too aggressively, Google will throttle spend below your daily budget rather than bid into auctions it predicts will miss the target. This looks like underdelivery but is actually a bid strategy conflict.
 
-For [Performance Max campaigns](/blog/google-pmax-asset-groups-shopify-structure), Google uses a shared budget pool across all asset groups — there is no asset-group level budget. Set daily budgets on PMax campaigns and monitor Google's "budget insights" report weekly for pacing anomalies.
+For Performance Max campaigns, Google uses a shared budget pool across all asset groups — there is no asset-group level budget. Set daily budgets on PMax campaigns and monitor Google's "budget insights" report weekly for pacing anomalies.
 
 ### TikTok Ads
 
@@ -204,9 +204,9 @@ TikTok's pacing is the least sophisticated of the three major platforms. The alg
 
 One underappreciated factor: your attribution window affects pacing behavior. If you are optimizing for 7-day click conversions on Meta, the algorithm uses 7 days of historical data to predict when conversions are likely to occur. A Monday–Friday campaign may receive more spend on Tuesday–Thursday if the model sees those days as higher-conversion windows based on prior data.
 
-This is why [understanding your attribution model](/blog/shopify-attribution-models-explained) before setting budget type matters. If your attribution window is 1-day click (common for retargeting), the algorithm has less temporal data and will pace more evenly — reducing the dayparting advantage of lifetime budgets.
+This is why understanding your attribution model before setting budget type matters. If your attribution window is 1-day click (common for retargeting), the algorithm has less temporal data and will pace more evenly — reducing the dayparting advantage of lifetime budgets.
 
-For a deeper look at how to allocate budget across campaign types, see [paid ads budget allocation by revenue stage](/blog/paid-ads-budget-allocation-by-revenue-stage).
+For a deeper look at how to allocate budget across campaign types, see paid ads budget allocation by revenue stage.
 
 ---
 
@@ -251,4 +251,3 @@ A lifetime budget is almost always better for a defined-duration promotion like 
 - [Dayparting Paid Ads: Save 10–25% Budget, No New Creatives](/blog/dayparting-paid-ads-when-to-schedule-shopify)
 - [Google Ads Brand Defense: Stop Losing Sales to Competitors](/blog/google-ads-brand-defense-playbook-dtc)
 - [Google Search Ads Account Structure: Why SPAGs Kill Results](/blog/google-search-ads-account-structure-spags-vs-broad)
-- [Shopify Ad Account Warmup After Suspension or Restriction](/blog/shopify-ad-account-warmup-after-suspension)

@@ -10,15 +10,8 @@ const navigation = {
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ],
-  industries: [
-    { name: "All Industries", href: "/industries" },
-    { name: "SaaS", href: "/industries/saas" },
-    { name: "E-commerce", href: "/industries/ecommerce" },
-    { name: "Fintech", href: "/industries/fintech" },
-  ],
   resources: [
     { name: "Case Studies", href: "/case-studies" },
-    { name: "Compare", href: "/compare" },
     { name: "Free Audit", href: "/tools/free-audit" },
     { name: "Pricing", href: "/pricing" },
   ],
@@ -29,13 +22,9 @@ const navigation = {
     { name: "DTC AI Ads Agency", href: "/dtc-ai-ads-agency" },
   ],
   explore: [
-    { name: "Glossary", href: "/glossary" },
-    { name: "Platforms", href: "/platforms" },
     { name: "Integrations", href: "/integrations" },
-    { name: "Locations", href: "/locations" },
-    { name: "Examples", href: "/examples" },
     { name: "Best Of", href: "/best" },
-    { name: "For Teams", href: "/for" },
+    { name: "ROAS Calculator", href: "/tools/roas-calculator" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -80,56 +69,6 @@ export function Footer() {
             )}>Company</h3>
             <ul className="mt-4 space-y-3">
               {navigation.company.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "text-sm transition-colors",
-                      theme === "dark"
-                        ? "text-white/40 hover:text-white"
-                        : "text-neutral-500 hover:text-neutral-900"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Industries */}
-          <div>
-            <h3 className={cn(
-              "text-sm font-semibold",
-              theme === "dark" ? "text-white/80" : "text-neutral-700"
-            )}>Industries</h3>
-            <ul className="mt-4 space-y-3">
-              {navigation.industries.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "text-sm transition-colors",
-                      theme === "dark"
-                        ? "text-white/40 hover:text-white"
-                        : "text-neutral-500 hover:text-neutral-900"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Agency */}
-          <div>
-            <h3 className={cn(
-              "text-sm font-semibold",
-              theme === "dark" ? "text-white/80" : "text-neutral-700"
-            )}>Agency</h3>
-            <ul className="mt-4 space-y-3">
-              {navigation.agency.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
