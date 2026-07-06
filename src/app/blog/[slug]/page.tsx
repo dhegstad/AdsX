@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getPostBySlug, getAllSlugs, getRelatedPosts, getAuthorByName } from "@/lib/blog";
+import { getPrunedRedirect } from "@/lib/seo/pruned-slugs";
 import { BrutalistBlogPostContent } from "@/components/brutalist-blog-post-content";
 import { createArticleMetadata } from "@/lib/seo/metadata";
 import {
@@ -48,6 +49,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = getPostBySlug(slug);
 
   if (!post) {
+    // Pruned in the 2026-07 indexation recovery: permanent redirect, not 404,
+    // so Google drops the URL cleanly and stray visitors land on the blog.
+    const prunedTarget = getPrunedRedirect(slug);
+    if (prunedTarget) {
+      permanentRedirect(prunedTarget);
+    }
     notFound();
   }
 

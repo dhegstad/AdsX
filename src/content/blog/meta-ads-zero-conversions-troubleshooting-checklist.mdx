@@ -47,7 +47,7 @@ Common failure modes:
 
 Quick fix: Use the [Meta Pixel Helper Chrome extension](https://chrome.google.com/webstore/detail/meta-pixel-helper) to walk every step of your checkout and confirm events fire in sequence: `ViewContent` → `AddToCart` → `InitiateCheckout` → `Purchase`.
 
-For a complete pixel setup walkthrough, see [Shopify Facebook Pixel Setup Guide](/blog/shopify-facebook-pixel-setup-guide).
+For a complete pixel setup walkthrough, see Shopify Facebook Pixel Setup Guide.
 
 ---
 
@@ -60,7 +60,7 @@ Verify in Events Manager:
 2. Look for the "Redundancy" column — you want both Browser and Server events firing for the same transactions
 3. Check your Event Match Quality (EMQ) score — anything below 6.0/10 means Meta is struggling to match conversions back to the ad click
 
-A full breakdown of pixel vs. CAPI setup for Shopify is in [Meta Pixel vs Conversions API 2026](/blog/shopify-meta-pixel-vs-conversions-api-2026).
+A full breakdown of pixel vs. CAPI setup for Shopify is in Meta Pixel vs Conversions API 2026.
 
 ---
 
@@ -77,7 +77,7 @@ Open your ad set and check the Conversion Event. If you're optimizing for `Purch
 
 If your ad set is spending $10/day on a $80 product and getting 3-4 purchases per week, you will never exit learning. You need to either consolidate ad sets (so each one accumulates more signal) or temporarily optimize for a higher-funnel event like `InitiateCheckout` until volume builds.
 
-For account structure guidance that addresses this, see [Meta Ads Account Structure Rebuild 2026](/blog/meta-ads-account-structure-rebuild-2026).
+For account structure guidance that addresses this, see Meta Ads Account Structure Rebuild 2026.
 
 ---
 
@@ -111,7 +111,7 @@ Audit checklist:
 - Does the product shown in the ad creative appear in the first 3 seconds of scroll?
 - Is the CTA in the ad ("Shop Now", "Buy Today") consistent with the primary CTA on the page?
 
-For creative frameworks that improve this alignment, see [Meta Ads Thumb-Stop Creative Frameworks](/blog/meta-ads-thumb-stop-creative-frameworks).
+For creative frameworks that improve this alignment, see Meta Ads Thumb-Stop Creative Frameworks.
 
 ---
 
@@ -155,7 +155,7 @@ In Ads Manager, use the Audience Overlap tool (under Tools menu) to check if you
 
 Also check your frequency metric. If frequency is above 3.0 for cold audiences, you're showing the same ad to the same people repeatedly — and they've already decided not to convert. Rotate creative before concluding the audience doesn't work.
 
-More detail on creative fatigue signals: [Meta Ads Creative Fatigue Detection Rules](/blog/meta-ads-creative-fatigue-detection-rules).
+More detail on creative fatigue signals: Meta Ads Creative Fatigue Detection Rules.
 
 ---
 
@@ -172,7 +172,7 @@ Most small accounts running $5-$20/day on a $70-$100 product will never generate
 
 If budget is constrained, you have two options: reduce the number of active ad sets so each gets enough spend, or optimize for a higher-volume event (AddToCart) until you scale.
 
-For more on budget allocation by revenue stage, see [Paid Ads Budget Allocation by Revenue Stage](/blog/paid-ads-budget-allocation-by-revenue-stage).
+For more on budget allocation by revenue stage, see Paid Ads Budget Allocation by Revenue Stage.
 
 ---
 
@@ -191,7 +191,7 @@ A campaign set up with the Traffic objective optimizes for link clicks — it fi
 
 If your campaign is set to Traffic or Engagement and you're wondering why you get zero purchases, this is your answer. Rebuild the campaign with the Sales objective.
 
-For a comparison of manual vs. automated campaign types: [Meta Advantage+ Shopping Campaign Playbook](/blog/meta-advantage-plus-shopping-campaign-playbook).
+For a comparison of manual vs. automated campaign types: Meta Advantage+ Shopping Campaign Playbook.
 
 ---
 
@@ -206,7 +206,7 @@ Cross-reference correctly:
 
 This is a reporting problem, not a delivery problem — but it explains the disconnect. Set up proper deduplication by passing a unique `event_id` through both pixel and CAPI so the same purchase isn't counted twice.
 
-For a full explanation of attribution models, see [Shopify Attribution Models Explained](/blog/shopify-attribution-models-explained).
+For a full explanation of attribution models, see Shopify Attribution Models Explained.
 
 ---
 

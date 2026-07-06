@@ -6,7 +6,6 @@ import {
   getAllIntegrations,
   getIntegrationBySlug,
 } from "@/lib/integrations";
-import { getAllIndustries } from "@/lib/industries";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import {
   createBreadcrumbSchema,
@@ -63,11 +62,6 @@ export default async function IntegrationPage({ params }: PageProps) {
     .filter((i) => i.slug !== slug)
     .slice(0, 4);
   const relatedArticles = getRelatedArticlesForPage(integration.keywords, integration.name);
-
-  const industries = getAllIndustries();
-  const relevantIndustry = industries.find(
-    (i) => i.slug === integration.relevantIndustry
-  );
 
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -254,36 +248,6 @@ export default async function IntegrationPage({ params }: PageProps) {
             ))}
           </div>
         </div>
-
-        {/* Related Industry */}
-        {relevantIndustry && (
-          <div className="border-b border-[#333]">
-            <div className="p-6 border-b border-[#333]">
-              <div
-                className="text-xs tracking-widest text-[#888]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                RELATED INDUSTRY
-              </div>
-            </div>
-            <Link
-              href={`/industries/${relevantIndustry.slug}`}
-              className="group flex items-center justify-between p-6 hover:bg-[#111] transition-colors"
-            >
-              <div>
-                <div className="font-semibold text-lg group-hover:text-[#10b981] transition-colors">
-                  {relevantIndustry.name}
-                </div>
-                <div className="text-[#888] mt-1">
-                  {relevantIndustry.subheadline}
-                </div>
-              </div>
-              <span className="text-[#888] group-hover:text-[#10b981] group-hover:translate-x-1 transition-all">
-                &rarr;
-              </span>
-            </Link>
-          </div>
-        )}
 
         {/* FAQs */}
         <div className="border-b border-[#333]">

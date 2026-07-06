@@ -363,13 +363,9 @@ export default function ShopifyAIAdvertisingPillar() {
           </div>
           <div className="p-6 flex flex-wrap gap-3">
             {[
-              { title: "AI Visibility for E-commerce", path: "/industries/ecommerce" },
-              { title: "AI Ads vs Google Shopping", path: "/compare/ai-visibility-vs-google-shopping" },
-              { title: "AI Ads vs Meta Ads", path: "/compare/ai-visibility-vs-meta-ads-ecommerce" },
-              { title: "AI Visibility Research", path: "/research" },
-              { title: "Best Shopify AI Tools", path: "/best/shopify-ai-visibility-apps" },
               { title: "Free AI Visibility Audit", path: "/tools/free-audit" },
-              { title: "AI Visibility Glossary", path: "/glossary" },
+              { title: "ROAS Calculator", path: "/tools/roas-calculator" },
+              { title: "Feed Readiness Checker", path: "/tools/feed-readiness-checker" },
               { title: "Pricing", path: "/pricing" },
             ].map((link) => (
               <Link

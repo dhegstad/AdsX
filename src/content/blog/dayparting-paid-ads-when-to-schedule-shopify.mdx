@@ -117,13 +117,13 @@ Google does not allow direct hour-of-day scheduling on PMax campaigns. You can s
 - Tighten your tROAS target to force the algorithm to be more selective overall.
 - Separate high-value product groups into standard Shopping where scheduling control is possible.
 
-For a deeper look at PMax structure decisions, see [Google PMax Asset Groups for Shopify](/blog/google-pmax-asset-groups-shopify-structure).
+For a deeper look at PMax structure decisions, see Google PMax Asset Groups for Shopify.
 
 ### Meta Ads — CBO and ABO
 
 Meta's ad scheduling is set at the ad set level under "Budget and Schedule." You can run ads on a specific schedule (choose "Run on a schedule" instead of "Run all the time") and select active hours per day of week.
 
-**Important nuance:** If you are using Campaign Budget Optimization (CBO), the budget is distributed across ad sets by Meta's algorithm. Even if individual ad sets have hour restrictions, Meta may concentrate spend in other ad sets during off-peak windows. For precise dayparting control, ABO (Ad Set Budget Optimization) gives you cleaner isolation. See [Meta Ads CBO vs ABO for Shopify](/blog/meta-ads-cbo-vs-abo-shopify-2026) for the full tradeoff breakdown.
+**Important nuance:** If you are using Campaign Budget Optimization (CBO), the budget is distributed across ad sets by Meta's algorithm. Even if individual ad sets have hour restrictions, Meta may concentrate spend in other ad sets during off-peak windows. For precise dayparting control, ABO (Ad Set Budget Optimization) gives you cleaner isolation. See Meta Ads CBO vs ABO for Shopify for the full tradeoff breakdown.
 
 ## Step 4: Apply Schedules and Set a Monitoring Window
 
@@ -188,7 +188,7 @@ Before applying dayparting, check your budget utilization curve:
 1. In Google Ads, use the "Hourly" impression share report to see when campaigns stop delivering.
 2. If campaigns exhaust before peak hours, you have a budget pacing problem, not a scheduling problem. Increase daily budget or limit spend in morning hours using -60% adjustments before 12 PM.
 
-This is closely related to budget allocation strategy at the portfolio level — covered in detail in [Paid Ads Budget Allocation by Revenue Stage](/blog/paid-ads-budget-allocation-by-revenue-stage).
+This is closely related to budget allocation strategy at the portfolio level — covered in detail in Paid Ads Budget Allocation by Revenue Stage.
 
 ## Automating Dayparting With Scripts and Rules
 
@@ -210,9 +210,9 @@ In Meta Ads Manager, navigate to Automated Rules and create a new rule. You can 
 
 Dayparting solves a specific problem: spend efficiency during predictably weak time windows. It does not fix:
 
-- **Poor creative performance** — Low CVR at 2 PM and 2 AM equally means a creative or offer problem, not a scheduling problem. See [Shopify Ad Creative Testing Framework](/blog/shopify-ad-creative-testing-framework) for diagnosing creative issues.
-- **Attribution gaps** — If your pixel or conversions API is not tracking properly, your hour-of-day data is unreliable, and scheduling decisions built on it will be wrong. See [Shopify Meta Pixel vs Conversions API](/blog/shopify-meta-pixel-vs-conversions-api-2026).
-- **Audience saturation** — If frequency is high at all hours, dayparting concentrates a saturated audience into fewer windows. Address creative refresh and audience expansion first. [Meta Ads Creative Fatigue Detection Rules](/blog/meta-ads-creative-fatigue-detection-rules) covers the signals to watch.
+- **Poor creative performance** — Low CVR at 2 PM and 2 AM equally means a creative or offer problem, not a scheduling problem. See Shopify Ad Creative Testing Framework for diagnosing creative issues.
+- **Attribution gaps** — If your pixel or conversions API is not tracking properly, your hour-of-day data is unreliable, and scheduling decisions built on it will be wrong. See Shopify Meta Pixel vs Conversions API.
+- **Audience saturation** — If frequency is high at all hours, dayparting concentrates a saturated audience into fewer windows. Address creative refresh and audience expansion first. Meta Ads Creative Fatigue Detection Rules covers the signals to watch.
 - **Budget that is simply too low** — Severely under-budgeted campaigns can look like they have bad overnight performance because they are exhausted before evening peaks. Budget floor analysis comes first.
 
 ## Conclusion
@@ -221,7 +221,7 @@ Dayparting is one of the most underused levers in Shopify media buying — not b
 
 For accounts on Smart Bidding, favor partial reductions over full blackouts. For manual campaigns, you have full control. Either way, document changes, monitor for at least two weeks, and re-run the analysis quarterly as purchase patterns shift.
 
-The stores that consistently hit above-benchmark [ROAS targets](/blog/shopify-roas-benchmarks-by-industry) are rarely doing anything exotic — they have closed the loop between data and decisions in places like this, where the waste is quiet and the fix is repeatable.
+The stores that consistently hit above-benchmark ROAS targets are rarely doing anything exotic — they have closed the loop between data and decisions in places like this, where the waste is quiet and the fix is repeatable.
 
 ---
 

@@ -24,20 +24,17 @@ const footerLinks = {
     { label: "Case Studies", href: "/case-studies" },
     { label: "Services", href: "/services" },
   ],
-  industries: [
-    { label: "All Industries", href: "/industries" },
-    { label: "SaaS", href: "/industries/saas" },
-    { label: "E-commerce", href: "/industries/ecommerce" },
-    { label: "Fintech", href: "/industries/fintech" },
+  agency: [
+    { label: "Shopify AI Ads Agency", href: "/shopify-ai-ads-agency" },
+    { label: "Shopify Paid Ads Agency", href: "/shopify-paid-ads-agency" },
+    { label: "ChatGPT Ads Agency", href: "/chatgpt-ads-agency" },
+    { label: "DTC AI Ads Agency", href: "/dtc-ai-ads-agency" },
   ],
   explore: [
-    { label: "Glossary", href: "/glossary" },
-    { label: "Platforms", href: "/platforms" },
     { label: "Integrations", href: "/integrations" },
-    { label: "Locations", href: "/locations" },
-    { label: "Examples", href: "/examples" },
     { label: "Best Of", href: "/best" },
-    { label: "For Teams", href: "/for" },
+    { label: "ROAS Calculator", href: "/tools/roas-calculator" },
+    { label: "Feed Readiness Checker", href: "/tools/feed-readiness-checker" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -460,10 +457,10 @@ export default function HomePage() {
                     className="text-xs tracking-widest text-[#10b981] mb-4"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    INDUSTRIES
+                    AGENCY
                   </div>
                   <ul className="space-y-3">
-                    {footerLinks.industries.map((link) => (
+                    {footerLinks.agency.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}

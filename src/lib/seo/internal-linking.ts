@@ -1,18 +1,11 @@
-import { getAllIndustries } from "@/lib/industries";
-import { getAllComparisons } from "@/lib/comparisons";
-import { getAllLocations } from "@/lib/locations";
-import { getAllPersonas } from "@/lib/personas";
 import { getAllIntegrations } from "@/lib/integrations";
-import { getAllTerms } from "@/lib/glossary";
-import { getAllPlatforms } from "@/lib/platforms";
-import { getAllExamples } from "@/lib/examples";
 import { getAllLists } from "@/lib/curated-lists";
 import { getAllPosts, type BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
   title: string;
   path: string;
-  type: "industry" | "comparison" | "service" | "tool" | "location" | "persona" | "integration" | "glossary" | "platform" | "example" | "guide" | "research";
+  type: "service" | "tool" | "integration" | "guide";
   relevance: number; // 0-1 score for sorting
 }
 
@@ -29,116 +22,7 @@ export function getRelatedPages(
   const category = post.category.toLowerCase();
   const title = post.title.toLowerCase();
 
-  // Check industry pages
-  const industries = getAllIndustries();
-  for (const industry of industries) {
-    let relevance = 0;
-
-    // Check if post tags match industry keywords
-    for (const tag of tags) {
-      if (
-        industry.keywords.some((k) => k.toLowerCase().includes(tag)) ||
-        tag.includes(industry.slug) ||
-        tag.includes(industry.name.toLowerCase())
-      ) {
-        relevance += 0.3;
-      }
-    }
-
-    // Check if title mentions industry
-    if (
-      title.includes(industry.slug) ||
-      title.includes(industry.name.toLowerCase())
-    ) {
-      relevance += 0.4;
-    }
-
-    // E-commerce related content
-    if (
-      industry.slug === "ecommerce" &&
-      (tags.includes("e-commerce") ||
-        tags.includes("shopping") ||
-        tags.includes("product") ||
-        title.includes("shop") ||
-        title.includes("product"))
-    ) {
-      relevance += 0.3;
-    }
-
-    // SaaS related content
-    if (
-      industry.slug === "saas" &&
-      (tags.includes("b2b") ||
-        tags.includes("software") ||
-        title.includes("saas") ||
-        title.includes("software"))
-    ) {
-      relevance += 0.3;
-    }
-
-    // Fintech related content
-    if (
-      industry.slug === "fintech" &&
-      (tags.includes("finance") ||
-        tags.includes("banking") ||
-        title.includes("fintech") ||
-        title.includes("financial"))
-    ) {
-      relevance += 0.3;
-    }
-
-    if (relevance > 0) {
-      relatedPages.push({
-        title: `AI Visibility for ${industry.name}`,
-        path: `/industries/${industry.slug}`,
-        type: "industry",
-        relevance: Math.min(relevance, 1),
-      });
-    }
-  }
-
-  // Check comparison pages
-  const comparisons = getAllComparisons();
-  for (const comparison of comparisons) {
-    let relevance = 0;
-
-    // SEO comparison relevant to SEO-tagged content
-    if (
-      comparison.slug === "seo" &&
-      (tags.includes("seo") ||
-        tags.includes("search") ||
-        title.includes("seo") ||
-        category === "strategy")
-    ) {
-      relevance += 0.4;
-    }
-
-    // PR comparison relevant to marketing content
-    if (
-      comparison.slug === "pr" &&
-      (tags.includes("marketing") ||
-        tags.includes("brand") ||
-        title.includes("brand"))
-    ) {
-      relevance += 0.3;
-    }
-
-    // DIY comparison relevant to guide content
-    if (comparison.slug === "diy" && category === "guide") {
-      relevance += 0.2;
-    }
-
-    if (relevance > 0) {
-      relatedPages.push({
-        title: comparison.headline,
-        path: `/compare/ai-visibility-vs-${comparison.slug}`,
-        type: "comparison",
-        relevance: Math.min(relevance, 1),
-      });
-    }
-  }
-
-  // Always consider linking to free audit tool for actionable content
+  // Link to free audit tool for actionable content
   if (category === "guide" || category === "how-to") {
     relatedPages.push({
       title: "Free AI Visibility Audit",
@@ -146,71 +30,6 @@ export function getRelatedPages(
       type: "tool",
       relevance: 0.5,
     });
-  }
-
-  // Check location pages for local/regional content
-  const locations = getAllLocations();
-  const cityKeywords = ["new york", "nyc", "san francisco", "sf", "los angeles", "la", "chicago", "austin", "seattle", "boston", "miami", "denver", "atlanta"];
-  for (const location of locations) {
-    let relevance = 0;
-    const cityLower = location.city.toLowerCase();
-
-    if (title.includes(cityLower) || title.includes(location.state.toLowerCase())) {
-      relevance += 0.4;
-    }
-
-    for (const tag of tags) {
-      if (tag.includes(cityLower) || cityKeywords.some(k => tag.includes(k) && location.city.toLowerCase().includes(k.split(" ")[0]))) {
-        relevance += 0.3;
-      }
-    }
-
-    if (relevance > 0) {
-      relatedPages.push({
-        title: `AI Visibility in ${location.city}`,
-        path: `/locations/${location.slug}`,
-        type: "location",
-        relevance: Math.min(relevance, 1),
-      });
-    }
-  }
-
-  // Check persona pages for role-specific content
-  const personas = getAllPersonas();
-  const roleKeywords = {
-    "cmo": ["cmo", "chief marketing", "marketing executive"],
-    "vp-marketing": ["vp marketing", "vice president marketing"],
-    "head-of-growth": ["growth", "acquisition", "growth marketing"],
-    "marketing-director": ["marketing director", "director of marketing"],
-    "ecommerce-manager": ["ecommerce", "e-commerce", "online store"],
-    "brand-manager": ["brand", "branding"],
-    "content-director": ["content", "content marketing", "editorial"],
-    "digital-marketing-manager": ["digital marketing", "digital marketer"],
-  };
-
-  for (const persona of personas) {
-    let relevance = 0;
-    const keywords = roleKeywords[persona.slug as keyof typeof roleKeywords] || [];
-
-    for (const keyword of keywords) {
-      if (title.includes(keyword)) {
-        relevance += 0.35;
-      }
-      for (const tag of tags) {
-        if (tag.includes(keyword)) {
-          relevance += 0.25;
-        }
-      }
-    }
-
-    if (relevance > 0) {
-      relatedPages.push({
-        title: `AI Visibility for ${persona.title}s`,
-        path: `/for/${persona.slug}`,
-        type: "persona",
-        relevance: Math.min(relevance, 1),
-      });
-    }
   }
 
   // Check integration pages for platform-specific content
@@ -241,98 +60,6 @@ export function getRelatedPages(
         type: "integration",
         relevance: Math.min(relevance, 1),
       });
-    }
-  }
-
-  // Check glossary terms for technical/educational content
-  const glossaryTerms = getAllTerms();
-  const technicalKeywords = ["llm", "ai", "chatgpt", "claude", "perplexity", "optimization", "training", "model", "natural language", "nlp"];
-  const isTechnicalContent = technicalKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
-
-  if (isTechnicalContent) {
-    for (const term of glossaryTerms.slice(0, 50)) {
-      let relevance = 0;
-      const termLower = term.term.toLowerCase();
-
-      if (title.includes(termLower) || title.includes(term.slug.replace(/-/g, " "))) {
-        relevance += 0.35;
-      }
-
-      for (const tag of tags) {
-        if (tag.includes(term.slug.replace(/-/g, " ")) || term.keywords.some(k => k.toLowerCase().includes(tag))) {
-          relevance += 0.25;
-        }
-      }
-
-      if (relevance > 0) {
-        relatedPages.push({
-          title: `What is ${term.term}?`,
-          path: `/glossary/${term.slug}`,
-          type: "glossary",
-          relevance: Math.min(relevance, 1),
-        });
-      }
-    }
-  }
-
-  // Check AI platform pages for platform-specific content
-  const aiPlatforms = getAllPlatforms();
-  const platformKeywords = ["chatgpt", "claude", "perplexity", "gemini", "copilot", "ai assistant", "ai platform"];
-  const isPlatformContent = platformKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
-
-  if (isPlatformContent) {
-    for (const platform of aiPlatforms) {
-      let relevance = 0;
-      const platformLower = platform.name.toLowerCase();
-
-      if (title.includes(platformLower)) {
-        relevance += 0.45;
-      }
-
-      for (const tag of tags) {
-        if (tag.includes(platformLower)) {
-          relevance += 0.3;
-        }
-      }
-
-      if (relevance > 0) {
-        relatedPages.push({
-          title: `AI Visibility for ${platform.name}`,
-          path: `/platforms/${platform.slug}`,
-          type: "platform",
-          relevance: Math.min(relevance, 1),
-        });
-      }
-    }
-  }
-
-  // Check brand examples for case study content
-  const examples = getAllExamples();
-  const caseStudyKeywords = ["case study", "example", "success story", "how", "brand"];
-  const isCaseStudyContent = caseStudyKeywords.some(k => title.includes(k) || category === "case-study");
-
-  if (isCaseStudyContent) {
-    for (const example of examples.slice(0, 5)) {
-      let relevance = 0;
-      const brandLower = example.brand.toLowerCase();
-      const industryLower = example.industry.toLowerCase();
-
-      if (title.includes(brandLower)) {
-        relevance += 0.5;
-      }
-
-      if (title.includes(industryLower) || tags.some(t => t.includes(industryLower))) {
-        relevance += 0.3;
-      }
-
-      if (relevance > 0) {
-        relatedPages.push({
-          title: `${example.brand} AI Visibility Case Study`,
-          path: `/examples/${example.slug}`,
-          type: "example",
-          relevance: Math.min(relevance, 1),
-        });
-      }
     }
   }
 
@@ -368,32 +95,12 @@ export function getRelatedPages(
     }
   }
 
-  // Link to research hub for data/stats-heavy content
-  const dataKeywords = ["benchmark", "data", "statistic", "report", "study", "research", "metric", "roi", "conversion", "performance"];
-  const isDataContent = dataKeywords.some(k => title.includes(k) || tags.some(t => t.includes(k)));
-  if (isDataContent) {
-    relatedPages.push({
-      title: "AI Search Advertising Research & Data",
-      path: "/research",
-      type: "research",
-      relevance: 0.4,
-    });
-  }
-
   // Always include the free audit tool as a conversion link
   relatedPages.push({
     title: "Free AI Visibility Audit",
     path: "/tools/free-audit",
     type: "tool",
     relevance: 0.35,
-  });
-
-  // Always include the glossary hub for educational context
-  relatedPages.push({
-    title: "AI Visibility Glossary",
-    path: "/glossary",
-    type: "glossary",
-    relevance: 0.2,
   });
 
   // Always include the services page
@@ -482,51 +189,13 @@ export function getBreadcrumbs(
     }
 
     breadcrumbs.push({ name: pageTitle, path });
-  } else if (segments[0] === "industries" && segments[1]) {
-    breadcrumbs.push({ name: "Industries", path: "/industries" });
-    breadcrumbs.push({ name: pageTitle, path });
-  } else if (segments[0] === "compare") {
-    breadcrumbs.push({ name: "Comparisons", path: "/compare" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
-  } else if (segments[0] === "locations") {
-    breadcrumbs.push({ name: "Locations", path: "/locations" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
-  } else if (segments[0] === "for") {
-    breadcrumbs.push({ name: "Solutions", path: "/for" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
   } else if (segments[0] === "integrations") {
     breadcrumbs.push({ name: "Integrations", path: "/integrations" });
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }
-  } else if (segments[0] === "glossary") {
-    breadcrumbs.push({ name: "Glossary", path: "/glossary" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
-  } else if (segments[0] === "platforms") {
-    breadcrumbs.push({ name: "AI Platforms", path: "/platforms" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
-  } else if (segments[0] === "examples") {
-    breadcrumbs.push({ name: "Examples", path: "/examples" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
   } else if (segments[0] === "best") {
     breadcrumbs.push({ name: "Best Of", path: "/best" });
-    if (segments[1]) {
-      breadcrumbs.push({ name: pageTitle, path });
-    }
-  } else if (segments[0] === "migrate") {
-    breadcrumbs.push({ name: "Migrate to Shopify", path: "/migrate" });
     if (segments[1]) {
       breadcrumbs.push({ name: pageTitle, path });
     }

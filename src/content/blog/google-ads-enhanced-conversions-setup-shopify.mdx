@@ -47,7 +47,7 @@ Before configuring enhanced conversions, confirm:
 3. **Your Shopify checkout exposes customer data in the order confirmation page.** On Shopify's standard checkout, this is true by default. Headless storefronts need custom data layer configuration.
 4. **For EU traffic: Consent Mode v2 is implemented.** Enhanced conversions will not fire for users who have not granted `analytics_storage` and `ad_storage` consent. Set this up before enabling enhanced conversions or you will see inflated EU conversion gaps.
 
-If your conversion tracking foundation is shaky, read [Shopify Google Ads setup guide](/blog/shopify-google-ads-guide) first to get the baseline right.
+If your conversion tracking foundation is shaky, read Shopify Google Ads setup guide first to get the baseline right.
 
 ## Method 1: Setup via Google Tag Manager (Recommended)
 
@@ -160,7 +160,7 @@ If you use the native Shopify Google & YouTube integration and do not use GTM, y
 
 The tradeoff: Shopify's automatic mode gives you less visibility into exactly what is being sent, and you cannot easily verify the payload via Tag Assistant. If you ever need to debug mismatches or extend the data layer for cross-sell attribution, GTM gives you much more control.
 
-For any store running [Performance Max campaigns](/blog/google-pmax-asset-groups-shopify-structure), GTM is the better path because you need clean, verified purchase signals feeding the PMax algorithm.
+For any store running Performance Max campaigns, GTM is the better path because you need clean, verified purchase signals feeding the PMax algorithm.
 
 ## Verifying Match Rate and Diagnosing Issues
 
@@ -185,7 +185,7 @@ The most common cause of low match rate is email normalization. Google trims whi
 
 A second common issue: the conversion tag fires before the data layer push completes. Ensure your enhanced_conversion_data push event fires as the tag trigger, not a generic DOM Ready event that might not wait for the checkout data to load.
 
-For broader attribution troubleshooting on Shopify, the framework in [Shopify attribution models explained](/blog/shopify-attribution-models-explained) helps you understand how different signal types interact and which gaps enhanced conversions can and cannot close.
+For broader attribution troubleshooting on Shopify, the framework in Shopify attribution models explained helps you understand how different signal types interact and which gaps enhanced conversions can and cannot close.
 
 ## Enhanced Conversions vs. Customer Match: What Is the Difference?
 
@@ -197,7 +197,7 @@ Both features use hashed first-party data, but they serve different purposes:
 | Customer Match | Audience targeting | Uploaded customer list | Enables list-based targeting and bidding adjustments |
 | Consent Mode Modeling | Modeled conversions (EU) | Aggregate behavioral signals | Estimates conversions where consent not granted |
 
-Enhanced conversions work backward — recovering purchase events you had but could not attribute. Customer Match works forward — reaching known customers or lookalikes with uploaded lists. Implement enhanced conversions first because it fixes the measurement foundation everything else depends on. See [Google Ads vs. Meta Pixel attribution](/blog/shopify-meta-pixel-vs-conversions-api-2026) for how each platform's first-party data features compare.
+Enhanced conversions work backward — recovering purchase events you had but could not attribute. Customer Match works forward — reaching known customers or lookalikes with uploaded lists. Implement enhanced conversions first because it fixes the measurement foundation everything else depends on. See Google Ads vs. Meta Pixel attribution for how each platform's first-party data features compare.
 
 ## Impact on Smart Bidding: What to Expect
 
@@ -223,7 +223,7 @@ One nuance: if campaigns were optimizing against an under-reported baseline, the
 
 **Mistake 4: Assuming enhanced conversions replaces Consent Mode.** In the EU, Consent Mode v2 must be implemented separately. Enhanced conversions will not fire for users who declined consent — this is by design. Modeled conversions from Consent Mode fill that gap; they are separate mechanisms.
 
-**Mistake 5: Not linking Google Ads to GA4.** Your GA4 data will still show pre-enhancement figures unless you also import GA4 conversions. Link both accounts and use attribution comparison reports to see the full picture. The [GA4 setup guide for Shopify](/blog/shopify-google-analytics-4-complete-setup) covers the account-linking step.
+**Mistake 5: Not linking Google Ads to GA4.** Your GA4 data will still show pre-enhancement figures unless you also import GA4 conversions. Link both accounts and use attribution comparison reports to see the full picture. The GA4 setup guide for Shopify covers the account-linking step.
 
 ## Full Implementation Checklist
 
@@ -242,7 +242,7 @@ Before you consider enhanced conversions fully deployed, confirm each item:
 - [ ] Match rate greater than 50% confirmed
 - [ ] Consent Mode v2 in place for EU traffic (if applicable)
 
-If you are running [Shopify on Performance Max](/blog/shopify-google-performance-max-guide), completing this checklist is especially important — PMax has no keyword-level bidding, so its entire performance depends on the quality of conversion signals you feed it.
+If you are running Shopify on Performance Max, completing this checklist is especially important — PMax has no keyword-level bidding, so its entire performance depends on the quality of conversion signals you feed it.
 
 ## Conclusion
 
