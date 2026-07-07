@@ -1,0 +1,120 @@
+---
+title: "How to Connect Claude to Shopify: 4 Ways, Step by Step"
+excerpt: "Connect Claude to your Shopify store in minutes: the built-in MCP connector, Claude Desktop setup, no-code Zapier flows, and the API route for developers."
+date: "2026-07-06"
+category: "Guide"
+tags: ["Claude","Anthropic","Shopify","AI","Automation","MCP","Integration"]
+author:
+  name: "AdsX Team"
+  role: "AI Search Specialists"
+featured: false
+updated: "2026-07-06"
+howto:
+  name: "Connect Claude to Shopify with a custom connector"
+  totalTime: "PT10M"
+  steps:
+    - name: "Open Claude's connector settings"
+      text: "In Claude (web or desktop), go to Settings, then Connectors, and choose Add custom connector."
+    - name: "Add your store's MCP endpoint"
+      text: "Enter your storefront MCP URL, which follows the pattern https://yourstore.com/api/mcp, and save."
+    - name: "Enable the connector in a chat"
+      text: "Start a new conversation, open the tools menu, and toggle the Shopify connector on."
+    - name: "Test the connection"
+      text: "Ask Claude something only your store data can answer, like 'What products do we sell under $50?' and confirm it returns real catalog results."
+faqs:
+  - question: "Can I connect Claude directly to my Shopify store?"
+    answer: "Yes. Shopify stores expose an MCP (Model Context Protocol) endpoint at yourstore.com/api/mcp that Claude can use as a custom connector. Once added in Claude's settings, Claude can search your catalog, answer product questions, and help customers build carts — no code required."
+  - question: "Is connecting Claude to Shopify free?"
+    answer: "The connection itself is free. You need a Claude plan that supports connectors (Pro or higher) and a Shopify store on any plan — Shopify is currently $1/month for your first 3 months. Automation platforms like Zapier or Make add their own subscription if you use them."
+  - question: "What can Claude do once connected to Shopify?"
+    answer: "Through the storefront MCP connection, Claude can search products, check availability and pricing, and assist with carts. With an Admin API integration (via automation tools or custom code), it can also draft product descriptions, analyze orders, and generate reports."
+  - question: "Does Claude work with Shopify without any setup?"
+    answer: "Partially. Claude can already read your public store pages and answer general Shopify questions out of the box. But live catalog access, order data, and automation require one of the connection methods in this guide."
+  - question: "Is MCP safe to use with my store data?"
+    answer: "The storefront MCP endpoint only exposes data that is already public on your storefront (products, pricing, policies). Admin API access is different — scope tokens to only the permissions your workflow needs, and never paste Admin tokens into prompts."
+---
+
+> **Quick answer:** the fastest way to connect Claude to Shopify is the built-in connector — add `https://yourstore.com/api/mcp` as a custom connector in Claude's settings and Claude can search your catalog immediately. For automations (descriptions, support drafts, reports), use Zapier/Make or the API. All four methods below, step by step.
+
+"Connect Claude to Shopify" means different things depending on what you want to automate. This guide covers the four practical methods in 2026, from a five-minute no-code setup to a full developer integration, and tells you which one fits your use case.
+
+If you don't have a store yet, [Shopify is $1/month for your first 3 months](https://shopify.pxf.io/c/6318547/3797171/13624) — enough time to test everything in this guide before paying full price.
+
+## Which Connection Method Do You Need?
+
+| Method | Best for | Time | Cost |
+|--------|----------|------|------|
+| **1. Claude connector (MCP)** | Catalog Q&A, product research, shopping assistance | ~5 min | Free (Claude Pro+) |
+| **2. Claude Desktop + Admin MCP server** | Store management from chat: products, orders, inventory | ~30 min | Free (technical setup) |
+| **3. Zapier / Make** | Hands-off automations: descriptions, support drafts, reports | ~1 hour | From $9–20/mo |
+| **4. Direct API** | Custom workflows at scale, app development | Days | Usage-based |
+
+## Method 1: Add Your Store to Claude as a Connector (No Code)
+
+Shopify stores expose a **Model Context Protocol (MCP) endpoint** — a standard way for AI assistants to query your storefront. Claude supports these as custom connectors.
+
+1. **Find your MCP URL.** It follows the pattern `https://yourstore.com/api/mcp` (also works on your `.myshopify.com` domain).
+2. **Open Claude's settings.** In Claude on web or desktop, go to **Settings → Connectors → Add custom connector**.
+3. **Paste the MCP URL** and save. No API key is needed — the endpoint only exposes storefront data that is already public.
+4. **Enable it in a chat.** Start a new conversation, open the tools/connectors menu, and toggle your store on.
+5. **Test it.** Ask: *"Search our catalog for products under $50 and summarize what we sell."* Claude should return live product data from your store.
+
+What this unlocks: catalog search, product detail lookups, price and availability checks, and cart assistance — useful for competitive research on your own assortment, drafting collection copy grounded in real products, and prototyping an AI shopping assistant experience.
+
+What it does **not** unlock: orders, customers, inventory, or anything from the Shopify admin. For that, keep reading.
+
+To make your storefront easier for Claude (and every other AI assistant) to understand, pair this with proper [agents.md and llms.txt files](/blog/shopify-agents-md-llms-txt-customize-ai-discovery) so AI tools can discover and interpret your store correctly.
+
+## Method 2: Claude Desktop + an Admin MCP Server
+
+To manage the store itself from a Claude conversation — update products, check orders, adjust inventory — you need an MCP server with **Admin API** access. This takes about 30 minutes and requires comfort with configuration files, but no real programming.
+
+1. **Create a custom app in Shopify.** In your Shopify admin: **Settings → Apps and sales channels → Develop apps → Create an app**. Name it something like "Claude Admin Access."
+2. **Grant only the scopes you need.** For a product-focused workflow: `read_products`, `write_products`. Add order or inventory scopes only if your workflow uses them — least privilege is the rule with AI-connected tokens.
+3. **Install the app and copy the Admin API access token.** Shopify shows it once; store it securely.
+4. **Add an MCP server to Claude Desktop.** In your `claude_desktop_config.json`, register a Shopify Admin MCP server (several open-source options exist on GitHub — search "shopify mcp server") with your store domain and token as environment variables.
+5. **Restart Claude Desktop** and test: *"List our 10 most recently updated products and flag any missing descriptions."*
+
+From here, real merchant workflows open up: bulk-rewriting product descriptions, spotting inventory anomalies, drafting weekly performance summaries. Our [Claude for Shopify small-business guide](/blog/claude-for-small-business-shopify-merchants) walks through the highest-ROI use cases if you want ideas.
+
+**Security note:** an Admin token in an MCP server means Claude can act on your store within the granted scopes. Review changes before applying them in bulk, and rotate the token if you ever share your config.
+
+## Method 3: Zapier or Make (Automation Without Code)
+
+Methods 1 and 2 are conversational — you chat, Claude acts. If you want automations that run **without you present**, connect Claude and Shopify through an automation platform:
+
+- **New product → Claude writes the description → product updated.** The classic three-step Zap.
+- **Customer email arrives → Claude drafts a reply with your policies → draft lands in your inbox for review.**
+- **Every Monday → Shopify order export → Claude analysis → summary email to your team.**
+
+Zapier starts around $20/month; Make.com from $9/month and is usually cheaper at volume. Full walkthroughs of these workflows — including prompts and cost math — are in our [complete Claude + Shopify integration guide](/blog/shopify-claude-ai-integration-automation).
+
+## Method 4: Direct API Integration (Developers)
+
+For custom workflows at scale — hundreds of products, multi-step agents, app development — call the Claude API and Shopify Admin GraphQL API directly:
+
+1. Get an Anthropic API key and pick a model (Sonnet for volume work, Opus-class for complex reasoning).
+2. Use Shopify's **Admin GraphQL API** to read and write store data; the [Product Catalog API guide](/blog/shopify-product-catalog-api-guide) covers the product-data side in depth.
+3. Batch work through Shopify's [bulk operations](/blog/shopify-bulk-operations-large-catalogs) to stay inside rate limits.
+
+Budget guidance: generating 100 product descriptions runs a few dollars in API costs; a comprehensive integration (descriptions + support drafts + weekly analysis) typically lands at $15–40/month. If you're building with AI coding tools, our [Claude Code developer guide](/blog/claude-code-developer-guide) and [Claude Code theme-building walkthrough](/blog/claude-code-shopify-theme-liquid-build-guide) show the workflow end to end.
+
+## Troubleshooting
+
+- **Claude says it can't reach the connector.** Confirm the URL is exactly `https://yourstore.com/api/mcp` and your store is on a plan with the storefront live (password-protected dev stores block public MCP access).
+- **Catalog results look stale.** MCP reads your live storefront; if products are missing, check they're published to your Online Store sales channel.
+- **Admin MCP server won't start.** Nine times out of ten it's the token: regenerate it, confirm the scopes, and check the environment variable names match your server's README.
+- **Automations produce generic copy.** Feed Claude your brand voice and constraints in the prompt template — the integration guide has [tested prompt patterns](/blog/shopify-claude-ai-integration-automation) for descriptions and support replies.
+
+## Claude × Shopify: The Full Series
+
+- **[Claude + Shopify integration and automation: the complete guide](/blog/shopify-claude-ai-integration-automation)** — every workflow, with costs and prompts
+- **[Claude for small-business Shopify merchants](/blog/claude-for-small-business-shopify-merchants)** — highest-ROI use cases if you're a one-person operation
+- **[Writing Shopify ad copy with Claude](/blog/claude-opus-4-8-shopify-ad-copy-content)** — ad and content generation workflows
+- **[Build a Shopify theme with Claude Code](/blog/claude-code-shopify-theme-liquid-build-guide)** — Liquid development walkthrough
+- **[Claude Code developer guide](/blog/claude-code-developer-guide)** — the full toolchain for coding with Claude
+- **[Claude Code vs GitHub Copilot](/blog/claude-code-vs-github-copilot-2026)** — 30 real tasks tested
+
+## The Bottom Line
+
+Start with Method 1 — it's five minutes and free. Graduate to Zapier/Make when you want automations running daily, and to the API when volume justifies it. And if you're still storeless: [claim Shopify's $1/month deal](https://shopify.pxf.io/c/6318547/3797171/13624), connect Claude on day one, and let it help you write every product description before you pay full price for anything.
