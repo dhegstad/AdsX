@@ -8,14 +8,14 @@ author:
   name: "AdsX Team"
   role: "AI Search Specialists"
 featured: false
-updated: "2026-06-10"
+updated: "2026-07-13"
 faqs:
   - question: "What is post-purchase survey attribution?"
     answer: "Post-purchase survey attribution is the practice of asking customers 'How did you hear about us?' immediately after they complete a purchase. The responses provide self-reported data about which channels drove that customer to buy. Because the question is asked right at the moment of conversion, recall is high. The data supplements pixel-based attribution—which is increasingly unreliable due to iOS privacy changes—and gives you a direct signal that no ad platform can manipulate."
   - question: "How accurate is self-reported attribution from post-purchase surveys?"
     answer: "Self-reported attribution typically captures 60-80% response rates when placed on the order confirmation page. The data is directionally accurate but not perfect. Customers who discovered you through paid social may attribute their purchase to 'a friend's recommendation' if word-of-mouth reinforced the ad. Use survey data as one leg of a triangulation framework alongside platform-reported ROAS and incrementality tests—not as a standalone source of truth."
   - question: "What tools can I use for post-purchase surveys on Shopify?"
-    answer: "The most widely used tools for Shopify post-purchase surveys are KNO Commerce, Fairing (formerly enquire), and Zigpoll. KNO Commerce is purpose-built for attribution questions and provides branching logic and benchmarks across thousands of DTC brands. Fairing integrates directly with Shopify's order confirmation page and passes responses to most analytics stacks. Zigpoll is a lower-cost option suitable for stores under $50K/month in revenue. All three sit on the post-purchase page natively within Shopify's checkout."
+    answer: "The most widely used tools for Shopify post-purchase surveys are KNO Commerce, Fairing (formerly enquire), Zigpoll, and OrderSurvey. KNO Commerce is purpose-built for attribution questions and provides branching logic and benchmarks across thousands of DTC brands. Fairing integrates directly with Shopify's order confirmation page and passes responses to most analytics stacks. Zigpoll is a lower-cost option suitable for stores under $50K/month in revenue. OrderSurvey is a newer app with a free plan that places surveys on both the Thank You and Order Status pages, with conditional branching and NPS tracking on its paid tier. All four sit on the post-purchase page natively within Shopify's checkout."
   - question: "Which 'How did you hear about us?' options should I include in my survey?"
     answer: "Include every channel you actively invest in plus organic discovery paths. A solid default list includes: Instagram or Facebook ad, TikTok ad, Google Search, YouTube ad, podcast, influencer or creator, a friend or family member, email newsletter, organic search (Google), and 'other.' Avoid listing channels you do not use—it inflates noise. If you run podcast sponsorships, add specific show names as sub-options. The goal is exhaustive enough to capture real signals without overwhelming respondents."
   - question: "How do I interpret post-purchase survey attribution data in practice?"
@@ -60,15 +60,16 @@ No single attribution source tells the full story. Post-purchase surveys work be
 
 When all three legs point in the same direction for a channel, you have high confidence in your budget decisions. When they diverge, you have a signal worth investigating.
 
-## Choosing a Tool: KNO Commerce, Fairing, or Zigpoll
+## Choosing a Tool: KNO Commerce, Fairing, Zigpoll, or OrderSurvey
 
-Three tools dominate Shopify post-purchase surveys. The right choice depends on your revenue volume and the sophistication of your attribution workflow.
+Four tools stand out for Shopify post-purchase surveys. The right choice depends on your revenue volume and the sophistication of your attribution workflow.
 
 | Tool | Best For | Pricing (approx.) | Standout Feature |
 |---|---|---|---|
 | KNO Commerce | $100K+/month DTC brands | $150-500/month | Benchmarks across thousands of DTC brands, branching logic |
 | Fairing | $30K-$500K+/month | $49-300/month | Deep integrations with Triple Whale, Northbeam, Klaviyo |
 | Zigpoll | Sub-$50K/month | $19-99/month | Lowest cost entry point, flexible question types |
+| [OrderSurvey](https://apps.shopify.com/ordersurvey) | Stores starting out at any size | Free-$49/month | Free plan; surveys on both Thank You and Order Status pages |
 
 **KNO Commerce** is purpose-built for attribution. Its most distinctive capability is the benchmark database—you can compare your survey channel distribution against other DTC brands in your vertical. If 38% of your survey respondents say they found you via Instagram but the category benchmark is 22%, that is a meaningful signal about your Facebook/Instagram efficiency relative to peers.
 
@@ -76,11 +77,13 @@ Three tools dominate Shopify post-purchase surveys. The right choice depends on 
 
 **Zigpoll** is the right starting point for brands under $50K/month. It adds custom survey logic at a fraction of the cost and does not require a technical setup. You can be live within 30 minutes.
 
+**[OrderSurvey](https://apps.shopify.com/ordersurvey)**—built by the team behind AdsX—is the newest of the four and the only one with a true free plan, which makes it the fastest zero-cost way to start collecting attribution signal. It renders surveys natively on both the Thank You page and the Order Status page (the latter catches customers who skip the confirmation moment and come back to check their order later), supports conditional branching for follow-up questions, and offers smart targeting by order value, product, tag, country, or currency. The $49/month Pro tier adds NPS tracking, Klaviyo integration, and Shopify POS support for brands that also sell in person.
+
 ## Step-by-Step Setup on Shopify
 
 ### Step 1: Install Your Survey Tool
 
-Install your chosen tool from the Shopify App Store. All three tools listed above install as standard Shopify apps without requiring custom code. Connect to your [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store during onboarding and authorize the necessary checkout permissions.
+Install your chosen tool from the Shopify App Store. All four tools listed above install as standard Shopify apps without requiring custom code. Connect to your [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store during onboarding and authorize the necessary checkout permissions.
 
 ### Step 2: Configure the Survey Question
 
@@ -105,7 +108,7 @@ Remove channels you do not invest in. Add specifics where they matter—if you s
 
 Place the survey inline on the Shopify order confirmation page, not in a post-purchase email. Response rates on the confirmation page run 40-75%. Post-purchase email surveys see 5-15%. The confirmation page has the highest intent window—the customer just committed to a purchase and is still engaged.
 
-In Shopify's checkout extensibility framework, post-purchase pages support native app embeds. KNO Commerce and Fairing both use Shopify's checkout UI extensions so the survey renders as part of the confirmation page experience, not as an overlay popup.
+In Shopify's checkout extensibility framework, post-purchase pages support native app embeds. KNO Commerce, Fairing, and OrderSurvey all use Shopify's checkout UI extensions so the survey renders as part of the confirmation page experience, not as an overlay popup. OrderSurvey also surfaces the survey on the Order Status page, which gives customers who navigate away a second natural chance to respond without resorting to a low-converting email survey.
 
 ### Step 4: Build Your Reporting Dashboard
 
@@ -215,7 +218,7 @@ Post-purchase survey attribution asks customers "How did you hear about us?" imm
 Directionally accurate and actionable when aggregated across hundreds of responses. Individual answers have memory bias, but the channel distribution reveals over- and under-attributed sources that pixel data misses. Use it alongside platform data, not instead of it.
 
 **Which tools work best for Shopify post-purchase surveys?**
-KNO Commerce (best for $100K+/month brands with benchmark data), Fairing (best for Triple Whale or Northbeam integrations), and Zigpoll (best entry point under $50K/month). All install natively without custom code.
+KNO Commerce (best for $100K+/month brands with benchmark data), Fairing (best for Triple Whale or Northbeam integrations), Zigpoll (best entry point under $50K/month), and OrderSurvey (free plan, surveys on both the Thank You and Order Status pages). All install natively without custom code.
 
 **What response rate should I expect?**
 Inline surveys on the Shopify order confirmation page typically see 40-75% response rates. KNO Commerce reports a median of 61%. Post-purchase email surveys fall to 5-15%—confirmation page placement is essential.
