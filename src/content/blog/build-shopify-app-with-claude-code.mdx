@@ -1,0 +1,299 @@
+---
+title: "Build a Shopify App With Claude Code (2026 Guide)"
+excerpt: "Build a Shopify app with Claude Code: scaffold the Remix template, wire the Dev MCP server, then ship an admin block and webhook handler in an afternoon."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Claude Code", "Shopify Apps", "AI Coding", "Remix", "Shopify CLI", "MCP"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Build a Shopify App With Claude Code"
+  totalTime: "PT2H"
+  steps:
+    - name: "Install the toolchain"
+      text: "Install Node.js 20+, Shopify CLI 3.x with npm install -g @shopify/cli, and Claude Code with npm install -g @anthropic-ai/claude-code."
+    - name: "Create a Partner account and development store"
+      text: "Sign up at partners.shopify.com, then create a development store with test data to install and test your app against."
+    - name: "Scaffold the Remix app template"
+      text: "Run shopify app init, pick the Remix template, then start the local dev loop with shopify app dev and install the app on your dev store."
+    - name: "Connect the Shopify Dev MCP server"
+      text: "Run claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest so Claude can introspect live GraphQL schema and search shopify.dev docs."
+    - name: "Build an admin block with Claude"
+      text: "Generate an admin block extension with shopify app generate extension, then prompt Claude Code to implement the Preact component against the admin.product-details.block.render target."
+    - name: "Add and test a webhook handler"
+      text: "Subscribe to a topic in shopify.app.toml, have Claude write the Remix webhook route, and fire a sample payload with shopify app webhook trigger."
+    - name: "Deploy the app"
+      text: "Push extensions and config to Shopify with shopify app deploy, host the Remix server on Fly.io or Render, and update the application URL."
+faqs:
+  - question: "Do I need to know React or Remix to build a Shopify app with Claude Code?"
+    answer: "It helps, but it is not a hard requirement for a first app. The official template makes the big decisions for you (routing, auth, session storage), and Claude Code handles most of the Remix-specific wiring when you point it at existing route files as examples. Where you still need judgment is reviewing what Claude writes: knowing enough JavaScript to spot a loader that leaks data or a webhook handler that does slow work inline. Plan to read every diff, and expect to learn Remix patterns as you go rather than up front."
+  - question: "What is the Shopify Dev MCP server and do I actually need it?"
+    answer: "The Dev MCP server (@shopify/dev-mcp) is a local Model Context Protocol server that gives AI coding tools direct access to Shopify's GraphQL schemas and shopify.dev documentation. You do not strictly need it, but without it Claude writes GraphQL from training data, which drifts out of date because Shopify versions its API quarterly. With it, Claude introspects the live schema and validates queries before they land in your code. In practice this is the difference between queries that work first try and an afternoon of fixing hallucinated field names."
+  - question: "How much does it cost to build and run a Shopify app?"
+    answer: "Building costs almost nothing: the Shopify Partner account, CLI, and development stores are free, and Claude Code runs on a Claude subscription or API billing. Running costs are the app server and database. A small Remix app on Fly.io or Render with a managed Postgres instance typically lands somewhere around $10-30 per month at low traffic, based on published entry-level pricing at those hosts. Shopify takes no revenue share until your app earns past the registration threshold in the App Store, so a side-project app is cheap to keep alive."
+  - question: "Can Claude Code build the whole app without me writing code?"
+    answer: "It can write nearly all of the code, but not unattended. The workflow that works is short, reviewable tasks: one route, one extension, one webhook at a time, each verified in the running dev store before moving on. Claude handles scaffolding, GraphQL, and UI extension boilerplate well because the template gives it strong patterns to copy. It is weaker on judgment calls: scope minimization, what belongs in a webhook versus a background job, and Built for Shopify review requirements. Treat it as a fast pair programmer, not a vending machine."
+  - question: "Which Shopify APIs should a new app use in 2026?"
+    answer: "Use the GraphQL Admin API for everything server-side; the REST product endpoints are legacy and new features ship to GraphQL only. Pin a current API version (they release quarterly, e.g. 2026-04) and upgrade deliberately. For UI inside the Shopify admin, use app home pages plus admin UI extensions, and for checkout use checkout UI extensions since checkout.liquid is gone. Backend customization of discounts, shipping, and payment logic belongs in Shopify Functions now that Scripts stopped executing on June 30, 2026."
+  - question: "How do I test webhooks while developing locally?"
+    answer: "Two ways, and you want both. While shopify app dev is running, the CLI tunnels your local server to a public URL and registers your dev webhook subscriptions, so real events from your development store (like editing a product) arrive at your local handler. For repeatable tests without touching the store, shopify app webhook trigger sends a sample payload for any topic straight to a local address. Log the topic and shop domain on arrival, return a 200 quickly, and push slow work to a queue."
+---
+
+You can build a working Shopify app with Claude Code in an afternoon: install Shopify CLI 3.x and Claude Code, scaffold the official Remix template, connect the Shopify Dev MCP server so Claude reads live API schema, then prompt it to build your admin block and webhook handler. This guide walks the full path, from empty folder to deployed app.
+
+![Developer building a Shopify app with Claude Code in a terminal and code editor](https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&q=80)
+
+## Why this stack works
+
+Shopify app development in 2026 is unusually friendly to AI coding agents, for one specific reason: the official tooling is opinionated. The Remix app template makes the auth, routing, and session decisions for you. The CLI scaffolds extensions with correct config. And the Dev MCP server lets an agent check its GraphQL against the real schema instead of guessing.
+
+That last part matters more than it sounds. Shopify versions its Admin API quarterly, REST product endpoints are legacy, and training data goes stale fast. An agent grounded in live schema writes queries that pass on the first run. An agent working from memory writes queries that fail with `Field 'x' doesn't exist on type 'y'` and burns your afternoon.
+
+Here is the toolchain:
+
+| Tool | Install | Role |
+|---|---|---|
+| Node.js 20+ | nvm or nodejs.org | Runtime for the CLI and the app |
+| Shopify CLI 3.x | `npm install -g @shopify/cli` | Scaffold, run, and deploy the app |
+| Claude Code | `npm install -g @anthropic-ai/claude-code` | Agentic coding in your terminal |
+| Shopify Dev MCP | `npx -y @shopify/dev-mcp@latest` | Live schema and docs access for Claude |
+| Partner account | partners.shopify.com | App registration and development stores |
+
+If you have never used Claude Code before, the [Claude Code developer guide](/blog/claude-code-developer-guide) covers the core workflow. And if you are still choosing an AI tool, [Claude Code vs GitHub Copilot in 2026](/blog/claude-code-vs-github-copilot-2026) compares them for exactly this kind of project work.
+
+## Step 1: Install the CLI and Claude Code
+
+```bash
+# Shopify CLI (3.x)
+npm install -g @shopify/cli@latest
+shopify version
+
+# Claude Code
+npm install -g @anthropic-ai/claude-code
+claude --version
+```
+
+Anthropic also ships a native installer (`curl -fsSL https://claude.ai/install.sh | bash`) if you prefer to keep it out of your global npm packages. Sign in with `claude` on first run; it works with both Claude subscriptions and API billing.
+
+## Step 2: Partner account and a development store
+
+Create a free account at [shopify.com/partners](https://www.shopify.com/partners), then create a development store from the Partner Dashboard. Choose the option to start with test data so you get products, collections, and customers to build against instead of an empty catalog.
+
+Development stores are free and never charge real payments, which makes them the right sandbox for app work. If you also want a real storefront of your own to run the app against live traffic later, create a separate [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store for that; keep development and production worlds apart from day one.
+
+## Step 3: Scaffold the Remix app template
+
+```bash
+shopify app init
+```
+
+The CLI asks for a name and a template. Pick **Remix**, the official template Shopify maintains. It gives you embedded auth with session tokens, Prisma-backed session storage, a webhook route pattern, and an `extensions/` directory wired into the deploy pipeline.
+
+Start the dev loop:
+
+```bash
+cd restock-radar
+shopify app dev
+```
+
+`shopify app dev` creates the app in your Partner organization on first run, tunnels your local server to a public URL, and prints an install link. Open it, install the app on your development store, and you have a live embedded app running from your laptop. Keep this process running in one terminal for the rest of the build; Claude Code runs in a second one.
+
+The generated app talks to the GraphQL Admin API. That is the correct default: REST product endpoints are legacy, and the reasons are covered in [Shopify GraphQL vs REST](/blog/shopify-graphql-vs-rest-api). For auth concepts and rate limits behind what the template abstracts away, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide).
+
+## Step 4: Wire the Shopify Dev MCP server
+
+This is the step most people skip, and it is the highest-value one. From inside your app directory:
+
+```bash
+claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest
+```
+
+Restart Claude Code and it now has Shopify-specific tools: schema introspection across Admin, Storefront, and Functions APIs, semantic search over shopify.dev, and a validator that checks generated GraphQL code blocks against the real schema. No API key needed; the server runs locally and only reads public developer resources.
+
+The practical effect: instead of pasting documentation into your prompt, you tell Claude to look things up and verify. Hallucinated mutations get caught before they reach your codebase.
+
+## Step 5: Prompt patterns that work for Shopify APIs
+
+Generic prompts produce generic code. These patterns produce Shopify code that works:
+
+**Anchor to existing files.** The template is your style guide. "Follow the pattern in `app/routes/app._index.jsx`" beats three paragraphs of instructions.
+
+**Force schema verification.** Tell Claude to introspect and validate before writing GraphQL, every time.
+
+**One vertical slice per prompt.** A route, an extension, a webhook. Small tasks keep diffs reviewable and failures cheap.
+
+Here is a real prompt in that shape:
+
+```text
+Read shopify.app.toml and app/shopify.server.js first.
+
+Task: add a page at /app/restock that lists the 25 product variants
+with the lowest inventory. Query the Admin GraphQL API (2026-04) from
+the Remix loader, never from the browser.
+
+Rules:
+- Before writing any GraphQL, introspect the schema with the
+  shopify-dev-mcp tools and validate the final query with the
+  validation tool.
+- Follow the existing route conventions in app/routes/.
+- No new dependencies without asking me.
+- When done, tell me what to click in the dev store to verify.
+```
+
+### A CLAUDE.md that pays for itself
+
+Standing rules belong in a `CLAUDE.md` at the repo root, which Claude Code reads at the start of every session. Here is the one we converge on for Shopify apps:
+
+```text
+# CLAUDE.md (excerpt)
+
+## Shopify rules
+- Admin API version is 2026-04. GraphQL only; REST product endpoints
+  are legacy and must not be used.
+- Always introspect the schema and validate GraphQL with the
+  shopify-dev-mcp tools before presenting code.
+- Every /app route loader starts with authenticate.admin(request).
+- Webhook handlers return a 200 fast and queue slow work.
+- Do not modify shopify.server.js or auth routes without flagging it
+  and explaining why.
+
+## Verification
+- After UI changes, tell me exactly what to click in the dev store.
+- Run npm run lint and npm test before calling a task done.
+```
+
+Treat this file like a linter config: any time you correct Claude twice for the same mistake, the correction moves here. The rules above encode the specific failure modes from this guide, so a fresh session starts with the judgment a previous session had to learn.
+
+If you are comparing this terminal-first workflow with browser builders like Replit or Lovable, we tested those separately in [building a Shopify app with AI app builders](/blog/build-shopify-store-app-ai-replit-lovable-bolt-v0); the short version is that the CLI plus Claude Code wins once real Shopify APIs are involved.
+
+## Step 6: Build an admin block with Claude
+
+An admin block renders your app's UI directly on a resource page in the Shopify admin, such as the product details page. Generate the extension first so the config is right:
+
+```bash
+shopify app generate extension
+# choose: Admin block
+```
+
+The CLI creates `extensions/<name>/` with a TOML file targeting a location in the admin:
+
+```toml
+api_version = "2026-04"
+
+[[extensions]]
+name = "restock-signal"
+handle = "restock-signal"
+type = "ui_extension"
+
+[[extensions.targeting]]
+module = "./src/BlockExtension.jsx"
+target = "admin.product-details.block.render"
+```
+
+Admin UI extensions use Preact with Shopify's Polaris web components (the `s-` prefixed elements), not full React and not Liquid. Now hand the implementation to Claude: "Implement `BlockExtension.jsx` for the `admin.product-details.block.render` target. Show the selected product's ID and a placeholder line for reorder data. Use the current admin extension component set; verify component names with the Dev MCP tools." A minimal working block looks like this:
+
+```jsx
+// extensions/restock-signal/src/BlockExtension.jsx
+import { render } from "preact";
+
+export default function extension() {
+  render(<Block />, document.body);
+}
+
+function Block() {
+  const product = shopify.data.selected?.[0];
+  return (
+    <s-admin-block heading="Restock signal">
+      <s-stack direction="block" gap="base">
+        <s-text>Product: {product?.id ?? "none selected"}</s-text>
+        <s-text>Reorder velocity will render here.</s-text>
+      </s-stack>
+    </s-admin-block>
+  );
+}
+```
+
+With `shopify app dev` still running, open any product in your development store admin, click "Add block" in the apps section of the page, and pick your extension. Edits hot-reload. This tight loop is where an agent shines: you describe a change, Claude edits, you refresh the product page and judge the result.
+
+## Step 7: Add a webhook handler
+
+Webhooks are declared in `shopify.app.toml`, so subscriptions deploy with your app config instead of being registered imperatively:
+
+```toml
+[webhooks]
+api_version = "2026-04"
+
+[[webhooks.subscriptions]]
+topics = ["products/update"]
+uri = "/webhooks/products/update"
+```
+
+Then the Remix route. This is a fine Claude task ("add a webhook route for products/update following the existing app/uninstalled handler"), and the result should look close to this:
+
+```js
+// app/routes/webhooks.products.update.jsx
+import { authenticate } from "../shopify.server";
+
+export const action = async ({ request }) => {
+  const { shop, topic, payload } = await authenticate.webhook(request);
+
+  console.log(`${topic} for ${shop}: product ${payload.id}`);
+  // Do fast work only. Queue anything slow; Shopify retries
+  // deliveries that don't get a prompt 2xx response.
+
+  return new Response();
+};
+```
+
+`authenticate.webhook` verifies the HMAC signature for you, which is the part hand-rolled handlers most often get wrong. Test without touching the store:
+
+```bash
+shopify app webhook trigger \
+  --topic products/update \
+  --api-version 2026-04 \
+  --delivery-method http \
+  --address http://localhost:3000/webhooks/products/update
+```
+
+You should see your log line with a sample payload. Then verify the real path: edit a product title in the dev store and watch the event arrive through the tunnel. Once you move past one topic, read [catalog change webhooks](/blog/shopify-catalog-change-webhooks) for ordering, retries, and debouncing bursts; a bulk admin edit can fire thousands of `products/update` events in seconds.
+
+## Step 8: Deploy
+
+Two things deploy separately. Extensions and app config go to Shopify:
+
+```bash
+shopify app deploy
+```
+
+That creates a new app version containing your admin block and webhook subscriptions and releases it. Your Remix server is yours to host: Fly.io and Render are the common picks for the template because webhook delivery wants an always-on process rather than a cold-starting function. Set the environment variables the template expects (`SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `DATABASE_URL`), point `application_url` in `shopify.app.toml` at the production hostname, and run `shopify app deploy` again so Shopify knows the new URL.
+
+Swap the template's SQLite session storage for Postgres before real merchants install; SQLite on an ephemeral host loses sessions on every restart.
+
+## Troubleshooting the first hour
+
+Three failures account for most stuck sessions, and none of them are Claude's fault:
+
+**`shopify app dev` cannot match your app.** Usually a stale link between the local project and the Partner app, often after renaming or switching accounts. `shopify app dev --reset` re-runs the selection flow and fixes it.
+
+**The embedded app renders a blank iframe or bounces to a login loop.** You opened the tunneled URL directly in a browser tab, or third-party storage is blocked. Always open the app through the dev store admin, where App Bridge can fetch session tokens.
+
+**GraphQL calls return 401 after a restart.** The SQLite session database was deleted or regenerated, so the stored access token is gone. Reinstall via the install link that `shopify app dev` prints and the session recreates itself.
+
+Paste the exact error into Claude before debugging by hand; with the MCP server connected it will usually identify these patterns and point at the right file.
+
+## Where Claude Code helps, and where it does not
+
+Honest scorecard from building apps this way:
+
+**Strong:** template-conformant routes, GraphQL against introspected schema, extension boilerplate, webhook handlers, refactors across the repo, writing tests you asked for.
+
+**Weak:** knowing which access scopes are genuinely needed (it over-asks; trim them, reviewers check), deciding what runs inline versus in a queue, App Store review requirements, and anything it cannot verify by running code. Claude will also happily "fix" an embedded auth loop by disabling auth if you let it. Review every diff that touches `shopify.server.js`.
+
+The 2-hour estimate in the steps above is real for the skeleton: scaffold, MCP, one block, one webhook, deployed. A submittable App Store app is more like a week or two, because billing, GDPR webhooks, and review polish are judgment work, not typing work.
+
+## Next step
+
+Scaffold the app tonight and give yourself one deliverable: the admin block rendering live data from a loader instead of a placeholder. That single task forces the full loop (prompt, schema introspection, loader query, extension render, dev store verification) and after it, the rest of the app is repetition.

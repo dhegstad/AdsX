@@ -1,0 +1,137 @@
+---
+title: "Best Shopify Post-Purchase Survey Apps (2026)"
+excerpt: "Compare the best Shopify post-purchase survey apps: KNO Commerce, Fairing, Zigpoll, OrderSurvey, and Grapevine, with pricing and placement tips."
+date: "2026-07-21"
+category: "Guide"
+tags: ["Shopify Apps", "Post-Purchase Survey", "Attribution", "Zero-Party Data", "Measurement", "E-commerce"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "Which Shopify post-purchase survey app is free?"
+    answer: "OrderSurvey has a true free plan and places surveys on both the Thank You page and the Order Status page, which makes it the fastest zero-cost way to start collecting attribution data. Zigpoll also offers a limited free tier with capped responses. KNO Commerce, Fairing, and Grapevine are paid, though most offer trials. If you are testing whether survey data changes your ad decisions before committing budget, start free, collect a few hundred responses, and upgrade once the data earns a permanent line in your monthly reporting."
+  - question: "What response rate should I expect from a post-purchase survey on Shopify?"
+    answer: "Surveys embedded on the order confirmation page typically see response rates between 40% and 75%, though results vary by store, question count, and placement. A single-question survey shown above the fold on the Thank You page performs at the top of that range. Adding a second placement on the Order Status page catches customers who skipped the confirmation moment and came back later to check shipping. Email surveys sent after the fact perform far worse, usually 5% to 15%, which is why on-page placement matters more than any other setup decision."
+  - question: "Should the survey go on the Thank You page or the Order Status page?"
+    answer: "Both, if your app supports it. The Thank You page is the highest-intent moment: the customer just bought and is still engaged, so most responses come from there. The Order Status page is what customers revisit to check shipping updates, sometimes several times, so it works as a second chance for anyone who navigated away without answering. OrderSurvey supports both placements out of the box through Shopify's checkout UI extensions. If your app only supports one, choose the Thank You page and accept that some responses will be lost."
+  - question: "How many questions should a post-purchase survey ask?"
+    answer: "Start with one: 'How did you hear about us?' with 8 to 12 answer options that mirror the channels you actually fund. One question maximizes completion and gives you a clean attribution baseline. Once response volume is steady, add a second question through conditional branching, for example asking customers who select 'a friend recommended it' whether they also saw your ads. Surveys longer than three questions see meaningful drop-off on the confirmation page, so save product feedback and NPS for a separate rotation rather than one long form."
+  - question: "How does post-purchase survey data improve paid ad decisions?"
+    answer: "Survey responses give you a channel distribution that no ad platform can inflate. Compare each channel's share of survey responses against its share of platform-reported conversions. Channels where the platform claims far more credit than customers give it are probably over-attributed, often through retargeting windows. Channels customers cite frequently but platforms barely credit, podcasts and influencers are common examples, are usually underfunded. Those gaps tell you where to run holdout tests and where to shift budget. The survey does not replace pixel data; it flags where pixel data is lying."
+  - question: "Do post-purchase survey apps slow down my store?"
+    answer: "Not meaningfully, as long as they use Shopify's checkout UI extensions. Extensions run inside Shopify's sandboxed checkout environment rather than injecting scripts into your theme, so they do not touch storefront loading performance and cannot break checkout. The apps covered in this guide use the extension framework for Thank You and Order Status page placement. The older pattern of injecting survey widgets through theme scripts is worth avoiding: it adds JavaScript to pages that have nothing to do with the survey and can linger in your theme after uninstall."
+---
+
+The best Shopify post-purchase survey apps in 2026 are KNO Commerce (attribution benchmarks for larger brands), Fairing (deep analytics integrations), Zigpoll (flexible budget option), OrderSurvey (free plan with Thank You and Order Status page placement), and Grapevine (simple flat pricing). Which one fits depends on your order volume and how you plan to use the data.
+
+![Customer completing an online card payment before seeing a post-purchase survey](https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80)
+
+## Why a Survey App Deserves a Slot in Your Stack
+
+Pixel-based attribution has been degrading since iOS 14.5. Meta claims credit for purchases it assisted at best, Google's last-click view misses everything upstream, and a meaningful share of your conversion paths are simply dark. The [iOS attribution gap](/blog/ios-attribution-gap-shopify-tracking-fix) is structural. It is not a settings problem you fix once and forget.
+
+A post-purchase survey goes around the whole mess by asking the customer directly. One question on the confirmation page, "How did you hear about us?", captures a self-reported signal that no platform can inflate. Individual answers are imperfect. People misremember, and word of mouth absorbs credit it did not fully earn. But aggregated across a few hundred orders, the channel distribution is directionally reliable and, more importantly, independent of every ad platform's incentive to flatter itself.
+
+That independence is the point. When Meta says it drove 55% of your orders and your customers say 30%, you have a specific, testable disagreement instead of a vague feeling that your dashboards are wrong. We cover how to run that comparison step by step in our [post-purchase survey attribution setup guide](/blog/post-purchase-survey-attribution-setup-shopify). This post covers the other half of the decision: which app to run it on.
+
+## The Five Apps Compared
+
+| App | Best for | Approx. pricing | Standout feature |
+|---|---|---|---|
+| KNO Commerce | Brands doing $100K+/month that want benchmarks | Around $150-500/month | Category benchmarks across thousands of DTC brands |
+| Fairing | Brands running Triple Whale or Northbeam | From around $49/month, scales with orders | Deepest analytics and attribution integrations |
+| Zigpoll | Stores under $50K/month wanting flexibility | Free tier; around $19-99/month | Broad question formats beyond post-purchase |
+| OrderSurvey | Starting attribution surveys at zero cost | Free plan; Pro around $49/month | Free plan with Thank You and Order Status placement |
+| Grapevine | Merchants who want flat, predictable pricing | Around $25/month flat | Unlimited responses on one plan |
+
+All five install as standard apps from the App Store on any [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) plan, and all render surveys through checkout UI extensions rather than theme code, so none of them add weight to your storefront pages.
+
+### KNO Commerce
+
+KNO is the attribution specialist of the group. It was built for the "How did you hear about us?" use case first, with question templates, branching logic, and reporting designed around channel measurement rather than general feedback collection.
+
+Its distinctive feature is the benchmark database. Because KNO aggregates anonymized survey data across thousands of DTC brands, you can compare your channel distribution against your category. If 38% of your respondents cite Instagram but the category norm is 22%, that tells you something about your Meta program that your own data alone cannot.
+
+Pricing runs around $150 to $500 per month depending on order volume, which is real money. For a store doing $30K a month, the benchmarks are interesting but rarely decision-changing. For a brand doing $200K a month across four paid channels, they routinely pay for themselves by flagging one misallocated budget line. Match the tool to the stakes.
+
+### Fairing
+
+Fairing (formerly Enquire Labs) has the strongest integration story. Survey responses flow natively into Triple Whale, Northbeam, Klaviyo, Google Sheets, and most of the analytics tools mid-market Shopify brands already run. If your team lives in a Triple Whale dashboard, Fairing puts self-reported attribution next to pixel-attributed revenue without any export work.
+
+It also ships a large question bank, so you are not writing survey copy from scratch, and it supports question streams that rotate different questions across customers. That lets you collect attribution data continuously while sampling NPS or product feedback on a fraction of orders.
+
+Pricing starts around $49 per month and scales with order volume, so high-volume stores should model the cost at their real order count before committing. The tradeoff is straightforward: you are paying for the integration depth. If your reporting stack is a spreadsheet, most of what makes Fairing special goes unused.
+
+### Zigpoll
+
+Zigpoll is the generalist. Post-purchase surveys are one of several formats alongside on-site polls, email capture prompts, and checkout questions. The question types are flexible, the editor is easy, and there is a free tier with capped responses plus paid plans in the rough range of $19 to $99 per month.
+
+That breadth cuts both ways. Zigpoll works well for a store that wants one app for several kinds of customer questions. It is less purpose-built for attribution: you will spend more time assembling channel-share reporting yourself, and there is no benchmark data or deep attribution-platform integration. For stores under $50K a month that want low cost and flexibility, it is a sensible pick.
+
+### OrderSurvey
+
+[OrderSurvey](https://apps.shopify.com/ordersurvey) is the newest app of the five, and two things about it stand out. First, it has a true free plan, which none of the attribution-focused competitors match. Second, it places surveys on both the Thank You page and the Order Status page by default, so customers who click away from the confirmation screen get a second natural chance to answer when they come back to check shipping.
+
+Beyond placement, it supports conditional branching for follow-up questions and targeting by order value, product, tag, country, or currency, so you can ask different questions of first-time buyers versus repeat customers. The Pro tier, around $49 per month, adds NPS tracking, a Klaviyo integration, and Shopify POS support for brands that also sell in person.
+
+The honest tradeoffs: it is newer, so there is no benchmark database, and the integration list is shorter than Fairing's. For a store starting from zero responses, neither gap matters much. Collect data free, and revisit the comparison once survey results are actually steering budget.
+
+### Grapevine
+
+Grapevine has been running post-purchase surveys on Shopify longer than most of this list has existed. The pitch is simplicity: one flat plan around $25 per month, unlimited responses, multi-question support, and placement across the confirmation flow, including POS orders.
+
+Flat pricing is genuinely useful for high-volume stores, where per-order pricing models get expensive quickly. A store doing 5,000 orders a month pays the same as one doing 300. The tradeoff is that reporting is more basic and the integration options are thinner, so plan on exporting data if you want it inside another analytics tool. For merchants who want a reliable, set-it-and-forget-it survey with predictable cost, it does exactly that.
+
+## Placement: Thank You Page, Order Status Page, or Both
+
+Placement drives response rate more than anything else you configure. Expect somewhere between 40% and 75% of customers to answer a single question shown inline on the confirmation page. Where you land in that range depends on question count, position on the page, and how much competing content (upsell offers, tracking widgets) shares the screen. By contrast, surveys sent by email afterward typically pull 5% to 15%.
+
+Modern apps render through Shopify's checkout UI extensions, which matters for two reasons. The survey appears as part of the page rather than a popup, and the code runs in Shopify's sandboxed checkout environment instead of your theme, so it cannot slow your storefront or break checkout.
+
+The Order Status page is the underused placement. Customers revisit it to check shipping, often more than once, which makes it a second collection point for everyone who skipped the Thank You moment. OrderSurvey ships with dual placement; on other apps, check whether Order Status support exists on your plan before assuming your response rate ceiling.
+
+## Question Design That Gets Honest Answers
+
+A few rules hold up across every store we have run this on:
+
+- **Mirror your real channel mix.** List 8 to 12 options covering channels you actually fund plus organic discovery paths. Listing channels you do not use just adds noise.
+- **Single-select first.** Multi-select feels richer but muddies the primary attribution signal. Get a clean baseline before adding complexity.
+- **Randomize option order** if your app supports it. Fixed lists bias responses toward whatever appears first.
+- **Branch the ambiguous answers.** When someone picks "a friend recommended it," a follow-up asking "Did you also see any of our ads?" recovers paid influence that word of mouth absorbs.
+- **Include an honest out.** An "I don't remember" option keeps customers from picking a random answer to finish, which is worth more than a slightly higher forced completion rate.
+- **Segment new versus returning.** A fourth-time buyer citing "email" tells you nothing about acquisition. Filter attribution analysis to first orders where your app allows it.
+
+Resist the urge to stack questions. Every added question costs completion on the question that matters most.
+
+## From Survey Responses to Budget Decisions
+
+Collecting responses is the easy part. The value shows up when survey data enters your monthly budget review as a third voice alongside platform dashboards and blended metrics.
+
+The core move: compute each channel's share of survey responses over a rolling 30 days, then set it next to that channel's share of platform-reported conversions. Big positive gaps (customers cite the channel, platforms do not) usually mean under-attribution, common with podcasts, influencers, and YouTube. Big negative gaps usually mean over-attribution, common with broad retargeting. Our guide to [reconciling blended versus platform ROAS](/blog/blended-roas-vs-platform-roas-reconciliation) covers how to arbitrate those disagreements without whiplash.
+
+Two cautions from experience. First, wait for sample size: 200 or more responses before you move budget, since small samples swing hard week to week. Second, treat survey data as a flag for testing, not a verdict. If surveys say Meta is over-credited, the next step is a holdout or a spend reduction test measured against blended revenue, not an immediate 40% budget cut. [MER is usually the referee](/blog/mer-vs-roas-which-metric-to-scale-on) when the sources disagree.
+
+## Mistakes That Sink Survey Programs
+
+Most failed survey programs die from the same handful of self-inflicted wounds, all avoidable.
+
+**Launching with too many options.** Fifteen answer choices feel thorough to you and read like a chore to a customer holding a phone. Completion drops and "Other" balloons. Cap the list at 12 and make every option one you would act on.
+
+**Copying another brand's option list.** Templates are a starting point, not an answer key. If you have never run a podcast ad, "Podcast" on your survey collects noise that looks like signal. Your list should be a mirror of your actual media plan plus the organic paths customers really use.
+
+**Ignoring the write-ins.** The free-text "Other" field is where customers name discovery paths you never thought to list: a Reddit thread, a Discord server, a comparison article. Read them monthly. When the same write-in appears ten times, promote it to a listed option and find out how big it really is.
+
+**Letting the question go stale.** You started TikTok ads in March; the survey still ends at YouTube. Every media plan change should trigger a 60-second review of the option list, or your newest channels will be invisible in your own data.
+
+**Checking results daily.** Twenty responses is an anecdote. Daily checking produces whiplash and erodes trust in the tool. Look monthly, decide monthly.
+
+## Which One Should You Install?
+
+- **Under $20K/month:** OrderSurvey's free plan or Zigpoll. You need response volume and a habit of reading it, not features.
+- **$20K-100K/month:** Fairing if you run Triple Whale or Northbeam; Grapevine if order volume is high and you want flat cost; OrderSurvey Pro if you want dual placement plus NPS without a volume-scaled bill.
+- **$100K+/month:** KNO Commerce or Fairing. At this spend level, benchmarks and native attribution integrations start paying for themselves.
+
+One reassurance on switching costs: they are low. Every app here exports responses, the survey question itself is identical, and a migration mostly means re-creating your option list and accepting a seam in your historical data. Do not agonize over the choice for weeks. The compounding asset is the response history and the monthly review habit, both of which travel with you.
+
+The differences between these apps are real but smaller than the difference between running a survey and not running one. Install one this week, launch the single question with 8 to 12 options, and put a recurring 30-minute block on your calendar for next month to compare survey share against what your ad platforms claim. That comparison, run monthly, is where the money is.

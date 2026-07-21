@@ -1,0 +1,152 @@
+---
+title: "Shopify App Review Process: Approval Guide (2026)"
+excerpt: "The Shopify app review process explained: submission flow, realistic timelines, the most common rejection reasons, and a pre-submission checklist."
+date: "2026-07-21"
+category: "Guide"
+tags: ["Shopify Apps", "App Review", "App Store", "App Developers", "Approval", "Submission"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "How long does Shopify app review take in 2026?"
+    answer: "Shopify does not publish a guaranteed review timeline, and its official documentation deliberately avoids committing to one. In practice, developers commonly report initial responses within one to two weeks, with the full journey to Published stretching longer when the app gets paused for fixes, since each resubmission re-enters the queue. Complexity matters: an embedded app with billing, webhooks, and checkout extensions gets more scrutiny than a simple utility. Plan launch dates assuming several weeks end to end, and treat anything faster as a pleasant surprise rather than the baseline."
+    
+  - question: "What are the most common Shopify app rejection reasons?"
+    answer: "The recurring failures are remarkably consistent: broken or non-immediate OAuth during install, billing flows that bypass or mishandle the Shopify Billing API, missing mandatory privacy webhooks (customers/data_request, customers/redact, and shop/redact), apps that error on a clean development store because the developer only tested on a seeded one, and listings that oversell or misdescribe what the app does. A softer but real category is insufficient functional value, where the app is judged too thin to justify a listing. Nearly all of these are preventable with a disciplined pre-submission pass on a fresh store."
+    
+  - question: "Which privacy webhooks are mandatory for Shopify apps?"
+    answer: "Every public app must subscribe to and correctly handle three privacy webhooks: customers/data_request (a merchant relays a customer's request for their data), customers/redact (a request to delete a customer's personal data), and shop/redact (sent after uninstall, requiring deletion of the shop's data). Your endpoints must verify the HMAC signature and respond successfully; unverified or erroring endpoints fail review. A common trap in 2026 is AI-scaffolded apps that compile and run but never register these webhooks, because the generated template skipped them. Reviewers check for them even if your app stores almost nothing."
+    
+  - question: "Can my Shopify app charge merchants outside the Billing API?"
+    answer: "For nearly all public apps, no. Charges for app functionality, whether subscriptions, one-time fees, or usage-based billing, must run through the Shopify Billing API, and redirecting merchants to Stripe, PayPal, or an external checkout for app fees is a standard rejection. Beyond the compliance question, reviewers actively test billing: they upgrade, downgrade, and uninstall mid-cycle to see whether charges behave. Billing bugs, like a plan that keeps charging after uninstall or a test charge that appears in production mode, are among the most common reasons an otherwise solid app gets paused."
+    
+  - question: "What should I do when my app submission is paused or rejected?"
+    answer: "Read the feedback list completely before touching code, because partial fixes are the biggest time-waster in the process. Fix every flagged item, then re-test the entire install and billing flow on a brand-new development store, not the store where you developed. When you resubmit, reply with a short changelog mapping each reviewer point to what you changed and where. Do not argue policy in the thread; if you believe a requirement was misapplied, ask a clarifying question instead. Resubmitting an unchanged build, or fixing only the first item on the list, costs you a full queue cycle each time."
+    
+  - question: "Does passing app review mean I qualify for Built for Shopify?"
+    answer: "No, and confusing the two causes planning mistakes. App review is the floor: it verifies your app is safe, functional, honestly listed, and compliant with billing and privacy requirements. Built for Shopify is a separate, much higher bar with measured criteria, including performance budgets at the 75th percentile, embedded App Bridge requirements, minimum install and review thresholds, and annual re-review. A newly approved app typically cannot qualify immediately because several criteria require accumulated usage data. Treat approval as the start of the quality ladder, with Built for Shopify as a later rung you architect toward from day one."
+---
+
+The Shopify app review process moves your submission through four statuses: Draft, Submitted, Reviewed, and Published, with a Paused state when core requirements fail. Shopify publishes no guaranteed timeline; developers commonly report one to two weeks per cycle. Most rejections trace to a handful of preventable causes, and this guide covers all of them.
+
+![Developers reviewing an app submission checklist together at a laptop](https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80)
+
+## How the Review Pipeline Works
+
+Shopify documents the mechanics in its [app review process guide](https://shopify.dev/docs/apps/launch/app-store-review/review-process), and the flow is worth internalizing before you submit, because each status transition has different rules.
+
+**Draft.** Your app lives in the Partner Dashboard with an App Store review page that flags outstanding issues. You cannot submit until every automated check clears. This page is a gift: it is the only part of review that gives instant feedback, so drain it completely before submitting.
+
+**Submitted.** Clicking submit puts you in the queue and triggers a confirmation email. An automated and human pass checks core requirements first. If something core fails, the app moves to **Paused**, you get a list of required changes, and you resubmit via the "Submit fixes" banner once they're addressed. Paused is not a rejection; it is a loop, but each loop costs queue time.
+
+**Reviewed.** If a reviewer needs discussion beyond a simple fix list, the app moves to Reviewed and you get an email outlining next steps. This status is conversational: you must reply to move forward, and the speed of your replies largely sets the pace from here.
+
+**Published.** Approval lands your listing in the App Store, visible by default. This is also where the real work starts, since [discovery, not approval, is the bottleneck](/blog/built-for-shopify-app-discovery-ai-era) for new apps.
+
+## How Long It Takes, Honestly
+
+Shopify's documentation deliberately avoids promising a timeline, and any specific number you read elsewhere is a report, not a commitment. The pattern we see from developers breaks down like this:
+
+- First response on a clean, simple submission: commonly within one to two weeks.
+- Each Paused-and-resubmit loop: add another queue cycle.
+- Complex apps (billing plus checkout extensions plus multiple webhook topics): more scrutiny, more elapsed time.
+- Submission surges, such as the weeks after an Editions release when many developers ship against new APIs, can stretch queues.
+
+The practical planning rule: never promise a launch date that requires first-pass approval. Budget for one rejection loop even if you have prepared carefully. If approval comes faster, you launch early, which nobody has ever complained about.
+
+You control three of the variables. Submission completeness is the big one, since Paused loops dominate elapsed time for most apps. Reply speed is the second: once you are in the Reviewed status, the clock runs on your responses, not Shopify's. The third is timing: if you can avoid submitting in the week a major Editions release lands, when half the ecosystem ships against new APIs at once, your queue position benefits.
+
+## Public, Unlisted, and Custom: What Actually Gets Reviewed
+
+The review process described here applies to public apps, meaning anything distributed through the Shopify App Store. Custom apps built for a single merchant organization install directly and skip App Store review entirely, which makes them the right vehicle for client work and one-off integrations, with the tradeoff that they cannot be listed or distributed to other merchants.
+
+This distinction matters for validation strategy. If you are still testing whether merchants want your app, you do not need review to find out: install it for early users on their stores directly and measure activation. Submit to the App Store once the product is stable enough to survive a stranger's install, because review feedback on a half-validated app costs you queue cycles that teach you nothing about demand.
+
+## The Six Most Common Rejection Reasons
+
+Shopify maintains published [App Store requirements](https://shopify.dev/docs/apps/launch/shopify-app-store/app-store-requirements), and reviewers test against them systematically. The failures below account for the overwhelming majority of paused submissions we hear about.
+
+### 1. OAuth and install flow problems
+
+The install must begin OAuth immediately, without interstitial marketing pages, account-creation walls, or manual steps before authorization. Embedded apps must authenticate with session tokens and load correctly inside the admin iframe. Classic failures: an app that pops out of the embedded frame, a redirect chain that dies on a URL mismatch between your app config and your server, or an install that works from your bookmark but not from a fresh App Store click. Reviewers experience your app exactly the way a stranger does, which is precisely how you have not been testing it. The [Shopify app development guide](/blog/shopify-api-app-development-guide) covers the auth architecture that avoids these traps.
+
+### 2. Billing bugs
+
+All charges for app functionality go through the Billing API; routing merchants to an external processor for app fees is a standard rejection. But full compliance is not enough, because reviewers actively exercise billing: they subscribe, upgrade, downgrade, and uninstall mid-cycle. The bugs that surface are the ones you never tested: a downgrade that keeps premium features enabled, a charge created in production mode against a test store, a free trial that re-triggers on reinstall, a subscription that survives uninstall.
+
+### 3. Missing mandatory privacy webhooks
+
+Three webhook subscriptions are compulsory for public apps: customers/data_request, customers/redact, and shop/redact. Endpoints must verify the webhook HMAC and respond successfully. Two traps catch developers here. First, assuming the webhooks don't apply because the app stores little or no customer data; reviewers require the endpoints regardless. Second, AI-scaffolded codebases: teams that [built their app with AI tools](/blog/build-shopify-store-app-ai-replit-lovable-bolt-v0) often ship a scaffold that runs beautifully but never registered the privacy topics, because the generator's template skipped them. Check for these three explicitly before every submission.
+
+### 4. Broken install on a clean development store
+
+Your development store has products, orders, customers, and months of accumulated state. The reviewer's store has nothing. Apps fail review constantly because a dashboard divides by zero orders, an onboarding flow assumes a published theme, or a first-run query against the [Admin API](/blog/shopify-admin-api-guide) returns an empty list the code never handled. The fix is mechanical: before submitting, create a brand-new development store and run your entire flow from install through core value with zero seeded data. Every empty state you hit, a reviewer will hit first.
+
+### 5. Misleading or thin listings
+
+The listing is reviewed as strictly as the code. Common failures: keyword stuffing in the app name, screenshots showing features that don't exist or are mocked, claims of integrations that aren't live, and benefit language that overpromises ("boost sales 300%") without qualification. Write the listing to describe what the app does today, in plain terms, with screenshots taken from the actual product. Save the ambition for your roadmap.
+
+### 6. Insufficient functional value
+
+The softest criterion and the hardest to argue with: apps judged too thin to justify a listing get rejected even when technically compliant. Single-purpose wrappers around one API call, apps that duplicate native admin features without meaningful addition, and barely-configured template clones fall here. If your app's entire function could be a blog post with a code snippet, review will likely agree.
+
+## Rejection Reasons at a Glance
+
+| Rejection cause | What the reviewer hits | Fix before submitting |
+|---|---|---|
+| OAuth flow | Install stalls, breaks out of iframe, or asks for signup first | Immediate OAuth, session tokens, test from a fresh App Store-style install link |
+| Billing | Downgrade, uninstall, or trial edge cases misbehave | Test every plan transition on a clean store; Billing API only |
+| Privacy webhooks | Missing or erroring mandatory endpoints | Register all three topics, verify HMAC, return success |
+| Empty-store failures | Errors with zero products, orders, or theme assumptions | Full run-through on a brand-new dev store |
+| Listing accuracy | Screenshots or claims that don't match the product | Describe the shipped app, not the roadmap |
+| Thin functionality | App does too little to justify listing | Ship a complete job, not a wrapper |
+
+## The Pre-Submission Checklist
+
+Run this in order the day before you submit. Budget two hours.
+
+1. Create a brand-new development store. Not your daily one.
+2. Install the app from your listing link. Time the OAuth flow; it should be one continuous redirect into the embedded admin.
+3. Complete onboarding with zero pre-existing data. Note every empty state.
+4. Subscribe to a paid plan in test mode, then upgrade, downgrade, uninstall, and reinstall. Watch what billing does at each step.
+5. Fire test deliveries of all three privacy webhooks and confirm success responses with HMAC verification.
+6. Click every navigation item, on desktop and mobile widths, inside the embedded admin.
+7. Reread your listing against the running app: every screenshot current, every claim true, every integration live.
+8. Clear every remaining item on the App Store review page in the Partner Dashboard.
+9. Write your support email an auto-acknowledgment and make sure a human actually monitors it; reviewers sometimes contact it.
+10. Screenshot your working install flow end to end, so if review reports a failure you can compare states quickly.
+
+## Responding to Reviewer Feedback
+
+When feedback arrives, the process becomes a correspondence, and how you conduct it affects your elapsed time more than anything else you control.
+
+**Read the whole list before fixing anything.** Feedback usually arrives as a numbered list. Developers who start coding at item one sometimes ship a fix that conflicts with item four, then eat another cycle.
+
+**Fix everything, not just what's cheap.** Resubmitting with three of five items addressed reads as either carelessness or negotiation, and neither speeds you up. If an item is genuinely infeasible, say so explicitly and explain the alternative you implemented.
+
+**Reply with a changelog.** Map each reviewer point to the change you made and where to see it. Reviewers process many apps; making verification effortless is the single best thing you can do for your queue position on the second pass.
+
+**Ask, don't argue.** If a requirement seems misapplied to your app's situation, a clarifying question ("Our app doesn't store customer data; can you confirm which endpoint behavior you need to see?") moves things forward. Debating the policy's merits in the thread does not.
+
+**Answer fast.** In the Reviewed status, the clock runs on your replies. Same-day responses keep your thread warm.
+
+## Resubmission Etiquette
+
+Every resubmission re-enters a queue, so the goal is making each cycle count. Never resubmit an unchanged build hoping for a different reviewer. Never resubmit within an hour with a one-line fix you didn't retest, because a second Paused for the same item is the slowest possible path. Retest the full checklist above, not just the flagged area, since fixes have a way of breaking neighbors. And keep your tone even; review threads are read by humans who remember difficult correspondents when your next app arrives.
+
+## After Publication: Review Never Fully Ends
+
+Approval is not the last time Shopify looks at your app. Listing edits go through checks, and meaningful changes such as adding checkout extensions or new API scopes can draw fresh scrutiny. The published requirements continue to apply to live apps, and Shopify can pull listings that drift out of compliance, so a post-approval regression in your billing flow or a broken privacy webhook is not a cosmetic issue.
+
+The operational habit that follows: rerun your pre-submission checklist before major releases, not just before submissions. It costs two hours and catches the category of bug that otherwise surfaces as a one-star review or a compliance email, both of which are more expensive than the checklist.
+
+## What Changes Later With Built for Shopify
+
+Approval and Built for Shopify get conflated constantly, so draw the line clearly: review is the floor, Built for Shopify is a ceiling you climb toward afterward. Review verifies safety, honesty, and baseline quality once. Built for Shopify measures ongoing performance at the 75th percentile, embedded App Bridge behavior, minimum installs and review counts, and re-checks annually, with status revocable if you slip.
+
+The reason to care now, before you have written a line of code: several Built for Shopify criteria are architectural. Performance budgets and a native embedded experience are far cheaper to build in than to retrofit. Passing review with an app that can never reach the higher bar is a strategic mistake in a store where [quality-gated placement decides who gets discovered](/blog/built-for-shopify-app-discovery-ai-era).
+
+## Your Next Step
+
+Today, before writing anything new: spin up a fresh development store on [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) via your Partner Dashboard, install your app cold, and run the ten-step checklist above with a notepad open. Every item you catch tonight is a review cycle you don't lose next month.

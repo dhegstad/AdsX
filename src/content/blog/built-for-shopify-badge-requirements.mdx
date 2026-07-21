@@ -1,0 +1,152 @@
+---
+title: "Built for Shopify Badge: Requirements and Payoff"
+excerpt: "Built for Shopify badge requirements explained: performance budgets, embedded UX, quality metrics, realistic timeline, and what the badge pays back."
+date: "2026-07-21"
+category: "Guide"
+tags: ["Built for Shopify", "Shopify Apps", "App Developers", "App Store", "Performance", "ASO"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "What is the Built for Shopify badge?"
+    answer: "Built for Shopify is the highest quality designation in the Shopify App Store, awarded to apps that meet Shopify's published bar for performance, embedded design, and merchant experience. It appears on your listing as a badge merchants recognize, but the badge itself is the smallest part of the value. Status gates access to discovery placements ordinary listings never receive: a search-ranking boost, eligibility for prominent homepage and category collections, and surfacing in Shopify's AI-driven recommendations. It is a standard you keep meeting, not a one-time award; Shopify re-reviews apps at least annually and can revoke status."
+    
+  - question: "What are the main Built for Shopify requirements?"
+    answer: "Requirements group into four areas. Merchant utility: at least 50 net installs from active shops on paid plans, at least five reviews, and a minimum recent rating. Performance: admin Web Vitals at the 75th percentile of Largest Contentful Paint at 2.5 seconds or less, Cumulative Layout Shift at 0.1 or less, and Interaction to Next Paint at 200 milliseconds or less, plus no more than a ten-point reduction of storefront Lighthouse scores. Integration: latest App Bridge, session token authentication, primary functionality embedded in the admin, and theme app extensions rather than the Asset API. Design: Polaris-aligned UX, mobile responsiveness, and accessibility contrast standards. Categories add their own criteria on top."
+    
+  - question: "How long does it take to qualify for Built for Shopify?"
+    answer: "Months, realistically, and the floor is structural rather than bureaucratic. Several criteria are measured over trailing 28-day windows requiring minimum volume, such as 100 or more Web Vitals measurements for admin performance, so every meaningful fix takes about a month to prove itself in the data. A new app also needs time to accumulate 50 net paid installs and five reviews. Apps that architected for the requirements from day one commonly get there in a few months once install volume exists; apps that must re-platform their admin UI or replace Asset API usage should expect a much longer road."
+    
+  - question: "Does the Built for Shopify badge actually increase installs?"
+    answer: "Shopify grants status-holders a search-ranking boost and eligibility for high-visibility surfaces, including homepage and category collections and AI-driven recommendation placements, and those are the surfaces where organic installs concentrate. Directionally, the effect on distribution is real and developers widely report improved install conversion after earning status. Treat specific uplift percentages you see quoted with skepticism, though: Shopify does not publish a universal number, and the lift varies with category competitiveness and how visible your listing was beforehand. The most defensible claim is that status moves you onto shelves most merchants actually browse."
+    
+  - question: "Why do most apps fail to reach Built for Shopify?"
+    answer: "The blockers we see most: Interaction to Next Paint failures from heavy JavaScript admin frontends, legacy Asset API usage where theme app extensions are now required, too little traffic to generate the minimum measurement volume in a 28-day window, review counts below five for young apps, and embedded UX that fights Polaris conventions because it was ported from a standalone web app. There is also a persistence failure: teams sprint to the bar, earn status, then regress after a redesign and lose it at annual re-review. The bar is continuous, so monitoring matters as much as the initial push."
+    
+  - question: "Can you lose Built for Shopify status after earning it?"
+    answer: "Yes. Shopify reviews Built for Shopify apps at least once a year against the current criteria, and the criteria themselves move; Shopify has repeatedly added requirements with effective dates, such as mandating the latest App Bridge version and new performance thresholds. A performance regression, a slide in review ratings, or failure to adopt a newly required integration by its deadline can all cost you the status and the placements that came with it. Treat the requirements page as a living document someone on your team owns, and wire your Web Vitals and rating trends into a dashboard you actually look at."
+---
+
+The Built for Shopify badge marks apps meeting Shopify's highest published bar: admin Web Vitals within strict budgets, the latest App Bridge embedded experience, at least 50 net paid installs and five reviews, and Polaris-aligned design. In exchange, Shopify grants a search boost and premium discovery placements. Here is what earning it takes, honestly.
+
+![Laptop showing performance metrics that Built for Shopify apps must meet](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80)
+
+## What the Program Is (and What the Badge Isn't)
+
+Built for Shopify is Shopify's quality-gated tier of the App Store. Apps that meet the [published requirements](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements) get a badge on their listing and, more importantly, access to distribution surfaces that ordinary listings never touch. Shopify describes the program in its [Built for Shopify overview](https://shopify.dev/docs/apps/launch/built-for-shopify), and the 2025 program update on the [Partners blog](https://www.shopify.com/partners/blog/built-for-shopify-updates) shows the direction of travel: more perks for status-holders, and a steadily rising bar.
+
+Two framing mistakes cost founders time. The first is treating it as a badge, when it is really a placement contract: you keep meeting the bar, Shopify keeps putting you on shelves merchants browse. The second is treating it as a finish line, when Shopify re-reviews at least annually and revokes status from apps that slip. We covered why those placements matter more every quarter in our piece on [app discovery in the AI era](/blog/built-for-shopify-app-discovery-ai-era); this guide is the companion piece about actually earning them.
+
+## The Requirement Categories
+
+The requirements sit in four groups, plus category-specific criteria layered on top. The numbers below reflect the requirements page as of mid-2026; check it before you plan, because Shopify adds criteria with effective dates.
+
+### Merchant utility thresholds
+
+Before performance even gets measured, your app needs evidence merchants use and like it:
+
+- A minimum of 50 net installs from active shops on paid plans
+- At least five reviews
+- A minimum recent rating (Shopify weights recency, so ancient five-star reviews don't carry a declining app)
+
+This is the gate that makes Built for Shopify unreachable at launch. A brand-new app cannot qualify on day one by design, which is why the right move is architecting for the bar from the start and letting the utility metrics accumulate while you grow.
+
+### Performance budgets
+
+Admin performance is measured with real-user Web Vitals at the 75th percentile, each requiring at least 100 measurements over the trailing 28 days:
+
+- Largest Contentful Paint: 2.5 seconds or less
+- Cumulative Layout Shift: 0.1 or less
+- Interaction to Next Paint: 200 milliseconds or less
+
+On the storefront side, your app must not drag a store's Lighthouse performance score down by more than ten points. Shopify's [performance documentation](https://shopify.dev/docs/apps/build/performance) covers how these are assessed. Note what p75 means in practice: it is not your fast case or your average case. A quarter of your real merchant sessions can be slower than the budget and you still fail. Merchants on aging laptops with forty tabs open are inside your measurement window.
+
+### Embedded integration
+
+Built for Shopify apps live inside the admin, natively:
+
+- The latest version of App Bridge, loaded per Shopify's requirements (Shopify made this mandatory via [changelog notice](https://shopify.dev/changelog/latest-version-of-app-bridge-required-for-built-for-shopify), with an effective date, which is typical of how the bar moves)
+- Session token authentication rather than cookie-based sessions
+- Primary functionality available within the Shopify admin, not on an external site the merchant gets bounced to
+- Theme app extensions for storefront features; using the Asset API to edit theme files is disallowed for most app types
+
+If your app began life as a standalone SaaS with a thin Shopify wrapper, this category is usually where the re-architecture bill lands. The [Shopify app development guide](/blog/shopify-api-app-development-guide) covers the embedded-first foundations that avoid the bill entirely.
+
+### Design and merchant experience
+
+The design standards read as Polaris alignment plus guardrails against user-hostile patterns: mobile responsiveness without horizontal scrolling, clear contextual error messaging, WCAG contrast standards for text, dismissible promotional content, no countdown timers or guilt-based upgrade prompts, and premium features clearly labeled rather than dangled. None of this is exotic, but it is checked, and apps ported from outside the ecosystem routinely fail on feel: navigation that fights the admin, modals where Polaris expects pages, custom components where system ones exist.
+
+### Category-specific criteria
+
+Certain categories carry measured operational requirements on top of everything above. Examples from the requirements page: fulfillment services need high completion and callback success rates with minimum fulfilled volume; carrier services need p95 rate responses at 500 milliseconds or less; subscription apps must use the Selling Plan and Subscription Contract APIs; marketing apps must use Web Pixel extensions rather than script tags. If you operate in one of these categories, read your section first, because these criteria are often the binding constraint.
+
+## Requirements at a Glance
+
+| Area | The bar | How it's measured |
+|---|---|---|
+| Utility | 50+ net paid installs, 5+ reviews, minimum recent rating | Partner Dashboard metrics, ongoing |
+| Admin performance | LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms at p75 | 100+ real-user measurements per 28 days |
+| Storefront impact | ≤ 10-point Lighthouse reduction | Storefront performance assessment |
+| Integration | Latest App Bridge, session tokens, embedded primary UX | Technical review |
+| Theme handling | Theme app extensions, no Asset API edits | Technical review |
+| Design | Polaris alignment, mobile, accessibility, no dark patterns | UX review |
+| Category-specific | Varies (latency, completion rates, required APIs) | Operational metrics per category |
+
+## A Realistic Timeline
+
+The honest answer is months, and the floor is set by physics rather than paperwork. Three clocks run in sequence and partly in parallel:
+
+**The install clock.** Fifty net installs from active paid shops takes as long as your distribution takes. For a well-positioned app in a real category, that can be a few months; for a quiet launch, indefinitely. This clock starts at launch and nothing about Built for Shopify accelerates it, which is the program's chicken-and-egg critique and also its point.
+
+**The measurement clock.** Performance is proven over trailing 28-day windows with minimum measurement counts. Ship a fix today and the window needs roughly a month to fill with post-fix data. Two performance problems discovered sequentially cost two months, which is the argument for finding them all at once with your own real-user monitoring before applying.
+
+**The review clock.** Once you apply through the Partner Dashboard, Shopify evaluates against the current criteria. Budget for at least one round of feedback, particularly on design and embedded UX, where the judgment is qualitative.
+
+The compound advice: instrument Web Vitals from your first deploy, architect embedded-first, and let the utility metrics accumulate while you build. Teams that do this treat the application as a formality. Teams that sprint at the bar after a year of standalone-app habits find each 28-day window turning a two-week fix into a six-week proof.
+
+## What the Badge Pays Back
+
+The payoff comes as placements, and it is worth being precise about which claims are load-bearing:
+
+- **A search-ranking boost** in App Store search, where most active merchant intent concentrates
+- **Eligibility for premium collections**, including the homepage and category surfaces merchants see before scrolling
+- **AI-driven recommendation surfacing**, including Shopify's assistant recommending apps and personalized placement modules
+
+What Shopify does not publish is a universal conversion uplift number, so treat any precise "the badge lifts installs by X%" claim you encounter as unverified. What we can say from working with app founders is directional and consistent: status moves listings onto the shelves where organic installs actually happen, and founders report the effect compounding in competitive categories where merchants use the badge as a tiebreaker between similar apps.
+
+There is also a defensive payoff people underrate. As building gets cheaper and the store gets noisier, quality-gated placement is the one distribution channel a weekend clone cannot buy into. And increasingly, discovery extends beyond the store itself: merchants ask AI assistants which app to install, and [how AI systems describe your app](/blog/shopify-apps-ai-visibility) becomes its own channel. The badge feeds that too, since recommendation systems key on the same quality signals.
+
+Two second-order effects show up after the placements. Pricing power improves, because the badge functions as a tiebreaker that lets you hold price where an unbadged competitor discounts to close. And paid acquisition efficiency improves, because traffic you send to a badged listing converts better than the same traffic sent to an identical listing without it. Neither effect is published or precisely measurable from outside, but both come up consistently when founders compare notes, and both compound with the organic placement gains rather than replacing them.
+
+## A 90-Day Path, If Your Fundamentals Are Close
+
+For an app already embedded with App Bridge and real install volume, a focused quarter is a realistic shape for the push. A structure that works:
+
+**Weeks 1 and 2: measure and score.** Wire real-user Web Vitals into the admin UI if you haven't, score yourself against every row of the table above, and read your category-specific section on the requirements page. The output is a ranked defect list, not code.
+
+**Weeks 3 to 6: fix performance and UX in one batch.** Ship all performance work together so a single 28-day window proves the whole batch. In parallel, close the design gaps: Polaris patterns on your worst screens, mobile widths, error states. Add a well-timed review ask at the moment merchants first get value, since the five-review floor moves slowest.
+
+**Weeks 7 to 10: let the window fill.** Resist shipping performance-relevant changes while measurements accumulate. Use the time on category-specific criteria and support process, and watch p75 daily so a regression doesn't quietly restart the clock.
+
+**Weeks 11 to 13: apply and respond.** Submit through the Partner Dashboard, then treat reviewer feedback with the same discipline as app review: fix everything flagged, reply with a changelog, keep the thread moving.
+
+If your install count or review count is below the floor, the honest version of this plan is longer, because no engineering sprint accelerates merchant adoption. Run the same sequence, but let distribution set the calendar.
+
+## Common Blockers, From the Field
+
+**INP failures from heavy admin frontends.** The 200-millisecond interaction budget is the requirement that catches modern JavaScript apps. Large bundles, unvirtualized tables, and synchronous work on click all show up at p75 even when the app feels fine on your machine.
+
+**Asset API dependency.** Apps that write theme files directly must move to theme app extensions, and for older storefront apps that is a genuine rebuild, not a refactor.
+
+**Not enough measurements.** Low-traffic apps can fail to accumulate 100 measurements in 28 days, leaving performance unproven regardless of how fast the app is. Growing install volume is the only fix.
+
+**The five-review gate.** Young apps with happy but silent users stall here. Build a well-timed, non-pushy review ask into the moment a merchant first gets real value.
+
+**Ported UX.** Standalone SaaS interfaces wrapped in an iframe fail design review on feel. Budget for rebuilding key screens in Polaris patterns rather than restyling.
+
+**Regression after earning it.** Annual re-review plus moving criteria means status is a subscription paid in engineering discipline. Losing the badge after a redesign is common enough to plan against: put the budgets in CI, and make someone own the requirements page. App-side analytics matter here too; with [Mantle winding down](/blog/mantle-shutting-down-shopify-app-partners), make sure whatever replaces it tracks the install, retention, and rating trends the program measures.
+
+## Your Next Step
+
+Open the [requirements page](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements) next to your app and score yourself against the table above, one row at a time. Then wire up real-user Web Vitals monitoring in your admin UI this week, because every fix you find is a 28-day proof window, and the sooner each window starts, the sooner it closes. If you want to feel the merchant's side of the bar, install your app on your own store; a trial store on [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) running your app alongside the category leaders makes the UX gap, or the lack of one, obvious in an afternoon.

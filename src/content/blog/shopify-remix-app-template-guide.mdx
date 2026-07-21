@@ -1,0 +1,276 @@
+---
+title: "Shopify Remix App Template: Complete Guide (2026)"
+excerpt: "Anatomy of the Shopify Remix app template: shopify.app.toml, session token auth, Prisma session storage, webhooks, and fixes for the common gotchas."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify Apps", "Remix", "Shopify CLI", "Session Tokens", "Prisma", "Webhooks"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the Shopify Remix app template?"
+    answer: "It is the official app scaffold Shopify maintains, generated when you run shopify app init and pick Remix. It is a full-stack Node app: Remix handles routing and server rendering, the @shopify/shopify-app-remix package handles OAuth-free embedded auth via session tokens and token exchange, Prisma stores sessions, and an extensions directory feeds the CLI deploy pipeline. Shopify's own docs, examples, and CLI workflows all assume this template, so starting anywhere else means translating every example you read. For most new apps in 2026 it is the correct default rather than one option among many."
+  - question: "How does authentication work in the Remix app template?"
+    answer: "Through session tokens rather than cookies. App Bridge, loaded in the embedded iframe, fetches a short-lived signed JWT from the Shopify admin and attaches it to requests to your server. On the server, authenticate.admin(request) verifies that token and, using token exchange, swaps it for an API access token for that shop, which it persists in session storage. There is no redirect-based OAuth grant screen for standard installs anymore; Shopify-managed installation reads your required scopes from shopify.app.toml and prompts the merchant directly. Your code mostly just calls authenticate.admin and uses the returned admin client."
+  - question: "Do I have to use Prisma and SQLite for session storage?"
+    answer: "No. The template defaults to Prisma with SQLite because it works with zero setup, but session storage is a swappable interface. Shopify publishes adapters for Postgres, MySQL, Redis, MongoDB, and others under @shopify/shopify-app-session-storage-*. What you should not do is ship the SQLite default to production on a host with an ephemeral filesystem: every restart wipes sessions and merchants get bounced through reinstall-like auth flows. The usual production move is keeping Prisma but pointing it at Postgres, which is a one-line datasource change plus a migration."
+  - question: "How do I add a new page that queries the Admin API?"
+    answer: "Create a route file under app/routes named with the app prefix, for example app.inventory.jsx, so it renders inside the authenticated layout from app.jsx. In its loader, call authenticate.admin(request) to get an admin client, run your GraphQL query with admin.graphql, and return the JSON. The component reads it with useLoaderData and renders Polaris UI. The key rule: query the Admin API from loaders and actions only. Calling it from the browser fails on CORS and would expose your access token if it did not."
+  - question: "Why does my embedded app get stuck in an authentication loop?"
+    answer: "Almost always one of three causes. First, a stale or wrong application_url: the URL Shopify loads in the iframe must match where your app actually runs, and shopify app dev normally manages this for you in development. Second, missing App Bridge context, such as opening the app URL directly in a browser tab instead of inside the admin, where no session token can be fetched. Third, mixed app credentials: an old API key in your environment while the toml points at a different app. Fix the URL and credentials first; that resolves the large majority of loops."
+  - question: "What happens when I change my app's access scopes?"
+    answer: "Scopes live in the [access_scopes] section of shopify.app.toml, so a scope change is a config change. Run shopify app deploy to release it. With Shopify-managed installation, merchants are prompted to approve the new scopes the next time they open the app; until they approve, API calls needing the new scope fail with access errors. In development, shopify app dev picks up the change and reinstalls against your dev store. Audit scopes before submission: over-broad requests are one of the most common App Store review rejections."
+---
+
+The Shopify Remix app template is the official starting point for embedded apps in 2026. It ships session token auth with token exchange, Prisma session storage, GraphQL Admin API clients, webhook plumbing, and an extensions pipeline. This guide walks the anatomy file by file, then covers the gotchas that cost new app developers the most time.
+
+![Code editor showing the file structure of a Shopify Remix app](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80)
+
+## What the template decides for you
+
+Run `shopify app init`, pick Remix, and Shopify has made about a dozen architectural decisions on your behalf: embedded by default, session tokens instead of cookie auth, token exchange instead of redirect OAuth, Prisma for persistence, Vite for the build, and the GraphQL Admin API for everything (REST product endpoints are legacy; [GraphQL vs REST](/blog/shopify-graphql-vs-rest-api) covers why that fight is over).
+
+Accepting these defaults is usually right. Every shopify.dev example, every CLI workflow, and most community answers assume this exact shape. If you want the wider context of app types and the Partner program first, start with the [Shopify API and app development guide](/blog/shopify-api-app-development-guide), then come back here for the internals.
+
+To follow along you need a Partner account and a development store to install against; both are free. A live [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store is worth having too once your app touches checkout or real order flows, since dev stores only simulate payments.
+
+## The file structure that matters
+
+Fresh scaffold, trimmed to the files you will actually touch:
+
+```bash
+restock-radar/
+├── shopify.app.toml          # app config: URLs, scopes, webhooks
+├── prisma/
+│   └── schema.prisma         # Session model (+ your own tables)
+├── app/
+│   ├── shopify.server.js     # shopifyApp() setup: the heart of the app
+│   ├── db.server.js          # Prisma client singleton
+│   ├── entry.server.jsx      # Remix server entry (CSP headers live here)
+│   └── routes/
+│       ├── app.jsx           # authenticated layout: App Bridge + nav
+│       ├── app._index.jsx    # your app's home page
+│       ├── auth.$.jsx        # auth plumbing (rarely edited)
+│       └── webhooks.app.uninstalled.jsx
+├── extensions/               # UI extensions and Functions
+└── package.json
+```
+
+| File | What it does | How often you touch it |
+|---|---|---|
+| `shopify.app.toml` | Declares scopes, webhooks, URLs to Shopify | Often |
+| `app/shopify.server.js` | Configures auth, session storage, billing | Occasionally |
+| `app/routes/app.*.jsx` | Your actual pages | Constantly |
+| `app/routes/webhooks.*.jsx` | Webhook handlers | Per topic |
+| `prisma/schema.prisma` | Session model plus your data | As features grow |
+| `extensions/` | Admin blocks, checkout UI, Functions | Per extension |
+
+The naming convention doing quiet work here: Remix flat routes. `app.inventory.jsx` becomes `/app/inventory` and renders inside the `app.jsx` layout, which is what wires up App Bridge and authenticated context. Name a route outside the `app.` prefix and it renders without any of that, which is correct for webhooks and public pages and wrong for admin UI.
+
+## shopify.app.toml: your app's contract with Shopify
+
+This file is the source of truth for how Shopify sees your app. The CLI reads it, `shopify app deploy` pushes it, and version control tracks it.
+
+```toml
+client_id = "a1b2c3d4e5f6"
+name = "restock-radar"
+application_url = "https://restock-radar.fly.dev"
+embedded = true
+
+[access_scopes]
+scopes = "read_products,write_products"
+
+[auth]
+redirect_urls = ["https://restock-radar.fly.dev/auth/callback"]
+
+[webhooks]
+api_version = "2026-04"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+uri = "/webhooks/app/uninstalled"
+
+[[webhooks.subscriptions]]
+topics = ["products/update"]
+uri = "/webhooks/products/update"
+```
+
+Three things worth internalizing. Scopes are config, not code: change them here and deploy, and merchants approve on next load. Webhook subscriptions are declarative: no imperative registration calls scattered through your codebase, and the subscription ships atomically with each app version. And `api_version` pins which quarterly Admin API release your webhooks use; keep it matched to the version your queries target.
+
+Multiple environments are handled with multiple toml files (`shopify.app.staging.toml`) and `shopify app config use staging`. Do this early; pointing one app registration at both staging and production URLs ends badly.
+
+## Auth: session tokens and token exchange
+
+The template's auth model confuses people who built Shopify apps before 2024, because the OAuth redirect dance is mostly gone. The current flow:
+
+1. A merchant opens your app inside the Shopify admin iframe.
+2. App Bridge (a script tag from Shopify's CDN) fetches a session token: a signed JWT identifying the shop and user, valid for about a minute.
+3. Your frontend sends that token with each request to your Remix server.
+4. On the server, `authenticate.admin(request)` verifies the JWT, exchanges it for an API access token for that shop (token exchange), stores the result in session storage, and hands you a ready-to-use Admin API client.
+
+All of that is one line in practice:
+
+```js
+export const loader = async ({ request }) => {
+  const { admin, session } = await authenticate.admin(request);
+  // admin.graphql(...) is authenticated for session.shop
+};
+```
+
+Installation is Shopify-managed: the admin reads your required scopes from the toml and shows the grant screen itself, with no `/auth/begin` redirect round-trip for the standard case. The `auth.$.jsx` route still exists to catch edge flows; you will almost never edit it.
+
+The one rule to tattoo somewhere: every route that renders admin UI or touches merchant data starts with `authenticate.admin(request)`. It either resolves with a valid context or throws the correct redirect/401 response for you. Hand-rolling that logic is how apps end up with auth bypasses.
+
+## Session storage with Prisma
+
+Token exchange produces access tokens, and they have to live somewhere. The template stores them via Prisma:
+
+```prisma
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+}
+```
+
+Wired up in `shopify.server.js`:
+
+```js
+import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+import prisma from "./db.server";
+
+const shopify = shopifyApp({
+  apiKey: process.env.SHOPIFY_API_KEY,
+  apiSecretKey: process.env.SHOPIFY_API_SECRET,
+  appUrl: process.env.SHOPIFY_APP_URL,
+  sessionStorage: new PrismaSessionStorage(prisma),
+  // ...
+});
+```
+
+Development uses SQLite and that is fine. Production on Fly.io, Render, or anything with ephemeral disks needs Postgres (or another adapter); otherwise each deploy wipes `dev.sqlite` and every merchant session with it. The switch is the Prisma `datasource` block plus `prisma migrate deploy` in your release step. Add your own models to the same schema; a `Shop` table keyed on domain, holding your app's per-store settings, shows up in nearly every real app.
+
+## Adding a page that queries the Admin API
+
+The bread-and-butter pattern. New file, `app/routes/app.inventory.jsx`:
+
+```js
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "../shopify.server";
+
+export const loader = async ({ request }) => {
+  const { admin } = await authenticate.admin(request);
+
+  const response = await admin.graphql(
+    `#graphql
+    query LowStock {
+      productVariants(first: 25, query: "inventory_quantity:<5") {
+        nodes {
+          id
+          sku
+          inventoryQuantity
+          product { title }
+        }
+      }
+    }`
+  );
+
+  const { data } = await response.json();
+  return json({ variants: data.productVariants.nodes });
+};
+
+export default function Inventory() {
+  const { variants } = useLoaderData();
+  return (
+    <s-page heading="Low stock">
+      <s-section heading="Variants under 5 units">
+        {variants.map((v) => (
+          <s-text key={v.id}>
+            {v.product.title} ({v.sku ?? "no SKU"}): {v.inventoryQuantity}
+          </s-text>
+        ))}
+      </s-section>
+    </s-page>
+  );
+}
+```
+
+Add a link in the nav inside `app.jsx` and you have a page. Two notes. Recent scaffolds render app home with Polaris web components (the `s-` elements above); older ones use Polaris React imports. The loader pattern is identical either way, so match whatever your scaffold shipped. Second, the query cost model: GraphQL bills by complexity, and a loader that over-fetches will eventually throttle. Patterns for staying under the limit are in [Catalog API rate limits and errors](/blog/shopify-catalog-api-rate-limits-errors), and the [Admin API guide](/blog/shopify-admin-api-guide) covers the cost calculation itself.
+
+## Webhooks: registration and handling
+
+Registration you have already seen: `[[webhooks.subscriptions]]` entries in the toml. Handlers are Remix routes named to match the URI:
+
+```js
+// app/routes/webhooks.products.update.jsx
+import { authenticate } from "../shopify.server";
+
+export const action = async ({ request }) => {
+  const { shop, topic, payload } = await authenticate.webhook(request);
+
+  // fast work only; queue the rest
+  await recordProductChange(shop, payload);
+
+  return new Response();
+};
+```
+
+`authenticate.webhook` verifies the HMAC signature against the raw request body. That "raw" matters: any middleware that parses or rewrites the body before verification breaks the HMAC and every delivery 401s. The template's setup avoids this; custom server tweaks are how it usually breaks.
+
+Respond fast with a 2xx. Shopify retries failed deliveries and will eventually remove subscriptions from endpoints that keep failing. High-volume topics like `products/update` arrive in bursts (a bulk edit can produce thousands of events), so idempotency and debouncing are not optional at scale; [catalog change webhooks](/blog/shopify-catalog-change-webhooks) goes deep on those patterns.
+
+Test locally with `shopify app webhook trigger --topic products/update --delivery-method http --address http://localhost:3000/webhooks/products/update`.
+
+## The extensions folder
+
+Anything under `extensions/` deploys to Shopify's infrastructure (not your server) when you run `shopify app deploy`: admin blocks and actions, checkout UI extensions (the replacement for checkout.liquid, which no longer exists as an option), theme app extensions, and Shopify Functions for discount, shipping, and payment logic now that Scripts have sunset. Generate each with `shopify app generate extension`; the CLI writes the TOML targeting config so the extension appears in the right admin or checkout surface.
+
+The mental model: your Remix server is the stateful brain, extensions are stateless UI and logic that Shopify hosts and injects. Extensions talk back to your server over authenticated fetch when they need data you own.
+
+## Environment variables and production wiring
+
+The template reads its identity from the environment, and the split between toml and env trips people up: the toml declares what Shopify should know (scopes, URLs, webhook topics), while env vars hold what your server needs at runtime.
+
+The ones that matter:
+
+- `SHOPIFY_API_KEY` and `SHOPIFY_API_SECRET`: the app's client credentials from the Partner Dashboard.
+- `SHOPIFY_APP_URL`: where the server believes it is running; must agree with `application_url`.
+- `DATABASE_URL`: the Prisma datasource.
+- `SCOPES`: optional when scopes are managed in the toml, which they should be.
+
+In development you rarely set any of these by hand, because `shopify app dev` injects them from the linked app. For production hosts, the CLI will read them back out for you:
+
+```bash
+shopify app env show   # print the app's keys and URLs
+shopify app env pull   # write them into .env for local tooling
+```
+
+Copy the values into your host's secret manager rather than committing an `.env` file. When credentials look right but auth still fails, compare the `client_id` in the toml against `SHOPIFY_API_KEY` in the running environment first; a mismatch between the two produces convincingly weird symptoms.
+
+## The gotchas list
+
+Things that reliably burn a day each, and the fix:
+
+**Embedded auth loop.** Symptoms: app loads, flashes, redirects, repeats. Causes in order of likelihood: `application_url` mismatch (stale tunnel URL from a previous `shopify app dev` session; restart or run `shopify app dev --reset`), opening the app URL directly instead of through the admin, or mismatched API key between `.env` and the toml.
+
+**CORS errors calling the Admin API from the browser.** Not a config problem, a design problem. The Admin API does not accept browser calls from apps. Move the query into a loader or action; if client-side fetch is unavoidable, fetch your own Remix route and let the server proxy.
+
+**Scope change, no effect.** Editing `[access_scopes]` does nothing until you `shopify app deploy` (or restart `shopify app dev` locally), and API calls still fail until the merchant re-approves on next app load. Build a graceful path for the in-between state.
+
+**Sessions vanish after deploy.** SQLite on an ephemeral filesystem. Move to Postgres, run `prisma migrate deploy` on release.
+
+**Webhook 401s in production.** Body parsing before HMAC verification, or the webhook secret from a different app instance (staging secret in prod env). Compare `client_id` first.
+
+**Admin refuses to embed the app after adding security headers.** The template's `entry.server.jsx` sets a `Content-Security-Policy` with `frame-ancestors` scoped to the shop and Shopify admin. A reverse proxy or hosting platform that appends its own frame-blocking headers (`X-Frame-Options: DENY` is the classic) overrides that and the iframe goes blank. Strip the conflicting header at the proxy for app routes.
+
+## Next step
+
+Scaffold the template, then make one deliberate modification of each kind before writing real features: add a page with a loader query, add a webhook subscription and handler, and change a scope and watch the re-approval flow. Those three edits touch every subsystem above, and after them the template stops feeling like a black box.

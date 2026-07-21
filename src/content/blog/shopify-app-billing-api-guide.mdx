@@ -1,0 +1,271 @@
+---
+title: "Shopify App Billing API: Subscriptions and Usage (2026)"
+excerpt: "Implement Shopify app billing with GraphQL: appSubscriptionCreate, usage records, free trials, test charges, and proration, with working mutations."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify API", "Billing", "GraphQL", "App Development", "Subscriptions", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the Shopify App Billing API?"
+    answer: "The Billing API is the set of GraphQL Admin API mutations that let a Shopify app charge merchants through their existing Shopify invoice. The core mutations are appSubscriptionCreate for recurring plans, appUsageRecordCreate for metered charges, and appPurchaseOneTimeCreate for one-off purchases. Merchants approve each charge on a Shopify-hosted confirmation page, Shopify collects the money with the merchant's normal Shopify bill, and pays you out through your Partner account. Apps distributed through the Shopify App Store are required to use Shopify's billing system rather than an external processor like Stripe."
+  - question: "Should I use managed pricing or the Billing API?"
+    answer: "Use managed pricing (Shopify calls it Shopify App Pricing) unless you have a reason not to. You define plans in the Partner Dashboard, Shopify hosts the plan selection page, and upgrades, downgrades, trials, and proration are handled for you with no billing code in your app. The Billing API is the right choice when you need dynamic per-merchant pricing, negotiated contracts, usage-based charges with custom logic, or in-app plan switching that managed pricing cannot express. Shopify's docs now describe manual Billing API pricing as the path for apps with specific needs, not the default."
+  - question: "How do free trials work with appSubscriptionCreate?"
+    answer: "Pass the trialDays argument on appSubscriptionCreate. The merchant approves the subscription up front, but billing starts only after the trial ends; if they cancel during the trial they pay nothing. One catch worth handling: if a merchant uninstalls and reinstalls, a naive implementation grants a fresh trial every time. Store the shop's original trial start (in your own database, keyed by shop domain) and pass a reduced or zero trialDays on reinstall. Shopify does not track remaining trial days across subscription objects for you."
+  - question: "How do usage charges and capped amounts work?"
+    answer: "A usage-based subscription includes a line item with appUsagePricingDetails, which requires human-readable terms and a cappedAmount, the maximum Shopify will let you bill in one 30-day cycle. You then post individual charges with appUsageRecordCreate as usage happens. Records that would push the cycle total past the cap are rejected with a userError, so your app should watch balanceUsed against the cap and prompt the merchant to approve a higher cap via appSubscriptionLineItemUpdate before they hit it. Use the idempotencyKey argument so a retried mutation cannot double-charge."
+  - question: "How much revenue share does Shopify take from apps?"
+    answer: "Under the terms that took effect January 1, 2025, developers registered for App Store distribution pay 0% revenue share on their first 1 million USD of lifetime gross app revenue, then 15% on everything above that. The threshold is lifetime, not annual; before 2025 it reset every year. Registration costs a one-time 19 USD fee, and a 2.9% payment processing fee applies separately. Large developers (over 20 million USD in prior-year App Store earnings, or 100 million USD gross company revenue) pay 15% on all app revenue. Details are on shopify.dev's revenue share page."
+  - question: "How do I test billing without charging real money?"
+    answer: "Pass test: true on appSubscriptionCreate or appPurchaseOneTimeCreate. The merchant sees the normal approval screen and the subscription behaves normally (status, webhooks, usage records) but no invoice is ever created. Development stores are the standard sandbox because they can install unreleased apps and never have real billing. Two habits prevent embarrassing incidents: derive the test flag from configuration rather than hardcoding it, and add a startup assertion that production builds never set test: true, because a hardcoded flag that ships to production means every customer gets your app free."
+---
+
+The Shopify App Billing API is a set of GraphQL Admin API mutations that charge merchants through their Shopify invoice: `appSubscriptionCreate` for recurring plans, `appUsageRecordCreate` for metered billing, and `appPurchaseOneTimeCreate` for one-off charges. Shopify collects the money, and you keep 100% of your first $1M in lifetime app revenue before a 15% share applies.
+
+![Calculator and financial documents representing app subscription billing](https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80)
+
+Apps distributed through the Shopify App Store must use Shopify's billing system, so this is not an optional integration. The good news: because charges land on the merchant's existing Shopify invoice, conversion to paid is meaningfully better than asking merchants to enter a credit card in a third-party checkout. This guide covers the GraphQL mutations, trials, usage caps, proration, test charges, and the bugs that bite most billing implementations. It assumes you have an app running with session token auth; if not, start with the [Shopify app development guide](/blog/shopify-api-app-development-guide).
+
+All examples use the GraphQL Admin API (version `2026-04` at the time of writing). REST billing endpoints are legacy and should not be used for new work; the [GraphQL vs REST comparison](/blog/shopify-graphql-vs-rest-api) covers why in detail.
+
+## Managed pricing vs the Billing API
+
+Before writing any billing code, decide whether you need to. Shopify now offers two paths:
+
+| | Managed pricing (Shopify App Pricing) | Billing API (manual) |
+|---|---|---|
+| Where plans are defined | Partner Dashboard | Your code, at runtime |
+| Plan selection page | Hosted by Shopify | Built by you |
+| Upgrades and downgrades | Handled by Shopify, prorated | You call mutations and pick replacement behavior |
+| Free trials | Configured per plan, trial days tracked across reinstalls | `trialDays` argument, reinstall tracking is on you |
+| Usage-based charges | Supported via usage-based plan components | Full control with `appUsageRecordCreate` |
+| Per-merchant custom pricing | No | Yes |
+| Billing code you maintain | Roughly zero | Mutations, webhooks, state machine |
+
+Shopify's own [billing documentation](https://shopify.dev/docs/apps/launch/billing) now positions managed pricing as the recommended path and manual Billing API pricing as the option for apps with specific needs. That framing is fair. If your pricing is a simple grid of monthly plans, managed pricing removes an entire class of bugs, including the reinstall-trial exploit and the returnUrl race described later.
+
+Use the Billing API when you need things managed pricing cannot do: negotiated per-merchant prices, dynamic pricing based on store size, usage charges computed by your own logic, contextual upgrade prompts inside your app, or migration flows from grandfathered plans. Most apps earning serious revenue end up here eventually. Worth noting: [Mantle, a popular third-party billing layer, is shutting down](/blog/mantle-shutting-down-shopify-app-partners), which has pushed many partners back to first-party billing code, and this guide covers what that code needs to handle.
+
+## How a billing flow actually works
+
+Every charge type follows the same three-step dance:
+
+1. Your app calls a create mutation. Shopify returns a `confirmationUrl`.
+2. You redirect the merchant to `confirmationUrl`, a Shopify-hosted approval page.
+3. The merchant approves. Shopify activates the charge and redirects them to your `returnUrl`.
+
+The subscription is not active until the merchant approves. Between steps 1 and 3 it sits in `PENDING`, and merchants abandon approval pages more often than you would expect. Treat activation as an event you observe (via the `APP_SUBSCRIPTIONS_UPDATE` webhook or a status check on next load), never as something you assume because you sent someone to the approval page.
+
+## Creating a recurring subscription
+
+Here is the core mutation for a monthly plan:
+
+```graphql
+mutation CreateSubscription(
+  $name: String!
+  $lineItems: [AppSubscriptionLineItemInput!]!
+  $returnUrl: URL!
+  $trialDays: Int
+  $test: Boolean
+) {
+  appSubscriptionCreate(
+    name: $name
+    lineItems: $lineItems
+    returnUrl: $returnUrl
+    trialDays: $trialDays
+    test: $test
+  ) {
+    appSubscription {
+      id
+      status
+    }
+    confirmationUrl
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+With variables for a $29/month plan and a 14-day trial:
+
+```json
+{
+  "name": "Growth Plan",
+  "returnUrl": "https://yourapp.example.com/billing/confirm",
+  "trialDays": 14,
+  "test": false,
+  "lineItems": [
+    {
+      "plan": {
+        "appRecurringPricingDetails": {
+          "price": { "amount": 29.0, "currencyCode": "USD" },
+          "interval": "EVERY_30_DAYS"
+        }
+      }
+    }
+  ]
+}
+```
+
+A few practical notes. The `interval` is `EVERY_30_DAYS`, not calendar-monthly; billing cycles are 30-day windows from activation. Switching `interval` to `ANNUAL` gives you yearly billing, which merchants increasingly expect as a discounted option and which cuts involuntary churn from failed monthly payments. And `name` shows up on the merchant's invoice, so make it recognizable; "Pro" from an app whose brand name appears nowhere generates support tickets and chargebacks of goodwill.
+
+To check what a shop currently has, query the current installation:
+
+```graphql
+query ActiveSubscription {
+  currentAppInstallation {
+    activeSubscriptions {
+      id
+      name
+      status
+      test
+      trialDays
+      currentPeriodEnd
+    }
+  }
+}
+```
+
+Run this on app load rather than trusting your local database. Merchants cancel subscriptions by uninstalling, and Shopify cancels the subscription automatically at uninstall, so your database will drift from reality if a webhook gets missed.
+
+## Usage-based and metered billing
+
+Usage billing attaches a second line item to the subscription. A subscription can hold at most one recurring line item and one usage line item, so the common "base fee plus per-order fee" model looks like this:
+
+```json
+{
+  "name": "Scale Plan",
+  "returnUrl": "https://yourapp.example.com/billing/confirm",
+  "lineItems": [
+    {
+      "plan": {
+        "appRecurringPricingDetails": {
+          "price": { "amount": 49.0, "currencyCode": "USD" },
+          "interval": "EVERY_30_DAYS"
+        }
+      }
+    },
+    {
+      "plan": {
+        "appUsagePricingDetails": {
+          "terms": "$0.05 per order processed",
+          "cappedAmount": { "amount": 100.0, "currencyCode": "USD" }
+        }
+      }
+    }
+  ]
+}
+```
+
+The `terms` string is shown to the merchant on approval; write it the way you would explain the fee to a customer. The `cappedAmount` is a hard ceiling on what you can bill in one 30-day cycle, and the merchant is agreeing to the cap, not to unlimited usage.
+
+You then record charges as they happen:
+
+```graphql
+mutation RecordUsage(
+  $subscriptionLineItemId: ID!
+  $price: MoneyInput!
+  $description: String!
+  $idempotencyKey: String
+) {
+  appUsageRecordCreate(
+    subscriptionLineItemId: $subscriptionLineItemId
+    price: $price
+    description: $description
+    idempotencyKey: $idempotencyKey
+  ) {
+    appUsageRecord {
+      id
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+Two failure modes to design for. First, a usage record that would push the cycle total past `cappedAmount` is rejected with a userError, and your app silently stops earning while continuing to deliver service. Track the line item's `balanceUsed` against the cap and prompt the merchant to approve a raise (via `appSubscriptionLineItemUpdate`, which returns its own `confirmationUrl`) at around 80% consumption. Second, network retries can create duplicate charges; always pass an `idempotencyKey` (a UUID tied to the underlying event, like the order ID) so a replayed mutation is a no-op. Merchants notice double charges faster than any monitoring you will ever build.
+
+If you batch usage, aggregate hourly or daily rather than posting one record per event. Usage record mutations count against your API rate limits like any other request, and a high-volume store can generate more billable events than your [rate limit budget](/blog/shopify-catalog-api-rate-limits-errors) comfortably absorbs.
+
+## One-time charges
+
+For lifetime deals, setup fees, or paid add-ons, `appPurchaseOneTimeCreate` follows the same confirm-and-return flow:
+
+```graphql
+mutation OneTimePurchase($name: String!, $price: MoneyInput!, $returnUrl: URL!, $test: Boolean) {
+  appPurchaseOneTimeCreate(name: $name, price: $price, returnUrl: $returnUrl, test: $test) {
+    appPurchaseOneTime {
+      id
+      status
+    }
+    confirmationUrl
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+One-time charges are not refundable through the API; refunds go through Partner support. Price accordingly, and prefer subscriptions for anything that resembles ongoing service. App Store review also looks skeptically at large one-time charges positioned before merchants can evaluate the app.
+
+## Test charges
+
+Set `test: true` on any create mutation and the full flow runs, including approval, `ACTIVE` status, webhooks, and usage records, but no money moves. Test subscriptions are flagged with `test: true` on the subscription object so you can tell them apart in queries.
+
+Develop against a development store: they never incur charges, they can install unreleased apps, and you get one free from any Partner account. You can also point a staging build at a regular [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) trial store when you want to rehearse the merchant experience end to end on a store that looks like production.
+
+Guard the flag with configuration, not code edits. A hardcoded `test: true` that ships to production is one of the classic billing bugs: everything works, dashboards look healthy, and revenue is zero.
+
+## Upgrades, downgrades, and proration
+
+When a merchant changes plans, you do not mutate the existing subscription. You call `appSubscriptionCreate` again with the new plan, and the `replacementBehavior` argument controls what happens to the old one:
+
+| `replacementBehavior` | What happens |
+|---|---|
+| `STANDARD` (default) | Cancels the current subscription immediately on approval and replaces it, except in a few cases (such as annual-to-annual downgrades and annual-to-monthly switches in the same currency) where the swap defers to the next cycle |
+| `APPLY_IMMEDIATELY` | Always cancels and replaces the moment the merchant approves |
+| `APPLY_ON_NEXT_BILLING_CYCLE` | Keeps the current subscription until the cycle ends, then swaps |
+
+For immediate swaps, Shopify prorates: the merchant receives credit for the unused portion of the old charge against the new one, so an upgrade mid-cycle does not double-bill. The exact credit math lives in [Shopify's subscription billing docs](https://shopify.dev/docs/apps/launch/billing/manual-pricing/subscription-billing) and is worth reading before you promise specific numbers in your pricing UI.
+
+Practical guidance: use the default `STANDARD` for upgrades so merchants get the new features instantly, and `APPLY_ON_NEXT_BILLING_CYCLE` for downgrades so nobody feels penalized for paying ahead. Whatever you choose, subscribe to the `APP_SUBSCRIPTIONS_UPDATE` webhook topic and treat it as the source of truth for plan state. The webhook fires on activation, cancellation, and replacement, and it is how you find out about the cancellations that happen without your UI being involved.
+
+## What Shopify takes: revenue share in 2026
+
+The economics, per [Shopify's revenue share documentation](https://shopify.dev/docs/apps/launch/distribution/revenue-share):
+
+- **0% revenue share on your first $1,000,000 USD of lifetime gross App Store revenue**, for developers who register (one-time $19 USD fee per Partner account).
+- **15% on everything above** that lifetime threshold.
+- A **2.9% payment processing fee** applies separately, plus applicable taxes.
+- Large developers, defined as $20M+ USD in prior-year App Store earnings or $100M+ USD gross company revenue, pay 15% on all app revenue with no 0% band.
+
+The important change: since January 1, 2025 the $1M threshold is **lifetime**, not annual. Under the old terms the counter reset every January. Revenue is also aggregated across associated developer accounts, so splitting apps across Partner accounts does not restart the clock. Model your unit economics on 15% as the steady state and treat the 0% band as runway. Achieving the [Built for Shopify badge](/blog/built-for-shopify-app-discovery-ai-era) does not change the revenue split, but it does change how much revenue there is to split.
+
+## Common billing bugs (and how to avoid them)
+
+**Trusting the returnUrl.** Merchants close tabs. If you flip a shop to paid only when they land on your `returnUrl`, you will have paying customers stuck on free and free users you believe are paying. Reconcile against `activeSubscriptions` on every app load and consume the `APP_SUBSCRIPTIONS_UPDATE` webhook.
+
+**Free trial resets on reinstall.** Uninstalling cancels the subscription; reinstalling and subscribing again grants another `trialDays`. Persist first-trial dates per shop domain on your side and reduce the trial for returning shops.
+
+**Usage silently capped.** Once a cycle's usage hits `cappedAmount`, further records fail. Alert yourself, prompt the merchant, and decide deliberately whether service continues free or pauses.
+
+**Duplicate usage records.** A timeout plus a retry without `idempotencyKey` equals a double charge and a one-star review.
+
+**Frozen and declined states.** Subscriptions can leave `ACTIVE` when a merchant's payment fails or their store closes. Handle `FROZEN`, `CANCELLED`, and `EXPIRED` explicitly rather than treating everything that is not `ACTIVE` as new.
+
+**Test flags in production.** Covered above; assert against it in CI.
+
+**Currency assumptions.** Billing supports multiple currencies, but your reporting probably assumes one. Store the `currencyCode` with every charge from day one.
+
+## Next step
+
+Spin up a development store, create your subscription flow with `test: true`, and walk it end to end four times: fresh install, upgrade, downgrade, and uninstall-then-reinstall. Log the `APP_SUBSCRIPTIONS_UPDATE` payload at every transition and confirm your database matches `currentAppInstallation.activeSubscriptions` after each pass. If those four paths reconcile cleanly, you have a billing implementation ahead of most of the App Store; the [Admin API guide](/blog/shopify-admin-api-guide) covers the auth and rate-limit fundamentals underneath it.

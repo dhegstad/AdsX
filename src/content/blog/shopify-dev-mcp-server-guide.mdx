@@ -1,0 +1,213 @@
+---
+title: "Shopify Dev MCP Server: AI-Assisted App Development"
+excerpt: "The Shopify Dev MCP server grounds Claude Code and Cursor in live GraphQL schema and docs. Setup, the tools it exposes, a real session, and its limits."
+date: "2026-07-21"
+category: "Developers"
+tags: ["MCP", "Shopify Apps", "AI Coding", "Claude Code", "GraphQL", "Developer Tools"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the Shopify Dev MCP server?"
+    answer: "It is an official Model Context Protocol server, published as @shopify/dev-mcp on npm, that runs locally on your machine and gives AI coding assistants structured access to Shopify's developer resources. Instead of an AI writing GraphQL from stale training data, it can search shopify.dev documentation, introspect the current GraphQL schemas (Admin, Storefront, Functions, and others), and validate generated code blocks against those schemas before the code lands in your project. It requires no authentication and no store credentials, because it only reads public developer resources, not merchant data."
+  - question: "How do I connect the Dev MCP server to Claude Code or Cursor?"
+    answer: "For Claude Code, run one command from your project: claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest, then restart Claude Code and the tools appear automatically. For Cursor, add an entry to .cursor/mcp.json with command npx and args ['-y', '@shopify/dev-mcp@latest']; VS Code Copilot uses the same shape in its MCP config. The server starts on demand over stdio, so there is nothing to keep running or deploy. Optional environment variables like POLARIS_UNIFIED and LIQUID switch on Polaris web component and Liquid validation support."
+  - question: "What tools does the Dev MCP server expose?"
+    answer: "Six, in current releases. learn_shopify_api orients the agent on which Shopify APIs exist and should be called first. search_docs_chunks runs semantic search over shopify.dev and returns relevant snippets. fetch_full_docs pulls a complete documentation page when snippets lack context. The schema introspection tool (introspect_graphql_schema in recent versions, introspect_admin_schema in older ones) searches types, queries, and mutations in the live GraphQL schemas. validate_graphql_codeblocks checks generated GraphQL against the real schema and flags nonexistent fields. With the LIQUID flag enabled, a theme validation tool checks Liquid and Polaris component usage as well."
+  - question: "Is the Dev MCP server the same as Shopify's Storefront MCP?"
+    answer: "No, and mixing them up causes real confusion. The Dev MCP server is a developer tool: it runs on your laptop, serves documentation and schema to your coding assistant, and touches no store data. Storefront MCP is a merchant-facing capability: each Shopify store exposes an MCP endpoint that shopping agents call to search that store's catalog, manage carts, and start checkout with real products and prices. One helps you write app code; the other lets AI agents buy things. If you build shopping agents you may use both, but they solve unrelated problems."
+  - question: "Does the Dev MCP server need API credentials or access to my store?"
+    answer: "No. It runs entirely locally over stdio and reads only public resources: shopify.dev documentation and published GraphQL schemas. It cannot query your store, read products or orders, or execute anything against the Admin API. That is a feature for team rollout, since connecting it involves no secrets management and no new access surface. The tradeoff is that your AI assistant still cannot verify runtime behavior through it; to run a validated query against real data you still need your app's authenticated client and a development store."
+  - question: "Does grounding AI in the live schema actually improve code quality?"
+    answer: "In our experience building Shopify integrations, yes, and the mechanism is simple. Shopify releases a new API version every quarter and retires old ones, so any model's training data is at least one version behind somewhere. Ungrounded assistants produce plausible GraphQL with fields that no longer exist or never did. With introspection plus validation in the loop, the assistant checks the schema before writing and verifies the result after, so bad queries get caught at generation time instead of at runtime. Fewer debugging loops, and safer quarterly version upgrades."
+---
+
+The Shopify Dev MCP server (@shopify/dev-mcp) is a local Model Context Protocol server that gives AI coding tools like Claude Code and Cursor direct access to Shopify's GraphQL schemas and shopify.dev documentation. One npx command connects it, no API key required, and it turns guessed GraphQL into validated queries.
+
+![Terminal session showing an AI coding assistant querying a local MCP server](https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=1200&q=80)
+
+## The problem it solves
+
+Every AI coding assistant has the same weakness on Shopify work: the platform moves faster than training data. The Admin API versions quarterly (2026-04, 2026-07, and so on), fields get deprecated, mutations get replaced, and whole subsystems change shape, as anyone who watched Scripts give way to Functions this June can attest. An assistant working from memory produces GraphQL that looks right and fails at runtime with `Field 'x' doesn't exist on type 'y'`.
+
+The old workaround was pasting documentation into the prompt. It sort of works, and it is miserable: you have to know which page to paste, it eats context window, and it goes stale the moment you paste it.
+
+The Dev MCP server replaces that with tool calls. Your assistant searches the docs itself, introspects the current schema itself, and validates its own output before you ever run the code. It is the difference between an assistant that recalls Shopify and one that reads Shopify.
+
+## Dev MCP vs Storefront MCP: two different things
+
+Shopify ships two MCP surfaces with confusingly similar names, and they solve unrelated problems:
+
+| | Dev MCP server | Storefront MCP |
+|---|---|---|
+| Audience | Developers writing app code | Shopping agents acting for buyers |
+| Runs | Locally on your machine (stdio) | Hosted per store by Shopify |
+| Access | Public docs and schemas only | That store's live catalog, cart, checkout |
+| Auth | None | Store-level endpoint, buyer context |
+| Typical caller | Claude Code, Cursor, VS Code | ChatGPT, Perplexity, custom agents |
+| What it changes | Code quality and dev speed | Whether agents can buy from a store |
+
+This post covers the first one. For the second, including what agents actually see when they hit a store's `/api/mcp` endpoint and what merchants should fix, read our [Storefront MCP merchant field guide](/blog/shopify-storefront-mcp-merchant-field-guide). And if what you want is Claude talking to your own store's data rather than writing app code, that is a third setup entirely, covered in [how to connect Claude to Shopify](/blog/connect-claude-to-shopify-guide).
+
+## Connecting it
+
+The server is stdio-based and starts on demand, so "installation" is one config entry. No account, no key.
+
+**Claude Code**, from your project directory:
+
+```bash
+claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest
+```
+
+Restart Claude Code, run `/mcp` to confirm it is listed, and the tools are live. New to Claude Code itself? The [Claude Code developer guide](/blog/claude-code-developer-guide) covers MCP management alongside the rest of the workflow.
+
+**Cursor**, in `.cursor/mcp.json` (VS Code's MCP config takes the same shape):
+
+```js
+{
+  "mcpServers": {
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": ["-y", "@shopify/dev-mcp@latest"],
+      "env": {
+        "POLARIS_UNIFIED": "true",
+        "LIQUID": "true"
+      }
+    }
+  }
+}
+```
+
+The two `env` flags are optional opt-ins: `POLARIS_UNIFIED` adds Polaris web component documentation and validation, and `LIQUID` adds Liquid and theme file validation, which matters if your app ships theme app extensions. The README also documents an opt-out flag for anonymous usage instrumentation if your team requires it.
+
+### Make the tools non-optional
+
+Connecting the server does not guarantee the assistant uses it; models happily answer Shopify questions from memory, which defeats the purpose. The fix is a standing rule in your project instructions (`CLAUDE.md` for Claude Code, rules files for Cursor):
+
+```text
+## Shopify MCP rules
+- Before writing or editing any GraphQL, introspect the relevant
+  schema with the shopify-dev-mcp tools.
+- Validate every GraphQL code block with validate_graphql_codeblocks
+  before presenting it. Show me the validation result.
+- When unsure about platform behavior, search the docs tools instead
+  of answering from memory.
+```
+
+The "show me the validation result" line matters: it makes skipped validation visible instead of silent, and you will catch the sessions where the assistant got lazy.
+
+## What tools it exposes
+
+Current releases ship six tools. Names have shifted slightly across versions (the schema tool started life as `introspect_admin_schema` before growing beyond the Admin API), so ask your assistant to list its MCP tools if something here does not match your install.
+
+| Tool | What it does | When the agent uses it |
+|---|---|---|
+| `learn_shopify_api` | Orients the agent: which APIs exist, which the server supports | First call in a session |
+| `search_docs_chunks` | Semantic search over shopify.dev, returns snippets | General research, "how do I X" |
+| `fetch_full_docs` | Retrieves a complete docs page | When snippets lack context |
+| `introspect_graphql_schema` | Searches types, queries, mutations in live schemas | Before writing any GraphQL |
+| `validate_graphql_codeblocks` | Checks generated GraphQL against the real schema | After writing, before you run it |
+| Theme/Polaris validation | Validates Liquid and `s-` component usage | With `LIQUID`/`POLARIS_UNIFIED` on |
+
+The two that earn their keep daily are introspection and validation. Together they form a loop: look up the real shape, write the query, prove it compiles against the schema. Docs search is the supporting act, useful when the question is conceptual ("how does token exchange work") rather than structural ("what arguments does `productVariants` take").
+
+## An example session: a low-stock report
+
+Here is what the loop looks like in practice. The task, given to Claude Code with the server connected:
+
+```text
+In this Remix app, add a loader function that returns the 25 product
+variants with the lowest inventory, including SKU and product title.
+Admin API version 2026-04. Introspect the schema before writing the
+query and validate the final GraphQL before showing me code.
+```
+
+The tool sequence you then watch scroll by:
+
+1. `learn_shopify_api` establishes that this is Admin GraphQL work.
+2. `introspect_graphql_schema` with a search for `productVariants` returns the real connection: its arguments (`first`, `query`, `sortKey`), the `ProductVariant` type, and the fact that inventory filtering happens through the `query` search syntax rather than a dedicated argument.
+3. `search_docs_chunks` confirms the search syntax for inventory quantity filters.
+4. Claude writes the query.
+5. `validate_graphql_codeblocks` passes it, or fails it and Claude revises without you touching anything.
+
+The validated output:
+
+```graphql
+query LowStockVariants {
+  productVariants(first: 25, query: "inventory_quantity:<5") {
+    nodes {
+      id
+      sku
+      inventoryQuantity
+      product {
+        title
+      }
+    }
+  }
+}
+```
+
+Step 5 is where the value concentrates. In sessions without the server, this is exactly the query class assistants flub: inventing an `orderBy` argument, guessing `stockLevel` as a field name, or addressing variants through a nonexistent top-level type. With validation in the loop those mistakes die before they reach your editor. For a library of pre-verified queries in this vein, keep the [catalog GraphQL query cookbook](/blog/shopify-catalog-graphql-query-cookbook) open in the next tab.
+
+## A second pass: mutations and version upgrades
+
+Queries fail loudly; mutations fail expensively, because a malformed write can leave partial state behind. This is where schema grounding earns the most. Ask for a product upsert and the introspection step surfaces something an ungrounded assistant frequently misses: the modern declarative `productSet` mutation, rather than the older create-then-update choreography.
+
+```graphql
+mutation UpsertBeanie($input: ProductSetInput!) {
+  productSet(input: $input) {
+    product { id title }
+    userErrors { field message }
+  }
+}
+```
+
+Validation confirms the input type exists on your pinned API version and that `userErrors` is selected, which is the difference between a mutation that reports its failures and one that swallows them.
+
+The same loop turns quarterly API upgrades from dread into a checklist. When you bump `api_version` from 2026-04 to 2026-07, have the assistant re-validate every GraphQL block in the repo against the new version and list what broke. Deprecations and removed fields surface in minutes, at your desk, instead of trickling out of production error logs over the following month.
+
+Run the result against a real store to check the data (not just the shape). Development stores from the Partner Dashboard are free and come with test catalog data; the app this loader belongs to will eventually run against a live [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store, but you want your first hundred queries hitting a sandbox.
+
+## Why grounding beats pasting docs
+
+Worth being precise about, because "AI reads the docs" undersells what changes:
+
+**The schema is the contract, and it is versioned.** Quarterly releases mean any static snapshot of Shopify knowledge decays on a schedule. Introspection reads the current release, so upgrades become a re-validation pass instead of an archaeology project.
+
+**Validation converts silent errors into loud ones.** A hallucinated field in pasted-docs workflows surfaces at runtime, in your dev store, after a deploy loop. `validate_graphql_codeblocks` surfaces it in seconds, at generation time.
+
+**Context budget goes to your code.** Pasted documentation competes with your actual codebase for the assistant's attention. Tool calls fetch precisely the slice needed, when needed, and nothing else.
+
+**Discovery beats recall.** Half of Shopify API work is finding out that the thing you want exists (`productSet`, bulk operations, the `query` search syntax). Introspection search finds capabilities the assistant would never have recalled unprompted; the [Admin API guide](/blog/shopify-admin-api-guide) pairs well as the human-readable map of the same territory.
+
+The overhead, for balance: each tool call adds a few seconds of latency and some tokens to the session, so a fully grounded task runs slower than a from-memory answer. In practice the trade is lopsided. One prevented bad query repays a whole day of introspection calls, and the calls themselves are free, since the server bills nothing and hits no rate-limited API on your behalf.
+
+## Limitations, honestly
+
+The server is good and narrow. Know the edges:
+
+- **Docs and schema only.** It cannot query your store, inspect your app's runtime, or tell you why a webhook 401s in production. It grounds generation, not debugging.
+- **It does not execute anything.** A query that validates can still return empty data, hit a rate limit, or need scopes your app has not requested. Validation proves shape, not behavior.
+- **Coverage follows shopify.dev.** Undocumented edge behavior, App Store review judgment calls, and "should I model it this way" questions are outside its reach.
+- **Agents skip tools sometimes.** An assistant may answer from memory when a lookup was warranted. Standing instructions in your project (a `CLAUDE.md` rule: "always introspect and validate GraphQL") fix this more reliably than per-prompt reminders.
+- **Names drift.** Tool naming has changed across releases, as noted above. Pin `@shopify/dev-mcp@latest` and expect minor churn.
+
+None of these are reasons to skip it. They are reasons to keep a development store, real logs, and your own judgment in the loop.
+
+## Rolling it out to a team
+
+Because the server needs no credentials, adoption is a config-file decision rather than a security review. Three practices make it stick across a team:
+
+**Commit the config.** Claude Code supports project-scoped MCP config (a `.mcp.json` checked into the repo), and Cursor reads `.cursor/mcp.json` the same way. Committed config means every clone gets the tools without a setup doc, including CI agents and new hires.
+
+**Commit the rules with it.** The standing instructions from earlier belong in the repo too. Config without rules gives you tools nobody calls.
+
+**Expect minor version churn.** `@latest` keeps schema coverage current, which is what you want, at the cost of occasional tool renames. When an agent reports a missing tool, have it list available MCP tools before assuming the server is broken.
+
+One rollout note from experience: the biggest win lands on the least Shopify-experienced developers. Seniors already know where the docs are; juniors and generalists stop shipping plausible-but-wrong GraphQL in week one.
+
+## Next step
+
+Connect the server now (it is one command), then rerun the last Shopify GraphQL task you did by hand and watch the tool sequence. Comparing that session against your memory of writing the same query unassisted is the fastest way to calibrate how much of this workflow to adopt.

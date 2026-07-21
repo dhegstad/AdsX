@@ -1,0 +1,260 @@
+---
+title: "Build a Custom Shopify App for Your Own Store"
+excerpt: "Create a custom Shopify app in your admin, get a scoped Admin API token, and automate order tagging, inventory sync, and exports without public apps."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify API", "Custom Apps", "Automation", "GraphQL", "App Development", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is a custom Shopify app?"
+    answer: "A custom app is a private integration you create for a single store from the Shopify admin under Settings, then Apps and sales channels, then Develop apps. Unlike public apps, it skips OAuth, App Store review, and the Partner Dashboard entirely. You pick the exact Admin API scopes it needs, install it on your own store, and receive an Admin API access token you can use immediately from scripts, cron jobs, or serverless functions. It is the fastest sanctioned way to run your own code against your store's data: orders, products, inventory, customers, and more."
+  - question: "Do I need a Shopify Partner account to build a custom app?"
+    answer: "No. Custom apps created in the admin require only staff permissions on the store itself, specifically access to app development, which the store owner may need to enable the first time. A Partner account becomes relevant when you want OAuth-based auth, embedded admin UI built on the Remix template, distribution to more than one store, or an App Store listing. For a script that tags orders or syncs inventory on your own store, the admin-created custom app is the entire setup: no CLI, no hosting, no review process."
+  - question: "Is the Admin API access token dangerous if it leaks?"
+    answer: "Yes, treat it like a password to your store. Anyone holding the token can do whatever its scopes allow: read customers, edit products, cancel orders. Reduce the blast radius by requesting only the scopes each app needs, creating separate custom apps per integration rather than one all-powerful token, and storing the token in environment variables or a secrets manager, never in code, spreadsheets, or client-side JavaScript. If a token is exposed, rotate it immediately from the app's API credentials page; revoking generates a new token and invalidates the old one."
+  - question: "Can a custom app use webhooks and the full GraphQL Admin API?"
+    answer: "Mostly, yes. Admin-created custom apps authenticate against the same GraphQL Admin API as public apps, subject to the scopes you granted, and current API versions like 2026-04. They can create webhook subscriptions programmatically with the webhookSubscriptionCreate mutation, run bulk operations, and read or write metafields. The main limits: they work on one store only, they cannot be listed in the App Store, some capabilities tied to app extensions (checkout UI extensions, Shopify Functions) require an app built through the CLI instead, and a few protected scopes such as full customer data may require approval depending on your store's plan and region."
+  - question: "When does a custom app beat installing public apps?"
+    answer: "When your need is specific, stable, and mostly invisible to shoppers. Recurring monthly app fees for simple automations add up fast; five utility apps at 10 to 30 dollars each is 600 to 1,800 dollars a year, often to run logic a 50-line script covers. A custom app wins for order tagging rules, spreadsheet-driven inventory updates, scheduled exports, and internal reports. Public apps win when you need maintained UI, checkout extensions, ongoing vendor support, or compliance-sensitive features. Many stores land on a hybrid: a few well-chosen public apps plus one custom app that replaces the long tail."
+  - question: "Can I write these automation scripts with AI tools like Claude?"
+    answer: "Yes, and it is one of the best current uses of AI coding tools. The scripts are short, the GraphQL Admin API is well documented, and mistakes are recoverable when you test on a development store first. Give the model your goal, the API version you are targeting, and the exact scopes you granted, then review what it writes before running it against production, watching for destructive mutations and pagination handling. Claude can also connect to Shopify's developer docs via MCP, which keeps generated queries aligned with the current schema instead of an older one from training data."
+---
+
+You can build a custom Shopify app for your own store in about fifteen minutes, without a Partner account, OAuth, or app review. Go to Settings, then Apps and sales channels, then Develop apps in your admin, grant the API scopes you need, install, and copy the Admin API access token. Then automate anything the GraphQL Admin API can touch.
+
+![Developer planning automation scripts on a laptop](https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80)
+
+Most merchants assume "app" means something from the App Store, built by someone else, at $20 a month forever. But Shopify has a first-class path for running your own code against your own store, and it is dramatically simpler than public app development: no session tokens, no embedded UI, no review queue. A single access token and any language that can send HTTPS requests. This guide walks through creating the app, securing the token, and three real automations (order tagging, spreadsheet inventory sync, catalog export), plus an honest look at when this approach beats installing five more public apps. All you need is a [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store on any plan and somewhere to run a script.
+
+## Custom apps vs public apps
+
+The word "app" covers two very different things on Shopify. Here is the practical difference:
+
+| | Custom app (admin-created) | Public app |
+|---|---|---|
+| Where it's created | Store admin: Settings → Apps and sales channels → Develop apps | Partner/Dev Dashboard + Shopify CLI 3.x (Remix template) |
+| Auth | Static Admin API access token | OAuth + session tokens |
+| Stores it can run on | One (the store that created it) | Any store that installs it |
+| App Store listing | No | Optional, after review |
+| Embedded admin UI | No | Yes (App Bridge, Polaris) |
+| Checkout extensions / Functions | No | Yes |
+| Billing API | No (it's your own store) | Yes |
+| Setup time | Minutes | Days |
+| Best for | Automations, integrations, internal tools | Products sold to merchants |
+
+If you are building something to sell to other merchants, this is the wrong guide; start with the [Shopify app development guide](/blog/shopify-api-app-development-guide) instead. If you want your own store to do something Shopify does not do out of the box, keep reading.
+
+## Create the app in your admin
+
+1. In your Shopify admin, go to **Settings → Apps and sales channels → Develop apps**. The first time, the store owner may need to click **Allow custom app development** (it is gated behind an acknowledgement because these tokens are powerful).
+2. Click **Create an app**, give it a functional name like `order-tagger`, and assign a developer.
+3. Open **Configure Admin API scopes** and check only what this app needs. For an order tagger that is `read_orders` and `write_orders`. Resist the temptation to check everything; scopes are the blast radius if the token ever leaks.
+4. Click **Install app**. Shopify shows the **Admin API access token** once. Copy it now into your secrets manager or an environment variable; after you navigate away it can only be rotated, not re-read.
+
+The token starts with `shpat_` and authenticates via the `X-Shopify-Access-Token` header. That is the entire auth story: no OAuth dance, no refresh tokens, no expiry (it lives until you rotate or uninstall).
+
+## Your first API call
+
+Verify the token works with a shop query. The endpoint embeds your store domain and an API version; Shopify releases versions quarterly and supports each for at least a year, so pin one (currently `2026-04`) and revisit it a couple of times a year.
+
+```bash
+curl -s -X POST \
+  "https://your-store.myshopify.com/admin/api/2026-04/graphql.json" \
+  -H "Content-Type: application/json" \
+  -H "X-Shopify-Access-Token: $SHOPIFY_TOKEN" \
+  -d '{"query": "{ shop { name currencyCode plan { displayName } } }"}'
+```
+
+Use GraphQL, not the REST endpoints: REST is legacy and new capabilities ship GraphQL-first, a shift covered in the [Admin API guide](/blog/shopify-admin-api-guide). From here on, examples use Node 20+, which has `fetch` built in:
+
+```javascript
+const SHOP = "your-store.myshopify.com";
+const API_VERSION = "2026-04";
+
+async function shopifyGraphQL(query, variables = {}) {
+  const res = await fetch(
+    `https://${SHOP}/admin/api/${API_VERSION}/graphql.json`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": process.env.SHOPIFY_TOKEN,
+      },
+      body: JSON.stringify({ query, variables }),
+    }
+  );
+  const json = await res.json();
+  if (json.errors) throw new Error(JSON.stringify(json.errors));
+  return json.data;
+}
+```
+
+That helper is the foundation for every automation below. Two operational notes before you scale it up. First, the GraphQL Admin API rate-limits by calculated query cost, not request count; small scripts will never notice, but a loop hammering mutations against a large store should watch the `throttleStatus` in the response extensions and back off when the bucket runs low. Second, when Shopify retires your pinned API version (each one is supported for at least a year), requests roll forward to the oldest supported version automatically, which can subtly change response shapes. Put the version string in one constant and review the quarterly release notes twice a year; it takes ten minutes.
+
+## Automation 1: auto-tag orders that need attention
+
+Tagging is how you make Shopify's admin filters, Flow triggers, and reports work for your operation. This script tags any unfulfilled order over $500 as `vip-review` so your team's saved view catches it:
+
+```javascript
+const FIND_ORDERS = `
+  query HighValueOrders($cursor: String) {
+    orders(first: 50, after: $cursor,
+           query: "fulfillment_status:unfulfilled total_price:>500 -tag:vip-review") {
+      pageInfo { hasNextPage endCursor }
+      nodes { id name tags }
+    }
+  }
+`;
+
+const ADD_TAGS = `
+  mutation AddTags($id: ID!, $tags: [String!]!) {
+    tagsAdd(id: $id, tags: $tags) {
+      userErrors { field message }
+    }
+  }
+`;
+
+async function run() {
+  let cursor = null;
+  do {
+    const data = await shopifyGraphQL(FIND_ORDERS, { cursor });
+    for (const order of data.orders.nodes) {
+      await shopifyGraphQL(ADD_TAGS, { id: order.id, tags: ["vip-review"] });
+      console.log(`Tagged ${order.name}`);
+    }
+    cursor = data.orders.pageInfo.hasNextPage
+      ? data.orders.pageInfo.endCursor
+      : null;
+  } while (cursor);
+}
+
+run().catch(console.error);
+```
+
+Note the `-tag:vip-review` exclusion in the search query: it makes the script idempotent, so running it every ten minutes from cron (or a scheduled GitHub Action, or a Cloudflare Worker) never double-processes an order. The same skeleton handles dozens of rules: tag orders from a specific country for customs paperwork, tag first-time customers, tag orders containing a preorder SKU.
+
+## Automation 2: sync inventory from a spreadsheet
+
+Warehouses, 3PLs, and suppliers love sending stock counts as CSV. This script reads `inventory.csv` (columns `sku,quantity`), resolves each SKU to an inventory item, and sets absolute quantities at your location:
+
+```javascript
+import { parse } from "csv-parse/sync";
+import fs from "node:fs";
+
+const FIND_VARIANT = `
+  query BySku($q: String!) {
+    productVariants(first: 1, query: $q) {
+      nodes { sku inventoryItem { id } }
+    }
+  }
+`;
+
+const SET_QUANTITIES = `
+  mutation SetInventory($input: InventorySetQuantitiesInput!) {
+    inventorySetQuantities(input: $input) {
+      userErrors { field message }
+    }
+  }
+`;
+
+const LOCATION_ID = "gid://shopify/Location/1234567890"; // query { locations } once to find yours
+
+async function syncInventory() {
+  const rows = parse(fs.readFileSync("inventory.csv"), { columns: true });
+  for (const row of rows) {
+    const data = await shopifyGraphQL(FIND_VARIANT, { q: `sku:${row.sku}` });
+    const variant = data.productVariants.nodes[0];
+    if (!variant) {
+      console.warn(`SKU not found: ${row.sku}`);
+      continue;
+    }
+    await shopifyGraphQL(SET_QUANTITIES, {
+      input: {
+        name: "available",
+        reason: "correction",
+        quantities: [{
+          inventoryItemId: variant.inventoryItem.id,
+          locationId: LOCATION_ID,
+          quantity: Number(row.quantity),
+        }],
+      },
+    });
+    console.log(`Set ${row.sku} to ${row.quantity}`);
+  }
+}
+
+syncInventory().catch(console.error);
+```
+
+`inventorySetQuantities` sets absolute values, which is what you want from an authoritative source like a warehouse count (as opposed to the adjust mutations, which apply deltas and drift if a run repeats). The scopes needed are `read_products` and `write_inventory`. If your source is Google Sheets rather than CSV, swap the file read for the Sheets API; the Shopify half does not change.
+
+## Automation 3: export your entire catalog
+
+Paginating a large catalog burns rate-limit budget. For full exports (feeding a data warehouse, an audit spreadsheet, or an AI agent), submit one bulk operation and download the result as JSONL:
+
+```javascript
+const BULK_EXPORT = `
+  mutation {
+    bulkOperationRunQuery(query: """
+      { products { edges { node {
+          id title status vendor productType
+          variants { edges { node { id sku price inventoryQuantity } } }
+      } } } }
+    """) {
+      bulkOperation { id status }
+      userErrors { field message }
+    }
+  }
+`;
+
+const CHECK_STATUS = `
+  query {
+    currentBulkOperation { status url errorCode objectCount }
+  }
+`;
+```
+
+Kick off the mutation, poll `currentBulkOperation` every few seconds until `status` is `COMPLETED`, then download the `url`. The whole pattern, including handling runs that fail midway, is covered in the [bulk operations guide](/blog/shopify-bulk-operations-large-catalogs), and if you want project ideas beyond exports, there is a full list of [things to build on the catalog APIs](/blog/things-to-build-shopify-product-catalog-api).
+
+## When a custom app beats installing five public apps
+
+Run the math on your app bill. Five utility apps at $10 to $30 each is $600 to $1,800 a year, and each one adds vendor risk, another party with API access to your customer data, and often theme-injected JavaScript that slows your storefront. For automations with no shopper-facing UI, a custom app usually wins:
+
+- **Order tagging and routing rules** beyond what Shopify Flow covers
+- **Inventory sync** from suppliers, 3PLs, or spreadsheets
+- **Scheduled exports** to a warehouse, accountant, or ad platform
+- **Internal reports** your team actually reads, in the shape they want
+- **One-off migrations and cleanups** (price updates, tag hygiene, metafield backfills)
+
+Check Shopify Flow before writing code, though. Flow ships free on all plans now and covers a surprising amount of trigger-condition-action automation (tag when X, email when Y) without any scripting. The honest boundary: Flow wins when your logic fits its visual builder; a custom app wins when you need external data sources, loops over historical records, spreadsheet inputs, or anything Flow's connectors do not reach. Plenty of stores run both, with Flow handling simple reactions and a custom app handling the batch jobs.
+
+Public apps still win when you need maintained shopper-facing UI, checkout extensions, ongoing support, or anything where a vendor's full-time attention beats your occasional script maintenance. Reviews, subscriptions, and loyalty are rarely worth building yourself. The sensible end state for most stores is a short list of high-value public apps plus one custom app that quietly replaces the long tail.
+
+## Writing these scripts with AI
+
+This category of code is where AI assistants genuinely shine: short scripts, a well-documented API, and a development store to test against. A workflow that works:
+
+1. Create the custom app and scopes yourself (keep credentials out of the AI conversation).
+2. Describe the task precisely: "Using the Shopify GraphQL Admin API version 2026-04 with read_orders and write_orders scopes, write a Node script that…"
+3. Review the generated mutations before running anything, especially deletes and anything touching prices.
+4. Run against a development store or with a dry-run flag first.
+
+Claude can go further than generating code from memory: connected to Shopify's developer documentation over MCP, it validates queries against the live schema instead of guessing. The setup takes a few minutes and is covered in [connecting Claude to Shopify](/blog/connect-claude-to-shopify-guide), along with the workflow patterns that make AI-written scripts reviewable. If you would rather build a small internal tool with a UI on top, the comparison of [AI app builders for Shopify](/blog/build-shopify-store-app-ai-replit-lovable-bolt-v0) covers that route.
+
+## Security basics that are not optional
+
+A custom app token is a skeleton key scoped to whatever you checked. Five habits keep it boring:
+
+1. **One app per integration.** A leaked inventory-sync token should not be able to read customers. Separate apps mean separate tokens, scopes, and rotation.
+2. **Environment variables or a secrets manager only.** Never in code, git history, spreadsheets, or browser-side JavaScript. Anything running in a browser with your token is public.
+3. **Least privilege, reviewed occasionally.** Scopes can be edited after creation; prune what you stopped using.
+4. **Rotate on any suspicion** from the app's API credentials page. Rotation invalidates the old token immediately, so update your secrets store in the same change.
+5. **Log what your scripts do.** A one-line audit log (`Tagged order 1042`) turns "why did every product price change?" from a mystery into a five-minute diagnosis.
+
+## Next step
+
+Pick the most annoying repetitive task in your store operations this week, the one someone does by hand every Monday. Create a custom app with just the scopes it needs, adapt the closest script above, and run it against a development store before pointing it at production. One working automation tends to reveal the next five.

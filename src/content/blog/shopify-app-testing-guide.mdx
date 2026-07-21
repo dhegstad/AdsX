@@ -1,0 +1,262 @@
+---
+title: "Testing Shopify Apps: Dev Stores, Test Charges, CI"
+excerpt: "How to test Shopify apps end to end: development stores, billing test charges, CLI webhook triggers, Playwright in the embedded admin, and CI pipelines."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify Apps", "Testing", "CI/CD", "Playwright", "Webhooks", "Billing"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "How do I test a Shopify app without a real store?"
+    answer: "Use development stores, created free from the Shopify Partner Dashboard. When creating one, choose the option to start with test data so you get a populated catalog, customers, and orders instead of an empty shop. Dev stores run the full admin and storefront, install your unreleased app, and simulate checkout through Shopify's test payment gateway, so the entire app lifecycle short of real money is testable. Their limits: they cannot process live payments, they stay password-protected on the storefront side, and certain sales channels are restricted. Create several, since each one models only one merchant configuration."
+  - question: "How do I test Shopify billing without charging real money?"
+    answer: "Two mechanisms stack. First, charges created on a development store are automatically test charges; no money can move there at all. Second, the billing APIs accept an explicit test flag: the appSubscriptionCreate mutation takes test: true, and the Remix template's billing helpers accept isTest, which you typically set from an environment check so production merchants get real charges and every other environment gets test ones. A test subscription behaves like a real one, including the merchant approval screen, so you can rehearse the full upgrade, downgrade, and cancellation flow before submission."
+  - question: "How do I test webhooks locally while developing?"
+    answer: "Run shopify app dev, which tunnels your local server to a public URL and points your dev webhook subscriptions at it, then trigger real events by acting in the development store, like editing a product. For repeatable payloads without touching the store, use shopify app webhook trigger with a topic, API version, http delivery method, and your local address; it sends a sample payload so you can iterate on handler code quickly. Test three things beyond the happy path: HMAC verification rejects tampered requests, handlers are idempotent under duplicate delivery, and slow work is queued rather than done inline."
+  - question: "Can I run automated end-to-end tests against the embedded Shopify admin?"
+    answer: "Yes, with Playwright, but treat it as an expensive layer and keep it thin. The honest difficulties: your app renders inside an iframe within the Shopify admin, so tests authenticate a real admin session (usually captured once into storageState and refreshed when it expires), then locate your app's frame before asserting anything. Shopify also changes admin markup without notice, so anchor selectors inside your own app's UI, not Shopify's chrome. Five to ten E2E tests covering install state, core page render, and one critical workflow catch most regressions; push everything else down to integration tests."
+  - question: "Should I run separate staging and production app instances?"
+    answer: "Yes, from the first week. Create a second app in the Partner Dashboard, keep a shopify.app.staging.toml alongside the production toml, and switch with shopify app config use. Staging installs on your development stores, receives every deploy first, uses test billing, and points webhooks at your staging server, so config changes like new scopes or webhook topics get rehearsed before merchants see them. The credentials differ per instance, which is also a safety property: a leaked staging secret cannot touch production shops. The single most common mistake is pointing one app registration at two environments; subscriptions and URLs fight each other."
+  - question: "What should CI run for a Shopify app?"
+    answer: "On every push: install, prisma generate, typecheck, lint, and the unit and integration suite against a throwaway SQLite database, which keeps the loop under a few minutes. On merge to main: the same, plus shopify app deploy using a CLI token stored as a secret, so extensions and config changes for the staging instance ship automatically. Playwright E2E runs against staging after that deploy, on a schedule or on release branches rather than every commit, because admin-session flakiness is real. Gate production deploys on a manual approval; app config changes affect live merchants immediately."
+---
+
+Testing a Shopify app spans five layers: a development store for manual work, test charges for billing, CLI-triggered webhooks, unit and integration tests around your Remix code, and Playwright for the embedded admin. None of it requires spending money. Here is how to set up each layer and wire them into CI.
+
+![Dashboard showing test results and monitoring charts for an app](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## The test matrix
+
+Different failures live at different layers, and the most common Shopify app testing mistake is using one layer (usually manual clicking in a dev store) for everything. The map this guide follows:
+
+| Layer | Catches | Tooling | Speed |
+|---|---|---|---|
+| Unit | Logic bugs in loaders, actions, helpers | Vitest/Jest | Seconds |
+| Integration | DB, auth wiring, GraphQL response handling | Vitest + SQLite + mocks | Seconds-minutes |
+| Webhook | HMAC, idempotency, payload handling | `shopify app webhook trigger` | Seconds |
+| Billing | Plan gates, approval flow, cancellation | Test charges on a dev store | Minutes |
+| E2E | Render-in-admin, install state, critical flows | Playwright | Minutes, flaky-prone |
+| Manual | Everything judgment-shaped | Dev stores | Slow |
+
+If the app itself is still ahead of you, the [Shopify API and app development guide](/blog/shopify-api-app-development-guide) covers the build side; this post assumes a working Remix-template app and makes it trustworthy.
+
+## Development stores: your sandbox
+
+Everything starts in the Partner Dashboard: create a development store, and choose to start it with **test data** so products, collections, customers, and order history exist from minute one. An empty store hides bugs; pagination, empty states, and rate-limit behavior only show up against a populated catalog.
+
+Dev stores run the complete admin and storefront and install unreleased apps directly through `shopify app dev`. What they cannot do: process real payments, run an unprotected public storefront, or use every sales channel. For checkout testing they use test payments instead, covered next. None of this blocks app development; it only means final revenue-touching confidence comes later, on a real store. (Development stores are free; when you reach the point of dogfooding against live traffic, that is when a production [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store enters the picture.)
+
+Create more than one. A single dev store quietly becomes load-bearing, full of one specific configuration: one currency, one language, markets off, no B2B. Real bugs live in the configurations you did not test. A minimal spread: one store with test data and defaults, one configured unusually (multi-currency, different timezone, high SKU count), one kept pristine for install/uninstall testing, since app state cleanup on uninstall is something reviewers and merchants both notice.
+
+### Seeding beyond the default data
+
+The bundled test data covers the average case; your bugs live elsewhere. Keep a seed script in the repo that pushes your edge cases into any dev store through the Admin API: a product with 100 variants, titles with emoji and RTL text, a zero-price item, an archived product, a customer with no orders. The declarative `productSet` mutation makes this a short loop over fixture JSON, and a reproducible store beats a hand-curated one the first time you need to recreate a bug from a fresh environment.
+
+### Test orders
+
+To exercise order webhooks and checkout-adjacent features you need orders, and dev stores provide two paths. Shopify's test gateway (Bogus Gateway) accepts card number `1` for success, `2` for decline, and `3` for a gateway error, letting you script all three outcomes; Shopify Payments has an equivalent test mode with documented test cards. The specifics live in [Shopify's test orders documentation](https://help.shopify.com/en/manual/checkout-settings/test-orders). Place a handful of test orders early and keep a store where the order history is realistic; `orders/create` webhook handlers tested only against `webhook trigger` samples meet surprises in real payload shapes.
+
+## Billing: test charges
+
+Billing bugs are the most expensive kind: they charge someone wrongly or block a paying merchant. Two mechanisms keep testing safe.
+
+First, **charges on development stores are always test charges**. Nothing can move real money there, so your dev-store install can run the entire subscribe flow.
+
+Second, the **explicit test flag**. In the Remix template, billing config lives in `shopify.server.js` and gating happens in loaders:
+
+```js
+// app/routes/app.premium.jsx (excerpt)
+import { authenticate } from "../shopify.server";
+
+export const loader = async ({ request }) => {
+  const { billing } = await authenticate.admin(request);
+
+  await billing.require({
+    plans: ["Pro Plan"],
+    isTest: process.env.SHOPIFY_BILLING_TEST === "true",
+    onFailure: async () =>
+      billing.request({
+        plan: "Pro Plan",
+        isTest: process.env.SHOPIFY_BILLING_TEST === "true",
+      }),
+  });
+
+  // plan-gated work here
+};
+```
+
+Under the hood this is the `appSubscriptionCreate` mutation, which takes the same flag directly if you work at the GraphQL level:
+
+```graphql
+mutation TestSubscription {
+  appSubscriptionCreate(
+    name: "Pro Plan"
+    test: true
+    returnUrl: "https://your-app.fly.dev/app/billing/confirm"
+    lineItems: [{
+      plan: {
+        appRecurringPricingDetails: {
+          price: { amount: 19.00, currencyCode: USD }
+          interval: EVERY_30_DAYS
+        }
+      }
+    }]
+  ) {
+    appSubscription { id status }
+    confirmationUrl
+    userErrors { field message }
+  }
+}
+```
+
+Drive the environment variable, never hardcode: staging true, production false. Then rehearse the whole lifecycle on a dev store, because merchants exercise all of it: subscribe, hit the approval screen, approve, downgrade, cancel, resubscribe. The cancellation path is where untested billing code fails most often, usually by leaving plan state stale in your own database.
+
+## Webhooks: trigger, tunnel, verify
+
+Two complementary paths. While `shopify app dev` runs, your local server is tunneled and dev subscriptions point at it, so acting in the dev store (edit a product, place a test order) delivers real events end to end. For fast iteration on handler code, skip the store entirely:
+
+```bash
+shopify app webhook trigger \
+  --topic orders/create \
+  --api-version 2026-04 \
+  --delivery-method http \
+  --address http://localhost:3000/webhooks/orders/create
+```
+
+That sends a sample payload for the topic to your handler. Iterate until the handler is right, then confirm once through the real store path, since sample payloads are representative rather than identical to production ones.
+
+Beyond "it runs," webhook handlers earn trust by passing three specific tests. Tamper a request body and confirm HMAC verification rejects it (`authenticate.webhook` handles this; confirm you have not broken it with body-parsing middleware). Deliver the same payload twice and confirm state does not double (Shopify retries; duplicates are guaranteed eventually). And confirm the handler returns its 2xx fast with slow work queued, because endpoints that time out repeatedly get their subscriptions dropped. Burst behavior matters at scale too; [catalog change webhooks](/blog/shopify-catalog-change-webhooks) covers debouncing when a bulk edit fires thousands of events.
+
+## Unit and integration tests for the Remix app
+
+The Remix template is pleasantly testable because loaders and actions are plain functions. The one piece to control is `authenticate`, which you mock at the module boundary:
+
+```js
+// app/routes/app.inventory.test.js
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("../shopify.server", () => ({
+  authenticate: {
+    admin: vi.fn().mockResolvedValue({
+      admin: {
+        graphql: vi.fn().mockResolvedValue({
+          json: async () => ({
+            data: {
+              productVariants: {
+                nodes: [
+                  { id: "gid://shopify/ProductVariant/1",
+                    sku: "SKU-1", inventoryQuantity: 2,
+                    product: { title: "Beanie" } },
+                ],
+              },
+            },
+          }),
+        }),
+      },
+    }),
+  },
+}));
+
+const { loader } = await import("./app.inventory");
+
+describe("low stock loader", () => {
+  it("returns variants under threshold", async () => {
+    const response = await loader({
+      request: new Request("https://app.test/app/inventory"),
+      params: {}, context: {},
+    });
+    const { variants } = await response.json();
+    expect(variants[0].sku).toBe("SKU-1");
+  });
+});
+```
+
+Draw the line by what breaks: unit tests own your logic (threshold math, payload transforms, plan-gating decisions) with GraphQL responses stubbed as fixtures; integration tests own the wiring, running against a throwaway SQLite database via Prisma so session storage and your own models get exercised for real. Record a few real Admin API responses from a dev store as fixtures rather than hand-writing them, since hand-written fixtures drift toward what you wish the API returned. What this layer cannot catch is query validity against the live schema and rate-limit behavior; schema errors and throttles are runtime phenomena, and [Catalog API rate limits and errors](/blog/shopify-catalog-api-rate-limits-errors) covers handling them in the app code itself.
+
+If your app ships Shopify Functions (and after the June 30 Scripts sunset, discount and checkout logic lives there; see the [Scripts to Functions migration guide](/blog/shopify-scripts-functions-migration-june-30-2026)), the CLI gives Functions their own fast loop: `shopify app function run` executes locally against fixture input, and `shopify app function replay` re-runs real invocations pulled from logs.
+
+## End-to-end: Playwright against the embedded admin
+
+The honest version: this layer is valuable and annoying, so keep it small. Your app lives in an iframe inside the authenticated Shopify admin, which means E2E tests need an admin session and frame handling:
+
+```js
+// e2e/app-loads.spec.js
+import { test, expect } from "@playwright/test";
+
+test.use({ storageState: "e2e/.auth/admin.json" });
+
+test("app renders inside the admin", async ({ page }) => {
+  await page.goto(
+    `https://admin.shopify.com/store/${process.env.TEST_STORE}/apps/${process.env.APP_HANDLE}`
+  );
+
+  // Locate your app's iframe; inspect the current admin DOM for the
+  // frame attributes, as Shopify has changed them between releases.
+  const app = page.frameLocator('iframe[name="app-iframe"]');
+
+  await expect(app.getByText("Low stock")).toBeVisible();
+});
+```
+
+Capture the session once (a setup script logs into the dev store admin and saves `storageState`), refresh it when it expires, and keep it out of git. Two rules learned the irritating way: assert against your own app's UI, never Shopify's admin chrome, because Shopify ships admin changes without notice and selectors into their markup rot; and cap the suite at the critical few (app loads authenticated, core page renders real data, one end-to-end workflow like "change plan, gate lifts"). Regressions below that level belong to cheaper layers.
+
+## Staging vs production app instances
+
+Run two registered apps: `my-app-staging` and `my-app`. The CLI makes this a config concern:
+
+```bash
+shopify app config link            # creates shopify.app.staging.toml
+shopify app config use staging     # subsequent dev/deploy target staging
+shopify app config use production  # switch back for release
+```
+
+Staging installs on dev stores, uses `isTest` billing, points webhooks at the staging server, and absorbs every deploy first, including the config-shaped changes (new scopes, new webhook topics) that are easy to forget are deploys at all. Separate credentials per instance also contain blast radius: staging secrets cannot touch production shops. The classic failure this prevents is one app registration serving two environments, where each deploy repoints URLs and breaks the other side.
+
+## CI: putting it together
+
+A GitHub Actions shape that matches the layers above:
+
+```yaml
+name: ci
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npm run typecheck
+      - run: npm test
+
+  deploy-staging:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx shopify app deploy --force
+        env:
+          SHOPIFY_CLI_PARTNERS_TOKEN: ${{ secrets.SHOPIFY_CLI_PARTNERS_TOKEN }}
+```
+
+The deploy step uses a CLI token generated in the Partner Dashboard and stored as a repo secret, which lets `shopify app deploy` run non-interactively; `--force` skips the confirmation prompt. This deploys extensions and app config for whichever toml is committed as active, which is exactly why staging should be the default. Playwright runs as a separate scheduled job against deployed staging rather than on every push; embedded-admin flakiness in a per-commit gate teaches teams to ignore red builds. Production deploys get a manual approval environment, because `shopify app deploy` against the production instance changes live merchant behavior the moment it releases.
+
+## Pre-submission: the last mile
+
+App Store review is itself a test pass, run by someone else, and failing it costs a review cycle measured in days. Before submitting, replay your own flows the way a reviewer does: fresh install on a clean dev store, scope approval screen sanity, billing approval with a test charge, uninstall and reinstall without stale state, and the mandatory GDPR webhooks answering correctly. Reviewers also increasingly evaluate against the Built for Shopify quality bar, which is now tangled up with how apps get discovered at all; [our breakdown of app discovery in the AI era](/blog/built-for-shopify-app-discovery-ai-era) covers what that bar buys you beyond passing review.
+
+## Next step
+
+Pick the layer you currently lack (for most apps it is webhook idempotency tests) and add it this week: one duplicate-delivery test and one tampered-HMAC test against your busiest handler. Those two tests take an hour with `shopify app webhook trigger` and catch the failure modes that otherwise only appear in production, at merchant scale, on a weekend.

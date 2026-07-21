@@ -1,0 +1,213 @@
+---
+title: "Shopify Webhooks: Reliability Guide for App Developers"
+excerpt: "Shopify webhooks are at-least-once, unordered, and removed after repeated failures. Build HMAC checks, dedupe, and reconciliation that survive it."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify API", "Webhooks", "Reliability", "App Development", "EventBridge", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "Why is my app missing Shopify webhooks?"
+    answer: "Usually one of four reasons. Your endpoint responded slower than five seconds or with a non-200 status, so deliveries failed and, after repeated failures, Shopify removed the subscription entirely. Your subscription was never registered on that shop (common after OAuth changes or when webhooks were registered imperatively instead of in the app's TOML config). Your handler crashed after returning 200, so the event arrived but was lost inside your system. Or the event fired while your service was down and all retries were exhausted. The fix is the same regardless: fast acknowledgement, durable queues, and a reconciliation job that backfills from the Admin API."
+  - question: "How does Shopify's webhook retry and removal policy work?"
+    answer: "Shopify waits five seconds for a 200-series response. Anything slower, or any other status code, counts as a failed delivery. Failed deliveries are retried up to eight times over roughly a four-hour window, with the interval growing between attempts. If failures persist across a 24-hour period, Shopify removes the webhook subscription, and a removed subscription receives nothing until your app recreates it. The practical consequence: a weekend outage does not just delay events, it can silently unsubscribe you, which is why monitoring for removed subscriptions matters as much as uptime."
+  - question: "Do Shopify webhooks arrive in order?"
+    answer: "No. Shopify explicitly does not guarantee ordering within a topic or across topics for the same resource. An orders/updated event can arrive before the orders/create event for the same order, especially when retries are involved. Never build state machines that assume sequence. Instead, compare the X-Shopify-Triggered-At header or the resource's updated_at value against what you have stored, and ignore any event older than your current record. Treat each webhook as a hint that something changed, then let the most recent data win."
+  - question: "Should I use HTTPS, Amazon EventBridge, or Google Pub/Sub for Shopify webhooks?"
+    answer: "HTTPS is the simplest and fine for most apps at moderate volume: one endpoint, HMAC verification, your own queue behind it. EventBridge and Pub/Sub hand delivery to AWS or Google infrastructure, which removes the five-second response pressure from your servers, absorbs bursts (a bulk edit can fire thousands of events in seconds), and gives you replay and dead-letter tooling. The tradeoff is cloud-specific setup and cost. A reasonable rule: start with HTTPS, and move high-volume topics like products/update and inventory_levels/update to a message bus once missed events or timeout failures show up in your delivery metrics."
+  - question: "How do I make webhook processing idempotent?"
+    answer: "Shopify delivery is effectively at-least-once, so duplicates are normal, not a bug. Every delivery includes an X-Shopify-Webhook-Id header (and an event ID in the payload envelope for EventBridge and Pub/Sub). Record each ID in a store with a unique constraint before processing; if the insert conflicts, you have seen it and can skip. A TTL of a few days keeps the table small since retries stop after hours, not weeks. Belt-and-suspenders: make the handlers themselves idempotent too, using upserts keyed on the resource ID rather than blind inserts, so even an ID-table miss cannot corrupt state."
+  - question: "What are the mandatory compliance webhooks?"
+    answer: "Every app distributed through the Shopify App Store must subscribe to three privacy topics: customers/data_request (a customer asked for their data), customers/redact (delete a customer's personal data), and shop/redact (delete the shop's data, sent about 48 hours after uninstall). These arrive at endpoints you declare in your app configuration, must verify HMAC signatures, and must return 401 when verification fails, which Shopify actively tests during app review. Handle them with the same queue-and-acknowledge pattern as commerce topics, but track completion, since privacy regulators care about outcomes, not acknowledgements."
+---
+
+Shopify webhooks are delivered at-least-once, in no guaranteed order, over HTTPS, Amazon EventBridge, or Google Pub/Sub. Reliability is your job: verify the HMAC, respond inside five seconds, dedupe by webhook ID, and reconcile with the Admin API, because Shopify retries failed deliveries only eight times before eventually removing the subscription.
+
+![Analytics dashboard on a laptop showing event delivery metrics](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+Shopify's own docs say it plainly: webhook delivery isn't guaranteed. That single sentence should shape your whole architecture. Webhooks are a low-latency hint that something changed, not a ledger. Apps that treat them as a ledger drift out of sync within weeks; apps that pair them with reconciliation stay correct through outages, retries, and the odd dropped event. This guide covers the delivery contract, verification code, dedupe, transport tradeoffs, and the healing jobs that make the whole thing trustworthy. For the catalog-specific topics (products, variants, inventory) and debouncing strategies for bulk edits, see the [catalog change webhooks guide](/blog/shopify-catalog-change-webhooks); this post is about the reliability layer every topic shares.
+
+## The delivery contract, precisely
+
+Here is what Shopify actually promises, per the [webhooks documentation](https://shopify.dev/docs/apps/build/webhooks) and [troubleshooting reference](https://shopify.dev/docs/apps/build/webhooks/troubleshooting-webhooks):
+
+- **Success means a 200-series response within five seconds.** Slower responses fail the delivery even if you eventually return 200.
+- **Failed deliveries are retried up to eight times over a four-hour period**, with the interval increasing between attempts.
+- **Persistent failure gets you unsubscribed.** After multiple failures within a 24-hour period, Shopify removes the webhook subscription. A removed subscription delivers nothing until it is recreated.
+- **Delivery is effectively at-least-once.** Retries and edge cases produce duplicates; every delivery carries an `X-Shopify-Webhook-Id` you can dedupe on.
+- **Ordering is not guaranteed**, within a topic or across topics for the same resource. `X-Shopify-Triggered-At` tells you when the event actually happened.
+
+Each delivery also includes `X-Shopify-Topic`, `X-Shopify-Shop-Domain`, `X-Shopify-API-Version`, and the HMAC header covered next. Log all of them; they are your only forensic trail when something goes wrong.
+
+The removal behavior is the one that surprises teams. An outage is not just a gap in events. If your endpoint fails long enough, the subscription itself disappears, and everything after that is silence that looks like a quiet day. Any webhook architecture that lacks an answer to "how would we notice a removed subscription?" is incomplete.
+
+## Verify the HMAC on every delivery
+
+Every HTTPS delivery is signed: the `X-Shopify-Hmac-Sha256` header contains a base64-encoded HMAC-SHA256 of the raw request body, keyed with your app's client secret. Verification is mandatory for app review, and skipping it means anyone who finds your endpoint URL can inject fake orders into your system.
+
+Two details cause most verification bugs: you must hash the **raw bytes** of the body (any JSON parsing or re-serialization first will corrupt the digest), and you must compare with a constant-time function. Here is a correct Node/Express implementation:
+
+```javascript
+import crypto from "node:crypto";
+import express from "express";
+
+const app = express();
+
+// Capture the raw body; do NOT use express.json() before verification
+app.post(
+  "/webhooks",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const hmacHeader = req.get("X-Shopify-Hmac-Sha256") || "";
+    const digest = crypto
+      .createHmac("sha256", process.env.SHOPIFY_API_SECRET)
+      .update(req.body) // req.body is a Buffer here
+      .digest("base64");
+
+    const valid =
+      hmacHeader.length > 0 &&
+      crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(hmacHeader));
+
+    if (!valid) {
+      return res.status(401).send("HMAC validation failed");
+    }
+
+    // Acknowledge first, process later
+    enqueue({
+      webhookId: req.get("X-Shopify-Webhook-Id"),
+      topic: req.get("X-Shopify-Topic"),
+      shop: req.get("X-Shopify-Shop-Domain"),
+      triggeredAt: req.get("X-Shopify-Triggered-At"),
+      payload: req.body.toString("utf8"),
+    });
+
+    res.status(200).send("ok");
+  }
+);
+```
+
+Return 401 on failed verification (app review checks this on the compliance topics). If you build on the Remix app template from Shopify CLI 3.x, `authenticate.webhook(request)` does this verification for you, but you should still understand what it checks, because the raw-body requirement resurfaces the moment a proxy or body-parsing middleware sits in front of your handler.
+
+## Acknowledge fast, process async
+
+The five-second budget is not for your business logic. It is for verification and enqueueing. The pattern that survives production:
+
+1. Verify HMAC.
+2. Write the delivery to a durable queue (SQS, Pub/Sub, Redis stream, or even a database table).
+3. Return 200.
+4. Workers process from the queue with their own retry policy.
+
+Synchronous processing fails in a correlated way: the events most likely to time out are the bursts (a bulk product edit, a flash sale), which are exactly when you can least afford failed deliveries stacking up toward subscription removal. Queue depth also becomes your single most useful health metric.
+
+One related design choice: treat the payload as a notification, not as the data. By the time a worker processes an event from a backed-up queue, the resource may have changed again. For anything consequential, use the payload's resource ID to fetch the current state from the Admin API and act on that, which also makes replaying old queue entries after an incident safe by construction.
+
+## Dedupe: at-least-once means duplicates are normal
+
+Retries produce duplicates by design; a delivery that succeeded on your side but timed out on the return trip will be sent again. Dedupe before processing:
+
+```sql
+-- Postgres: insert-or-skip keyed on the delivery ID
+INSERT INTO processed_webhooks (webhook_id, topic, processed_at)
+VALUES ($1, $2, now())
+ON CONFLICT (webhook_id) DO NOTHING;
+-- If no row was inserted, this delivery is a duplicate: skip it.
+```
+
+Expire rows after a few days; retries stop within hours, so a short TTL bounds the table. Then make the handlers idempotent anyway. Upsert by resource ID instead of inserting, set absolute values instead of incrementing counters, and derive state from the payload rather than from how many times you have seen it. Idempotent handlers turn every dedupe miss from a corruption into a harmless repeat.
+
+## Ordering: let the newest data win
+
+Because ordering is not guaranteed, an `orders/updated` can beat the `orders/create` for the same order, and two `products/update` events can arrive reversed. The pattern that holds up is last-write-wins with a timestamp guard:
+
+```javascript
+async function applyProductUpdate(payload, triggeredAt) {
+  const current = await db.products.find(payload.admin_graphql_api_id);
+  if (current && current.shopifyUpdatedAt >= new Date(payload.updated_at)) {
+    return; // stale event; a newer version is already stored
+  }
+  await db.products.upsert(payload.admin_graphql_api_id, {
+    ...mapProduct(payload),
+    shopifyUpdatedAt: new Date(payload.updated_at),
+  });
+}
+```
+
+Compare on the resource's `updated_at` (or `X-Shopify-Triggered-At` when the payload lacks one) and drop anything older than what you hold. Never build logic that requires seeing create before update; treat an update for an unknown resource as an instruction to fetch or create it.
+
+## HTTPS vs EventBridge vs Pub/Sub
+
+Shopify delivers to three transport types. The right one depends on volume and where your infrastructure already lives:
+
+| | HTTPS endpoint | Amazon EventBridge | Google Pub/Sub |
+|---|---|---|---|
+| Setup effort | Low: one URL | Medium: partner event source, rules | Medium: topic, IAM grant |
+| Five-second pressure on your servers | Yes | No, AWS ingests | No, Google ingests |
+| Burst absorption | Your problem | Built in | Built in |
+| HMAC verification | You implement it | Not needed (private channel) | Not needed (private channel) |
+| Replay / dead-letter tooling | Build your own | Native (DLQs, archives) | Native (dead-letter topics, retention) |
+| Vendor coupling | None | AWS | Google Cloud |
+| Best fit | Most apps, moderate volume | AWS-native stacks, high volume | GCP-native stacks, high volume |
+
+The honest tradeoff: HTTPS keeps you portable and simple, but at high volume you are operating a piece of ingestion infrastructure whose failure mode is losing subscriptions. EventBridge and Pub/Sub move that risk onto a cloud provider that is better at it than you are, in exchange for lock-in and configuration. Mixed setups work well: route chatty topics like `products/update` and `inventory_levels/update` through a bus, keep low-volume topics like `app/uninstalled` on HTTPS.
+
+On configuration: with Shopify CLI 3.x, declare subscriptions declaratively in `shopify.app.toml` so every install gets an identical, version-pinned set:
+
+```toml
+[webhooks]
+api_version = "2026-04"
+
+  [[webhooks.subscriptions]]
+  topics = ["orders/create", "app/uninstalled"]
+  uri = "https://yourapp.example.com/webhooks"
+
+  [[webhooks.subscriptions]]
+  topics = ["products/update"]
+  uri = "pubsub://your-project:shopify-products"
+```
+
+Declarative config eliminates a whole bug class: shops missing subscriptions because an imperative `webhookSubscriptionCreate` call failed once during OAuth years ago. Reserve the mutation for genuinely dynamic, per-shop subscriptions.
+
+## Don't forget the compliance webhooks
+
+Every app distributed through the App Store must also handle three privacy topics: `customers/data_request`, `customers/redact`, and `shop/redact` (the last arrives roughly 48 hours after uninstall). These are declared in your app configuration, signed like every other HTTPS delivery, and actively tested during app review, including the requirement that invalid HMACs receive a 401. Route them through the same verify-enqueue-acknowledge pipeline as your commerce topics, but add one thing: completion tracking. A redaction request is not finished when you return 200; it is finished when the data is actually gone, and you want an audit trail proving when that happened. Teams that treat these as an afterthought tend to rediscover them during a rejected review or, worse, a merchant's GDPR inquiry.
+
+## Reconciliation: the job that makes webhooks trustworthy
+
+Shopify's docs recommend reconciliation outright, because delivery isn't guaranteed and your own handlers can fail. A reconciliation job periodically asks the Admin API "what changed since my high-water mark?" and heals whatever webhooks missed:
+
+```graphql
+query ChangedProducts($since: String!, $cursor: String) {
+  products(first: 100, after: $cursor, query: $since) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      updatedAt
+      title
+      status
+    }
+  }
+}
+```
+
+with `$since` set to a query string like `"updated_at:>2026-07-20T00:00:00Z"`. Run it hourly or daily per shop depending on how costly staleness is, page with `endCursor`, and route each changed resource through the same idempotent handlers your webhook workers use. One code path, two triggers.
+
+Store the high-water mark per shop and per topic family, and set it from the data you actually processed (the max `updatedAt` you saw), not from the wall clock when the job ran. Clock skew and in-flight writes mean a job that stamps "now" as its checkpoint will eventually skip a record that committed a few seconds late. Overlapping windows by a minute costs almost nothing, because your handlers are idempotent, and it closes that gap permanently.
+
+Two special cases. After downtime, do not wait for the scheduled run: trigger reconciliation from your deploy or incident tooling, and check whether subscriptions were removed while you were dark (query `webhookSubscriptions` and compare against your TOML expectations; recreate what is missing). And when the gap is too large to poll politely, a full resync via the Bulk Operations API is cheaper than paginating a big catalog under rate limits; the [bulk operations guide](/blog/shopify-bulk-operations-large-catalogs) covers that pattern, and the [rate limits guide](/blog/shopify-catalog-api-rate-limits-errors) explains the budget you are working inside.
+
+## Monitoring: notice silence, not just errors
+
+The failure mode of webhooks is quiet, so monitor for absence:
+
+- **Delivery metrics from Shopify.** The webhook metrics surface (in the Partner or Dev Dashboard for CLI-built apps) shows failure rates, response times, and removed subscriptions per topic. Response times creeping toward five seconds predict failures before they happen.
+- **Subscription audits.** A daily job comparing each shop's live `webhookSubscriptions` against your expected set catches removals and half-completed installs. Alert on any diff.
+- **Freshness alarms.** For each busy shop, alert when no `orders/create` has arrived in a window where your reconciliation query shows orders were created. That cross-check is the definitive missed-event detector.
+- **Queue depth and age.** Alert on oldest-message age, not just depth; a slowly draining queue is an outage in progress.
+- **Dedupe hit rate.** A sudden spike in duplicates usually means your endpoint got slow and retries kicked in: an early warning, not a curiosity.
+
+## Next step
+
+Audit your handler against the contract in one sitting: confirm the HMAC check runs on raw bytes with a constant-time compare, confirm you return 200 in under a second by enqueueing instead of processing, add the `webhook_id` dedupe table, and schedule a daily reconciliation query against `updated_at`. Then run a live drill: point a development store from your Partner account (or a [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) trial store you keep for testing) at your endpoint, kill the endpoint for an hour, and watch what happens. If the subscription gets removed and nothing pages you, you have found the gap before production did. The [Admin API guide](/blog/shopify-admin-api-guide) covers the auth and client setup those reconciliation jobs will need.

@@ -1,0 +1,131 @@
+---
+title: "Uninstall Shopify Apps the Right Way: Leftover Code Fix"
+excerpt: "Uninstalling a Shopify app often leaves code in your theme. Find leftover snippets and scripts, remove them safely, and confirm billing stops."
+date: "2026-07-21"
+category: "Diagnostic"
+tags: ["Shopify Apps", "Theme Code", "Page Speed", "App Cleanup", "Shopify Maintenance", "Liquid"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+faqs:
+  - question: "Does uninstalling a Shopify app remove its code?"
+    answer: "Partially. Shopify automatically removes ScriptTags the app registered and deactivates any theme app extensions or app embeds, so modern apps built on those frameworks clean up after themselves. What does not get removed is code the app wrote directly into your theme files: snippets, asset files, and edits to theme.liquid or section files. The app loses access to your theme the moment you uninstall, so even a well-intentioned developer cannot delete that code afterward. Older apps and some custom-built integrations are the usual culprits, and removal is on you."
+  - question: "How do I find leftover code from uninstalled apps in my theme?"
+    answer: "Open your theme code editor (Online Store, then Themes, Edit code) and search for the app's name, brand, and obvious abbreviations. Look in three places: the snippets folder for files named after the app, the assets folder for its CSS and JavaScript, and layout or section files for render or include calls referencing those snippets. Developers usually mark injected blocks with comments like 'Begin AppName' which makes them easy to spot. Also check your storefront for visible Liquid errors mentioning missing assets, which are uninstalled apps announcing themselves."
+  - question: "What is the duplicate theme test for identifying app scripts?"
+    answer: "Duplicate your live theme, or install a clean copy of your theme from scratch, and open its preview. Then compare which third-party scripts load there versus on your live storefront using your browser's network tab. A script that loads on the clean preview too is being injected at the store level by a currently installed app, meaning it will disappear on its own if you uninstall that app. A script that only loads on your live theme is baked into the theme files and will survive uninstall until you remove it by hand."
+  - question: "Will removing leftover app code make my store faster?"
+    answer: "Usually somewhat, occasionally a lot, and sometimes not at all, so measure rather than assume. Leftover code that still loads real JavaScript costs main-thread time and can add hundreds of milliseconds on mobile; removing several such scripts produces a noticeable improvement. Leftover code that references deleted assets mostly produces failed requests and Liquid errors, which are worth fixing for correctness but barely move timings. Run a Lighthouse report before and after cleanup so you can credit the work honestly. If speed is the goal, cleanup pairs well with image optimization and theme-level fixes."
+  - question: "Do charges stop immediately when I uninstall a Shopify app?"
+    answer: "Uninstalling ends the subscription, but timing matters. App charges run on 30-day billing cycles through your Shopify invoice, and uninstalling partway through a cycle does not generate an automatic prorated refund; some developers refund on request, many do not. Usage-based charges incurred before uninstall can also appear on a later invoice. After uninstalling, check your next one or two Shopify bills to confirm the line item is gone, and contact the developer promptly if it is not. Screenshot the uninstall date in case you need to dispute a charge."
+  - question: "What happens to customer data an app collected after I uninstall it?"
+    answer: "Shopify sends the developer a mandatory data-erasure webhook 48 hours after uninstall, and privacy regulations such as GDPR require them to delete personal data they hold for your store, generally within 30 days unless they have a legal reason to retain it. In practice, compliance varies by vendor, so for apps that held meaningful customer data it is worth emailing the developer to confirm deletion. One practical warning: deletion also means your data. Export reviews, survey responses, subscription records, or loyalty balances before you uninstall, because reinstalling later usually starts from zero."
+---
+
+Uninstalling a Shopify app revokes its access and stops future billing, but it does not always remove the code the app wrote into your theme. Modern theme app extensions clean up after themselves; older apps that injected snippets and scripts do not. Here is how to find leftovers, remove them safely, and confirm the charges stopped.
+
+![Developer reviewing theme code on a laptop during a Shopify app cleanup](https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=1200&q=80)
+
+## Why Uninstalling Doesn't Remove Everything
+
+The confusion comes from the fact that Shopify apps have historically integrated with storefronts in two different ways, and only one of them cleans up after itself.
+
+The modern way is theme app extensions. The app's blocks and embeds live in Shopify-managed storage outside your theme files, you toggle them on in the theme editor, and when you uninstall the app, everything deactivates automatically. ScriptTags, a store-level mechanism apps use to load a script on your storefront, are also removed automatically by Shopify at uninstall. If every app you have ever installed used these mechanisms, this article would be three sentences long.
+
+The legacy way is direct theme injection. For years, apps modified theme files on install: dropping a snippet into your snippets folder, adding CSS and JavaScript to assets, and inserting render calls or script references into theme.liquid or section files. Here is the catch. The moment you uninstall, the app loses API access to your store, so it cannot remove what it wrote even if the developer built cleanup logic. The code just sits there. Shopify has pushed developers toward theme app extensions for years and restricted direct theme editing for new public apps, but any store that has been around a while carries residue from the legacy era, and some custom integrations still do it today.
+
+Leftover code causes three kinds of trouble. Scripts that still load and execute cost you page speed for zero benefit. References to assets that no longer resolve produce failed requests and visible "Liquid error: Could not find asset" messages on your storefront. And dead code makes every future theme edit riskier, because nobody remembers what is safe to touch.
+
+## The Three Kinds of Leftovers
+
+| Leftover type | Where it lives | After uninstall |
+|---|---|---|
+| Theme app extension / app embed | Shopify-managed, outside your theme | Deactivates automatically; nothing to clean |
+| ScriptTag | Store-level script injection | Removed automatically by Shopify |
+| Injected snippet | snippets/ folder, plus render or include calls | Stays until you delete it |
+| Injected assets | assets/ folder (app CSS and JS files) | Stays; may keep loading or start failing |
+| Inline theme edits | theme.liquid, layout and section files | Stays; the usual source of Liquid errors |
+| Metafields and tags | Products, orders, customers | Stays; mostly harmless clutter |
+
+The first two rows are why you should not panic-clean after every uninstall. The bottom four rows are why a periodic cleanup pass is worth doing anyway.
+
+## How to Find Leftover App Code
+
+### Search your theme code
+
+In your Shopify admin, go to Online Store, Themes, then Edit code, and use the search box in the file browser. Search for the app's name, its brand abbreviation, and any word from its widget (for example "wishlist" or "countdown"). Check three places:
+
+- **snippets/**: files named after the app, like `app-name-widget.liquid`
+- **assets/**: CSS and JavaScript files carrying the app's name
+- **layout/theme.liquid and sections/**: lines that render those snippets or load those assets
+
+Most injected blocks are wrapped in comments like `<!-- Begin AppName -->`, which developers added precisely so this search would work. Build a list of every file and every reference before deleting anything; the references matter more than the files, as we will get to.
+
+Not sure what an unfamiliar snippet belongs to? Search its filename on the web. App snippet names are consistent across stores, and someone has usually asked about the same file in the Shopify community forums.
+
+### Run the duplicate theme test
+
+Theme code search finds what is written in your files. It does not tell you where a script you see loading in the browser actually comes from, and that distinction decides whether you have cleanup work at all.
+
+Duplicate your live theme (or install a fresh, unmodified copy of the same theme) and open the duplicate's preview. On both the preview and your live store, open your browser's developer tools, load the network tab, and compare the third-party scripts. Two outcomes:
+
+- **A script loads on the clean copy too.** It is injected at the store level by an app that is currently installed, via a ScriptTag or app embed. Uninstalling that app will remove it automatically. No manual cleanup needed.
+- **A script loads only on your live theme.** It is baked into your theme files. If the app behind it is already gone, this is exactly the residue you are hunting.
+
+This test is the fastest way to triage a slow store, because it splits your script weight into "goes away by uninstalling" and "requires code removal" in about ten minutes.
+
+### Let the errors point at themselves
+
+Leftover render calls to deleted snippets print errors directly on your storefront: "Liquid error: Could not find asset snippets/some-app.liquid." Click through your homepage, a product page, collection page, cart, and blog while logged out, and note every error you see. Each one names the exact file reference you need to remove. Failed requests in the network tab (404s for assets that no longer exist) serve the same purpose for scripts and styles.
+
+## The Safe Removal Workflow
+
+Removing code from a live theme deserves the same care as any production change. The workflow that avoids disasters:
+
+1. **Back up first.** Duplicate your live theme and name the copy with the date, for example "Backup 2026-07-21 pre-cleanup." This is your undo button. Do not skip it because the edit looks trivial; trivial edits cause a surprising share of broken storefronts.
+2. **Work on a second duplicate, not the live theme.** Make another copy for editing. You will preview changes here and publish only when everything checks out.
+3. **Remove references before files.** Delete the `{% render %}` and `{% include %}` lines and script or stylesheet references in theme.liquid and section files first. Then delete the snippet and asset files they pointed to. Doing it in the other order creates Liquid errors on any page that renders between the two steps.
+4. **One app at a time.** Batch-deleting residue from five apps at once means that when something breaks, you get to bisect your own work. Remove one app's leftovers, preview, then move on.
+5. **Preview thoroughly.** In the theme preview, check the homepage, a product page, a collection, cart, and search, on mobile width as well as desktop. Add to cart and start a checkout. You are looking for layout shifts, missing sections, and console errors.
+6. **Publish and keep the backup.** Publish the cleaned theme and keep the dated backup for at least 30 days. If a subtle problem surfaces next week, you can diff or roll back instead of reconstructing from memory.
+
+## What Speed Wins to Expect
+
+Be honest with yourself here, because cleanup enthusiasm often outruns the measurable result. The realistic range:
+
+- **Dead scripts that still executed:** removing these is the real win. Several leftover widgets can add up to hundreds of milliseconds of mobile main-thread time, and cutting them shows up in Lighthouse and sometimes in Shopify's speed score.
+- **Broken references and 404s:** fixing these cleans up your waterfall and removes visible errors, but rarely moves load timings much. The browser was failing fast anyway.
+- **Unused CSS files:** small wins, occasionally meaningful on themes carrying years of residue.
+
+Measure before and after with the same tool and the same pages, and expect the improvement to be real but modest in most cases. If storefront speed is the actual goal, leftover-code cleanup is one item on a longer list; [why page speed drops over time](/blog/why-shopify-page-speed-dropping-fix) covers the full diagnostic, and [image optimization](/blog/shopify-image-optimization-guide) is usually the larger single lever on stores with heavy media.
+
+One more benefit that never shows up in Lighthouse: predictability. A theme with no mystery code is one a developer can quote accurately, a redesign can build on safely, and a future you can edit without archaeology. Stores that skip cleanup for years eventually pay for it all at once, usually during a theme migration on a deadline.
+
+## Preventing Leftovers Before They Happen
+
+The cheapest cleanup is the one you never have to do, and a few habits at install time prevent most future residue.
+
+**Prefer apps built on theme app extensions.** Modern app listings and support docs will say so, and the theme editor gives it away: if the app's storefront features appear as app blocks and app embeds you toggle in the customizer, it cleans up after itself. If an app's install instructions ask you to paste code into theme.liquid, you now know exactly what its uninstall will look like.
+
+**Ask the uninstall question up front.** One message to app support before installing: "What does uninstalling leave in my theme, and do you have a removal guide?" Good vendors answer instantly and often maintain cleanup documentation. Evasive answers are data.
+
+**Follow the vendor's removal steps in order.** Some apps instruct you to disable their app embeds or run an in-app cleanup before uninstalling. Doing it backward, uninstall first, is how removable code becomes orphaned code.
+
+**Keep an install log.** A running note of what was installed when, and whether it touched the theme, turns every future cleanup from a forensic exercise into a checklist. Your quarterly app audit is the natural place to maintain it.
+
+## When to Hire Help
+
+Do it yourself when the residue comes from one or two apps with clearly commented code blocks and your theme is otherwise close to stock. The workflow above is genuinely within reach of a careful non-developer.
+
+Bring in a developer when any of these apply: the leftovers are tangled into a heavily customized theme, the code touches cart or checkout behavior, you are cleaning up after five or more apps at once, or your search turns up files you cannot identify. A Shopify-experienced freelancer typically handles a full cleanup in a few billable hours, and the Shopify Experts marketplace exists for exactly this class of job. Compared to the cost of a broken cart discovered on a Saturday, it is cheap insurance. It is also a reasonable moment to have them note anything else lurking in the theme, since the archaeology is already paid for.
+
+## Billing, Data, and GDPR After Uninstall
+
+Uninstalling ends the app subscription, but confirm rather than assume. App charges flow through your invoice from [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) on 30-day app billing cycles, and uninstalling mid-cycle does not automatically refund the remainder; some developers refund on request. Usage-based fees already incurred can trail onto a later invoice. Check your next billing statement, and the one after, for the app's line item. Recurring app fees are a routine place merchants leak money, which is why they feature in both our [hidden Shopify costs guide](/blog/hidden-shopify-costs-how-to-avoid) and our breakdown of [what a store really costs in year one](/blog/true-cost-running-shopify-store-first-year).
+
+On data: 48 hours after uninstall, Shopify sends the developer a mandatory erasure webhook, and privacy law obligates them to delete your store's personal data within a defined window, typically 30 days. Compliance is good among established vendors and uneven at the margins, so for apps that held sensitive customer data, send a short email requesting written confirmation of deletion.
+
+The flip side matters more in practice: deletion includes data you might want. Reviews, survey responses, loyalty points, subscription contracts, and support history live inside the apps that collected them. Export everything exportable before you hit uninstall, because "we reinstalled and the reviews were gone" is a support ticket with no happy ending.
+
+Start with the ten-minute version this week: duplicate your theme, run the network-tab comparison, and search your theme code for the last two apps you remember uninstalling. If the search comes back clean, close the tab and move on. If it does not, you now have a precise, low-risk cleanup list and a workflow to run it with.
