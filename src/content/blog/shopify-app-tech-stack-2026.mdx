@@ -1,0 +1,167 @@
+---
+title: "Shopify App Tech Stack 2026: Framework, Hosting, DB"
+excerpt: "Choosing a Shopify app tech stack in 2026: Remix vs Next.js vs Rails, hosting on Fly.io, Render, or Vercel, database options, and honest picks by scenario."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify Apps", "Tech Stack", "Remix", "Hosting", "Databases", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the best framework for a Shopify app in 2026?"
+    answer: "The official Remix template, for most teams and almost all first apps. It is what Shopify maintains, documents, and assumes in CLI workflows: embedded session token auth, token exchange, Prisma session storage, and the extensions pipeline all come wired. Rails with the shopify_app gem remains a strong choice for teams already living in Ruby, and it powered a large share of successful apps for a decade. Next.js and plain Express are workable but leave you maintaining auth and session plumbing that the Remix template gives you for free. Pick against the default only with a specific reason."
+  - question: "Can I build a Shopify app with Next.js?"
+    answer: "Yes, and Shopify has published Next.js examples over the years, but you take on real integration work: wiring session token verification and token exchange yourself or through community packages, keeping it current with Shopify's quarterly changes, and translating every Remix-assumed example in the docs. The strongest case for Next.js is organizational, such as a team with deep existing Next.js infrastructure or an app sharing code with a Next.js product. If you go this way, host it somewhere an always-on process handles webhooks reliably, or route webhook topics to a queue immediately."
+  - question: "Where should I host a Shopify app?"
+    answer: "Fly.io and Render are the common picks for the Remix template because Shopify apps want an always-on server: webhook deliveries and background sync jobs do not pair well with cold-starting serverless functions. Both run a small production app for roughly ten to twenty dollars a month with a managed Postgres attached, based on their published entry pricing. Heroku still works and is familiar, at a modest premium. Vercel is excellent for frontends and fine for lightweight apps if you handle webhooks in queues, but long-running jobs and always-on listeners fit its function model less naturally."
+  - question: "What database should a Shopify app use?"
+    answer: "Postgres with Prisma is the boring, correct default. The Remix template ships Prisma against SQLite for zero-setup development, and swapping the datasource to a managed Postgres (Fly Postgres, Render Postgres, Neon, Supabase) is a one-line change plus a migration. Keep SQLite for development, or for production only if your host gives you durable volumes and you understand single-writer limits. Add Redis when you add a job queue such as BullMQ, which most apps eventually need for webhook processing and bulk syncs, not as a day-one requirement."
+  - question: "Should I use Polaris web components or custom UI for my app?"
+    answer: "Use Polaris web components for anything embedded in the Shopify admin. Merchants read your app through the admin's visual language, App Store review expects it, and the Built for Shopify quality bar effectively requires native-feeling UI. The web components (s-page, s-section, and friends) are the current direction, replacing Polaris React over time. Custom UI is the right call only for surfaces that live outside the admin: a standalone analytics dashboard, a public reporting page, or a customer-facing widget. Building custom admin UI means recreating accessibility, dark mode, and layout conventions Shopify already solved."
+  - question: "How much does it cost to run a small Shopify app?"
+    answer: "Roughly fifteen to thirty dollars a month for a starter app with real users, in our experience running this stack. That covers a small always-on web process (about seven dollars at Render or Heroku's entry tiers, similar territory usage-based on Fly.io), a managed Postgres around five to ten dollars, and optional Redis at free-to-ten dollars. Shopify's side costs nothing to start: Partner accounts, the CLI, development stores, and extension hosting are free, and App Store fees only apply once you have revenue. The real cost is your time, which is a reason to pick the well-worn stack."
+---
+
+For most teams in 2026, the best Shopify app tech stack is the official Remix template, Postgres with Prisma, and an always-on host like Fly.io or Render, with Polaris web components for admin UI. This guide compares the alternatives (Next.js, Rails, Express; Vercel, Heroku) and gives honest recommendations by scenario.
+
+![Developer workspace with laptops comparing hosting and framework options](https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=80)
+
+## What a Shopify app actually needs from a stack
+
+Before comparing brands, list the workload, because it is unusual. An embedded Shopify app is: a server that authenticates session tokens from an iframe, a GraphQL Admin API client, a webhook receiver that must answer fast and never miss deliveries, usually a background job system for syncs, a database for sessions and per-shop state, and admin UI that feels native inside Shopify. Extensions (admin blocks, checkout UI, Functions) deploy to Shopify's infrastructure, not yours, so they are stack-neutral.
+
+Two workload traits drive most of the decisions below. Webhooks reward an always-on process: Shopify retries failed deliveries and eventually drops subscriptions to endpoints that keep timing out, so cold starts are a liability. And per-shop background work (catalog syncs, bulk operations) wants a real job queue, not request-scoped compute. For grounding on the API side of all this, see the [Shopify API and app development guide](/blog/shopify-api-app-development-guide) and the [Admin vs Storefront API comparison](/blog/shopify-admin-api-vs-storefront-api).
+
+## Framework: the real comparison
+
+| | Remix template | Next.js | Rails (shopify_app) | Node/Express |
+|---|---|---|---|---|
+| Shopify maintenance | Official, first-party | Examples only | Official gem | Libraries only |
+| Auth/session wiring | Included | You assemble it | Included | You assemble it |
+| Matches shopify.dev docs | Exactly | Translation needed | Partially | Translation needed |
+| Language | JS/TS | JS/TS | Ruby | JS/TS |
+| Best fit | Default choice | Existing Next.js orgs | Ruby teams | Thin APIs, special cases |
+| Main risk | Framework churn upstream | Maintaining auth glue | Hiring pool | Everything is on you |
+
+**The Remix template** is the default for a reason: `shopify app init` produces embedded auth with session tokens and token exchange, Prisma session storage, webhook routes, and the extensions pipeline, already assembled and kept current by Shopify. Every doc and CLI workflow assumes it. The honest downsides: you inherit Shopify's upstream choices (including React Router-era churn in the Remix ecosystem), and if your team has zero React experience there is a learning curve that Rails teams in particular resent.
+
+**Next.js** is a fine framework carrying an integration tax here. Session token verification, token exchange, and webhook HMAC handling become your code or your dependency choices, and every Shopify example needs translating. Choose it for organizational gravity (shared code, existing infra, team fluency), not because it is "more modern." It is not more modern than the template; it is just yours to maintain.
+
+**Rails with the shopify_app gem** predates all of this and still works well. A decade of successful apps run on it, the gem handles auth and webhooks, and Ruby teams ship fast with it. The tradeoffs are ecosystem direction (Shopify's tooling energy is visibly in the JS template) and the JS you will write anyway for UI extensions.
+
+**Node/Express by hand** makes sense for narrow cases: a webhook-only service, an internal integration without embedded UI, or when an existing service grows Shopify duties. For a full embedded app you would be re-deriving the template.
+
+One adjacent clarification: if you are building a headless storefront rather than an app merchants install, that is a different stack conversation entirely, covered in the [Hydrogen headless guide](/blog/shopify-hydrogen-headless-guide).
+
+## Hosting: always-on beats serverless here
+
+| | Fly.io | Render | Heroku | Vercel |
+|---|---|---|---|---|
+| Model | VMs (always-on capable) | Managed services | Dynos | Serverless/edge functions |
+| Entry cost (approx.) | Usage-based, a few $/mo | ~$7/mo web service | $5-7/mo dyno | Free hobby; ~$20/seat Pro |
+| Managed Postgres | Yes | Yes | Yes (add-on) | Via partners (Neon etc.) |
+| Webhook fit | Strong | Strong | Strong | Needs queue-first design |
+| Background jobs | Native (processes) | Background workers | Worker dynos | Awkward; external queue |
+| Ops feel | CLI-first, flexible | Simplest | Familiar, pricier at scale | Excellent DX, wrong shape |
+
+Prices above are the published entry tiers as of mid-2026, rounded; check current pages before budgeting.
+
+**Fly.io** is the community favorite for the Remix template (the template's deploy docs have long featured it). Small always-on VMs, volumes if you want them, Postgres nearby, and regional placement. The CLI-first workflow suits developers who like owning their runtime; it is the least hand-holding of the four.
+
+**Render** is the "it just works" option: connect the repo, get a web service, a worker, and Postgres with sane defaults. For a first app where you want zero infrastructure thinking, it is hard to argue with.
+
+**Heroku** remains the path of least surprise for anyone who has shipped on it before. It costs somewhat more as you scale and innovates slowly, but dynos plus a worker plus Postgres maps perfectly onto this workload.
+
+**Vercel** deserves a nuanced take. The DX is genuinely the best of the four and lightweight apps run fine there. The friction is architectural: webhook bursts hitting cold functions, execution time limits on long syncs, and no always-on process for queues, so you end up pairing it with external queue infrastructure early. If your app is UI-heavy and event-light, fine. If it is sync-heavy, pick a VM-shaped host.
+
+On regions: place the server next to your database, not "near merchants." Admin pages render inside merchant browsers worldwide regardless, webhook deliveries originate from Shopify's infrastructure, and a chatty loader crossing an ocean to reach Postgres hurts far more than iframe latency ever will. One region, co-located app and DB, is the right starting shape.
+
+A related lesson about dependencies: infrastructure you rent can disappear, as app developers relearned when [Mantle announced its shutdown](/blog/mantle-shutting-down-shopify-app-partners). Keep billing and core data flows on primitives you can migrate.
+
+## Database, sessions, and the queue you will eventually need
+
+**Postgres plus Prisma** is the default that never embarrasses you. The template already speaks Prisma; production is a datasource swap:
+
+```toml
+# fly.toml (excerpt): the app plus a release migration
+[deploy]
+  release_command = "npx prisma migrate deploy"
+
+[env]
+  PORT = "3000"
+```
+
+```bash
+# point Prisma at managed Postgres
+DATABASE_URL="postgresql://user:pass@your-db.internal:5432/appdb"
+npx prisma migrate deploy
+```
+
+**SQLite** is excellent in development and a real production option only on hosts with durable volumes; on ephemeral filesystems it silently deletes your merchant sessions every deploy, which presents as random reinstall loops. This single mistake probably generates more "my app broke in production" threads than any other stack decision.
+
+**Redis** enters when the job queue does. Webhook handlers should enqueue and return; BullMQ on Redis is the standard JS pattern. Most apps can defer this for weeks, then genuinely need it the first time a merchant with 40,000 SKUs runs a bulk edit and a thousand `products/update` deliveries arrive in a minute.
+
+Session storage specifically is an interface with official adapters (Prisma, Redis, and others), so this layer stays swappable as you grow.
+
+## UI: Polaris web components vs custom
+
+For embedded admin surfaces, use Polaris web components (`s-page`, `s-section`, `s-text`, and the rest of the `s-` family). They are the current direction, replacing Polaris React over time, and they carry accessibility, theming, and admin layout conventions you do not want to rebuild. Merchant trust is visual before it is functional: apps that look native get treated as native, and the Built for Shopify bar (which increasingly gates discovery, as we covered in [app discovery in the AI era](/blog/built-for-shopify-app-discovery-ai-era)) assumes it.
+
+Custom UI earns its place outside the iframe: standalone dashboards, public status or report pages, customer-facing embeds. There you control the brand and Polaris would look out of place. The anti-pattern is a custom design system inside the admin; it costs more and reviews worse.
+
+## Observability: the part everyone defers
+
+Budget one afternoon for it, because Shopify apps fail in ways a default setup will not show you. The minimum viable kit:
+
+**Error tracking on the server** (Sentry-class free tiers are fine), with shop domain attached to every event so you know which merchant is affected before they email you.
+
+**Webhook delivery visibility.** Log topic, shop, and processing time on every delivery, and alert on sustained failures. Shopify removes subscriptions from endpoints that keep failing, and the resulting silence looks exactly like "no events happened." A weekly reconciliation job that compares Shopify's data against yours catches the drift.
+
+**An uptime check on the app URL.** If your server is down, merchants see a broken iframe inside their admin, which reads as your bug regardless of whose infrastructure blinked.
+
+Extensions run on Shopify's side and mostly cannot be instrumented the same way, which is one more reason to keep logic in your server and let extensions stay thin.
+
+## Stacks we would talk you out of
+
+Patterns we have watched teams pick and regret:
+
+**Serverless-only with no queue.** Webhook bursts plus cold starts plus execution limits equals dropped events, discovered weeks later. If you love serverless, fine, but the queue goes in on day one, not after the first incident.
+
+**Exotic databases for a first app.** Single-table DynamoDB designs and event-sourced architectures solve problems a 50-merchant app does not have, and every Shopify example you consult assumes a relational store. Postgres, then revisit at scale.
+
+**Hand-rolled auth.** Session token verification and token exchange are solved by maintained libraries. Custom implementations are where auth bypasses come from, and reviewers have seen them all.
+
+**A custom design system inside the admin.** Covered above, but it bears repeating as a cost line: you will pay for it at build time, at review time, and at every admin redesign.
+
+## What a starter app costs per month
+
+Approximate, from running this stack ourselves; entry tiers move, so treat it as a shape rather than a quote:
+
+| Item | Choice | Approx. monthly |
+|---|---|---|
+| Web process | Render starter / Fly small VM / Heroku dyno | $5-10 |
+| Postgres | Managed entry tier | $5-10 |
+| Redis (when needed) | Entry tier or bundled | $0-10 |
+| Error tracking | Sentry-class free tier | $0 |
+| Shopify side | Partner account, CLI, dev stores, extensions | $0 |
+| **Total** | | **~$10-30** |
+
+The Shopify row deserves the emphasis: platform costs at the build stage are zero. Development stores are free from the Partner Dashboard, and they simulate everything except real payments. A live [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) store is worth setting up when you reach real-checkout testing or want to dogfood your own app in production conditions, but you can get an app to submission without spending anything on the platform.
+
+## Recommendations by scenario
+
+**First app, solo developer.** Remix template, Render, Postgres, Polaris web components. Total decision time: zero, which is the point. Spend the saved attention on the merchant problem.
+
+**Agency or portfolio builder.** Same stack, templated: one repo pattern, one Fly.io org with an app per client, shared deploy scripts. Consistency across ten apps beats a locally optimal choice per app.
+
+**Ruby team with Rails muscle memory.** Rails plus shopify_app, hosted wherever you host Rails today. Do not force a rewrite; do budget for the JS in UI extensions.
+
+**Existing Next.js product adding a Shopify surface.** Next.js in the monorepo is defensible; put webhooks behind a queue from day one and steal auth patterns from the Remix template rather than inventing them.
+
+**Sync-heavy app (feeds, ERP, catalogs).** Remix template, Fly.io with a dedicated worker process, Postgres, Redis from day one. The queue is the product here.
+
+## Next step
+
+Scaffold the default stack this week and deploy the unmodified template to your chosen host before writing a feature. A live "hello world" embedded app surfaces every environment, auth, and database decision while they are still cheap to change, and it turns the rest of the build into pure feature work.

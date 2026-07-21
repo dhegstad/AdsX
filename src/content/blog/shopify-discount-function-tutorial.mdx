@@ -1,0 +1,310 @@
+---
+title: "Shopify Discount Function Tutorial: Custom Logic (2026)"
+excerpt: "Build a Shopify discount function in JavaScript: scaffold with the CLI, write tiered volume discount logic, test locally, and activate it via GraphQL."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Shopify Functions", "Discount Function", "Shopify CLI", "JavaScript", "WebAssembly", "GraphQL", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Build a Shopify discount function with custom logic"
+  totalTime: "PT1H"
+  steps:
+    - name: "Scaffold the function"
+      text: "Inside an existing app, run shopify app generate extension --template discount and choose JavaScript. The CLI creates an extensions directory with the function source, input queries, and config."
+    - name: "Define the input query"
+      text: "Edit src/cart_lines_discounts_generate_run.graphql to request cart line IDs, quantities, subtotals, the discount classes, and your configuration metafield."
+    - name: "Write the discount logic"
+      text: "Implement cartLinesDiscountsGenerateRun in JavaScript: read tier configuration from the metafield, match each cart line against quantity tiers, and return productDiscountsAdd operations with percentage values."
+    - name: "Test locally"
+      text: "Run shopify app function run with a JSON input fixture to execute the compiled WebAssembly locally and inspect the output and instruction count before anything touches a store."
+    - name: "Deploy the function"
+      text: "Run shopify app deploy to compile the function to WASM and release it as part of a new app version."
+    - name: "Activate with discountAutomaticAppCreate"
+      text: "Call the discountAutomaticAppCreate mutation with your function handle, discount classes, and a JSON configuration metafield to turn the function on for a store."
+    - name: "Verify in a real cart"
+      text: "Add tier-qualifying quantities to a cart in your development store and confirm the discount line appears. Use shopify app function replay to debug real executions."
+faqs:
+  - question: "Why did Shopify Functions replace Shopify Scripts?"
+    answer: "Scripts ran Ruby inside a Plus-only sandbox that Shopify had to interpret at checkout time, and they never extended beyond a handful of use cases. Functions compile to WebAssembly and run on Shopify's infrastructure with strict resource budgets, which makes them fast enough to execute on every cart change, available to apps on all plans rather than Plus only, and usable across many surfaces (discounts, delivery, payments, validation, cart transforms). Shopify sunset Scripts on June 30, 2026, so any remaining Script logic must now live in a Function."
+  - question: "Can I write Shopify Functions in JavaScript instead of Rust?"
+    answer: "Yes. The CLI offers JavaScript and TypeScript templates that compile to WebAssembly through Javy, Shopify's JavaScript-to-WASM toolchain, so you never hand-write WASM. The tradeoff is performance headroom: the JS runtime consumes part of the instruction budget that Rust code would keep, and Shopify recommends Rust for functions that must handle very large carts. In practice, straightforward discount logic in JavaScript runs well within limits. Start in JS if that is your team's language, and port to Rust only if instruction counts on realistic carts say you must."
+  - question: "How do I test a discount function before it goes live?"
+    answer: "Two ways. Locally, shopify app function run executes your compiled function against a JSON input you provide on stdin or from a file, printing the output and the instruction count; keep a set of fixture carts and run them like unit tests. Against a real store, shopify app dev deploys a draft to your development store so you can build qualifying carts and watch the discount apply, and shopify app function replay re-runs recorded production executions locally with full logs, which is the fastest way to debug a misbehaving function."
+  - question: "How does a merchant configure a discount function?"
+    answer: "Through a metafield on the discount, not code. The convention is a JSON metafield in the function-reserved namespace ($app:your-handle) with a key like function-configuration, written when you create the discount via discountAutomaticAppCreate. Your input query reads that metafield, so every execution receives the store's own tier thresholds or percentages. Most production apps ship an embedded admin page where merchants edit these values in a form, and the app writes the metafield behind the scenes. One deployed function then serves every store with different configurations."
+  - question: "What are the performance limits for Shopify Functions?"
+    answer: "Functions run inside hard budgets: an instruction count limit of 11 million WebAssembly instructions for typical carts (the budget scales up for carts beyond roughly 200 lines), a 256 KB compiled module size, 128 KB of input, and 20 KB of output, per Shopify's documented limits. Exceeding the instruction budget fails the execution and your discount silently does not apply, so measure with shopify app function run on worst-case carts, keep input queries lean, and avoid heavy dependencies that inflate the module."
+  - question: "Does a discount function work on non-Plus Shopify stores?"
+    answer: "Yes, and this is one of the biggest practical differences from Scripts. Shopify Scripts required a Plus plan because the Script Editor was a Plus feature. Functions delivered through an app run on all Shopify plans, so a discount app built this way addresses the entire merchant base. The one caveat sits elsewhere: some checkout surface customizations remain Plus-gated, but discount logic itself, applied automatically to carts and orders, is available everywhere your app is installed."
+---
+
+A Shopify discount function is WebAssembly code that runs on Shopify's servers every time a cart changes, returning the discounts to apply. You scaffold one with `shopify app generate extension --template discount`, write the logic in JavaScript or Rust, test it with `shopify app function run`, deploy it, then activate it with the `discountAutomaticAppCreate` mutation.
+
+![JavaScript discount function code on a developer's screen](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80)
+
+## Why Functions replaced Scripts
+
+Shopify Scripts, the Ruby snippets Plus merchants pasted into the Script Editor, reached end of life on June 30, 2026. If you still have Script logic in production, it stopped running; our [Scripts to Functions migration guide](/blog/shopify-scripts-functions-migration-june-30-2026) covers the mapping in detail.
+
+Functions are the replacement, and they are a different animal. Your code compiles to WebAssembly and executes inside Shopify's infrastructure with hard resource budgets, typically in single-digit milliseconds. That speed is what lets Shopify run your logic synchronously on every cart mutation without slowing checkout. Two practical wins over Scripts: Functions ship inside apps on any plan (Scripts were Plus-only), and the same model powers a dozen surfaces beyond discounts, from delivery customization to cart validation.
+
+The discount side got simpler in 2025. Older API versions had three separate function types (product, order, shipping discounts). The current unified Discount API uses one function with two entry points: `cartLinesDiscountsGenerateRun` for product and order discounts, and `cartDeliveryOptionsDiscountsGenerateRun` for shipping. One extension can generate all three classes.
+
+## What we are building
+
+A tiered volume discount: buy more units of a line, get a bigger percentage off that line. Merchants configure the tiers per store through a metafield, so the function itself stays generic.
+
+| Quantity on a line | Discount |
+|---|---|
+| 1 to 4 | none |
+| 5 to 9 | 10% |
+| 10 to 19 | 15% |
+| 20+ | 20% |
+
+This was one of the most common Shopify Scripts, which makes it a fitting first Function.
+
+## Step 1: Scaffold the function
+
+Functions live inside an app. If you do not have one, run `shopify app init` first (the Remix template is fine; the [app development guide](/blog/shopify-api-app-development-guide) walks through it), and create a development store from your Partner Dashboard on [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) to test against. Then:
+
+```bash
+shopify app generate extension --template discount --name volume-discount
+```
+
+Choose JavaScript when prompted. You get:
+
+```bash
+extensions/volume-discount/
+├── shopify.extension.toml
+├── src/
+│   ├── cart_lines_discounts_generate_run.js
+│   ├── cart_lines_discounts_generate_run.graphql
+│   ├── cart_delivery_options_discounts_generate_run.js
+│   ├── cart_delivery_options_discounts_generate_run.graphql
+│   └── index.js
+└── package.json
+```
+
+The generated `shopify.extension.toml` wires each target to its input query and export:
+
+```toml
+api_version = "2026-07"
+
+[[extensions]]
+name = "t:name"
+handle = "volume-discount"
+type = "function"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.discounts.generate.run"
+  input_query = "src/cart_delivery_options_discounts_generate_run.graphql"
+  export = "cart-delivery-options-discounts-generate-run"
+```
+
+We only care about cart lines here, so the delivery entry point can keep returning an empty operations list.
+
+## Step 2: Define the input query
+
+Functions do not call APIs. Instead, each target has a GraphQL input query, and Shopify hands your function exactly that data as JSON. This is the single best design decision in the platform: your function is a pure transformation from input to output, which makes it trivially testable.
+
+Edit `src/cart_lines_discounts_generate_run.graphql`:
+
+```graphql
+query CartInput {
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+    metafield(
+      namespace: "$app:volume-discount"
+      key: "function-configuration"
+    ) {
+      value
+    }
+  }
+}
+```
+
+Two details. `discount.discountClasses` tells you which classes (PRODUCT, ORDER, SHIPPING) this discount was created with, so your function can branch. And the `metafield` field is how per-store configuration reaches you: whatever JSON the merchant's discount carries in that metafield arrives in the input. The `$app:` namespace prefix keeps it reserved to your app.
+
+Keep input queries minimal. Input size counts against a 128 KB budget, and every extra field costs instructions to parse.
+
+## Step 3: Write the run logic
+
+Replace `src/cart_lines_discounts_generate_run.js`:
+
+```js
+import {
+  DiscountClass,
+  ProductDiscountSelectionStrategy,
+} from '../generated/api';
+
+const DEFAULT_TIERS = [
+  {minQuantity: 20, percentage: 20},
+  {minQuantity: 10, percentage: 15},
+  {minQuantity: 5, percentage: 10},
+];
+
+export function cartLinesDiscountsGenerateRun(input) {
+  if (!input.discount.discountClasses.includes(DiscountClass.Product)) {
+    return {operations: []};
+  }
+
+  const config = input.discount.metafield?.value
+    ? JSON.parse(input.discount.metafield.value)
+    : {tiers: DEFAULT_TIERS};
+
+  // Highest tier first so the first match wins
+  const tiers = [...config.tiers].sort(
+    (a, b) => b.minQuantity - a.minQuantity,
+  );
+
+  const candidates = [];
+
+  for (const line of input.cart.lines) {
+    const tier = tiers.find((t) => line.quantity >= t.minQuantity);
+    if (!tier) continue;
+
+    candidates.push({
+      message: `Volume discount: ${tier.percentage}% off ${line.quantity} units`,
+      targets: [{cartLine: {id: line.id}}],
+      value: {percentage: {value: tier.percentage}},
+    });
+  }
+
+  if (candidates.length === 0) {
+    return {operations: []};
+  }
+
+  return {
+    operations: [
+      {
+        productDiscountsAdd: {
+          candidates,
+          selectionStrategy: ProductDiscountSelectionStrategy.All,
+        },
+      },
+    ],
+  };
+}
+```
+
+The output contract is worth internalizing. You return `operations`; each operation adds discount candidates of one class. A candidate has a buyer-facing `message`, one or more `targets` (here, individual cart lines), and a `value` (percentage or fixed amount). The `selectionStrategy` decides what happens when several candidates exist: `All` applies every one, `First` applies only the first match. For per-line volume tiers we want `All`, since each qualifying line earns its own discount.
+
+Note what is absent: no network calls, no dates, no randomness. If you need the current time or customer segment membership, request it in the input query and let Shopify supply it.
+
+## Step 4: Test with `shopify app function run`
+
+Because a function is a pure input-to-output transformation, you can execute the real compiled WASM locally. Create a fixture file:
+
+```bash
+cat > input.json <<'EOF'
+{
+  "cart": {
+    "lines": [
+      {"id": "gid://shopify/CartLine/1", "quantity": 12,
+       "cost": {"subtotalAmount": {"amount": "240.0"}}},
+      {"id": "gid://shopify/CartLine/2", "quantity": 2,
+       "cost": {"subtotalAmount": {"amount": "50.0"}}}
+    ]
+  },
+  "discount": {"discountClasses": ["PRODUCT"], "metafield": null}
+}
+EOF
+
+shopify app function run --path extensions/volume-discount < input.json
+```
+
+The CLI prints the JSON output plus the instruction count for the run. Expect line 1 to receive a 15% candidate and line 2 nothing. Keep several fixtures around (empty cart, huge cart, malformed metafield) and rerun them after every change; it is the cheapest regression suite you will ever maintain.
+
+Watch that instruction count as your logic grows. Shopify's documented budget is 11 million WebAssembly instructions for typical carts, scaling up beyond roughly 200 cart lines, with a 256 KB compiled module cap and 20 KB of output (see the [Shopify Functions docs](https://shopify.dev/docs/apps/build/functions) for current numbers). JavaScript, compiled through the Javy toolchain, spends part of that budget on its runtime. That overhead is fine for logic like ours, but it is why Shopify recommends Rust for functions that must survive worst-case carts. Write JS first; port only if your fixtures on large carts get uncomfortable.
+
+For debugging live behavior later, `shopify app function replay` re-runs recorded executions from your development store locally, logs included.
+
+## Step 5: Deploy, then activate with the Admin API
+
+`shopify app deploy` compiles and releases the function as part of a new app version. Deployment makes the function available to stores with your app installed, but nothing happens until a discount is created that points at it. That activation is an Admin GraphQL call, typically made by your app's backend when the merchant clicks "enable" in your admin UI. (All Admin API work is GraphQL now; REST is legacy, as covered in [GraphQL vs REST](/blog/shopify-graphql-vs-rest-api).)
+
+```graphql
+mutation CreateVolumeDiscount {
+  discountAutomaticAppCreate(
+    automaticAppDiscount: {
+      title: "Volume discount"
+      functionHandle: "volume-discount"
+      discountClasses: [PRODUCT]
+      startsAt: "2026-07-21T00:00:00Z"
+      metafields: [
+        {
+          namespace: "$app:volume-discount"
+          key: "function-configuration"
+          type: "json"
+          value: "{\"tiers\":[{\"minQuantity\":5,\"percentage\":10},{\"minQuantity\":10,\"percentage\":15},{\"minQuantity\":20,\"percentage\":20}]}"
+        }
+      ]
+    }
+  ) {
+    automaticAppDiscount {
+      discountId
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+`functionHandle` is the stable handle from your `shopify.extension.toml` (older API versions used `functionId`; the handle survives redeploys, which is why it is preferred). `discountClasses` must include every class your function emits, and the metafield here is the same one your input query reads. Change the JSON, and the function's behavior changes on the next cart evaluation, with no redeploy.
+
+Run the mutation with `write_discounts` scope, then build a cart with 12 units of something in your development store. The discount line should appear with your message. If it does not, `shopify app function replay` will show you what the function actually received and returned.
+
+## Where merchants edit the tiers
+
+Shipping a hardcoded mutation is fine for testing, but a real app gives merchants a form. The standard pattern: an embedded admin page (Polaris) listing the tiers, and on save, your backend runs `discountAutomaticAppUpdate` to rewrite the `function-configuration` metafield. The function never changes; only its input does. This split between deployed logic and metafield configuration is what lets one public app serve thousands of stores with different rules, a pattern that shows up across Shopify's platform, including the catalog tooling covered in our [Admin API guide](/blog/shopify-admin-api-guide).
+
+## Limits and gotchas from production
+
+- **Silent failure.** A function that exceeds its instruction budget or returns invalid output simply applies no discount. Buyers see full price, nobody sees an error. Monitor with replay logs and alert on absence, not just errors.
+- **Discount combinations.** Whether your automatic discount stacks with code-based discounts depends on the combination settings on the discount; test the pairings merchants will actually run.
+- **One discount, many evaluations.** Your function runs on every cart change. Keep it boring and fast; save creativity for the configuration UI.
+- **Output cap.** Twenty kilobytes of output sounds generous until you emit one candidate per line on a 250-line wholesale cart with long messages. Keep messages short.
+
+## Troubleshooting: when the discount does not apply
+
+**Nothing happens in the cart.** Work outward from the discount object. Confirm the discount exists and is active (check the admin's Discounts page or query `discountNodes`), that `discountClasses` on the discount includes PRODUCT, and that your function branch checks the same class. This mismatch is the most common failure we see: the mutation created an ORDER-class discount while the function only emits product candidates, so every execution exits through the empty-operations branch and looks like a bug that is not there.
+
+**The metafield arrives as null.** The namespace and key in your input query must match the mutation exactly, including the `$app:` prefix, and the metafield must live on the discount, not on the shop or a product. Remember that `$app:volume-discount` resolves to a namespace reserved for your app: querying it from the GraphiQL explorer under different app credentials returns nothing, which regularly convinces developers the write failed when it did not.
+
+**Candidates returned, no discount visible.** Check `selectionStrategy` first; `First` applies one candidate even when you return ten. Then confirm each target's cart line ID came from the same execution's input. IDs copied from a stale fixture will not match live cart lines, and Shopify discards candidates whose targets do not resolve.
+
+**Works on small carts, fails on large ones.** Almost always the instruction budget. JSON parsing scales with input size, so trim the input query before optimizing your loop. Measure with `shopify app function run` on a 200-line fixture; if JavaScript still exceeds the budget after the input diet, that is the genuine signal to port to Rust rather than fight Javy's overhead.
+
+**The discount stacks strangely with promo codes.** Combination behavior lives on the discount (`combinesWith` in the mutation input), not in your function. Decide deliberately whether volume pricing combines with code discounts and shipping promotions, then surface that choice in your settings UI, because whichever default you pick will surprise somebody.
+
+**One malformed metafield takes the whole thing down.** `JSON.parse` on merchant-writable data needs a try/catch that falls back to defaults. An uncaught exception means no discount storewide, and unlike your web app, no stack trace reaches your error tracker; only `shopify app function replay` shows what happened. Validate configuration at write time in your admin UI as the first line of defense, and parse defensively in the function as the second.
+
+## Do volume tiers pay for themselves?
+
+A last word for whoever owns the merchandising decision. Volume tiers reliably lift average order value, and just as reliably compress margin per unit, so the number to watch is contribution per order, not AOV. The interaction with paid acquisition is where this gets interesting: a higher AOV raises the break-even cost per acquisition, which can turn previously unprofitable ad audiences viable. When we run this play for stores at AdsX, the tier thresholds get set from the actual order distribution (put the first tier just above the current median quantity), then validated with a few weeks of before-and-after contribution data. Build the function once, but treat the tier values as a living experiment.
+
+## Next step
+
+Scaffold the template today and get one fixture passing through `shopify app function run`: that loop (edit, run, read instruction count) teaches the Functions model faster than anything else. Then wire the mutation against a development store. Once tiered pricing is applying automatically in a real checkout, the interesting question becomes what pricing structure to offer, and that is a merchandising decision worth testing, not guessing.

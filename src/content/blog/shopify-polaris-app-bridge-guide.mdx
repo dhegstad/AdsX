@@ -1,0 +1,229 @@
+---
+title: "Polaris and App Bridge: Shopify Embedded App UI (2026)"
+excerpt: "Polaris and App Bridge power Shopify embedded app UI. See the 2026 web components setup, session tokens, modals, pickers, and BFS design rules."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Polaris", "App Bridge", "Embedded Apps", "Web Components", "Session Tokens", "Built for Shopify"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "What is the difference between Polaris and App Bridge?"
+    answer: "Polaris is the design system: the components, tokens, and guidelines that make your app's pages look and behave like the Shopify admin. It renders inside your app's iframe. App Bridge is the runtime bridge between that iframe and the admin around it: it provides session tokens for authentication, and it renders admin-owned surfaces such as the title bar, left navigation menu, modals, toasts, and the contextual save bar. You need both for an embedded app; neither replaces the other."
+  - question: "Should I use Polaris web components or Polaris React in 2026?"
+    answer: "For new apps, Polaris web components. Shopify's current direction is framework-agnostic web components (s-page, s-section, s-button and so on) loaded from cdn.shopify.com, which work identically in Remix, plain JS, Vue, or anything else, and stay visually current automatically because the CDN serves the latest styling. The @shopify/polaris React package still works and powers thousands of production apps, but new admin surfaces and extension targets are being built around web components, so starting there avoids a migration later."
+  - question: "How does authentication work in an embedded Shopify app?"
+    answer: "Through session tokens. App Bridge exposes shopify.idToken(), which returns a short-lived JWT (about one minute) signed with your app's client secret. Your frontend sends it in the Authorization header on every request to your backend; the backend verifies the signature and claims, then uses token exchange to obtain an Admin API access token for the shop. Cookies do not work reliably inside the admin iframe because browsers block third-party cookies, which is exactly why the session token pattern exists."
+  - question: "How do I show modals and toasts in an embedded app?"
+    answer: "Through App Bridge, not your own overlay code. Declare a ui-modal element with an id and call shopify.modal.show('that-id'); the modal renders at admin level, correctly centered over the whole admin rather than clipped inside your iframe. Toasts are one call, shopify.toast.show('Saved'), and appear in the admin's standard position. The contextual save bar is even less code: add the data-save-bar attribute to a form and App Bridge shows the admin save bar automatically when the form has unsaved changes."
+  - question: "What is the resource picker and when should I use it?"
+    answer: "A prebuilt admin dialog for selecting products, collections, or variants. Calling shopify.resourcePicker({type: 'product'}) opens the same search-and-select UI merchants use everywhere else in the admin, complete with search, pagination, and multi-select, and resolves with the selected resources including IDs, titles, and images. Use it any time your app needs a merchant to pick catalog items: it saves you building product search, and it handles stores with hundreds of thousands of products correctly, which a naive product dropdown never will."
+  - question: "Do Polaris and App Bridge affect Built for Shopify status?"
+    answer: "Directly. Built for Shopify requires apps to be embedded in the admin, run the latest App Bridge script from Shopify's CDN, and use admin-provided UI for navigation, the title bar, and the contextual save bar rather than custom lookalikes. Design criteria expect an interface consistent with the admin, which in practice means Polaris components and spacing. There are also performance expectations measured on real merchant sessions, including Core Web Vitals thresholds. Skipping this stack does not just cost polish; it caps your app's distribution."
+---
+
+Polaris is Shopify's design system; App Bridge is the runtime that connects your embedded app to the admin around it. In 2026 you load both as scripts from Shopify's CDN, build pages with Polaris web components (`s-page`, `s-button`), authenticate with session tokens via `shopify.idToken()`, and drive admin surfaces like modals, toasts, and the save bar through the global `shopify` object.
+
+![Shopify admin dashboard interface on a laptop screen](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80)
+
+## Two tools, one embedded app
+
+Embedded apps run inside an iframe in the Shopify admin, and that architecture creates two distinct problems. Your pages need to look like the admin, or merchants feel the seam every time they open your app. And your iframe needs to talk to the admin it lives inside: navigation, dialogs, authentication, none of which an iframe can do alone.
+
+| | Polaris | App Bridge |
+|---|---|---|
+| What it is | Design system and component library | Iframe-to-admin runtime |
+| Renders | Inside your iframe | Admin surfaces outside your iframe |
+| Gives you | Pages, cards, buttons, forms, tables, tokens | Session tokens, nav menu, title bar, modals, toasts, save bar, pickers |
+| Loaded via | `cdn.shopify.com/shopifycloud/polaris.js` | `cdn.shopify.com/shopifycloud/app-bridge.js` |
+| Skippable? | Technically, at the cost of looking foreign | No, embedded apps depend on it |
+
+If you scaffold with `shopify app init` and the Remix template, both are wired up already. It is still worth understanding the layers, because debugging an embedded app without knowing where the iframe boundary sits is miserable. (For the app scaffold itself, start with the [Shopify app development guide](/blog/shopify-api-app-development-guide).)
+
+## Polaris in 2026: web components are the direction
+
+Polaris spent years as a React-only library, `@shopify/polaris`. That package still works and still powers most production apps. But Shopify's current direction is Polaris web components: framework-agnostic custom elements served from the CDN, with an `s-` prefix.
+
+```html
+<s-page heading="Dashboard">
+  <s-section heading="This week">
+    <s-paragraph>Nothing on fire. Enjoy it while it lasts.</s-paragraph>
+    <s-button variant="primary">Run report</s-button>
+  </s-section>
+</s-page>
+```
+
+Why the shift matters practically:
+
+- **Framework freedom.** The same components work in Remix, vanilla JS, Vue, or whatever your team already writes. No React version lockstep.
+- **Always-current styling.** The CDN serves the live design system, so your app picks up admin visual updates without a dependency bump.
+- **One system across surfaces.** Admin pages, admin extensions, and checkout extensions now share the web-components model, so knowledge transfers.
+
+The honest tradeoff: the React package's ecosystem (typed props, existing internal component libraries, years of Stack Overflow answers) is deeper than the web components' today. Existing apps do not need to panic-migrate; React Polaris keeps working. New apps should start on web components, because the deadline pressure on legacy extension stacks shows the direction of travel. We covered that timeline in [Shopify's AI toolkit and extension deadlines](/blog/shopify-ai-toolkit-extensions-polaris-deadline).
+
+## App Bridge setup: two tags and a global
+
+Everything App Bridge needs goes in your document head:
+
+```html
+<meta name="shopify-api-key" content="YOUR_CLIENT_ID" />
+<script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+<script src="https://cdn.shopify.com/shopifycloud/polaris.js"></script>
+```
+
+No npm install, no initialization call. The script reads your client ID from the meta tag, confirms it is running inside the admin, and exposes a global `shopify` object. From that point, admin capabilities are function calls.
+
+## Session tokens: how embedded auth actually works
+
+Browsers block third-party cookies, and your iframe is the third party. Cookie sessions inside the admin are therefore dead on arrival, which is why Shopify auth is built on session tokens.
+
+The flow: App Bridge mints a short-lived JWT (roughly one minute) signed with your app's client secret. Your frontend attaches it to every backend request; your backend verifies it and knows, cryptographically, which shop and user is calling.
+
+```js
+async function apiFetch(path, options = {}) {
+  const token = await shopify.idToken();
+  return fetch(path, {
+    ...options,
+    headers: {
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+// usage
+const res = await apiFetch('/api/reports/weekly');
+```
+
+Call `shopify.idToken()` fresh per request rather than caching, since the token expires quickly by design. On the server, verify the signature and claims, then use token exchange to swap the session token for an Admin API access token when you need to call Shopify on the shop's behalf. The Remix template's `authenticate.admin()` does this dance for you; the [Admin API guide](/blog/shopify-admin-api-guide) covers what to do with the resulting access token.
+
+## Building an embedded page
+
+Here is the shape of a real page: Polaris web components inside the iframe, App Bridge elements (`ui-` prefix) controlling the admin around it.
+
+```html
+<!-- Admin-level navigation, rendered in the admin's left rail -->
+<ui-nav-menu>
+  <a href="/" rel="home">Home</a>
+  <a href="/campaigns">Campaigns</a>
+  <a href="/settings">Settings</a>
+</ui-nav-menu>
+
+<!-- Admin-level title bar with a primary action -->
+<ui-title-bar title="Campaigns">
+  <button variant="primary" id="new-campaign">New campaign</button>
+</ui-title-bar>
+
+<!-- Your page, inside the iframe -->
+<s-page>
+  <s-section heading="Active campaigns">
+    <s-paragraph>3 campaigns running, 2 need creative review.</s-paragraph>
+  </s-section>
+</s-page>
+```
+
+The `ui-nav-menu` links become the app's navigation in the admin sidebar; `ui-title-bar` renders the admin-standard header. Neither exists inside your iframe, which is the entire point: merchants get consistent chrome, and your app cannot draw a convincing-but-fake admin header, a pattern Shopify explicitly designs against.
+
+### Modals, toasts, and the save bar
+
+Dialogs and notifications should come from the admin, not your CSS. Three patterns cover nearly everything:
+
+```html
+<ui-modal id="delete-campaign-modal">
+  <p>Delete this campaign? Spend history is kept; the campaign is not recoverable.</p>
+  <ui-title-bar title="Delete campaign">
+    <button variant="primary" tone="critical" onclick="confirmDelete()">Delete</button>
+    <button onclick="document.getElementById('delete-campaign-modal').hide()">Cancel</button>
+  </ui-title-bar>
+</ui-modal>
+```
+
+```js
+// open the modal
+shopify.modal.show('delete-campaign-modal');
+
+// confirmation feedback
+shopify.toast.show('Campaign deleted');
+```
+
+The contextual save bar, the admin-standard "unsaved changes" strip, is nearly free:
+
+```html
+<form data-save-bar onsubmit="saveSettings(event)">
+  <s-text-field label="Daily budget" name="budget" value="150"></s-text-field>
+</form>
+```
+
+The `data-save-bar` attribute tells App Bridge to watch the form and show the admin save bar whenever it holds unsaved changes, with Save and Discard wired to submit and reset. Building your own floating save bar instead of using this is one of the most common design-review flags.
+
+### Resource pickers
+
+When merchants need to select products or collections, do not build product search. Open the admin's own picker:
+
+```js
+const selected = await shopify.resourcePicker({
+  type: 'product',
+  multiple: true,
+  action: 'select',
+});
+
+if (selected) {
+  const ids = selected.map((product) => product.id);
+  await apiFetch('/api/campaigns/products', {
+    method: 'POST',
+    body: JSON.stringify({ids}),
+  });
+}
+```
+
+Merchants get the identical search-and-select dialog they use across the admin, with search and pagination that hold up on six-figure catalogs. The promise resolves with full resource objects (IDs, titles, images, variants) or `undefined` if the merchant cancels, so handle both branches.
+
+## The Built for Shopify connection
+
+None of this is optional polish if you care about distribution. Built for Shopify, the quality tier that feeds app store placement and, increasingly, AI-surfaced app recommendations, bakes this stack into its criteria:
+
+- The app must be embedded and run the latest App Bridge from Shopify's CDN.
+- Navigation, title bar, modals, and the save bar must use the admin-provided surfaces, not custom recreations.
+- The interface is expected to follow admin design conventions, which in practice means Polaris.
+- Performance is measured on real merchant sessions against Core Web Vitals thresholds (LCP in the 2.5-second range; see Shopify's [Built for Shopify requirements](https://shopify.dev/docs/apps/launch/built-for-shopify) for the current numbers).
+
+We have written before about why that badge matters more as app discovery shifts toward AI recommendation in [Built for Shopify in the AI discovery era](/blog/built-for-shopify-app-discovery-ai-era). The short version: the stack in this guide is the price of admission, not extra credit. That holds even if your app started as an AI-generated prototype, a path more teams are taking via the workflows in [building Shopify apps with AI tools](/blog/build-shopify-store-app-ai-replit-lovable-bolt-v0); the prototype gets you moving, and this stack makes it shippable.
+
+### Design details reviewers actually check
+
+A few smaller conventions come up repeatedly in design reviews and BFS assessments, and they are cheap to get right from the start:
+
+- **Loading states.** Use skeleton components while data loads instead of spinners on blank pages; the admin sets that expectation everywhere.
+- **Empty states.** A first-run page with no data should explain the next action, not render an empty table.
+- **Destructive actions.** Deletions get a confirmation modal with a critical-tone button, matching the pattern shown earlier.
+- **Navigation discipline.** Every page reachable in your app should be reachable from your `ui-nav-menu`; orphan pages that trap merchants without admin navigation are a recurring rejection note.
+
+None of this is creative work. That is the point: inside the admin, familiarity beats novelty.
+
+## Troubleshooting the iframe boundary
+
+**Blank screen where your app should be.** The admin loads your app URL in an iframe, and your server is refusing to be framed. An `X-Frame-Options: DENY` header or a `Content-Security-Policy` without a `frame-ancestors` directive admitting the merchant's admin domain makes the browser silently refuse to render. Most web frameworks ship deny-by-default, which is correct everywhere except here. The Remix template sets the headers per request; hand-rolled servers must do the same, including the shop-specific admin origin.
+
+**`shopify is not defined`.** Your code ran before `app-bridge.js` finished loading, or the page was opened directly outside the admin. Keep the App Bridge script tag early in the head as the docs specify, and guard any code path reachable from a non-embedded context, such as your OAuth landing route.
+
+**Intermittent 401s from your own API.** Two usual suspects: a cached session token that outlived its roughly one-minute expiry, or clock skew between client and server. Fetch a fresh token per request, allow a few seconds of tolerance when verifying `exp` and `nbf`, and log which claim failed rather than a generic auth error, or you will chase this for days.
+
+**Nav menu clicks cause full page reloads.** App Bridge intercepts plain same-origin anchors in `ui-nav-menu` and coordinates with client-side routing. Absolute URLs to other domains, `target` attributes, or a router that swallows click events before App Bridge sees them all break the interception. Keep nav menu links as plain relative anchors.
+
+**Your modal cannot see your app's state.** Content inside `ui-modal` renders at admin level, outside your iframe's JavaScript context. Pass data in through attributes when the modal opens, listen for its events on the way out, or use the modal's `src` variant to load a dedicated route that owns its own state. Treating the modal as a normal child component is the single most common App Bridge confusion we see.
+
+**The resource picker "returns nothing."** A cancelled picker resolves with `undefined` by design. Handle that branch; it is a user decision, not an error.
+
+## Leaving the iframe on purpose
+
+Some flows genuinely cannot run embedded. Third-party OAuth is the classic: connecting a merchant's Google or Meta ad account requires the provider's consent screen, and those providers refuse to render inside an iframe for their own clickjacking and cookie reasons. The working pattern is to open the flow in a new top-level window, complete the provider's redirect dance there against your backend, and have the popup notify the embedded app (a message event or a simple poll) before closing itself. Merchants barely notice when it is done well. What fails app review is the lazy version: breaking the whole app out of the admin frame to run everything top-level, which defeats embedding entirely.
+
+## A rejection, replayed
+
+A composite story from patterns we have watched more than once. A team ships a capable app with a custom left sidebar, a hand-built floating save bar, and its own modal system, all pixel-faithful to the admin's look. Built for Shopify review flags every one: navigation must come from `ui-nav-menu` so the admin can render it natively on desktop and mobile, unsaved-changes handling must be the admin's contextual save bar, and dialogs must be App Bridge modals so focus and layering behave. The fix took two days, and the diff was almost entirely deletions. The lesson generalizes: in embedded app UI, custom chrome is not polish, it is rework waiting to be flagged. Spend the creativity on your app's actual domain screens instead.
+
+## Next step
+
+Scaffold an app with `shopify app init`, run `shopify app dev`, and open it in a development store's admin (create one free through a Partner account on [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) if needed). Then do one exercise: add a `ui-nav-menu`, a `data-save-bar` form, and a resource picker to the default page. Those three touchpoints teach you where the iframe boundary sits, and after that, the rest of Polaris and App Bridge is reference-lookup work rather than architecture.

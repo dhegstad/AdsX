@@ -1,0 +1,205 @@
+---
+title: "Shopify App Security Checklist for Developers (2026)"
+excerpt: "A Shopify app security checklist covering HMAC verification, session tokens, protected customer data, GDPR webhooks, and what app review rejects."
+date: "2026-07-21"
+category: "Developers"
+tags: ["App Security", "Webhooks", "HMAC", "Session Tokens", "Protected Customer Data", "GDPR", "Shopify Apps"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+faqs:
+  - question: "How do I verify a Shopify webhook is genuine?"
+    answer: "Compute an HMAC-SHA256 digest of the raw request body using your app's client secret, base64-encode it, and compare it to the X-Shopify-Hmac-Sha256 header with a timing-safe comparison. The comparison must run against the raw bytes Shopify sent, before any JSON parsing or middleware transformation, because re-serialized JSON produces a different digest. Return 401 when verification fails. Shopify's automated checks actively probe for this: they send requests with invalid HMACs to your compliance webhook endpoints, and apps that accept them fail review."
+  - question: "What are Shopify session tokens and why do cookies not work?"
+    answer: "Session tokens are short-lived JWTs (about a one-minute lifetime) that App Bridge mints in your embedded app's frontend and your backend verifies on every request. They exist because embedded apps run in an iframe inside the Shopify admin, where browsers block third-party cookies, making cookie sessions unreliable. Your server verifies the HS256 signature with the app's client secret, then checks the exp and nbf claims, confirms aud matches your client ID, and reads the shop from the dest claim. Any failure means rejecting the request."
+  - question: "What is protected customer data in Shopify's requirements?"
+    answer: "Any data relating to a customer or prospective customer: orders, addresses, emails, phone numbers, and similar fields across the Customers, Orders, and Fulfillment APIs. Access is tiered. Level 1 covers customer data without direct identifiers and requires declaring your use case plus meeting baseline requirements like encryption in transit and at rest, purpose limitation, and retention rules. Level 2 adds the directly identifying fields (name, address, email, phone), each requested individually, and public apps face a data protection review with additional requirements such as encrypted backups, access logging, and an incident response policy."
+  - question: "Which webhooks are mandatory for every Shopify app?"
+    answer: "Three compliance topics: customers/data_request (a customer asked for their data), customers/redact (delete a specific customer's data), and shop/redact (the shop uninstalled, sent about 48 hours later, so delete the shop's data). Every app distributed through the App Store must subscribe to all three, verify the HMAC on each delivery, respond with 200 when the payload is valid, and return 401 when the HMAC is invalid. Automated review checks test the 401 behavior specifically, and failing it blocks listing regardless of what your app does."
+  - question: "How should a Shopify app store Admin API access tokens?"
+    answer: "Encrypted at rest, scoped per shop, and never exposed client-side. Offline access tokens are long-lived credentials to a merchant's store, so treat them like passwords: keep them in your database encrypted with a key held outside that database (a KMS or environment secret), exclude them from logs and error reporters, and never ship them to the browser or embed them in frontend code. When a shop uninstalls, delete the token promptly; it is already invalid, and holding dead credentials only adds breach surface with zero upside."
+  - question: "What security issues most often cause app review rejection?"
+    answer: "The recurring ones: compliance webhook endpoints that skip HMAC verification or return 200 for invalid signatures, OAuth callbacks that ignore the hmac or state parameters, session token validation that skips audience or expiry checks, requesting scopes the app never uses, TLS misconfiguration on redirect or webhook URLs, and verbose error responses that leak stack traces or internal hostnames. Most of these take under an hour each to fix and all of them are cheaper to handle before submission than after a rejection cycle that costs you a week."
+---
+
+Securing a Shopify app comes down to a short list of verifiable practices: HMAC-verify every webhook and OAuth callback, validate session tokens on every embedded request, encrypt stored access tokens, meet the protected customer data requirements, implement the three mandatory compliance webhooks, and request only the scopes you use. This checklist covers each, with code and where each rule is enforced.
+
+![Padlock and security concept on a developer workstation](https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80)
+
+## Where each requirement is enforced
+
+Not every rule bites at the same moment. Some block your App Store listing, some fail silently at runtime until an incident, and some only surface during a data protection review or audit. Knowing which is which tells you what to fix first.
+
+| Requirement | App review | Runtime | Audit / review process |
+|---|---|---|---|
+| Webhook HMAC verification | Automated checks probe with bad HMACs | Forged webhooks accepted if missing | Referenced in data protection review |
+| OAuth HMAC + state validation | Checked during review | Account takeover vector if missing | Yes |
+| Session token validation | Checked for embedded apps | Every request; spoofing if weak | Yes |
+| Encrypted token storage | Attested, not directly inspected | Breach blast radius | Central to data protection review |
+| Protected customer data levels | Access gated before APIs return fields | Fields return null without approval | Level 2 requires formal review |
+| Compliance webhooks (3 topics) | Hard blocker, automated tests | Must respond correctly forever | GDPR/CCPA exposure if broken |
+| Scope minimization | Reviewers question broad scopes | Merchants see the consent screen | Yes |
+| Rate limit handling | Not directly | 429s, throttled GraphQL cost | No |
+
+The pattern worth noticing: Shopify enforces the identity and privacy layer hard at review time, and leaves operational discipline (token storage, rate limits) mostly to you. Both matter; only one gets you rejected this week.
+
+## 1. Verify webhook HMACs on the raw body
+
+Every webhook Shopify sends includes an `X-Shopify-Hmac-Sha256` header: a base64-encoded HMAC-SHA256 of the request body, keyed with your app's client secret. If you skip verification, anyone who discovers your endpoint can forge orders, fake uninstalls, or poison your data. This is the most common security gap we see in app codebases, and it is ten lines to close:
+
+```js
+import crypto from 'node:crypto';
+
+export function verifyWebhookHmac(rawBody, hmacHeader, clientSecret) {
+  const digest = crypto
+    .createHmac('sha256', clientSecret)
+    .update(rawBody, 'utf8')
+    .digest('base64');
+
+  const a = Buffer.from(digest);
+  const b = Buffer.from(hmacHeader ?? '');
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+// Express example: capture the RAW body, verify, then parse
+app.post('/webhooks', express.raw({type: 'application/json'}), (req, res) => {
+  const valid = verifyWebhookHmac(
+    req.body,
+    req.get('X-Shopify-Hmac-Sha256'),
+    process.env.SHOPIFY_CLIENT_SECRET,
+  );
+  if (!valid) return res.status(401).send();
+
+  const payload = JSON.parse(req.body);
+  // enqueue and return quickly; process async
+  res.status(200).send();
+});
+```
+
+Two mistakes account for nearly every broken implementation. First, verifying a re-serialized body: if your framework parses JSON before your handler runs, `JSON.stringify(req.body)` will not match the original bytes and verification fails or, worse, gets commented out. Capture the raw body. Second, using `===` instead of a timing-safe comparison, which leaks signature information byte by byte. If you use a framework library (the Remix template's `authenticate.webhook()` does this correctly), confirm it, then move on. For designing the handlers themselves, see [catalog change webhooks](/blog/shopify-catalog-change-webhooks) for the idempotency and queueing patterns.
+
+## 2. Validate OAuth callbacks: hmac, state, and shop
+
+The install flow has its own HMAC: a hex-encoded signature in the `hmac` query parameter, computed over the sorted remaining query parameters. Verify it the same timing-safe way. Then two more checks that developers skip more often:
+
+- **`state`**: generate a random nonce when you start the OAuth flow, and confirm the callback returns the same value. Without it, an attacker can trick a merchant into completing an install that binds the merchant's shop to the attacker's session.
+- **`shop`**: validate the shop parameter matches `{something}.myshopify.com` exactly before redirecting or requesting tokens. Sloppy shop validation has produced real open-redirect and token-theft bugs in published apps.
+
+If you build on the current CLI templates with [managed installation](/blog/shopify-api-app-development-guide), Shopify handles most of this flow for you, which is one of the better arguments for not hand-rolling OAuth in 2026.
+
+## 3. Validate session tokens properly
+
+Embedded apps authenticate every frontend-to-backend request with a session token JWT from App Bridge, signed HS256 with your client secret. Verification is standard JWT hygiene, but each claim check exists for a reason:
+
+```js
+import jwt from 'jsonwebtoken';
+
+export function verifySessionToken(token) {
+  // Throws on bad signature or expiry
+  const payload = jwt.verify(token, process.env.SHOPIFY_CLIENT_SECRET, {
+    algorithms: ['HS256'],   // never accept "none" or RS256 here
+    clockTolerance: 5,
+  });
+
+  if (payload.aud !== process.env.SHOPIFY_CLIENT_ID) {
+    throw new Error('Token issued for a different app');
+  }
+
+  const dest = new URL(payload.dest).hostname;
+  if (!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(dest)) {
+    throw new Error('Invalid shop in dest claim');
+  }
+
+  return {shop: dest, userId: payload.sub};
+}
+```
+
+The `aud` check stops tokens minted for another app (same shop, different app, valid signature scheme) from being replayed against yours. The `dest` check is your source of truth for which shop is calling; never trust a shop value from a request body when the token carries one. Tokens live for about a minute, so fetch a fresh one per request client-side rather than caching.
+
+## 4. Store access tokens like the credentials they are
+
+Token exchange gives your backend an offline Admin API access token per shop. That token is full access to a merchant's business data within your scopes, indefinitely. Checklist:
+
+- Encrypt tokens at rest, with the encryption key outside the database (KMS, secrets manager, or at minimum an environment variable on a separate system).
+- Keep tokens out of logs, error trackers, and analytics. Add the token field to your logger's redaction list the day you create it.
+- Never send tokens to the browser. All Admin API calls go through your backend; the [Admin API guide](/blog/shopify-admin-api-guide) covers the server-side call patterns.
+- Delete tokens on `shop/redact` and on uninstall. Dead credentials are pure liability.
+- Rotate your client secret if it ever touches a repo, and treat that as an incident, not housekeeping.
+
+## 5. Protected customer data: levels, and the review
+
+Since Shopify gated customer PII behind the protected customer data framework, access is something you request and justify, not something scopes alone grant. The model, per [Shopify's protected customer data docs](https://shopify.dev/docs/apps/launch/protected-customer-data):
+
+- **Level 1** covers customer data without direct identifiers (order contents, country-level location). You declare your purpose in the Partner Dashboard and commit to baseline requirements: encryption in transit and at rest, purpose limitation, retention windows, honoring consent flags.
+- **Level 2** covers the directly identifying fields: name, address, email, phone. Each field is requested individually, and public apps go through a data protection review that adds requirements like encrypted backups, staff access controls, access logging, and a written incident response policy.
+
+The runtime behavior surprises people: without approved access, the API does not error, it returns null for protected fields. If your app "works in development but customer emails are missing in production," this is why. Design questions to ask early: do you actually need the email, or an anonymized ID? Every field you avoid requesting is review burden and breach surface you never carry.
+
+## 6. The three mandatory compliance webhooks
+
+Every App Store app must handle three privacy topics, no matter what the app does:
+
+| Topic | Trigger | Your obligation |
+|---|---|---|
+| `customers/data_request` | Customer asks a merchant for their data | Provide the customer's data your app holds to the merchant |
+| `customers/redact` | Customer erasure request | Delete that customer's data from your systems |
+| `shop/redact` | ~48 hours after uninstall | Delete the shop's data, including stored tokens |
+
+Configure them in `shopify.app.toml`:
+
+```toml
+[webhooks]
+api_version = "2026-04"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [
+    "customers/data_request",
+    "customers/redact",
+    "shop/redact",
+  ]
+  uri = "/webhooks/compliance"
+```
+
+The behavioral contract: verify the HMAC, return 200 for valid requests, return 401 for invalid ones. Shopify's automated review checks send deliberately invalid HMACs to these endpoints, and a 200 response to a forged request is an instant fail. Beyond review, these webhooks are your GDPR and CCPA machinery; wire them to real deletion jobs, not a logging stub you meant to finish later.
+
+## 7. Request the minimum scopes
+
+Scopes are your blast radius. `read_orders` when you only need `read_products` means a breach of your app exposes order data it never used, and it means a scarier consent screen at install, which measurably hurts conversion. Reviewers also ask: apps requesting broad scopes without visible features to match get questioned or rejected.
+
+Audit quarterly. The GraphQL Admin API tells you which scopes your actual queries require, and dropping a scope is a one-line change plus a merchant re-auth prompt. This discipline is also a [Built for Shopify](/blog/built-for-shopify-app-discovery-ai-era) signal, and BFS placement is worth real installs.
+
+## 8. Handle rate limits without leaking
+
+Rate limiting is availability security. Two failure modes matter. First, retry storms: a naive retry loop on 429s across a few thousand installed shops is a self-inflicted denial of service. Respect the `Retry-After` header on REST-style 429s and the cost/throttle data in GraphQL responses, back off with jitter, and queue writes. The full pattern set is in our [rate limits and errors guide](/blog/shopify-catalog-api-rate-limits-errors).
+
+Second, leaking through your own errors. When Shopify throttles you, your app's response to its users should stay boring: a clean "try again shortly," not a proxied stack trace revealing internal hostnames, query shapes, or token fragments. Map upstream errors to your own error vocabulary at the boundary, and log the details server-side only.
+
+## 9. The rejection greatest-hits list
+
+From published review guidelines and the failure modes we see repeatedly in developer communities: compliance endpoints returning 200 on invalid HMACs; OAuth flows missing `state`; session token checks that verify the signature but skip `aud` or expiry; unused scopes; webhook endpoints behind redirects or flaky TLS; and error pages that print stack traces. None of these is hard to fix. All of them are cheaper to fix before submission than after a rejection cycle.
+
+## How a good app fails review: one story, two rejections
+
+A composite replay of a pattern we have watched teams live through. An app sails past functional review; the automated compliance check then POSTs a forged payload with an invalid HMAC to `/webhooks/compliance`, the endpoint parses the JSON happily and returns 200, and the submission is rejected. The developer adds verification, but computes the digest over `JSON.stringify(req.body)` because the framework had already parsed the body. Now the digest never matches the raw bytes Shopify signed, every legitimate delivery gets a 401, and the next review cycle fails for the opposite reason: the webhook is "not being processed." The final fix, capturing the raw body before any middleware touches it, takes twenty minutes. The two rejection cycles took two and a half weeks.
+
+The transferable lesson: test both directions before submitting. A valid payload must return 200, and the same payload with one flipped byte in the signature must return 401. One curl script covers both, and it would have saved this team most of a month.
+
+## Production troubleshooting: security checks that fail strangely
+
+**HMAC verification passes locally, fails in production.** Something between Shopify and your handler is rewriting the body: a reverse proxy re-encoding the payload, compression middleware, or a framework that normalizes JSON before your code runs. Verify against the raw bytes at the earliest point you control, and log body length on mismatch to spot the rewrite fast.
+
+**Session tokens fail for some shops only.** Almost always a credentials mixup. Dev and production app credentials differ, so an `aud` check pinned to the wrong client ID rejects every shop on the other environment, and a secret pasted from the wrong app fails signature checks in ways that look intermittent if you run both configurations.
+
+**Review says your compliance endpoint "did not respond."** The URL redirects. HTTP-to-HTTPS upgrades, apex-to-www rewrites, and trailing-slash normalization all count; webhook delivery expects a direct answer from the exact registered URL. Register the final URL, no hops.
+
+**A `customers/redact` arrives for data you already deleted.** Return 200 anyway. Redaction handlers must be idempotent, because retries and overlapping requests are normal. Erroring on "not found" turns a compliant deletion into an apparent failure.
+
+**Your client secret leaked.** Treat it as an incident with a sequence, not a config change: rotate the secret in the Partner Dashboard, and remember every HMAC and session token verification keys off it, so during the changeover verify against both old and new secrets until traffic fully cuts over, then remove the old one. Skipping the overlap window silently drops every webhook that was signed in flight.
+
+**A staffer's laptop had a production database dump.** This is what the Level 2 requirements (encrypted backups, access logging, environment separation) exist to prevent, and it is the scenario a data protection review probes. If your honest answer to "who can read customer PII and where does it rest" takes more than a minute, fix the answer before Shopify asks the question.
+
+## Next step
+
+Run the fastest useful audit you can do today: send your own webhook endpoint a request with a deliberately wrong HMAC and confirm you get a 401. Then walk the table at the top of this post against your codebase, one row at a time, in a development store (create one free via a Partner account on [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624)) before your next submission. An hour of adversarial testing against your own app finds most of what review would, without the week-long feedback loop.

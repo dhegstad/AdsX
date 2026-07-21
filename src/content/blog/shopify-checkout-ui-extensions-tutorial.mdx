@@ -1,0 +1,290 @@
+---
+title: "Shopify Checkout UI Extensions: Build One (Tutorial)"
+excerpt: "Step-by-step Shopify checkout UI extensions tutorial: scaffold with the CLI, build a trust banner in Preact, add merchant settings, and deploy."
+date: "2026-07-21"
+category: "Developers"
+tags: ["Checkout UI Extensions", "Checkout Extensibility", "Shopify CLI", "Preact", "Shopify Apps", "Developers"]
+author:
+  name: "AdsX Team"
+  role: "E-commerce Specialists"
+featured: false
+articleType: "TechArticle"
+howto:
+  name: "Build a Shopify checkout UI extension"
+  totalTime: "PT1H"
+  steps:
+    - name: "Scaffold the app"
+      text: "Run shopify app init and pick the Remix template. This gives you the app shell that hosts your extension, plus authentication and deployment wiring."
+    - name: "Generate the extension"
+      text: "Run shopify app generate extension --template checkout_ui --name trust-banner and choose JavaScript. The CLI creates an extensions/trust-banner directory with a working starter."
+    - name: "Set the extension target"
+      text: "In shopify.extension.toml, point the targeting block at purchase.checkout.block.render so merchants can position the banner anywhere in checkout using the checkout editor."
+    - name: "Build the banner UI"
+      text: "Edit src/Checkout.jsx to render Polaris web components (s-banner, s-stack, s-text) with Preact. Read live checkout data from the global shopify object."
+    - name: "Add merchant settings"
+      text: "Define settings fields in shopify.extension.toml (banner heading, toggles). Merchants edit these in the checkout editor without touching code, and your extension reads them from shopify.settings."
+    - name: "Preview in a development store"
+      text: "Run shopify app dev, open the preview link, and load the extension in your development store's checkout editor to test placement and settings."
+    - name: "Deploy and release"
+      text: "Run shopify app deploy to create an app version and release it. The merchant then adds the block in Settings, then Checkout, then Customize, and saves."
+faqs:
+  - question: "Do checkout UI extensions require Shopify Plus?"
+    answer: "Partly. Extensions that render during the checkout steps themselves (information, shipping, payment) only work on Shopify Plus stores, because checkout customization is a Plus feature. Extensions targeting the Thank You page and the Order Status page work on all plans. If you are building a public app, design for both cases: put must-have functionality on post-purchase targets that every store can use, and treat in-checkout placements as an upgrade for Plus merchants."
+  - question: "Can I still write checkout UI extensions in React?"
+    answer: "Only on older API versions. API version 2025-07 was the last to support the React component library (@shopify/ui-extensions-react/checkout) and its hooks like useApi and useSettings. From 2025-10 onward, extensions use Preact with Polaris web components and read APIs from the global shopify object, with a 64 KB bundle limit. Shopify supports each API version for roughly a year, so React extensions still run today, but new builds should start on Preact and existing ones should plan the migration."
+  - question: "How do merchants configure a checkout UI extension?"
+    answer: "Through the checkout editor, not through code. Any settings you declare in shopify.extension.toml (text fields, booleans, selects, numbers) appear as form controls when the merchant selects your block in Settings, then Checkout, then Customize. Merchants also control placement: block targets like purchase.checkout.block.render can be dragged between positions in the checkout layout. Your extension reads the saved values at runtime from shopify.settings, so one deployed version can behave differently on every store that installs it."
+  - question: "Can a checkout UI extension call external APIs?"
+    answer: "Yes, with conditions. You must set network_access = true in the capabilities section of shopify.extension.toml and request network access approval for the app in the Partner Dashboard; Shopify reviews the justification. Requests must use HTTPS and your server needs correct CORS headers because the extension runs in a sandboxed worker on Shopify's checkout domain. Sending customer details off-platform also triggers protected customer data requirements, so fetch only what the UI genuinely needs and keep responses fast."
+  - question: "Can an extension block the buyer from completing checkout?"
+    answer: "Only if you declare it. The block_progress capability lets an extension hold checkout progress, which is how validation-style extensions (age confirmation, PO box rejection, terms acceptance) are built. Merchants see this capability and must accept it, and Shopify expects you to use buyer-friendly error messaging when you interrupt progress. For a passive element like a trust banner, leave block_progress off; there is no reason to take on the extra review scrutiny for a component that never gates the buyer."
+  - question: "How do I update a checkout UI extension after it is live?"
+    answer: "Deploy a new app version. Running shopify app deploy bundles every extension in the app into an immutable version and releases it; installed stores pick up the new code without merchant action, while their saved settings and placements persist. If something breaks, re-release the previous version from the Partner Dashboard. Separately, keep the api_version in shopify.extension.toml current: Shopify ships quarterly API versions (2026-07 is current) and supports each for about a year."
+---
+
+A Shopify checkout UI extension is a sandboxed component that renders inside checkout at a defined target such as `purchase.checkout.block.render`. You scaffold it with `shopify app generate extension`, build the UI with Preact and Polaris web components, wire merchant settings through `shopify.extension.toml`, preview with `shopify app dev`, and ship with `shopify app deploy`. This tutorial builds a working trust banner from scratch.
+
+![Code editor showing a Shopify checkout UI extension project](https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&q=80)
+
+## Why extensions are the only way into checkout
+
+For years, Plus merchants customized checkout by editing `checkout.liquid` directly. That era is over: Shopify switched off `checkout.liquid` for the information, shipping, and payment pages in 2024, and for the Thank You and Order Status pages in 2025. The replacement is checkout extensibility, where apps ship UI extensions that run in a sandbox instead of injecting arbitrary code into a page Shopify controls.
+
+The tradeoff is real. You give up raw DOM access, arbitrary scripts, and CSS overrides. In exchange you get upgrade-safe customizations that survive every checkout update, work with Shop Pay, and cannot tank checkout conversion with a rogue third-party script. Having watched plenty of stores lose revenue to script-injected checkout "enhancements," we consider this a good trade.
+
+One planning fact before you write code: extensions that render during the checkout steps themselves are a [Shopify Plus](https://shopify.dev/docs/api/checkout-ui-extensions) feature. Extensions on the Thank You and Order Status pages work on every plan. If you are building a public app, this shapes your target choices more than anything else.
+
+## Extension targets: where your UI can render
+
+Every extension declares one or more targets. Block targets are placed by the merchant anywhere the checkout editor allows; static targets pin your UI to a specific spot.
+
+| Target | Where it renders | Plan required |
+|---|---|---|
+| `purchase.checkout.block.render` | Merchant-positioned block, any step | Plus |
+| `purchase.checkout.delivery-address.render-before` | Above the delivery address form | Plus |
+| `purchase.checkout.shipping-option-list.render-after` | Below the shipping options | Plus |
+| `purchase.checkout.reductions.render-after` | After the discount code field | Plus |
+| `purchase.thank-you.block.render` | Thank You page block | All plans |
+| `customer-account.order-status.block.render` | Order Status page block | All plans |
+
+The full target list lives in the [checkout UI extensions reference](https://shopify.dev/docs/api/checkout-ui-extensions). For a trust banner, `purchase.checkout.block.render` is the right call: merchants decide whether it sits under the order summary, above shipping options, or near the payment button, and you write zero placement logic.
+
+## React or Preact? The 2026 answer
+
+This catches people out. Until API version 2025-07, checkout extensions were written with `@shopify/ui-extensions-react/checkout`, using hooks like `useApi` and `useSettings`. Starting with 2025-10, Shopify moved extensions to Preact with Polaris web components, dropped the callback-style API in favor of a global `shopify` object, and imposed a 64 KB bundle limit that the old React runtime cannot fit inside.
+
+React extensions on 2025-07 still run, since Shopify supports each API version for roughly a year. But every new extension should start on the current version (2026-07 at the time of writing), and that means Preact. We cover the deadline pressure in more detail in [Shopify's AI toolkit and the Polaris extension deadline](/blog/shopify-ai-toolkit-extensions-polaris-deadline). This tutorial uses the current stack and shows the legacy React equivalent afterward, because you will meet both in existing codebases.
+
+## Step 1: Scaffold the app and extension
+
+You need Node 20+, the Shopify CLI (3.x), a Partner account, and a development store. If you do not have a store to test against, create a free development store through your Partner Dashboard after signing up for [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624). Extensions cannot run standalone; they live inside an app, so start there. The [Shopify app development guide](/blog/shopify-api-app-development-guide) covers the app shell in depth if this is your first one.
+
+```bash
+# Create the host app (pick the Remix template)
+shopify app init
+
+cd your-app
+
+# Generate the checkout extension
+shopify app generate extension --template checkout_ui --name trust-banner
+```
+
+Choose JavaScript when prompted. The CLI creates this structure:
+
+```bash
+extensions/trust-banner/
+├── shopify.extension.toml   # config: targets, capabilities, settings
+├── src/
+│   └── Checkout.jsx         # your Preact entry point
+├── locales/
+│   └── en.default.json      # translatable strings
+└── package.json
+```
+
+## Step 2: Configure the target
+
+Open `shopify.extension.toml` and set the target and capabilities:
+
+```toml
+api_version = "2026-07"
+
+[[extensions]]
+type = "ui_extension"
+name = "Trust banner"
+handle = "trust-banner"
+
+[[extensions.targeting]]
+target = "purchase.checkout.block.render"
+module = "./src/Checkout.jsx"
+
+[extensions.capabilities]
+api_access = true
+network_access = false
+block_progress = false
+```
+
+`api_access` lets the extension read checkout data like cart lines and totals. We leave `network_access` off for now (more on that below), and `block_progress` off because a banner should never gate the buyer.
+
+## Step 3: Build the trust banner in Preact
+
+Replace the contents of `src/Checkout.jsx`:
+
+```jsx
+import '@shopify/ui-extensions/preact';
+import {render} from 'preact';
+
+export default function extension() {
+  render(<TrustBanner />, document.body);
+}
+
+function TrustBanner() {
+  const settings = shopify.settings.value;
+  const heading = settings.banner_title ?? 'Shop with confidence';
+  const total = shopify.cost.totalAmount.value;
+
+  return (
+    <s-banner heading={heading} tone="info">
+      <s-stack gap="base">
+        <s-text>Free 30-day returns, no questions asked.</s-text>
+        {settings.show_shipping_note && (
+          <s-text>Orders placed before 2pm ship the same business day.</s-text>
+        )}
+        {total && total.amount > 100 && (
+          <s-text>Your order qualifies for free priority shipping.</s-text>
+        )}
+      </s-stack>
+    </s-banner>
+  );
+}
+```
+
+Three things to notice. First, there is no `useApi` call: the global `shopify` object exposes everything, from `shopify.cost` to `shopify.lines` to `shopify.settings`. Second, those values are Preact signals. Reading `.value` inside a component subscribes it, so when the buyer edits their cart and the total changes, the banner re-renders on its own. Third, the elements are Polaris web components (`s-banner`, `s-stack`, `s-text`), which render with checkout's own styling and inherit whatever branding the merchant configured. You cannot ship custom CSS, and that is the point.
+
+### The legacy React version, for comparison
+
+If you maintain an extension on API 2025-07 or earlier, the same component looks like this:
+
+```jsx
+import {
+  reactExtension,
+  Banner,
+  BlockStack,
+  Text,
+  useApi,
+  useSettings,
+} from '@shopify/ui-extensions-react/checkout';
+
+export default reactExtension(
+  'purchase.checkout.block.render',
+  () => <TrustBanner />,
+);
+
+function TrustBanner() {
+  const {banner_title: heading} = useSettings();
+  const {shop} = useApi();
+
+  return (
+    <Banner title={heading ?? `Shop with confidence at ${shop.name}`} status="info">
+      <BlockStack spacing="tight">
+        <Text>Free 30-day returns, no questions asked.</Text>
+      </BlockStack>
+    </Banner>
+  );
+}
+```
+
+Same concepts, different plumbing: `useApi()` and `useSettings()` instead of the `shopify` global, capitalized React components instead of `s-` tags. When you migrate, most of the work is mechanical renaming plus trimming dependencies to get under the 64 KB bundle cap.
+
+## Step 4: Merchant settings via the checkout editor
+
+Hardcoded copy makes a bad app. Declare settings in the same `shopify.extension.toml`:
+
+```toml
+[extensions.settings]
+
+[[extensions.settings.fields]]
+key = "banner_title"
+type = "single_line_text_field"
+name = "Banner heading"
+description = "Shown as the banner title in checkout"
+
+[[extensions.settings.fields]]
+key = "show_shipping_note"
+type = "boolean"
+name = "Show same-day shipping note"
+```
+
+Settings fields use metafield types (`single_line_text_field`, `boolean`, `number_integer`, and so on). When a merchant selects your block in the checkout editor, these render as a form in the sidebar. Saved values arrive in your code through `shopify.settings`, and inside the editor preview they update live as the merchant types, because the settings object is a signal like everything else.
+
+This is the whole merchant experience: no theme code, no support tickets asking you to change copy. Write descriptions for every field as if the person reading them has never seen your app before.
+
+## Step 5: Network access, and its rules
+
+A trust banner needs no external data. But if your extension must call your own API (say, to fetch live review scores), enable the capability:
+
+```toml
+[extensions.capabilities]
+network_access = true
+```
+
+Then request network access for the app in the Partner Dashboard, where Shopify reviews your justification. The runtime rules matter:
+
+- Requests go through standard `fetch`, HTTPS only.
+- Your server must return CORS headers that allow Shopify's checkout origin, because the extension runs in a sandboxed worker, not on your domain.
+- Keep latency low and fail quietly. Checkout is the worst possible place for a spinner that never resolves; render your default state first and enhance when the response lands.
+- Sending buyer details to your server pulls in Shopify's protected customer data requirements. Fetch by anonymous identifiers where you can.
+
+App review looks hard at this capability, so do not request it speculatively.
+
+## Step 6: Run it locally
+
+```bash
+shopify app dev
+```
+
+The CLI starts a dev session against your development store and prints a preview link. Open the checkout editor (Settings, then Checkout, then Customize in the store admin), add your block from the app blocks list, drag it where you want it, and fill in the settings. Add products to a cart and walk the real checkout to see it live. Any file change hot-reloads.
+
+Test the states that will embarrass you later: empty settings, a buyer in a different locale, a 40-character heading a merchant will inevitably write, and mobile width, where roughly three-quarters of checkouts happen.
+
+## Step 7: Deploy and version
+
+```bash
+shopify app deploy
+```
+
+Deploying creates an app version, an immutable snapshot of every extension in the app, and releases it. Stores with the app installed get the new code automatically; their settings and placements persist. Useful follow-ups:
+
+```bash
+shopify app versions list     # see what is released where
+shopify app release --version=1.4.0   # re-release a previous version
+```
+
+That last command is your rollback. Because versions are immutable snapshots, reverting a bad deploy takes seconds and does not touch merchant configuration.
+
+For distribution, extensions ship inside your app listing like any other capability. If the app talks to the Admin API as well, mind your scopes and authentication; the [Admin API guide](/blog/shopify-admin-api-guide) covers both.
+
+## Troubleshooting: when the extension misbehaves
+
+**The block does not appear in the checkout editor's app list.** Usually a target mismatch. If the store is not on Plus and your only target is an in-checkout one like `purchase.checkout.block.render`, the editor has nowhere to offer it; add a `purchase.thank-you.block.render` target and it will appear for the Thank You page. Also confirm `shopify app dev` is still running, because draft extensions drop out of the editor when the dev session dies.
+
+**Settings come back undefined.** `shopify.settings.value` contains only the fields the merchant has saved, so a fresh placement returns almost nothing and every read needs a fallback. That is why the tutorial code uses `??` throughout. If a field you added last week never arrives, check that you deployed a version containing it: the editor form is generated from the released toml, not from your local file.
+
+**The bundle exceeds 64 KB.** The Preact runtime itself is tiny; the usual culprits are date libraries, lodash, or a shared utils module that quietly imports half your app. Inspect the bundle output, import functions individually, and treat every dependency as a cost you have to justify. We have seen a 70 KB date library replaced by the built-in `Intl.DateTimeFormat` in an afternoon, with the extension passing the limit immediately.
+
+**`fetch` fails in checkout but works everywhere else.** Check three things in order: `network_access = true` in the toml, network access approved for the app in the Partner Dashboard, and CORS headers on your endpoint that admit Shopify's checkout origin. The sandbox reports blocked requests vaguely, so read your server logs to learn whether the request even left the sandbox.
+
+**Styling does not match your mock.** It never will, exactly. Component appearance follows the merchant's checkout branding, and you cannot ship CSS. If a design depends on precise colors or pixel spacing, it was designed for the wrong platform; express intent through the `tone` and layout props the components expose and let checkout handle the rest.
+
+**English text shows for a French buyer.** Checkout is localized aggressively and extensions should keep up. Move strings into `locales/en.default.json` and sibling files (`fr.json`, `de.json`), read them with `shopify.i18n.translate()`, and keep dynamic values as placeholders inside the translation strings rather than concatenated in JSX. The checkout editor preview can switch languages, so there is no excuse to discover this from a merchant complaint.
+
+One habit prevents most of the above: after every deploy, walk a real checkout on a development store in a private window, on a throttled connection, in a second language. Five minutes, and it catches the failures your unit tests structurally cannot.
+
+## Does a trust banner actually convert?
+
+Honest answer: sometimes. Reassurance copy near the payment button tends to help stores with unknown brands, longer shipping times, or higher price points, and does close to nothing for established brands with fast checkout flows. Treat placement and copy as hypotheses. Shopify now supports [native A/B testing at checkout](/blog/shopify-rollouts-native-ab-testing-checkout), which is the clean way to measure whether your extension earns its pixels. And as agent-driven purchases grow, machine-readable trust signals start to matter as much as visual ones; we wrote about that shift in [agentic checkout optimization](/blog/agentic-checkout-optimization-shopify).
+
+We run paid traffic into Shopify checkouts every day at AdsX, and the pattern is consistent: checkout changes are cheap to ship and expensive to leave unmeasured.
+
+## Next step
+
+Scaffold the extension now, even if your only goal is learning the model: `shopify app init`, then `shopify app generate extension --template checkout_ui`. You can have the trust banner rendering in a development store checkout within the hour, and you will understand checkout extensibility far better from one deploy than from any amount of reading.
