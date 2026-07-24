@@ -119,16 +119,6 @@ export default function RootLayout({
       <head>
         <Analytics />
         <ThemeScript />
-        <meta name="google-adsense-account" content="ca-pub-4637978439012917" />
-        {/* Plain <script> so the literal AdSense snippet is server-rendered into
-            <head> — next/script (afterInteractive) only emits a preload <link>
-            and injects the real tag client-side, which the AdSense verification
-            crawler can't see. */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4637978439012917"
-          crossOrigin="anonymous"
-        />
         <SchemaScript schema={createOrganizationSchema()} />
         <SchemaScript schema={createWebsiteSchema()} />
       </head>
