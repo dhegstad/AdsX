@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
+import { withShopifyAffiliate, isAffiliateUrl } from "@/lib/affiliate";
 import type { RelatedPage } from "@/lib/seo/internal-linking";
 
 function slugify(text: string): string {
@@ -354,11 +355,20 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                         </span>
                       );
                     }
+                    const linkHref =
+                      href && isExternal ? withShopifyAffiliate(href) : href;
+                    const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
                     return (
                       <a
-                        href={href}
+                        href={linkHref}
                         target={isExternal ? "_blank" : undefined}
-                        rel={isExternal ? "noopener noreferrer" : undefined}
+                        rel={
+                          isExternal
+                            ? isAffiliate
+                              ? "sponsored noopener noreferrer"
+                              : "noopener noreferrer"
+                            : undefined
+                        }
                         className="text-[#10b981] underline underline-offset-4 hover:text-[#EAEAEA] transition-colors"
                         {...props}
                       >

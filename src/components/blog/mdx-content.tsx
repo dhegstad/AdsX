@@ -3,6 +3,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
+import { withShopifyAffiliate, isAffiliateUrl } from "@/lib/affiliate";
 
 interface MDXContentProps {
   content: string;
@@ -90,11 +91,19 @@ export function MDXContent({ content }: MDXContentProps) {
         // External links open in new tab
         a: ({ href, children, ...props }) => {
           const isExternal = href?.startsWith("http");
+          const linkHref = href && isExternal ? withShopifyAffiliate(href) : href;
+          const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
           return (
             <a
-              href={href}
+              href={linkHref}
               target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noopener noreferrer" : undefined}
+              rel={
+                isExternal
+                  ? isAffiliate
+                    ? "sponsored noopener noreferrer"
+                    : "noopener noreferrer"
+                  : undefined
+              }
               {...props}
             >
               {children}
