@@ -36,7 +36,12 @@ title/CTR problem for the August round, not a content gap:
 
 ---
 
-## Wave 1 — 15 items (2–3 weeks, then measure)
+## Wave 1 — 15 items — ✅ SHIPPED 2026-07-24 (commit 330da1c)
+
+All 14 new posts + the payments refresh went live 2026-07-24 and were submitted
+to IndexNow. Card rates verified against 2026 sources (2.9/2.7/2.5 + 30¢ online;
+2/1/0.6 gateway surcharge) and normalized site-wide, including the older
+payments post. Measure ~Aug 20 (GSC filtered Jul 6+) before starting Wave 2.
 
 ### Pillar A: Pricing & Plans (biggest pool: 12.3K impressions/3mo)
 | # | Slug | Working title | Evidence | Differentiation |
