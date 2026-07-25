@@ -1,0 +1,90 @@
+name: GSC nightly audit
+
+# Pulls Search Console data over the API, runs the deterministic audit + the
+# Claude plan, then commits the snapshot and opens/updates a single PR.
+# Setup (secrets, service account, PR permission): see GSC-SETUP.md.
+
+on:
+  schedule:
+    # 09:00 UTC ≈ 01:00–02:00 PT. GSC data lags ~2–3 days; the pull requests
+    # dataState=final, so the exact time doesn't matter — pick a quiet hour.
+    - cron: "0 9 * * *"
+  workflow_dispatch: {} # manual "Run workflow" button for testing
+
+# GITHUB_TOKEN needs to push the branch and open/update the PR.
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: gsc-nightly
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need main's history to branch + force-push cleanly
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # 1) Pull Search Console data → gsc-data/ snapshot (fails the job if creds are wrong).
+      - name: Pull GSC data
+        env:
+          GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL }} # optional; auto-detects if unset
+        run: node scripts/gsc-pull.mjs
+
+      # 2) Deterministic audit → gsc-worklist.json + dated report.
+      - name: Audit
+        run: node scripts/gsc-audit.mjs
+
+      # 3) Claude plan (optional — no-ops without ANTHROPIC_API_KEY).
+      - name: Review + plan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GSC_REVIEW_MODEL: ${{ vars.GSC_REVIEW_MODEL }}
+        run: node scripts/gsc-review.mjs
+
+      # 4) Commit the snapshot + reports and open/update one evergreen PR.
+      - name: Commit snapshot and open/update PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A gsc-data gsc-worklist.json
+          if git diff --cached --quiet; then
+            echo "No GSC changes today — nothing to commit."
+            exit 0
+          fi
+
+          DATE=$(date -u +%F)
+          BRANCH=gsc-nightly
+          git switch -C "$BRANCH"
+          git commit -m "GSC nightly audit $DATE"
+          git push --force-with-lease origin "$BRANCH"
+
+          # Body = the Claude plan if present, else the deterministic audit.
+          BODY=gsc-data/reports/latest-plan.md
+          [ -s "$BODY" ] || BODY=gsc-data/reports/latest-audit.md
+
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number' || true)
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "GSC nightly audit — $DATE" --body-file "$BODY"
+            echo "Updated PR #$EXISTING"
+          else
+            gh pr create --head "$BRANCH" --base main \
+              --title "GSC nightly audit — $DATE" \
+              --body-file "$BODY" \
+            || echo "::warning::Could not open PR. Enable Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' (see GSC-SETUP.md). The branch '$BRANCH' has been pushed regardless."
+          fi

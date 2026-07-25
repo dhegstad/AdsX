@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gsc:pull": "node scripts/gsc-pull.mjs",
+    "gsc:audit": "node scripts/gsc-audit.mjs",
+    "gsc:review": "node scripts/gsc-review.mjs",
+    "gsc:nightly": "node scripts/gsc-pull.mjs && node scripts/gsc-audit.mjs && node scripts/gsc-review.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
