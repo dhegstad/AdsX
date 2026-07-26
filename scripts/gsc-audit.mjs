@@ -195,6 +195,9 @@ function main() {
       const exp = expectedCtr(p.position);
       const recoverable = Math.max(0, exp - p.ctr) * p.impressions;
       const slug = slugOf(p.page);
+      const livePost = livePosts.has(slug);
+      const killListed = killSlugs.has(slug);
+      const likelyAiFanout = p.impressions >= 500 && p.ctr < 0.001;
       return {
         slug,
         url: p.page,
@@ -205,13 +208,17 @@ function main() {
         position: Number(p.position.toFixed(1)),
         recoverableClicks: Number(recoverable.toFixed(1)),
         fixQueued: ctrFixQueued.has(slug), // mechanical title/meta fix already in ctr-worklist
-        onAudience: livePosts.has(slug) && !killSlugs.has(slug),
+        livePost,
+        killListed,
+        onAudience: livePost && !killListed,
+        likelyAiFanout, // ~0-click at scale → AI-Overview impressions, not a title problem
+        // The real CTR-loop candidate: an editable live post that's actually getting clicked.
+        actionable: livePost && !killListed && !likelyAiFanout,
       };
     })
     .filter((p) => p.recoverableClicks >= 1)
     .sort((a, b) => {
-      // prioritize pages that both bleed AND have a queued mechanical fix
-      if (a.fixQueued !== b.fixQueued) return a.fixQueued ? -1 : 1;
+      if (a.actionable !== b.actionable) return a.actionable ? -1 : 1; // fixable posts first
       return b.recoverableClicks - a.recoverableClicks;
     })
     .slice(0, TOP_N);
@@ -244,7 +251,7 @@ function main() {
   console.log(`\n  GSC AUDIT — ${endDate} (${latest.siteUrl})`);
   const w = trend.clicks7_wowPct;
   console.log(`  clicks 7d       : ${trend.clicks7?.toLocaleString()}${w != null ? `  (WoW ${signed(w, 0)}%)` : "  (baseline)"}`);
-  console.log(`  indexed         : ${trend.sitemapIndexed?.toLocaleString() ?? "n/a"}${trend.sitemapIndexed_wow != null ? `  (${signed(trend.sitemapIndexed_wow)})` : ""}`);
+  console.log(`  pages in search : ${trend.distinctPages?.toLocaleString() ?? "n/a"}${trend.distinctPages_wow != null ? `  (${signed(trend.distinctPages_wow)})` : ""}  (indexation proxy)`);
   console.log(`  PROTECT (kill-list slugs now earning traffic): ${protect.length}`);
   console.log(`  page-2 opportunities: ${page2.length}   CTR bleeders: ${bleeders.length}   new queries: ${queryMovement.new.length}`);
   console.log(`  → gsc-worklist.json + ${path.join(reportsDir, `${endDate}-audit.md`)}\n`);
@@ -265,8 +272,12 @@ function renderReport(w) {
   L.push("");
   L.push(`- **Clicks (7d):** ${fmt(t.clicks7)}${wowStr}`);
   if (t.clicks28 != null) L.push(`- **Clicks (28d):** ${fmt(t.clicks28)}${momStr}`);
-  L.push(`- **Indexed (sitemaps):** ${fmt(t.sitemapIndexed)}${t.sitemapIndexed_wow != null ? ` (${signed(t.sitemapIndexed_wow)} WoW)` : ""} of ${fmt(w.indexation.sitemapSubmitted)} submitted`);
-  L.push(`- **Pages earning impressions:** ${fmt(t.distinctPages)}${t.distinctPages_wow != null ? ` (${signed(t.distinctPages_wow)} WoW)` : ""}`);
+  L.push(`- **Pages in search (indexation proxy):** ${fmt(t.distinctPages)}${t.distinctPages_wow != null ? ` (${signed(t.distinctPages_wow)} WoW)` : ""} — distinct URLs that earned ≥1 impression`);
+  L.push(
+    t.sitemapIndexed > 0
+      ? `- **Sitemap indexed:** ${fmt(t.sitemapIndexed)} of ${fmt(w.indexation.sitemapSubmitted)} submitted`
+      : `- **Sitemap:** ${fmt(w.indexation.sitemapSubmitted)} submitted _(Google's API no longer reports an indexed count — track "pages in search" above, or URL Inspection for exact status)_`
+  );
   L.push(`- **Avg position:** ${t.avgPosition ?? "n/a"}`);
   L.push("");
 
@@ -321,13 +332,20 @@ function renderReport(w) {
   }
 
   L.push(`## 4. CTR bleeders — secondary, position-aware`);
-  L.push(`_Estimated recoverable clicks = impressions × (expected CTR for that position − actual CTR). ★ = a mechanical title/meta fix is already queued in \`ctr-worklist.json\`._`);
+  L.push(`_Est. recoverable = impressions × (expected CTR for the position − actual CTR): an **upper bound**, ranked so editable clickable posts (the real CTR-fix candidates) lead. Pages at ~0% CTR despite heavy impressions are usually **AI-Overview / fan-out** impressions that can't be clicked — per strategy, judge by clicks, not impressions. Flags: \`✓ fixable\` · \`kill-listed (pruned)\` · \`not a live post\` · \`⚠ ~0-click\` · \`★ queued\`._`);
   L.push("");
   if (w.ctrBleeders.length) {
-    L.push(`| page | impr | pos | CTR | recoverable | fix queued | on-audience |`);
-    L.push(`|---|--:|--:|--:|--:|:-:|:-:|`);
-    for (const p of w.ctrBleeders.slice(0, 15))
-      L.push(`| ${p.slug} | ${p.impressions} | ${p.position} | ${pct(p.ctr)} | ${p.recoverableClicks} | ${p.fixQueued ? "★" : ""} | ${p.onAudience ? "✓" : "—"} |`);
+    L.push(`| page | impr | pos | CTR | est. recoverable | signal |`);
+    L.push(`|---|--:|--:|--:|--:|:--|`);
+    for (const p of w.ctrBleeders.slice(0, 15)) {
+      const flags = [];
+      if (p.killListed) flags.push("kill-listed (pruned)");
+      else if (!p.livePost) flags.push("not a live post");
+      if (p.likelyAiFanout) flags.push("⚠ ~0-click");
+      if (p.fixQueued) flags.push("★ queued");
+      if (p.actionable && !flags.length) flags.push("✓ fixable");
+      L.push(`| ${p.slug} | ${p.impressions} | ${p.position} | ${pct(p.ctr)} | ${p.recoverableClicks} | ${flags.join(" · ") || "—"} |`);
+    }
     L.push("");
   } else {
     L.push(`No pages above the ${MIN_IMPR_BLEEDER}-impression floor are meaningfully under expected CTR.`);

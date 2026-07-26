@@ -119,10 +119,9 @@ async function main() {
 
   console.log(`\n  ✓ Authorized. Saved gsc-oauth.json (git-ignored) — local runs work now:`);
   console.log(`      npm run gsc:pull && npm run gsc:audit\n`);
-  console.log(`  For the nightly GitHub Action, add these three repo secrets:\n`);
-  console.log(`      GSC_OAUTH_CLIENT_ID=${id}`);
-  console.log(`      GSC_OAUTH_CLIENT_SECRET=${secret}`);
-  console.log(`      GSC_OAUTH_REFRESH_TOKEN=${tok.refresh_token}\n`);
+  console.log(`  For the nightly GitHub Action, add three repo secrets — their values live in`);
+  console.log(`  gsc-oauth.json (never printed here, never committed):`);
+  console.log(`      GSC_OAUTH_CLIENT_ID   GSC_OAUTH_CLIENT_SECRET   GSC_OAUTH_REFRESH_TOKEN\n`);
 }
 
 main().catch((e) => {

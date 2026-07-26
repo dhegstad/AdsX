@@ -204,10 +204,12 @@ async function main() {
     `  last 7d         : ${w7.clicks.toLocaleString()} clicks, ` +
       `${w7.impressions.toLocaleString()} impressions (through ${lastFinalDay})`
   );
+  const idxNote =
+    sitemapIndexed > 0
+      ? `${sitemapIndexed.toLocaleString()} indexed / ${sitemapSubmitted.toLocaleString()} submitted`
+      : `${sitemapSubmitted.toLocaleString()} submitted (Google API omits indexed count)`;
   console.log(
-    `  indexation      : ${sitemapIndexed.toLocaleString()} indexed / ` +
-      `${sitemapSubmitted.toLocaleString()} submitted (sitemaps); ` +
-      `${pages.length.toLocaleString()} pages earned impressions`
+    `  search presence : ${pages.length.toLocaleString()} pages earned impressions; sitemap ${idxNote}`
   );
   if (pruned) console.log(`  pruned ${pruned} snapshot(s) older than ${KEEP_DAYS}d`);
   console.log(`  history         : ${DATA_DIR}/history.jsonl (${history.length} days)\n`);
