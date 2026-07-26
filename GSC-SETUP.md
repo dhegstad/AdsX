@@ -4,81 +4,88 @@ Connects Search Console to the repo over the API so you never hand-export CSVs a
 and runs a nightly **audit → review → plan** in GitHub Actions.
 
 ```
+scripts/gsc-auth.mjs    →  one-time OAuth consent (mints a refresh token)
 scripts/gsc-pull.mjs    →  pulls GSC data to gsc-data/ (replaces the manual export)
 scripts/gsc-audit.mjs   →  deterministic signals → gsc-worklist.json + dated report
 scripts/gsc-review.mjs  →  Claude turns the audit into a fix/kill/write-next plan
 .github/workflows/gsc-nightly.yml  →  runs all three nightly, opens/updates one PR
 ```
 
-Auth is a **service account** (no token expiry, ideal for unattended cron). The only
-steps a human must do are creating the Google credential and pasting it into a GitHub
-secret — everything else is built. **No `gcloud` needed** — all in the web console.
+## Auth: OAuth (recommended for the `adsx.com` org)
 
----
+The GCP project lives under the **`adsx.com` Google Workspace org**, which blocks
+service-account **key** downloads by default. So we authenticate **as you** — you already
+own the Search Console property, so there's no service account to create and no user to add.
+You authorize once in a browser; the pipeline stores a refresh token and runs unattended
+after that. (A service-account alternative is at the bottom for non-restricted setups.)
 
-## 1. Create a Google Cloud project + service account
+### 1. Enable the Search Console API
 
-1. Go to <https://console.cloud.google.com/> → project picker (top bar) → **New Project**.
-   Name it e.g. `adsx-gsc`, create, and make sure it's the selected project.
-2. Enable the API: <https://console.cloud.google.com/apis/library/searchconsole.googleapis.com>
-   → **Enable** (confirm the `adsx-gsc` project is selected).
-3. Create the service account:
-   <https://console.cloud.google.com/iam-admin/serviceaccounts> → **Create service account**.
-   - Name: `gsc-reader` → **Create and continue** → skip roles (Search Console access is
-     granted in step 2, not via IAM roles) → **Done**.
-4. Create a key:
-   - Click the `gsc-reader@…` service account → **Keys** tab → **Add key** → **Create new key**
-     → **JSON** → **Create**. A `*.json` file downloads. **Keep it safe — it's a credential.**
-5. Copy the service-account **email** (looks like `gsc-reader@adsx-gsc.iam.gserviceaccount.com`).
-   You'll need it in the next step.
+In your `AdsX AI Connect` project (top-bar project picker), enable it here:
+<https://console.cloud.google.com/apis/library/searchconsole.googleapis.com> → **Enable**.
 
-## 2. Give the service account read access to your GSC property
+### 2. Configure the OAuth consent screen
 
-1. Open <https://search.google.com/search-console> and select the AdsX property.
-2. **Settings** (left sidebar) → **Users and permissions** → **Add user**.
-3. Paste the service-account email from step 1.5. Permission: **Full** (or **Restricted** —
-   read access is all the pipeline uses). **Add**.
+**APIs & Services → OAuth consent screen** (<https://console.cloud.google.com/apis/credentials/consent>):
 
-> This is the one step with no API — GSC user management is web-UI only. Takes 30 seconds.
+- **User type:**
+  - Choose **Internal** *if the Google account that owns your GSC property is on the
+    `adsx.com` Workspace* (e.g. `you@adsx.com`) → no verification, token never expires. Easiest.
+  - Otherwise choose **External** (e.g. if the property is owned by a personal `@gmail.com`).
+    Add that account under **Test users**, and after saving click **Publish app → Confirm**
+    (to "In production") so the refresh token doesn't expire after 7 days. You'll see an
+    "unverified app" warning when authorizing — that's expected for your own app; proceed via
+    **Advanced → Go to AdsX (unsafe)**.
+- App name: `AdsX GSC`, and set your email for the support + developer contact fields. Save.
+  (You don't need to add scopes on this screen — the auth request asks for read-only GSC.)
 
-## 3. Test it locally (optional but recommended)
+### 3. Create an OAuth client (Desktop app)
+
+**APIs & Services → Credentials** (<https://console.cloud.google.com/apis/credentials>) →
+**Create credentials → OAuth client ID** → Application type: **Desktop app** → name it
+`AdsX GSC CLI` → **Create** → **Download JSON**.
+(This download is an OAuth client, **not** a service-account key, so the org policy doesn't
+block it.)
+
+### 4. Authorize once + test locally
+
+From the repo root, point the helper at the file you just downloaded:
 
 ```bash
-# from the repo root — put the downloaded key here (git-ignored, never committed):
-mv ~/Downloads/adsx-gsc-*.json ./gsc-sa-key.json
+GSC_OAUTH_CLIENT_FILE=~/Downloads/client_secret_*.json npm run gsc:auth
+```
 
+Your browser opens → approve with the account that owns the GSC property. The helper saves
+`gsc-oauth.json` (git-ignored) and prints three values for GitHub. Then confirm it works:
+
+```bash
 npm run gsc:pull      # auto-detects your property, writes gsc-data/<date>/
 npm run gsc:audit     # writes gsc-worklist.json + gsc-data/reports/<date>-audit.md
 ```
 
-The pull prints which property it picked. If it lists several and picks the wrong one,
-set the right one in `.env` (`GSC_SITE_URL=sc-domain:adsx.com` — the pull output shows the
-exact strings available) and re-run.
+The pull prints which property it picked. If it picks the wrong one, set
+`GSC_SITE_URL=sc-domain:adsx.com` in `.env` (the pull output lists the exact strings) and re-run.
 
-To also generate the Claude plan locally:
+To also generate the Claude plan locally: `export ANTHROPIC_API_KEY=sk-ant-...` then `npm run gsc:review`.
 
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...   # or add it to .env
-npm run gsc:review    # writes gsc-data/reports/<date>-plan.md
-```
+### 5. Wire up GitHub Actions (the nightly run)
 
-## 4. Wire up GitHub Actions (the nightly run)
+In the repo on GitHub → **Settings → Secrets and variables → Actions → New repository secret**,
+add the three values `npm run gsc:auth` printed:
 
-In the repo on GitHub → **Settings**:
+- `GSC_OAUTH_CLIENT_ID`
+- `GSC_OAUTH_CLIENT_SECRET`
+- `GSC_OAUTH_REFRESH_TOKEN`
 
-1. **Secrets and variables → Actions → New repository secret**
-   - Name: `GSC_SA_KEY` — Value: **paste the entire contents of the JSON key file**.
-2. *(Optional)* **New repository secret** `ANTHROPIC_API_KEY` — enables the nightly Claude plan.
-   Without it, the nightly still ships the deterministic audit.
-3. *(Optional)* **Variables** tab → **New repository variable** `GSC_SITE_URL` — only if
-   auto-detect picked the wrong property in step 3 (e.g. `sc-domain:adsx.com`).
-4. **Actions → General → Workflow permissions** → enable
-   **"Allow GitHub Actions to create and approve pull requests"** → **Save**.
-   (Without this the branch still gets pushed nightly, but the PR won't auto-open.)
+Optional: add `ANTHROPIC_API_KEY` (enables the nightly Claude plan; without it you still get the
+deterministic audit) and, only if auto-detect picked the wrong property, a repo **variable**
+`GSC_SITE_URL`.
 
-Then test it: **Actions** tab → **GSC nightly audit** → **Run workflow**. It should pull,
-audit, (optionally) plan, and open a **GSC nightly audit** PR. After that it runs every
-night at 09:00 UTC on its own.
+Then: **Settings → Actions → General → Workflow permissions** → enable
+**"Allow GitHub Actions to create and approve pull requests"** → **Save**.
+
+Test it: **Actions → GSC nightly audit → Run workflow**. It should open a **GSC nightly audit**
+PR. After that it runs every night at 09:00 UTC on its own.
 
 ---
 
@@ -87,8 +94,8 @@ night at 09:00 UTC on its own.
 - Every night the workflow commits a fresh `gsc-data/` snapshot to the evergreen
   `gsc-nightly` branch and opens/updates **one** PR whose body is that night's plan.
 - **Merging the PR** lands the snapshot on `main` and grows `gsc-data/history.jsonl` — which
-  is what powers week-over-week trends. Review cadence = merge cadence.
-- The audit is memory-weighted to how AdsX operates: **clicks + indexation** are the headline
+  powers week-over-week trends. Review cadence = merge cadence.
+- The audit is weighted to how AdsX operates: **clicks + indexation** are the headline
   (impressions are mostly AI fan-out), and it automates the indexation-loop **BLOCKER** by
   flagging any kill-listed page that's still earning traffic.
 
@@ -97,17 +104,22 @@ night at 09:00 UTC on its own.
 - **Activate the ★ CTR cross-reference:** run `node scripts/ctr-audit.mjs` to regenerate
   `ctr-worklist.json` against the current 335-post corpus (the committed one predates the
   prune). Then the audit marks CTR bleeders that already have a queued title/meta fix.
-- **Prefer commit-to-main over PRs?** In `.github/workflows/gsc-nightly.yml`, replace the
-  branch/PR step with a commit + `git push origin HEAD:main`. Trends then accumulate
-  automatically without a merge step.
 - **Deeper history:** `npm run gsc:pull -- --full` pulls the full ~16 months (GSC max) instead
   of the default trailing 90 days.
-- **Indexation detail:** `scripts/gsc-lib.mjs` exposes `inspectUrl()` (URL Inspection API,
-  rate-limited) if you later want per-URL index status sampling.
+- **Token stopped working?** If a nightly run fails with `invalid_grant`, the refresh token was
+  revoked/expired — re-run `npm run gsc:auth` and update the `GSC_OAUTH_REFRESH_TOKEN` secret.
+  (Only happens on External/Testing apps left unpublished — see step 2.)
+
+## Alternative: service account (only if your org doesn't block keys)
+
+If you're not under a restrictive org: create a service account, download a JSON key, add its
+email as a user in Search Console (Settings → Users and permissions), then drop the key at
+`./gsc-sa-key.json` locally / set the `GSC_SA_KEY` secret in CI. The pipeline uses it
+automatically when no OAuth credentials are present. `scripts/gsc-lib.mjs` supports both.
 
 ## Security
 
-- The service-account key grants **read-only** GSC access (scope `webmasters.readonly`).
-- `gsc-sa-key.json` and `*.sa-key.json` are git-ignored — the key never enters the repo.
-  In CI it lives only in the `GSC_SA_KEY` secret.
-- `gsc-data/` snapshots **are** committed (they're data, not secrets).
+- Read-only GSC access only (scope `webmasters.readonly`).
+- `gsc-oauth.json`, `gsc-sa-key.json`, and `client_secret*.json` are git-ignored — credentials
+  never enter the repo. In CI they live only in GitHub secrets.
+- `gsc-data/` snapshots **are** committed (data, not secrets).

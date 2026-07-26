@@ -239,10 +239,72 @@ export function today() {
   return isoDate(new Date());
 }
 
+// --------------------------------------------------------------- OAuth (user)
+// Preferred when an org policy blocks service-account keys, or when you'd rather
+// authenticate as yourself (you already own the GSC property — no user to add).
+// Mint the refresh token once with `npm run gsc:auth`.
+function loadOAuthConfig() {
+  let client_id = process.env.GSC_OAUTH_CLIENT_ID;
+  let client_secret = process.env.GSC_OAUTH_CLIENT_SECRET;
+  let refresh_token = process.env.GSC_OAUTH_REFRESH_TOKEN;
+  if ((!client_id || !client_secret || !refresh_token) && fs.existsSync("gsc-oauth.json")) {
+    const j = JSON.parse(fs.readFileSync("gsc-oauth.json", "utf8"));
+    client_id = client_id || j.client_id;
+    client_secret = client_secret || j.client_secret;
+    refresh_token = refresh_token || j.refresh_token;
+  }
+  return { client_id, client_secret, refresh_token };
+}
+
+let _oauthCache = null;
+async function getAccessTokenOAuth(cfg) {
+  const now = Math.floor(Date.now() / 1000);
+  if (_oauthCache && _oauthCache.expiresAt - 60 > now) return _oauthCache.token;
+  if (!cfg.client_id || !cfg.client_secret) {
+    throw new Error("OAuth refresh token is set but GSC_OAUTH_CLIENT_ID / GSC_OAUTH_CLIENT_SECRET are missing.");
+  }
+  const res = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: cfg.client_id,
+      client_secret: cfg.client_secret,
+      refresh_token: cfg.refresh_token,
+      grant_type: "refresh_token",
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `OAuth token refresh failed (${res.status}): ${await res.text()}\n` +
+        `  If this says invalid_grant, the refresh token was revoked/expired — re-run \`npm run gsc:auth\`.`
+    );
+  }
+  const json = await res.json();
+  _oauthCache = { token: json.access_token, expiresAt: now + (json.expires_in || 3600) };
+  return _oauthCache.token;
+}
+
+/** Get an access token via whichever method is configured (OAuth preferred). */
+export async function getToken() {
+  const oauth = loadOAuthConfig();
+  if (oauth.refresh_token) {
+    return { token: await getAccessTokenOAuth(oauth), principal: "OAuth user credential" };
+  }
+  if (process.env.GSC_SA_KEY || process.env.GSC_SA_KEY_FILE || fs.existsSync(DEFAULT_KEY_FILE)) {
+    const sa = loadServiceAccount();
+    return { token: await getAccessToken(sa), principal: sa.client_email };
+  }
+  throw new Error(
+    `No Search Console credentials configured. Two options (see GSC-SETUP.md):\n` +
+      `  OAuth (recommended — works even when the org blocks service-account keys):\n` +
+      `    run \`npm run gsc:auth\` once, or set GSC_OAUTH_CLIENT_ID / _SECRET / _REFRESH_TOKEN.\n` +
+      `  Service account: set GSC_SA_KEY (inline JSON) or place the key at ${DEFAULT_KEY_FILE}.`
+  );
+}
+
 /** One call that authenticates and resolves the property. */
 export async function connect() {
-  const sa = loadServiceAccount();
-  const token = await getAccessToken(sa);
+  const { token, principal } = await getToken();
   const { siteUrl, autoPicked, available } = await resolveSiteUrl(token);
-  return { token, siteUrl, autoPicked, available, clientEmail: sa.client_email };
+  return { token, siteUrl, autoPicked, available, principal };
 }

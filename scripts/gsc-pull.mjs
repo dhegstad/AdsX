@@ -76,8 +76,8 @@ async function main() {
   const startDate = startDateFor(DAYS);
 
   console.log(`\n  GSC PULL — connecting…`);
-  const { token, siteUrl, autoPicked, available, clientEmail } = await connect();
-  console.log(`  service account : ${clientEmail}`);
+  const { token, siteUrl, autoPicked, available, principal } = await connect();
+  console.log(`  credential      : ${principal}`);
   console.log(`  property        : ${siteUrl}${autoPicked ? "  (auto-picked)" : ""}`);
   if (autoPicked && available.length > 1) {
     console.log(

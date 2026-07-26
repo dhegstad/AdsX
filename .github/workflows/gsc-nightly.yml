@@ -38,6 +38,11 @@ jobs:
       # 1) Pull Search Console data → gsc-data/ snapshot (fails the job if creds are wrong).
       - name: Pull GSC data
         env:
+          # OAuth (recommended). Set these three as repo secrets.
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          # Service-account alternative (used only if the OAuth secrets are absent).
           GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
           GSC_SITE_URL: ${{ vars.GSC_SITE_URL }} # optional; auto-detects if unset
         run: node scripts/gsc-pull.mjs
