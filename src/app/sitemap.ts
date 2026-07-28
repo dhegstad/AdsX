@@ -58,6 +58,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },
+      // Shopify conversion hubs (affiliate money pages)
+      {
+        url: `${baseUrl}/start-a-shopify-store`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/shopify-free-trial-deal`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/is-shopify-right-for-you`,
+        lastModified: CORE_PAGES_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      },
       // Agency landing pages (commercial buyer intent)
       {
         url: `${baseUrl}/shopify-ai-ads-agency`,

@@ -111,6 +111,47 @@ export function getRelatedPages(
     relevance: 0.15,
   });
 
+  // Shopify conversion hubs — the affiliate money pages. Always linked so every
+  // post funnels into them; boosted on Shopify / commerce / decision-stage posts
+  // so they rank at the top of a niche post's "explore more" links.
+  const shopifyIntent =
+    title.includes("shopify") ||
+    tags.some(
+      (t) =>
+        t.includes("shopify") ||
+        t.includes("e-commerce") ||
+        t.includes("ecommerce") ||
+        t.includes("dropshipping") ||
+        t.includes("dtc")
+    ) ||
+    ["shopify", "e-commerce", "ecommerce", "developers", "getting started"].includes(
+      category
+    );
+  const decisionIntent =
+    title.includes(" vs ") ||
+    title.includes("alternative") ||
+    title.includes("right for") ||
+    title.includes("worth it") ||
+    category === "comparison";
+  relatedPages.push({
+    title: "Start a Shopify Store",
+    path: "/start-a-shopify-store",
+    type: "guide",
+    relevance: shopifyIntent ? 0.92 : 0.4,
+  });
+  relatedPages.push({
+    title: "Shopify Free Trial — $1/mo Deal",
+    path: "/shopify-free-trial-deal",
+    type: "guide",
+    relevance: shopifyIntent ? 0.88 : 0.32,
+  });
+  relatedPages.push({
+    title: "Is Shopify Right for You?",
+    path: "/is-shopify-right-for-you",
+    type: "guide",
+    relevance: decisionIntent ? 0.85 : 0.3,
+  });
+
   // Deduplicate by path and sort by relevance
   const seen = new Set<string>();
   return relatedPages
