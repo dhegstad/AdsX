@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
+import { AffiliateCTA } from "@/components/blog/affiliate-cta";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
-import { withShopifyAffiliate, isAffiliateUrl } from "@/lib/affiliate";
+import {
+  withShopifyAffiliate,
+  isAffiliateUrl,
+  trackAffiliateClick,
+} from "@/lib/affiliate";
 import type { RelatedPage } from "@/lib/seo/internal-linking";
 
 function slugify(text: string): string {
@@ -56,6 +62,261 @@ function extractHeadings(markdown: string): TocHeading[] {
   return headings;
 }
 
+// Split a post's markdown at the H2 nearest the middle so a decision-stage CTA
+// can be spliced in mid-article. Returns null for short posts (fewer than 4 H2
+// sections), where a mid insert would crowd the closing CTA. Headings inside
+// fenced code blocks are ignored so we never split on a `## ` that is really
+// example code.
+function splitForMidCta(markdown: string): [string, string] | null {
+  const lines = markdown.split("\n");
+  const headingLines: number[] = [];
+  let inFence = false;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^(```|~~~)/.test(lines[i].trim())) {
+      inFence = !inFence;
+      continue;
+    }
+    if (!inFence && /^##\s+/.test(lines[i])) {
+      headingLines.push(i);
+    }
+  }
+  if (headingLines.length < 4) return null;
+  const splitAt = headingLines[Math.floor(headingLines.length / 2)];
+  const before = lines.slice(0, splitAt).join("\n").trimEnd();
+  const after = lines.slice(splitAt).join("\n");
+  if (!before.trim() || !after.trim()) return null;
+  return [before, after];
+}
+
+// The markdown element renderers. Extracted to a factory so the same config can
+// render both halves of a post when a mid-article CTA is spliced in; `slug` lets
+// the link renderer attribute affiliate clicks (Impact subId + GA4) to the host
+// post.
+function createMarkdownComponents(slug: string): Components {
+  return {
+    h2: ({ children, ...props }) => {
+      const id = children
+        ?.toString()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      return (
+        <h2
+          id={id}
+          className="scroll-mt-24 uppercase mt-12 mb-6 text-2xl tracking-tight"
+          style={{ fontFamily: "var(--font-display)" }}
+          {...props}
+        >
+          {children}
+        </h2>
+      );
+    },
+    h3: ({ children, ...props }) => {
+      const id = children
+        ?.toString()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      return (
+        <h3
+          id={id}
+          className="scroll-mt-24 uppercase mt-8 mb-4 text-xl"
+          style={{ fontFamily: "var(--font-display)" }}
+          {...props}
+        >
+          {children}
+        </h3>
+      );
+    },
+    a: ({ href, children, ...props }) => {
+      const isExternal = href?.startsWith("http");
+      // A bare YouTube link on its own line becomes a responsive embed.
+      const ytId = href ? getYouTubeId(href) : null;
+      const isBareLink = !!href && String(children) === href;
+      if (ytId && isBareLink) {
+        return (
+          <span className="my-8 block">
+            <span
+              className="relative block w-full overflow-hidden border border-[#333]"
+              style={{ paddingBottom: "56.25%" }}
+            >
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+                title="Embedded video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </span>
+          </span>
+        );
+      }
+      const linkHref =
+        href && isExternal
+          ? withShopifyAffiliate(href, { slug, placement: "inline" })
+          : href;
+      const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
+      return (
+        <a
+          href={linkHref}
+          target={isExternal ? "_blank" : undefined}
+          rel={
+            isExternal
+              ? isAffiliate
+                ? "sponsored noopener noreferrer"
+                : "noopener noreferrer"
+              : undefined
+          }
+          onClick={
+            isAffiliate
+              ? () => trackAffiliateClick({ slug, placement: "inline" })
+              : undefined
+          }
+          className="text-[#10b981] underline underline-offset-4 hover:text-[#EAEAEA] transition-colors"
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
+    p: ({ children, ...props }) => (
+      <p className="mb-6 text-[#ccc] leading-relaxed text-base" style={{ fontFamily: "var(--font-body)" }} {...props}>
+        {children}
+      </p>
+    ),
+    strong: ({ children, ...props }) => (
+      <strong className="text-[#EAEAEA] font-bold" {...props}>
+        {children}
+      </strong>
+    ),
+    ul: ({ children, ...props }) => (
+      <ul className="mb-6 space-y-2 ml-4" {...props}>
+        {children}
+      </ul>
+    ),
+    ol: ({ children, ...props }) => (
+      <ol className="mb-6 space-y-2 ml-4 list-decimal list-inside" {...props}>
+        {children}
+      </ol>
+    ),
+    li: ({ children, ...props }) => (
+      <li className="text-[#ccc] text-base before:content-['+'] before:text-[#10b981] before:mr-2" {...props}>
+        {children}
+      </li>
+    ),
+    blockquote: ({ children, ...props }) => (
+      <blockquote
+        className="my-8 border-l-[3px] border-[#10b981] pl-6 italic text-[#888] text-base"
+        {...props}
+      >
+        {children}
+      </blockquote>
+    ),
+    code: ({ children, className, ...props }) => {
+      const isInline = !className;
+      if (isInline) {
+        return (
+          <code
+            className="bg-[#10b981]/10 text-[#10b981] px-1.5 py-0.5 text-sm"
+            style={{ fontFamily: "var(--font-mono)" }}
+            {...props}
+          >
+            {children}
+          </code>
+        );
+      }
+      return (
+        <code style={{ fontFamily: "var(--font-mono)" }} {...props}>
+          {children}
+        </code>
+      );
+    },
+    pre: ({ children, ...props }) => (
+      <pre
+        className="my-8 bg-[#111] border border-[#333] p-6 overflow-x-auto"
+        {...props}
+      >
+        {children}
+      </pre>
+    ),
+    hr: () => <hr className="my-12 border-[#333]" />,
+    img: ({ src, alt }) => {
+      if (!src) return null;
+      if (src.startsWith("http")) {
+        return (
+          <figure className="my-8">
+            <div className="relative aspect-video border border-[#333] overflow-hidden">
+              <Image
+                src={src}
+                alt={alt || ""}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 800px"
+              />
+            </div>
+            {alt && (
+              <figcaption
+                className="mt-3 text-center text-xs text-[#888]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                {alt.toUpperCase()}
+              </figcaption>
+            )}
+          </figure>
+        );
+      }
+      return (
+        <figure className="my-8">
+          <div className="relative aspect-video border border-[#333] overflow-hidden">
+            <Image
+              src={src}
+              alt={alt || ""}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+          </div>
+          {alt && (
+            <figcaption
+              className="mt-3 text-center text-xs text-[#888]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              {alt.toUpperCase()}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
+    table: ({ children, ...props }) => (
+      <div className="my-8 overflow-x-auto border border-[#333]">
+        <table className="w-full" {...props}>
+          {children}
+        </table>
+      </div>
+    ),
+    thead: ({ children, ...props }) => (
+      <thead className="bg-[#111]" {...props}>
+        {children}
+      </thead>
+    ),
+    th: ({ children, ...props }) => (
+      <th
+        className="border-b border-[#333] px-4 py-3 text-left text-xs tracking-wider text-[#10b981]"
+        style={{ fontFamily: "var(--font-mono)" }}
+        {...props}
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children, ...props }) => (
+      <td className="border-b border-[#333] px-4 py-3 text-base text-[#888]" {...props}>
+        {children}
+      </td>
+    ),
+  };
+}
+
 interface AuthorInfo {
   slug: string;
   name: string;
@@ -73,6 +334,8 @@ interface BrutalistBlogPostContentProps {
 
 export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPages = [], author = null }: BrutalistBlogPostContentProps) {
   const tocHeadings = extractHeadings(post.content);
+  const markdownComponents = createMarkdownComponents(slug);
+  const contentParts = splitForMidCta(post.content);
 
   return (
     <BrutalistLayout>
@@ -293,227 +556,34 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
               </div>
             )}
 
+            {/* Above-the-fold signup nudge — slim so it doesn't push content down. */}
+            <AffiliateCTA slug={slug} placement="cta-top" variant="compact" />
+
             <article className="v1-prose max-w-none">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  h2: ({ children, ...props }) => {
-                    const id = children
-                      ?.toString()
-                      .toLowerCase()
-                      .replace(/[^a-z0-9]+/g, "-")
-                      .replace(/(^-|-$)/g, "");
-                    return (
-                      <h2
-                        id={id}
-                        className="scroll-mt-24 uppercase mt-12 mb-6 text-2xl tracking-tight"
-                        style={{ fontFamily: "var(--font-display)" }}
-                        {...props}
-                      >
-                        {children}
-                      </h2>
-                    );
-                  },
-                  h3: ({ children, ...props }) => {
-                    const id = children
-                      ?.toString()
-                      .toLowerCase()
-                      .replace(/[^a-z0-9]+/g, "-")
-                      .replace(/(^-|-$)/g, "");
-                    return (
-                      <h3
-                        id={id}
-                        className="scroll-mt-24 uppercase mt-8 mb-4 text-xl"
-                        style={{ fontFamily: "var(--font-display)" }}
-                        {...props}
-                      >
-                        {children}
-                      </h3>
-                    );
-                  },
-                  a: ({ href, children, ...props }) => {
-                    const isExternal = href?.startsWith("http");
-                    // A bare YouTube link on its own line becomes a responsive embed.
-                    const ytId = href ? getYouTubeId(href) : null;
-                    const isBareLink = !!href && String(children) === href;
-                    if (ytId && isBareLink) {
-                      return (
-                        <span className="my-8 block">
-                          <span
-                            className="relative block w-full overflow-hidden border border-[#333]"
-                            style={{ paddingBottom: "56.25%" }}
-                          >
-                            <iframe
-                              className="absolute inset-0 h-full w-full"
-                              src={`https://www.youtube-nocookie.com/embed/${ytId}`}
-                              title="Embedded video"
-                              loading="lazy"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </span>
-                        </span>
-                      );
-                    }
-                    const linkHref =
-                      href && isExternal ? withShopifyAffiliate(href) : href;
-                    const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
-                    return (
-                      <a
-                        href={linkHref}
-                        target={isExternal ? "_blank" : undefined}
-                        rel={
-                          isExternal
-                            ? isAffiliate
-                              ? "sponsored noopener noreferrer"
-                              : "noopener noreferrer"
-                            : undefined
-                        }
-                        className="text-[#10b981] underline underline-offset-4 hover:text-[#EAEAEA] transition-colors"
-                        {...props}
-                      >
-                        {children}
-                      </a>
-                    );
-                  },
-                  p: ({ children, ...props }) => (
-                    <p className="mb-6 text-[#ccc] leading-relaxed text-base" style={{ fontFamily: "var(--font-body)" }} {...props}>
-                      {children}
-                    </p>
-                  ),
-                  strong: ({ children, ...props }) => (
-                    <strong className="text-[#EAEAEA] font-bold" {...props}>
-                      {children}
-                    </strong>
-                  ),
-                  ul: ({ children, ...props }) => (
-                    <ul className="mb-6 space-y-2 ml-4" {...props}>
-                      {children}
-                    </ul>
-                  ),
-                  ol: ({ children, ...props }) => (
-                    <ol className="mb-6 space-y-2 ml-4 list-decimal list-inside" {...props}>
-                      {children}
-                    </ol>
-                  ),
-                  li: ({ children, ...props }) => (
-                    <li className="text-[#ccc] text-base before:content-['+'] before:text-[#10b981] before:mr-2" {...props}>
-                      {children}
-                    </li>
-                  ),
-                  blockquote: ({ children, ...props }) => (
-                    <blockquote
-                      className="my-8 border-l-[3px] border-[#10b981] pl-6 italic text-[#888] text-base"
-                      {...props}
-                    >
-                      {children}
-                    </blockquote>
-                  ),
-                  code: ({ children, className, ...props }) => {
-                    const isInline = !className;
-                    if (isInline) {
-                      return (
-                        <code
-                          className="bg-[#10b981]/10 text-[#10b981] px-1.5 py-0.5 text-sm"
-                          style={{ fontFamily: "var(--font-mono)" }}
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    }
-                    return (
-                      <code style={{ fontFamily: "var(--font-mono)" }} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                  pre: ({ children, ...props }) => (
-                    <pre
-                      className="my-8 bg-[#111] border border-[#333] p-6 overflow-x-auto"
-                      {...props}
-                    >
-                      {children}
-                    </pre>
-                  ),
-                  hr: () => <hr className="my-12 border-[#333]" />,
-                  img: ({ src, alt }) => {
-                    if (!src) return null;
-                    if (src.startsWith("http")) {
-                      return (
-                        <figure className="my-8">
-                          <div className="relative aspect-video border border-[#333] overflow-hidden">
-                            <Image
-                              src={src}
-                              alt={alt || ""}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 800px"
-                            />
-                          </div>
-                          {alt && (
-                            <figcaption
-                              className="mt-3 text-center text-xs text-[#888]"
-                              style={{ fontFamily: "var(--font-mono)" }}
-                            >
-                              {alt.toUpperCase()}
-                            </figcaption>
-                          )}
-                        </figure>
-                      );
-                    }
-                    return (
-                      <figure className="my-8">
-                        <div className="relative aspect-video border border-[#333] overflow-hidden">
-                          <Image
-                            src={src}
-                            alt={alt || ""}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 800px"
-                          />
-                        </div>
-                        {alt && (
-                          <figcaption
-                            className="mt-3 text-center text-xs text-[#888]"
-                            style={{ fontFamily: "var(--font-mono)" }}
-                          >
-                            {alt.toUpperCase()}
-                          </figcaption>
-                        )}
-                      </figure>
-                    );
-                  },
-                  table: ({ children, ...props }) => (
-                    <div className="my-8 overflow-x-auto border border-[#333]">
-                      <table className="w-full" {...props}>
-                        {children}
-                      </table>
-                    </div>
-                  ),
-                  thead: ({ children, ...props }) => (
-                    <thead className="bg-[#111]" {...props}>
-                      {children}
-                    </thead>
-                  ),
-                  th: ({ children, ...props }) => (
-                    <th
-                      className="border-b border-[#333] px-4 py-3 text-left text-xs tracking-wider text-[#10b981]"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                      {...props}
-                    >
-                      {children}
-                    </th>
-                  ),
-                  td: ({ children, ...props }) => (
-                    <td className="border-b border-[#333] px-4 py-3 text-base text-[#888]" {...props}>
-                      {children}
-                    </td>
-                  ),
-                }}
-              >
-                {post.content}
-              </ReactMarkdown>
+              {contentParts ? (
+                <>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={markdownComponents}
+                  >
+                    {contentParts[0]}
+                  </ReactMarkdown>
+                  <AffiliateCTA slug={slug} placement="cta-mid" />
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={markdownComponents}
+                  >
+                    {contentParts[1]}
+                  </ReactMarkdown>
+                </>
+              ) : (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={markdownComponents}
+                >
+                  {post.content}
+                </ReactMarkdown>
+              )}
             </article>
           </div>
         </div>
@@ -666,20 +736,9 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
         </div>
       )}
 
-      {/* CTA */}
-      <div className="p-8 md:p-16 text-center">
-        <h2
-          className="text-2xl md:text-3xl uppercase mb-4"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Ready to Dominate AI Search?
-        </h2>
-        <p className="text-[#888] mb-8 max-w-lg mx-auto">
-          Get your free AI visibility audit and see how your brand appears across ChatGPT, Claude, and more.
-        </p>
-        <Link href="/contact" className="cta-btn cta-btn-primary">
-          Get Your Free Audit
-        </Link>
+      {/* Closing CTA — tracked Shopify signup (replaces the legacy agency CTA). */}
+      <div className="p-6 md:p-10">
+        <AffiliateCTA slug={slug} placement="cta-footer" />
       </div>
     </BrutalistLayout>
   );
