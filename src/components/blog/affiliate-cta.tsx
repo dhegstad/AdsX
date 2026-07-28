@@ -55,7 +55,8 @@ export function AffiliateCTA({
           target="_blank"
           rel="sponsored noopener noreferrer"
           onClick={onClick}
-          className="cta-btn cta-btn-primary shrink-0 whitespace-nowrap text-center"
+          className="inline-block shrink-0 whitespace-nowrap border border-[#EAEAEA] bg-[#EAEAEA] px-8 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#080808] no-underline transition-all hover:border-[#10b981] hover:bg-[#10b981] hover:text-black hover:shadow-[4px_4px_0_#10b981]"
+          style={{ fontFamily: "var(--font-mono)" }}
         >
           Start free trial →
         </a>
@@ -114,7 +115,8 @@ export function AffiliateCTA({
           target="_blank"
           rel="sponsored noopener noreferrer"
           onClick={onClick}
-          className="cta-btn cta-btn-primary"
+          className="inline-block border border-[#EAEAEA] bg-[#EAEAEA] px-8 py-3 text-xs font-bold uppercase tracking-wider text-[#080808] no-underline transition-all hover:border-[#10b981] hover:bg-[#10b981] hover:text-black hover:shadow-[4px_4px_0_#10b981]"
+          style={{ fontFamily: "var(--font-mono)" }}
         >
           Start your free trial →
         </a>
