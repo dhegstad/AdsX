@@ -6,8 +6,8 @@ import Link from "next/link";
 const navLinks = [
   { label: "HOME", href: "/" },
   { label: "BLOG", href: "/blog" },
+  { label: "START A STORE", href: "/start-a-shopify-store" },
   { label: "ABOUT", href: "/about" },
-  { label: "PRICING", href: "/pricing" },
   { label: "CONTACT", href: "/contact" },
 ];
 
@@ -42,12 +42,12 @@ export function MobileMenuButton() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/start-a-shopify-store"
             onClick={() => setMobileMenuOpen(false)}
             className="block mx-6 my-4 text-center py-3 bg-[#10b981] text-black text-sm font-bold tracking-widest"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            GET STARTED
+            START A STORE
           </Link>
         </nav>
       )}

@@ -7,6 +7,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "AdsX is the AI ads agency built for Shopify DTC brands. We manage paid placements and visibility across ChatGPT, Perplexity, Claude, and Google AI — so your store gets recommended where buyers are actually searching in 2026.",
   path: "/shopify-ai-ads-agency",
+  noIndex: true,
   keywords: [
     "shopify ai ads agency",
     "shopify chatgpt ads agency",

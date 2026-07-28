@@ -7,6 +7,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Full-service paid ads agency for Shopify DTC. We manage Meta, Google, TikTok, and emerging AI search placements (ChatGPT, Perplexity, Gemini) — under one team, with one strategy.",
   path: "/shopify-paid-ads-agency",
+  noIndex: true,
   keywords: [
     "shopify paid ads agency",
     "shopify ads agency",

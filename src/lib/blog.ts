@@ -243,19 +243,25 @@ export function getPaginatedPosts(page: number, perPage: number): PaginatedPosts
 // Category functions
 export function getAllCategories(): { category: string; count: number; slug: string }[] {
   const posts = getAllPosts();
-  const categoryMap = new Map<string, number>();
+  // Group by slug so categories that differ only by case (e.g. "E-Commerce" vs
+  // "E-commerce") collapse into one entry instead of splitting into duplicate
+  // chips that both point at the same /blog/category/<slug> page.
+  const bySlug = new Map<string, { labels: Map<string, number>; count: number }>();
 
   posts.forEach((post) => {
-    const count = categoryMap.get(post.category) || 0;
-    categoryMap.set(post.category, count + 1);
+    const slug = slugify(post.category);
+    const entry = bySlug.get(slug) ?? { labels: new Map<string, number>(), count: 0 };
+    entry.count += 1;
+    entry.labels.set(post.category, (entry.labels.get(post.category) || 0) + 1);
+    bySlug.set(slug, entry);
   });
 
-  return Array.from(categoryMap.entries())
-    .map(([category, count]) => ({
-      category,
-      count,
-      slug: slugify(category),
-    }))
+  return Array.from(bySlug.entries())
+    .map(([slug, { labels, count }]) => {
+      // Canonical display label = the most frequently used casing.
+      const category = [...labels.entries()].sort((a, b) => b[1] - a[1])[0][0];
+      return { category, count, slug };
+    })
     .sort((a, b) => b.count - a.count);
 }
 

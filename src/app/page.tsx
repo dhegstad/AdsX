@@ -2,39 +2,36 @@ import Link from "next/link";
 import { createFAQSchema, SchemaScript } from "@/lib/seo/schemas";
 import { MobileMenuButton } from "@/components/home/mobile-menu";
 import { ParallaxHero } from "@/components/home/parallax-hero";
+import { AffiliateCTA } from "@/components/blog/affiliate-cta";
 import styles from "./home.module.css";
 
 const navLinks = [
   { label: "HOME", href: "/" },
   { label: "BLOG", href: "/blog" },
+  { label: "START A STORE", href: "/start-a-shopify-store" },
   { label: "ABOUT", href: "/about" },
-  { label: "PRICING", href: "/pricing" },
   { label: "CONTACT", href: "/contact" },
 ];
 
 const footerLinks = {
-  company: [
-    { label: "About", href: "/about" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
-    { label: "Blog", href: "/blog" },
+  start: [
+    { label: "Start a Shopify Store", href: "/start-a-shopify-store" },
+    { label: "Free Trial + $1/mo Deal", href: "/shopify-free-trial-deal" },
+    { label: "Is Shopify Right for You?", href: "/is-shopify-right-for-you" },
   ],
-  resources: [
-    { label: "Free Audit", href: "/tools/free-audit" },
-    { label: "Case Studies", href: "/case-studies" },
-    { label: "Services", href: "/services" },
-  ],
-  agency: [
-    { label: "Shopify AI Ads Agency", href: "/shopify-ai-ads-agency" },
-    { label: "Shopify Paid Ads Agency", href: "/shopify-paid-ads-agency" },
-    { label: "ChatGPT Ads Agency", href: "/chatgpt-ads-agency" },
-    { label: "DTC AI Ads Agency", href: "/dtc-ai-ads-agency" },
-  ],
-  explore: [
-    { label: "Integrations", href: "/integrations" },
+  learn: [
+    { label: "All Guides", href: "/blog" },
     { label: "Best Of", href: "/best" },
+    { label: "Integrations", href: "/integrations" },
+  ],
+  tools: [
     { label: "ROAS Calculator", href: "/tools/roas-calculator" },
     { label: "Feed Readiness Checker", href: "/tools/feed-readiness-checker" },
+    { label: "Free Audit", href: "/tools/free-audit" },
+  ],
+  company: [
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -42,78 +39,106 @@ const footerLinks = {
   ],
 };
 
-const services = [
+// The three conversion hubs, front and center.
+const hubs = [
   {
-    idx: "01. AUDIT",
-    name: "Visibility Scan",
-    desc: "See exactly how ChatGPT, Claude, and Perplexity describe your brand today.",
+    idx: "01. START",
+    name: "Start a Shopify Store",
+    desc: "What you actually need, the five steps to launch, which plan to pick, and the four first-hour setups that matter.",
+    href: "/start-a-shopify-store",
   },
   {
-    idx: "02. OPTIMIZE",
-    name: "Content Engineering",
-    desc: "Restructure your content so AI systems understand and recommend you.",
+    idx: "02. SAVE",
+    name: "Free Trial + $1/mo Deal",
+    desc: "Build free with no credit card, then pay $1/month for your first three months. What's included and how to activate it.",
+    href: "/shopify-free-trial-deal",
   },
   {
-    idx: "03. AMPLIFY",
-    name: "Third-Party Signals",
-    desc: "Build the external citations and authority that AI trusts.",
+    idx: "03. DECIDE",
+    name: "Is Shopify Right for You?",
+    desc: "An honest fit guide — who Shopify is best for, who should look elsewhere, and a 60-second decision checklist.",
+    href: "/is-shopify-right-for-you",
+  },
+];
+
+// What the library covers — each pillar links into the relevant content.
+const pillars = [
+  {
+    idx: "GUIDES",
+    name: "Starting a Store",
+    desc: "Signup walkthroughs, the free trial, first-store setup — domain, payments, theme, first product.",
+    href: "/start-a-shopify-store",
   },
   {
-    idx: "04. TRACK",
-    name: "Live Monitoring",
-    desc: "Real-time alerts when AI mentions change. Know before your competitors do.",
+    idx: "MONEY",
+    name: "Plans & Costs",
+    desc: "Basic vs Grow vs Advanced, real cost breakdowns, payment fees, and the hidden costs to avoid.",
+    href: "/is-shopify-right-for-you",
   },
   {
-    idx: "05. COMPARE",
-    name: "Share of Voice",
-    desc: "Track how often AI recommends you vs. competitors in your category.",
+    idx: "NICHES",
+    name: "Selling Your Product",
+    desc: "Practical “can I sell X on Shopify” guides with fee math and category-specific tactics.",
+    href: "/blog",
   },
   {
-    idx: "06. SCALE",
-    name: "Full Protocol",
-    desc: "End-to-end AI visibility management. Strategy, execution, and ongoing optimization.",
-    cta: true,
+    idx: "DEV",
+    name: "Shopify for Developers",
+    desc: "The Admin & Storefront GraphQL APIs, the Product Catalog and Feed APIs, bulk operations, and metafields.",
+    href: "/blog/shopify-product-catalog-api-guide",
+  },
+  {
+    idx: "AI",
+    name: "AI & Agentic Commerce",
+    desc: "Get your store recommended by ChatGPT, Claude, and Perplexity — agentic checkout and AI-readable product data.",
+    href: "/blog/agentic-checkout-optimization-shopify",
+  },
+  {
+    idx: "TOOLS",
+    name: "Free Tools",
+    desc: "A ROAS calculator and a product-feed readiness checker to sanity-check your store's ad economics and data.",
+    href: "/tools/roas-calculator",
   },
 ];
 
 const stats = [
-  { label: "AI QUERIES/DAY", value: "2.5B+" },
-  { label: "PLATFORMS", value: "5" },
-  { label: "ZERO-CLICK", value: "60%" },
+  { label: "TO START", value: "$0" },
+  { label: "FIRST 3 MONTHS", value: "$1/mo" },
+  { label: "TO LAUNCH", value: "~1 HR" },
 ];
 
 // Homepage FAQ — rendered visibly below AND used to generate the FAQPage schema
 // from a single source of truth (keeps structured data valid).
 const homeFaqs = [
   {
-    question: "How long until we see results?",
+    question: "Do I need a credit card to start a Shopify store?",
     answer:
-      "Most clients see measurable improvements in AI visibility within 4-6 weeks. Sponsored placements can drive traffic immediately, while organic AI optimization compounds over time as models update their training data.",
+      "No. As of 2026, Shopify's free trial requires only an email address (or a Google, Apple, or passkey login). You add billing details later, when you choose a paid plan to keep the store running after the trial.",
   },
   {
-    question: "What's the minimum engagement?",
+    question: "How much does Shopify cost?",
     answer:
-      "We require a 3-month minimum to give our strategies time to take effect. After that, you can continue month-to-month with 30 days notice to cancel.",
+      "New stores typically get $1/month for their first 3 months on Basic, Grow, or Advanced. After that, Basic is $39/month, Grow is $105/month, and Advanced is $399/month, plus card processing starting at 2.9% + 30¢ online on Basic.",
   },
   {
-    question: "Do you guarantee placements in ChatGPT responses?",
+    question: "How long does it take to launch a store?",
     answer:
-      "We can guarantee sponsored ad placements through official channels. For organic mentions, we optimize your content and digital presence to maximize the likelihood of being recommended, but no one can guarantee specific AI outputs.",
+      "Signup takes about two minutes. Budget roughly an hour for the four setups that make a store real: your domain, Shopify Payments, one product, and a free theme. Everything else can wait.",
   },
   {
-    question: "How do you measure AI visibility?",
+    question: "Is Shopify right for me?",
     answer:
-      "We use proprietary monitoring tools that query AI platforms thousands of times daily across relevant prompts in your category. We track mention frequency, sentiment, positioning, and competitive share of voice.",
+      "Shopify fits most people who want their own branded store (not just a marketplace listing), sell physical or digital products, and want to be discoverable across Google, Meta, and AI shopping agents. See our decision guide for the full fit test.",
   },
   {
-    question: "What industries do you work with?",
+    question: "Can I sell my specific product on Shopify?",
     answer:
-      "We work primarily with B2B SaaS, fintech, e-commerce, and professional services. Any brand where customers research solutions through AI assistants is a good fit.",
+      "Almost certainly. Shopify handles physical, digital, and service products across nearly every category. Our blog has practical, product-specific guides with fee math and category tactics for dozens of niches.",
   },
   {
-    question: "How is this different from traditional SEO?",
+    question: "Is AdsX affiliated with Shopify?",
     answer:
-      "Traditional SEO optimizes for search engine crawlers and ranking algorithms. AI optimization focuses on how LLMs understand, categorize, and recommend your brand. The tactics overlap but the strategies are fundamentally different.",
+      "AdsX is an independent resource, not Shopify. We participate in Shopify's official affiliate program, so some links to Shopify are affiliate links — at no extra cost to you.",
   },
 ];
 
@@ -153,7 +178,7 @@ export default function HomePage() {
                   className="hidden sm:block border border-[#EAEAEA] bg-[#EAEAEA] text-[#080808] px-2 py-1 text-[10px] font-bold"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  SYS: ONLINE
+                  SHOPIFY RESOURCE
                 </div>
 
                 <MobileMenuButton />
@@ -174,7 +199,7 @@ export default function HomePage() {
                   letterSpacing: "-2px"
                 }}
               >
-                <h1 className="contents">Get recommended<br />by AI platforms</h1>
+                <h1 className="contents">Start a store<br />on Shopify</h1>
               </div>
               <div
                 className="p-5 flex flex-col justify-center bg-[#111] text-[#888]"
@@ -189,152 +214,95 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Problem/Value Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 border-b border-[#333]">
-              <div className="p-6 lg:p-10 lg:border-r border-[#333]">
-                <div
-                  className="text-[10px] text-[#10b981] mb-4 uppercase tracking-widest"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  STATUS: CRITICAL
-                </div>
-                <h2
-                  className="text-2xl md:text-3xl uppercase mb-4"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  The new search is here
-                </h2>
-                <p className="text-[#888] text-base mb-4">
-                  800M+ users now ask AI for product recommendations instead of Googling.
-                  ChatGPT, Claude, and Perplexity are the new gatekeepers.
-                </p>
-                <p className="text-[#888] text-base">
-                  <span className="text-[#EAEAEA]">The problem:</span> Ranking #1 on Google doesn&apos;t mean AI will recommend you.
-                  Fewer than 10% of AI-cited sources rank in Google&apos;s top 10.
-                </p>
-              </div>
-              <div className="p-6 lg:p-10 bg-[#0c0c0c] flex flex-col justify-center">
-                <div
-                  className="text-[10px] text-[#10b981] mb-4 uppercase tracking-widest"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  DIAGNOSTIC AVAILABLE
-                </div>
-                <h3
-                  className="text-xl md:text-2xl uppercase mb-4"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  Check your visibility
-                </h3>
-                <p className="text-[#888] text-base mb-6">
-                  Run a free audit to see how ChatGPT and Claude currently describe your brand.
-                  Real queries. Real answers. 30 seconds.
-                </p>
-                <Link href="/tools/free-audit" className={styles.ctaBtn}>
-                  Run Free Audit →
-                </Link>
-              </div>
-            </div>
-
-            {/* Services Header */}
+            {/* Start Here — the three hubs */}
             <div className="border-b border-[#333] p-5">
               <div
                 className="text-[10px] text-[#888] uppercase tracking-widest"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                SERVICE MODULES
+                START HERE
               </div>
             </div>
-
-            {/* Data Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] min-h-[400px] border-b border-[#333]">
-
-              {/* Left Column */}
-              <div className="hidden lg:flex border-r border-[#333] p-6 flex-col justify-between relative">
-                <div
-                  className="text-[#888] text-lg"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  v2.0
-                </div>
-
-                <div className={`${styles.globeIcon} absolute bottom-10 left-10 z-10`}>
-                  <div className={styles.globeGrid} />
-                </div>
-
-                <div className={styles.outlineNumber}>AI</div>
-              </div>
-
-              {/* Services Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {services.map((service) => (
-                  <div
-                    key={service.idx}
-                    className={`${styles.serviceItem} border-r border-b border-[#333] p-5 flex flex-col`}
-                  >
-                    <span
-                      className="idx text-xs text-[#888] mb-3 block"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
-                      {service.idx}
-                    </span>
-                    <div
-                      className="text-xl uppercase mb-3"
-                      style={{ fontFamily: "var(--font-display)" }}
-                    >
-                      {service.name}
-                    </div>
-                    <div className="desc text-base text-[#888] max-w-[90%]">
-                      {service.desc}
-                    </div>
-                    {service.cta && (
-                      <Link href="/contact" className={styles.ctaBtn}>
-                        Start Project
-                      </Link>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Process Strip */}
             <div className="grid grid-cols-1 md:grid-cols-3 border-b border-[#333]">
-              {[
-                { step: "01", title: "SCAN", desc: "We audit how AI platforms currently see your brand" },
-                { step: "02", title: "OPTIMIZE", desc: "Restructure content and build authority signals" },
-                { step: "03", title: "MONITOR", desc: "Track visibility and outpace competitors" },
-              ].map((item, i) => (
-                <div
-                  key={item.step}
-                  className={`p-6 ${i < 2 ? "md:border-r" : ""} border-b md:border-b-0 border-[#333]`}
+              {hubs.map((hub, i) => (
+                <Link
+                  key={hub.href}
+                  href={hub.href}
+                  className={`${styles.serviceItem} p-6 flex flex-col border-b md:border-b-0 border-[#333] ${i < 2 ? "md:border-r" : ""}`}
                 >
-                  <div
-                    className="text-[#10b981] text-xs mb-2"
+                  <span
+                    className="idx text-xs text-[#888] mb-3 block"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    STEP {item.step}
-                  </div>
+                    {hub.idx}
+                  </span>
                   <div
-                    className="text-xl uppercase mb-2"
+                    className="text-xl uppercase mb-3"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    {item.title}
+                    {hub.name}
                   </div>
-                  <p className="text-[#888] text-sm">{item.desc}</p>
-                </div>
+                  <div className="desc text-base text-[#888]">{hub.desc}</div>
+                  <span
+                    className="mt-4 text-xs tracking-widest text-[#10b981]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    OPEN →
+                  </span>
+                </Link>
               ))}
             </div>
 
-            {/* Platform Strip */}
+            {/* Primary offer CTA */}
+            <div className="border-b border-[#333] p-6 md:p-10">
+              <AffiliateCTA slug="home" placement="cta-top" />
+            </div>
+
+            {/* What you'll find */}
+            <div className="border-b border-[#333] p-5">
+              <div
+                className="text-[10px] text-[#888] uppercase tracking-widest"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                WHAT YOU&apos;LL FIND HERE
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-b border-[#333]">
+              {pillars.map((pillar) => (
+                <Link
+                  key={pillar.name}
+                  href={pillar.href}
+                  className={`${styles.serviceItem} border-r border-b border-[#333] p-5 flex flex-col`}
+                >
+                  <span
+                    className="idx text-xs text-[#888] mb-3 block"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {pillar.idx}
+                  </span>
+                  <div
+                    className="text-xl uppercase mb-3"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {pillar.name}
+                  </div>
+                  <div className="desc text-base text-[#888] max-w-[90%]">
+                    {pillar.desc}
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Get found across AI shopping assistants */}
             <div className="border-b border-[#333] p-6">
               <div
                 className="text-[10px] text-[#888] mb-4 uppercase tracking-widest"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                Target Platforms
+                Get your store recommended across
               </div>
               <div className="flex flex-wrap gap-4">
-                {["ChatGPT", "Claude", "Perplexity", "Gemini", "Grok"].map((platform) => (
+                {["ChatGPT", "Claude", "Perplexity", "Gemini", "Google AI"].map((platform) => (
                   <div
                     key={platform}
                     className="border border-[#EAEAEA] px-4 py-2 text-xs flex items-center gap-2"
@@ -368,19 +336,8 @@ export default function HomePage() {
             </div>
 
             {/* Final CTA */}
-            <div className="border-b border-[#333] p-8 md:p-12 text-center bg-[#0c0c0c]">
-              <h2
-                className="text-2xl md:text-3xl uppercase mb-4"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Initialize visibility scan
-              </h2>
-              <p className="text-[#888] max-w-lg mx-auto mb-6">
-                Find out if AI is recommending your brand—or sending customers to competitors.
-              </p>
-              <Link href="/tools/free-audit" className={styles.ctaBtn}>
-                Run Free Audit →
-              </Link>
+            <div className="border-b border-[#333] p-6 md:p-10">
+              <AffiliateCTA slug="home" placement="cta-footer" />
             </div>
 
             {/* Footer */}
@@ -397,14 +354,80 @@ export default function HomePage() {
                     ADSX
                   </Link>
                   <p className="text-sm text-[#888] mb-6">
-                    AI search advertising for forward-thinking brands.
+                    Guides and tools for starting and growing your store on Shopify.
                   </p>
                   <div
                     className="border border-[#EAEAEA] p-2 w-fit text-[10px] leading-tight"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    AI SEARCH IS THE NEW FRONTIER
+                    START YOUR STORE ON SHOPIFY
                   </div>
+                </div>
+
+                {/* Start Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    START
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.start.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Learn Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    LEARN
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.learn.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Tools Links */}
+                <div>
+                  <div
+                    className="text-xs tracking-widest text-[#10b981] mb-4"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    TOOLS
+                  </div>
+                  <ul className="space-y-3">
+                    {footerLinks.tools.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 {/* Company Links */}
@@ -426,84 +449,6 @@ export default function HomePage() {
                         </Link>
                       </li>
                     ))}
-                  </ul>
-                </div>
-
-                {/* Resources Links */}
-                <div>
-                  <div
-                    className="text-xs tracking-widest text-[#10b981] mb-4"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    RESOURCES
-                  </div>
-                  <ul className="space-y-3">
-                    {footerLinks.resources.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Industries Links */}
-                <div>
-                  <div
-                    className="text-xs tracking-widest text-[#10b981] mb-4"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    AGENCY
-                  </div>
-                  <ul className="space-y-3">
-                    {footerLinks.agency.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Explore Links */}
-                <div>
-                  <div
-                    className="text-xs tracking-widest text-[#10b981] mb-4"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    EXPLORE
-                  </div>
-                  <ul className="space-y-3">
-                    {footerLinks.explore.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="text-sm text-[#888] hover:text-[#EAEAEA] transition-colors"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Legal Links */}
-                <div>
-                  <div
-                    className="text-xs tracking-widest text-[#10b981] mb-4"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    LEGAL
-                  </div>
-                  <ul className="space-y-3">
                     {footerLinks.legal.map((link) => (
                       <li key={link.href}>
                         <Link
@@ -524,7 +469,7 @@ export default function HomePage() {
                   className="text-xs text-[#888]"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  &copy; {new Date().getFullYear()} ADSX. All rights reserved.
+                  &copy; {new Date().getFullYear()} ADSX. All rights reserved. Shopify links may be affiliate links.
                 </div>
                 <div className="flex items-center gap-4">
                   <a

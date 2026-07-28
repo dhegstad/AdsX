@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'AdsX - Advertising for the AI Search Era';
+export const alt = 'AdsX — Start and grow your Shopify store';
 export const size = {
   width: 1200,
   height: 630,
@@ -98,7 +98,7 @@ export default async function Image() {
               lineHeight: 1.1,
             }}
           >
-            Advertising for the{' '}
+            Start selling on{' '}
             <span
               style={{
                 background: 'linear-gradient(to right, #34d399, #6ee7b7, #10b981)',
@@ -106,7 +106,7 @@ export default async function Image() {
                 color: 'transparent',
               }}
             >
-              AI Search Era
+              Shopify
             </span>
           </span>
 
@@ -120,16 +120,16 @@ export default async function Image() {
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>340%</span>
-              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Avg. increase in AI mentions</span>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>$0</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>To start — no card</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>4.2x</span>
-              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Average client ROI</span>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>$1/mo</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>First 3 months</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>52+</span>
-              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>Brands launched</span>
+              <span style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>~1 hr</span>
+              <span style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)' }}>To launch</span>
             </div>
           </div>
 
@@ -146,7 +146,7 @@ export default async function Image() {
             }}
           >
             <span style={{ fontSize: '24px', fontWeight: '600', color: '#000000' }}>
-              Get Your Free AI Visibility Audit
+              Start your Shopify store
             </span>
             <span style={{ fontSize: '24px', color: '#000000' }}>→</span>
           </div>

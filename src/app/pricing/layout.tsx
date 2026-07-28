@@ -5,6 +5,7 @@ export const metadata = createPageMetadata({
   description:
     "Transparent pricing for AI search advertising services. Starting at $4,250/month with a 3-month minimum. Get your brand recommended by ChatGPT, Claude, and more.",
   path: "/pricing",
+  noIndex: true,
 });
 
 export default function PricingLayout({

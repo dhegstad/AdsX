@@ -143,19 +143,21 @@ export function createOrganizationSchema() {
     url: SITE_URL,
     logo: SITE_LOGO,
     description:
-      "The first advertising agency built for AI search. Get your brand recommended by ChatGPT, Claude, Perplexity, Gemini & more.",
+      "A free resource for starting and running an online store on Shopify — guides on the Shopify free trial and $1/month deal, plans and fees, selling product niches, the Shopify catalog APIs, and AI shopping visibility.",
     foundingDate: "2024",
     contactPoint: {
       "@type": "ContactPoint",
-      contactType: "sales",
+      contactType: "customer support",
       email: "hello@adsx.com",
     },
     sameAs: ["https://linkedin.com/company/adsx", "https://twitter.com/adsx"],
-    serviceType: [
-      "AI Search Advertising",
-      "ChatGPT Advertising",
-      "AI Visibility Optimization",
-      "LLM Marketing",
+    knowsAbout: [
+      "Shopify",
+      "Starting an online store",
+      "E-commerce",
+      "Shopify Admin API",
+      "Shopify Product Catalog",
+      "AI shopping visibility",
     ],
   };
 }
@@ -170,7 +172,7 @@ export function createWebsiteSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     description:
-      "AI Search Advertising Agency - Get recommended by ChatGPT, Claude, Perplexity, and more",
+      "Practical guides and tools for starting and growing a store on Shopify — the free trial and $1/month deal, plans and fees, product niches, catalog APIs, and AI shopping visibility.",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
