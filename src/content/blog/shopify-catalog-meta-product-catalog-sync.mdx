@@ -42,7 +42,7 @@ This is a step-by-step tutorial for the data pipeline behind Advantage+ catalog 
 
 ## 1. Pull the catalog from Shopify
 
-Shopify is your source of truth. For a small store you can paginate the `products` connection synchronously, but for any real catalog use the **Bulk Operations API** — it runs the query asynchronously and hands you a JSONL file with every product and variant, with no query-cost throttling.
+[Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) is your source of truth. For a small store you can paginate the `products` connection synchronously, but for any real catalog use the **Bulk Operations API** — it runs the query asynchronously and hands you a JSONL file with every product and variant, with no query-cost throttling.
 
 ```graphql
 mutation StartCatalogExport {

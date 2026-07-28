@@ -23,7 +23,7 @@ faqs:
 
 The **Catalog API** lets you control *which* products and *what* prices publish to a specific buyer context — a B2B company location or a Market region — by binding three objects together: a **Catalog** (the context wrapper), an optional **PriceList** (context-specific pricing), and an optional **Publication** (which products are visible). This guide shows how to create catalogs, attach pricing, associate publications, and read back exactly what a context exposes.
 
-This is the context-control deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. It covers the *B2B and Markets* lane specifically. If you only need to toggle a product's visibility per sales channel with `publishablePublish`, that is a separate mechanic covered in [managing product publications](/blog/shopify-manage-product-publications) — this piece is about catalogs that bundle pricing and visibility into a single named context. Everything uses the **GraphQL Admin API** (version 2026-01).
+This is the context-control deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. It covers the *B2B and Markets* lane specifically. If you only need to toggle a product's visibility per sales channel with `publishablePublish`, that is a separate mechanic covered in [managing product publications](/blog/shopify-manage-product-publications) — this piece is about catalogs that bundle pricing and visibility into a single named context. Everything uses the **GraphQL Admin API** (version 2026-01), so you'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access to run these mutations.
 
 ## The three objects, and how they compose
 

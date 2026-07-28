@@ -27,7 +27,7 @@ This is the end-to-end build that the [Storefront API catalog-read recipe](/blog
 
 ## Step 1: Create a Storefront API access token
 
-In your store admin, go to **Settings → Apps and sales channels → Develop apps**, create an app, then under **Configuration** enable **Storefront API** access and grant the `unauthenticated_read_product_listings` scope. Install the app and copy the **public Storefront access token** from the **API credentials** tab. Unlike the Admin API token, this one is read-only and safe to ship to the browser ([Shopify: Storefront API authentication](https://shopify.dev/docs/api/usage/authentication)).
+In your [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) admin, go to **Settings → Apps and sales channels → Develop apps**, create an app, then under **Configuration** enable **Storefront API** access and grant the `unauthenticated_read_product_listings` scope. Install the app and copy the **public Storefront access token** from the **API credentials** tab. Unlike the Admin API token, this one is read-only and safe to ship to the browser ([Shopify: Storefront API authentication](https://shopify.dev/docs/api/usage/authentication)).
 
 ```bash
 # .env.local

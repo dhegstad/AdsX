@@ -23,7 +23,7 @@ faqs:
 
 The Shopify Admin GraphQL API enforces a **calculated, cost-based rate limit**: a bucket of 1,000 cost points on standard plans that refills at 50 points per second, with larger buckets on Plus. Every query costs points equal to the fields and nodes it returns, each response reports the exact cost in `extensions.cost`, and exceeding the bucket returns a `THROTTLED` error. This page is the pure reference — the numbers, the error codes, and the retry math — for building catalog jobs that never thrash the limit.
 
-This is the reference the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to for limits and errors. The how-tos apply these numbers: see [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs) and [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and API fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide). Every number below links to [shopify.dev](https://shopify.dev/docs/api/usage/rate-limits).
+This is the reference the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to for limits and errors. The how-tos apply these numbers: see [bulk operations for large catalogs](/blog/shopify-bulk-operations-large-catalogs) and [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and API fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide) — all of it assumes a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access. Every number below links to [shopify.dev](https://shopify.dev/docs/api/usage/rate-limits).
 
 ## The cost-based model
 

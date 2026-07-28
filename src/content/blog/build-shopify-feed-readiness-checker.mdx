@@ -23,7 +23,7 @@ faqs:
 
 A feed-readiness checker is a script that pulls every product from Shopify and scores each one against the fields that ad platforms and AI shopping engines require: **title quality, GTIN presence, image count, description depth, and structured attributes**. It turns a vague "our feeds underperform" into a ranked list of exactly which products are blocking impressions and why. This guide builds one from scratch with a scoring rubric and runnable code. Want the answer without writing code? Run a product through the hosted [feed-readiness checker](/tools/feed-readiness-checker).
 
-This is a build tutorial in the series anchored by the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). It assumes you can already pull products — if not, start with [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). Everything uses the **GraphQL Admin API**, version `2026-01`, because REST is legacy and new catalog fields ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+This is a build tutorial in the series anchored by the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). It assumes you have a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access and can already pull products — if not, start with [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). Everything uses the **GraphQL Admin API**, version `2026-01`, because REST is legacy and new catalog fields ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
 
 ## Step 1: Define the scoring rubric
 

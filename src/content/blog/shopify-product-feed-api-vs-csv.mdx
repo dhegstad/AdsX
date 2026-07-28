@@ -27,7 +27,7 @@ This post compares the two approaches the way a developer actually has to decide
 
 ## Two ways to get catalog data out of Shopify
 
-There are really only two patterns for feeding an external channel — Google Shopping, a Meta catalog, an AI shopping agent — with your Shopify products:
+There are really only two patterns for feeding an external channel — Google Shopping, a Meta catalog, an AI shopping agent — with your [Shopify](https://shopify.pxf.io/c/6318547/3797171/13624) products:
 
 1. **Export a file.** Generate a CSV or XML document of your products and upload it (or host it at a URL the channel fetches on a schedule). This is the classic "product feed" merchants have used for a decade.
 2. **Use the Product Feed API.** Have your app call `productFeedCreate` to register a feed against a publication, kick off a `productFullSync`, and then let Shopify stream incremental updates to the channel as products change.

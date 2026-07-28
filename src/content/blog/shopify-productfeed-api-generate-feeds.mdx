@@ -23,7 +23,7 @@ faqs:
 
 The Shopify **ProductFeed API** (`productFeedCreate` plus `productFullSync`) turns your catalog into a live, channel-scoped feed that Shopify keeps in sync automatically. You create one `ProductFeed` per channel, run a **full sync** to load it, and then let **incremental sync webhooks** keep it current as products change. This is the build guide: real Admin GraphQL, the full-vs-incremental model, and why this feed is the bridge into Google, Meta, and AI ad channels.
 
-Already know you want the API over a hand-rolled export? Good — this is that build. If you are still deciding, read [Product Feed API vs CSV feeds](/blog/shopify-product-feed-api-vs-csv) first; this post does not re-argue that choice, it implements the winner. For the full catalog model and every related surface, start with the pillar [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything below uses the **GraphQL Admin API** at version `2026-01`.
+Already know you want the API over a hand-rolled export? Good — this is that build. If you are still deciding, read [Product Feed API vs CSV feeds](/blog/shopify-product-feed-api-vs-csv) first; this post does not re-argue that choice, it implements the winner. For the full catalog model and every related surface, start with the pillar [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything below uses the **GraphQL Admin API** at version `2026-01`, so you'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access to run the examples.
 
 ## What a ProductFeed maps to
 

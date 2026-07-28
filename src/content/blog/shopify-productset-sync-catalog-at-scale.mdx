@@ -23,7 +23,7 @@ faqs:
 
 To sync a Shopify catalog at scale, use the **`productSet` mutation** — a declarative upsert that takes the full desired state of a product (options, variants, media) and reconciles the live product to match in one call. Key it by `id`, `handle`, or an external `customId`, run it synchronously for small products or with **`synchronous: false`** for large ones, and always read `userErrors`. This is the production build guide.
 
-This is the write-side counterpart to [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql), and it sits under the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). If you are still deciding *whether* to adopt it, read [`productSet` vs `productCreate`](/blog/shopify-productset-vs-productcreate) first — this guide assumes you have already chosen `productSet` and want to run it in production. Everything uses the **GraphQL Admin API** at version `2026-01`.
+This is the write-side counterpart to [fetching your entire catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql), and it sits under the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). If you are still deciding *whether* to adopt it, read [`productSet` vs `productCreate`](/blog/shopify-productset-vs-productcreate) first — this guide assumes you have already chosen `productSet` and want to run it in production. Everything uses the **GraphQL Admin API** at version `2026-01`, so you'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access to run it in production.
 
 ## What "declarative upsert" actually means
 
