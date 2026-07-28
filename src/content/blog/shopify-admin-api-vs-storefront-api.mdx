@@ -128,7 +128,7 @@ Decide by **who is calling** and **what they need to do**:
 - **Need draft, archived, or cost data, or fields no buyer should see?** Admin API only — the Storefront API does not expose them.
 - **Need a token in client-side code?** Storefront public token only. An Admin token in a browser is a security incident.
 
-In practice you usually use **both**. A typical headless store runs a server-side sync that pulls or pushes the full catalog through the **Admin API** (managing products, prices, inventory, and feeds), while the front end reads published products through the **Storefront API** to render product and collection pages for buyers. Admin manages; Storefront displays.
+In practice you usually use **both**. A typical headless [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) runs a server-side sync that pulls or pushes the full catalog through the **Admin API** (managing products, prices, inventory, and feeds), while the front end reads published products through the **Storefront API** to render product and collection pages for buyers. Admin manages; Storefront displays.
 
 A common mistake is trying to power a storefront entirely from the Admin API. It works in a demo, but you end up proxying admin-privileged calls through your server for every page view, fighting cost-based rate limits, and risking token exposure. The Storefront API exists precisely so buyer-facing reads do not have to go through admin credentials.
 

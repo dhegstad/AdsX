@@ -23,7 +23,7 @@ faqs:
 
 To fetch your entire Shopify product catalog you have two tools: **cursor-based pagination** on the `products` query for small or filtered pulls, and the **Bulk Operations API** for exporting everything at once, asynchronously, past the rate limit. Use pagination when you need a few thousand products synchronously; use a bulk operation when you need the whole catalog — variants, media, and all — as a downloadable JSONL file. This guide shows both, with retry-safe code and the rate-limit math you need to not get throttled.
 
-This is the extraction deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. For OAuth, tokens, and rate-limit fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide). Everything here uses the **GraphQL Admin API** — REST is legacy as of 2024–2025 and new catalog features ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
+This is the extraction deep-dive that the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide) points to. For OAuth, tokens, and rate-limit fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide). You'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access, and everything here uses the **GraphQL Admin API** — REST is legacy as of 2024–2025 and new catalog features ship to GraphQL first ([Shopify: API versioning](https://shopify.dev/docs/api/usage/versioning)).
 
 ## Which approach: a quick decision table
 

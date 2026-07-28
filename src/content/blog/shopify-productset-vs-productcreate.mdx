@@ -23,7 +23,7 @@ faqs:
 
 If you are writing code against Shopify's GraphQL Admin API, the first real decision in any catalog integration is **which write path to use**. The short answer: **`productSet` is declarative** — you describe the desired end state of a product, including its options, variants, and media, and Shopify reconciles whatever exists to match. It is the right tool for syncing products from an external source of truth. **`productCreate` and `productUpdate` are imperative** — they perform one targeted create or patch — and are best for single, surgical operations.
 
-This post compares the two paradigms and gives you copy-paste mutations for each. For the conceptual map of how these objects fit together, see the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For ready-to-run reads and writes, the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) is the companion reference, and the broader [Shopify Admin API guide](/blog/shopify-admin-api-guide) covers auth, versioning, and rate limits.
+This post compares the two paradigms and gives you copy-paste mutations for each. For the conceptual map of how these objects fit together, see the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For ready-to-run reads and writes, the [query cookbook](/blog/shopify-catalog-graphql-query-cookbook) is the companion reference, and the broader [Shopify Admin API guide](/blog/shopify-admin-api-guide) covers auth, versioning, and rate limits. Both mutations require a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access.
 
 ## The core difference: declarative vs imperative
 

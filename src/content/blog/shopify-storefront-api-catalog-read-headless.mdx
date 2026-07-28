@@ -23,7 +23,7 @@ faqs:
 
 The **Storefront API** is Shopify's buyer-facing, read-only GraphQL surface for building headless and custom front ends. You query `products` and `collections` with a Storefront access token and get exactly what a shopper is allowed to see — published products, variant options, prices, and availability — resolved per market with the `@inContext` directive. This guide is catalog-read recipes only: the queries, the fields, pagination, and localized reads.
 
-This is the read side of the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For the full Storefront surface — cart, checkout, customer auth, and token setup — see the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide); this piece deliberately does not restate that. Everything below uses **Storefront GraphQL API version 2026-01** ([Shopify: Storefront API reference](https://shopify.dev/docs/api/storefront)).
+This is the read side of the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). For the full Storefront surface — cart, checkout, customer auth, and token setup — see the [Shopify Storefront API guide](/blog/shopify-storefront-api-guide); this piece deliberately does not restate that. The recipes assume a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with a Storefront API access token. Everything below uses **Storefront GraphQL API version 2026-01** ([Shopify: Storefront API reference](https://shopify.dev/docs/api/storefront)).
 
 ## Admin-read vs Storefront-read: which context you're in
 

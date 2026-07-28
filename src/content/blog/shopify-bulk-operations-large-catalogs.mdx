@@ -23,7 +23,7 @@ faqs:
 
 To write thousands of products to Shopify without hitting the throttle, use **`bulkOperationRunMutation`**: stage a JSONL file of your inputs with `stagedUploadsCreate`, upload it, then run one mutation that Shopify executes asynchronously server-side. The mutation itself costs almost nothing against your rate-limit bucket, so a 50,000-record sync moves at throughput the synchronous API can never match. This guide covers the full write path — staging, uploading, running, and reconciling results.
 
-This is the **write** companion to the export deep-dive. For pulling the catalog back out — `bulkOperationRunQuery` and JSONL parsing — see [fetch your entire Shopify catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and token fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide), and for the full surface, the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything here uses the **GraphQL Admin API**, version `2026-01`.
+This is the **write** companion to the export deep-dive. For pulling the catalog back out — `bulkOperationRunQuery` and JSONL parsing — see [fetch your entire Shopify catalog with GraphQL](/blog/shopify-fetch-entire-product-catalog-graphql). For OAuth and token fundamentals, see the [Shopify Admin API guide](/blog/shopify-admin-api-guide), and for the full surface, the [Shopify Product Catalog API guide](/blog/shopify-product-catalog-api-guide). Everything here uses the **GraphQL Admin API**, version `2026-01`, so you'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access.
 
 ## Read vs write: two different bulk tools
 

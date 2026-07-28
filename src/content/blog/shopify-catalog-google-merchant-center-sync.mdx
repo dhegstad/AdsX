@@ -42,7 +42,7 @@ This is a build tutorial. For the conceptual model behind these APIs, start with
 
 ## 1. Pull the catalog from Shopify
 
-Read products and their variants from the **Admin GraphQL API**. For small catalogs, paginate the `products` connection with a cursor. Pull every attribute Google will need in one pass.
+Read products and their variants from the **Admin GraphQL API**, which means you'll need a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624) with Admin API access. For small catalogs, paginate the `products` connection with a cursor. Pull every attribute Google will need in one pass.
 
 ```graphql
 query CatalogExport($cursor: String) {
