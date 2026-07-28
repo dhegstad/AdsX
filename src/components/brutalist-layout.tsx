@@ -10,15 +10,14 @@ interface BrutalistLayoutProps {
 const navLinks = [
   { label: "HOME", href: "/" },
   { label: "BLOG", href: "/blog" },
+  { label: "START A STORE", href: "/start-a-shopify-store" },
   { label: "ABOUT", href: "/about" },
-  { label: "PRICING", href: "/pricing" },
   { label: "CONTACT", href: "/contact" },
 ];
 
 const footerLinks = {
   company: [
     { label: "About", href: "/about" },
-    { label: "Pricing", href: "/pricing" },
     { label: "Contact", href: "/contact" },
     { label: "Blog", href: "/blog" },
   ],
@@ -27,15 +26,13 @@ const footerLinks = {
     { label: "Shopify Free Trial Deal", href: "/shopify-free-trial-deal" },
     { label: "Is Shopify Right for You?", href: "/is-shopify-right-for-you" },
     { label: "Free Audit", href: "/tools/free-audit" },
-    { label: "Case Studies", href: "/case-studies" },
-    { label: "Services", href: "/services" },
     { label: "Best Of", href: "/best" },
   ],
   explore: [
+    { label: "All Guides", href: "/blog" },
     { label: "Integrations", href: "/integrations" },
     { label: "ROAS Calculator", href: "/tools/roas-calculator" },
     { label: "Feed Readiness Checker", href: "/tools/feed-readiness-checker" },
-    { label: "Shopify AI Ads Agency", href: "/shopify-ai-ads-agency" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -225,12 +222,12 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                   </Link>
                 ))}
                 <Link
-                  href="/contact"
+                  href="/start-a-shopify-store"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block mx-6 my-4 text-center py-3 bg-[#10b981] text-black text-sm font-bold tracking-widest"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  GET STARTED
+                  START A STORE
                 </Link>
               </nav>
             )}
@@ -251,13 +248,13 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                     ADSX
                   </Link>
                   <p className="text-sm text-[#888] mb-6">
-                    AI search advertising for forward-thinking brands.
+                    Guides and tools for starting and growing your store on Shopify.
                   </p>
                   <div
                     className="border border-[#EAEAEA] p-2 w-fit text-[10px] leading-tight"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    AI SEARCH IS THE NEW FRONTIER
+                    START YOUR STORE ON SHOPIFY
                   </div>
                 </div>
 

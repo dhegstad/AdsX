@@ -41,22 +41,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       },
       {
-        url: `${baseUrl}/pricing`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.9,
-      },
-      {
         url: `${baseUrl}/contact`,
         lastModified: CORE_PAGES_UPDATED,
         changeFrequency: 'monthly' as const,
         priority: 0.9,
-      },
-      {
-        url: `${baseUrl}/services`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.8,
       },
       // Shopify conversion hubs (affiliate money pages)
       {
@@ -76,31 +64,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: CORE_PAGES_UPDATED,
         changeFrequency: 'monthly' as const,
         priority: 0.9,
-      },
-      // Agency landing pages (commercial buyer intent)
-      {
-        url: `${baseUrl}/shopify-ai-ads-agency`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.95,
-      },
-      {
-        url: `${baseUrl}/shopify-paid-ads-agency`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.95,
-      },
-      {
-        url: `${baseUrl}/chatgpt-ads-agency`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.95,
-      },
-      {
-        url: `${baseUrl}/dtc-ai-ads-agency`,
-        lastModified: CORE_PAGES_UPDATED,
-        changeFrequency: 'monthly' as const,
-        priority: 0.95,
       },
       {
         url: `${baseUrl}/case-studies`,

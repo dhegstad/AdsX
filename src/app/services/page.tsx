@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
-import { ServiceSchema } from "@/components/seo/structured-data";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
@@ -10,6 +9,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Full-stack AI search advertising services. From strategy to execution, we handle everything you need to capture visibility in the AI search era.",
   path: "/services",
+  noIndex: true,
 });
 
 const services = [
@@ -48,7 +48,6 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <ServiceSchema />
       <SchemaScript schema={createBreadcrumbSchema([
         { name: "Home", path: "/" },
         { name: "Services", path: "/services" },

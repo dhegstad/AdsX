@@ -41,19 +41,19 @@ export function ParallaxHero() {
             transform: "scaleX(1.05)"
           }}
         >
-          AI_SEARCH
+          SELL_MORE
         </h1>
         <div
           className="bg-white text-black inline-block px-3 py-1 mt-6 font-extrabold text-xs tracking-[0.2em]"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          VISIBILITY PROTOCOL
+          START ON SHOPIFY
         </div>
         <p
           className="mt-6 text-white/70 text-sm md:text-base max-w-md mx-auto"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          When customers ask ChatGPT for recommendations, is your brand in the answer?
+          Everything you need to start a store on Shopify — pick a plan, launch fast, and get recommended by AI shopping assistants.
         </p>
       </div>
     </div>

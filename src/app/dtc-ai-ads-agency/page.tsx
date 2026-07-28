@@ -7,6 +7,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "AdsX is the AI ads agency for DTC brands. We run paid and organic visibility across ChatGPT, Perplexity, Claude, Google AI Mode, and Amazon Rufus for direct-to-consumer ecommerce.",
   path: "/dtc-ai-ads-agency",
+  noIndex: true,
   keywords: [
     "dtc ai ads agency",
     "dtc advertising agency",

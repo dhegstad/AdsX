@@ -7,6 +7,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "AdsX runs ChatGPT Ads and ChatGPT Shopping placements for Shopify DTC brands. We handle eligibility, setup, creative, and campaign optimization on OpenAI's emerging ad surface.",
   path: "/chatgpt-ads-agency",
+  noIndex: true,
   keywords: [
     "chatgpt ads agency",
     "openai ads agency",
