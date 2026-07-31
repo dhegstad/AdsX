@@ -86,6 +86,11 @@ payments post. Measure ~Aug 20 (GSC filtered Jul 6+) before starting Wave 2.
 
 ## Wave 2 — gated on the ~Aug 20 measurement (GSC filtered to Jul 6+)
 
+**Shipped ahead of the gate (2026-07-31, at direction):**
+- `kajabi-vs-shopify-2026` — fresh-slug revival of the pruned `shopify-vs-kajabi-comparison`, built to mirror the proven Wave 1 winner `kartra-vs-shopify-2026`. Demand: "kajabi shopify" 202 impr @ pos 14.7 with no live page (the old killed URL still ranks and 308-redirects, so we were leaking the demand). Creator-platform cluster; inbound links added from kartra / teachable / selling-digital-products. Pricing verified against 2026 sources (Basic $179/$143 annual, Pro $499/$399; $89 Kickstarter pulled Jan 2026).
+- Harvest (PR #35): contextual internal links boosting the 3 striking-distance pages (`shopify-payments-vs-stripe-vs-paypal`, `shopify-editions-2026-new-features`, `shopify-claude-ai-integration-automation`) to 10 inbound each.
+- Measure both at the ~Aug 20 checkpoint alongside Wave 1.
+
 Ship only what Wave 1's data supports:
 - **Migration redos**: wix-to-shopify, woocommerce-to-shopify (keep-your-SEO angle) — only if Wave 1 migration posts get impressions
 - **Dropshipping zone** (zero live coverage): "Is Shopify good for dropshipping in 2026?" (~110 imps across queries), niches post
