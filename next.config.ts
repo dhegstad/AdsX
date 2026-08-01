@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
       // canonical via the canonical/og tags + metadataBase, so SEO
       // consolidation is preserved without a redirect.
 
+      // Slug change (2026-08-01): the 1MBB post was retitled/reslugged for
+      // plain-language CTR. 308-redirect the old URL so ranking equity carries over.
+      {
+        source: "/blog/shopify-1mbb-120-day-free-trial-guide",
+        destination: "/blog/shopify-120-day-free-trial-black-owned-businesses",
+        permanent: true,
+      },
+
       // Legacy site redirects — old HTML/PDF/HTM pages from previous adsx.com site
       // Exact matches for known legacy paths
       {

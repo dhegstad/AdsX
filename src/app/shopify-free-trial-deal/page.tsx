@@ -144,7 +144,7 @@ export default function ShopifyFreeTrialDealPage() {
                 instead of the standard short one — four full months to build
                 before paying. If that might be you, read the{" "}
                 <Link
-                  href="/blog/shopify-1mbb-120-day-free-trial-guide"
+                  href="/blog/shopify-120-day-free-trial-black-owned-businesses"
                   className="text-[#10b981] underline underline-offset-4 hover:text-[#EAEAEA] transition-colors"
                 >
                   1MBB 120-day trial guide
@@ -182,7 +182,7 @@ export default function ShopifyFreeTrialDealPage() {
       related={[
         { title: "The $1/mo for 3 months deal", href: "/blog/shopify-1-dollar-3-months-deal-2026" },
         { title: "Shopify free trial (2026)", href: "/blog/shopify-free-trial-2026-complete-guide" },
-        { title: "1MBB 120-day trial", href: "/blog/shopify-1mbb-120-day-free-trial-guide" },
+        { title: "1MBB 120-day trial", href: "/blog/shopify-120-day-free-trial-black-owned-businesses" },
         { title: "What to set up during your trial", href: "/blog/shopify-free-trial-what-to-setup-2026" },
         { title: "Start a Shopify store", href: "/start-a-shopify-store" },
         { title: "Is Shopify right for you?", href: "/is-shopify-right-for-you" },
