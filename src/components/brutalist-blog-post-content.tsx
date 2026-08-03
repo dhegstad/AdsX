@@ -362,7 +362,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
       <div className="border-b border-[#333]">
         <div className="grid lg:grid-cols-3">
           {/* Main Title Area */}
-          <div className="lg:col-span-2 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#333]">
+          <div className="lg:col-span-2 min-w-0 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#333]">
             <div
               className="text-xs tracking-widest text-[#888] mb-6"
               style={{ fontFamily: "var(--font-mono)" }}
@@ -398,7 +398,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
           </div>
 
           {/* Meta Sidebar */}
-          <div className="p-8 md:p-12 bg-[#111] flex flex-col justify-between">
+          <div className="p-8 md:p-12 min-w-0 bg-[#111] flex flex-col justify-between">
             {/* Author */}
             <div className="mb-8">
               <div
@@ -478,7 +478,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
       <div className="border-b border-[#333]">
         <div className="grid lg:grid-cols-4">
           {/* Table of Contents Sidebar */}
-          <div className="hidden lg:block p-8 border-r border-[#333] sticky top-0 self-start">
+          <div className="hidden lg:block min-w-0 p-8 border-r border-[#333] sticky top-0 self-start">
             <div
               className="text-xs tracking-widest text-[#10b981] mb-4"
               style={{ fontFamily: "var(--font-mono)" }}
@@ -523,7 +523,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 p-8 md:p-12">
+          <div className="lg:col-span-3 min-w-0 p-8 md:p-12">
             {/* TL;DR / Key Takeaway - optimized for AI citation */}
             {post.tldr && (
               <div className="mb-10 border border-[#10b981]/30 bg-[#10b981]/5 p-6">
@@ -559,7 +559,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
             {/* Above-the-fold signup nudge — slim so it doesn't push content down. */}
             <AffiliateCTA slug={slug} placement="cta-top" variant="compact" />
 
-            <article className="v1-prose max-w-none">
+            <article className="v1-prose max-w-none break-words">
               {contentParts ? (
                 <>
                   <ReactMarkdown
@@ -681,7 +681,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
               <Link
                 key={relatedPost.slug}
                 href={`/blog/${relatedPost.slug}`}
-                className="border-r border-b border-[#333] p-6 group hover:bg-[#111] transition-colors"
+                className="min-w-0 border-r border-b border-[#333] p-6 group hover:bg-[#111] transition-colors"
               >
                 <div className="flex justify-between items-start mb-4">
                   <span
@@ -698,7 +698,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                   </span>
                 </div>
                 <h3
-                  className="text-lg uppercase mb-3 group-hover:text-[#10b981] transition-colors"
+                  className="text-lg uppercase mb-3 break-words group-hover:text-[#10b981] transition-colors"
                   style={{ fontFamily: "var(--font-display)", lineHeight: 1.2 }}
                 >
                   {relatedPost.title}
