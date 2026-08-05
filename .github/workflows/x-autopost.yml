@@ -1,0 +1,67 @@
+name: X auto-post
+
+# Drips one blog post to @adsxcom per run for search + GEO visibility.
+# State (idempotency ledger + rotating OAuth refresh token) lives in Neon, so
+# this workflow makes NO commits and needs no write permissions.
+# Setup (X app, OAuth, secrets, kill switch): see X-AUTOPOST-SETUP.md.
+
+on:
+  schedule:
+    # 15:00 UTC ≈ 11:00 ET / 08:00 PT — a reasonable US engagement window.
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate + print the copy without posting"
+        type: boolean
+        default: true
+      preflight:
+        description: "Only verify credentials (whoami), post nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Never let two runs overlap (belt-and-suspenders on top of the DB claim).
+concurrency:
+  group: x-autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Post to X
+        env:
+          # Master on/off — set this as a repo *Variable* so you can flip it in
+          # the GitHub UI with no code change. Anything but "true" = no posting.
+          X_AUTOPOST_ENABLED: ${{ vars.X_AUTOPOST_ENABLED }}
+          # X app + OAuth (secrets). X_OAUTH_REFRESH_TOKEN only seeds the DB the
+          # first time; after that the rotating token lives in Neon.
+          X_CLIENT_ID: ${{ secrets.X_CLIENT_ID }}
+          X_CLIENT_SECRET: ${{ secrets.X_CLIENT_SECRET }}
+          X_OAUTH_REFRESH_TOKEN: ${{ secrets.X_OAUTH_REFRESH_TOKEN }}
+          # Infra (reused from the rest of the app).
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          # Optional tuning (safe defaults in x-lib.mjs if unset).
+          X_MAX_PER_RUN: ${{ vars.X_MAX_PER_RUN }}
+          X_BACKFILL_MIN_CLICKS: ${{ vars.X_BACKFILL_MIN_CLICKS }}
+          X_FRESH_DAYS: ${{ vars.X_FRESH_DAYS }}
+          X_COPY_MODEL: ${{ vars.X_COPY_MODEL }}
+          X_SUMMARY_EMAIL: ${{ vars.X_SUMMARY_EMAIL }}
+        run: node scripts/x-post.mjs ${{ inputs.preflight && '--preflight' || (inputs.dry_run && '--dry-run' || '') }}
