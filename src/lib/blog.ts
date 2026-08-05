@@ -336,7 +336,7 @@ export const authors: Author[] = [
     role: "AI Search Specialists",
     bio: "The AdsX team helps brands navigate AI-powered search and get recommended by ChatGPT, Claude, Perplexity, and other AI platforms. With deep expertise in LLM optimization, paid media, and e-commerce growth, our team has driven a 340% average increase in AI mentions for clients across industries.",
     linkedin: "company/adsx",
-    twitter: "adsx",
+    twitter: "adsxcom",
   },
   {
     slug: "dennis-hegstad",
@@ -358,7 +358,7 @@ export const authors: Author[] = [
     role: "Shopify API & Commerce Engineering",
     bio: "The AdsX engineering team builds the data pipelines that turn a Shopify product catalog into high-performing ad feeds across Google, Meta, and AI shopping agents. We work hands-on with the Shopify Admin GraphQL API, the Product Feed and Catalog APIs, metafields, and bulk operations every day, and these guides document the patterns we use in production.",
     linkedin: "company/adsx",
-    twitter: "adsx",
+    twitter: "adsxcom",
     knowsAbout: [
       "Shopify Admin API",
       "Shopify GraphQL API",

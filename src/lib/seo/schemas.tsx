@@ -150,7 +150,7 @@ export function createOrganizationSchema() {
       contactType: "customer support",
       email: "hello@adsx.com",
     },
-    sameAs: ["https://linkedin.com/company/adsx", "https://twitter.com/adsx"],
+    sameAs: ["https://linkedin.com/company/adsx", "https://x.com/adsxcom"],
     knowsAbout: [
       "Shopify",
       "Starting an online store",

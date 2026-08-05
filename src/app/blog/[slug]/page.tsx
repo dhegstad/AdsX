@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const author = getAuthorByName(post.author.name);
   const authorSameAs = author
     ? [
-        author.twitter ? `https://twitter.com/${author.twitter}` : null,
+        author.twitter ? `https://x.com/${author.twitter}` : null,
         author.linkedin ? `https://www.linkedin.com/${author.linkedin}` : null,
       ].filter((u): u is string => Boolean(u))
     : undefined;

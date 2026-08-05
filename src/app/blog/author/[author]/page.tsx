@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function AuthorSchema({ author, postCount }: { author: NonNullable<ReturnType<typeof getAuthorBySlug>>; postCount: number }) {
   const isOrg = author.slug === "adsx-team";
   const sameAs: string[] = [];
-  if (author.twitter) sameAs.push(`https://twitter.com/${author.twitter}`);
+  if (author.twitter) sameAs.push(`https://x.com/${author.twitter}`);
   if (author.linkedin) sameAs.push(`https://linkedin.com/in/${author.linkedin}`);
 
   const schema = isOrg
@@ -170,7 +170,7 @@ export default async function AuthorPage({ params }: PageProps) {
                 <div className="mt-6 flex items-center gap-3">
                   {author.twitter && (
                     <a
-                      href={`https://twitter.com/${author.twitter}`}
+                      href={`https://x.com/${author.twitter}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-1 border border-[#333] text-[#888] hover:border-[#10b981] hover:text-[#10b981] transition-colors text-sm"

@@ -357,7 +357,7 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                 </div>
                 <div className="flex items-center gap-4">
                   <a
-                    href="https://twitter.com/adsx"
+                    href="https://x.com/adsxcom"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-[#888] hover:text-[#EAEAEA] transition-colors"
