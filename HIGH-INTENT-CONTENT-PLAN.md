@@ -107,3 +107,46 @@ Ship only what Wave 1's data supports:
 - ~Aug 5–10: pull GSC export date-filtered to Jul 6+ → judges prune recovery + current titles (title freeze holds until then)
 - ~Aug 20: same filter → judges Wave 1 posts → greenlights Wave 2
 - KPI: clicks (not impressions — ~82% of impressions are AI fan-out) and Impact signups
+
+---
+
+## 2026-08-11 — Automated title/CTR round + recovery-read attempt
+
+**Data used:** `npm run gsc:pull` failed (no OAuth creds in this cloud sandbox — expected,
+see GSC-SETUP.md). Fell back to the newest committed snapshot, `gsc-data/2026-07-26`
+(final data through **2026-07-24**). That snapshot is **17 days stale as of today** and,
+critically, **predates every Jul 31–Aug 1 change** (the harvest, Kajabi, Universal Cart,
+the 1MBB retitle, the ChatGPT-checkout refresh) — none of those show up in it at all.
+
+**Recovery read: not measurable this round.** The 3 harvested pages
+(`shopify-payments-vs-stripe-vs-paypal`, `shopify-editions-2026-new-features`,
+`shopify-claude-ai-integration-automation`) and all 5 Jul 31–Aug 1 posts/refreshes need a
+GSC pull dated **after Jul 31** to show any effect. Re-run once real OAuth-backed data is
+available (locally, or wire creds into this environment) — this run cannot tell you if the
+harvest worked.
+
+**Title/CTR round shipped** (7 posts, all CTR bleeders at pos ~7–10 with thousands of
+impressions and <0.15% CTR per the Jul 24 data; titles front-loaded to the actual ranking
+query per `queries.json`, kept accurate, no clickbait):
+
+| Slug | Before | After |
+|---|---|---|
+| `shopify-editions-2026-new-features` | Shopify Editions 2026: 150+ New Features, Ranked | Shopify Editions Summer 2026: All 150+ Features |
+| `shopify-payments-vs-stripe-vs-paypal` | Shopify Payments vs Stripe vs PayPal: Cheapest 2026 | Shopify Payments vs Stripe vs PayPal: 2026 Fees |
+| `trending-products-sell-shopify-2026` | 20 Trending Products to Sell on Shopify in 2026 | Shopify Trending Products 2026: 20 Picks + Margins |
+| `best-free-shopify-themes-2026` | Best Free Shopify Themes 2026: 15 Tested and Ranked | Best Free Shopify Themes 2026: Top 3 by Conversion |
+| `shopify-starter-plan-five-dollars-review` | Shopify Starter Plan $5/Month: 2026 Review & Limits | Shopify Starter Plan Pricing 2026: $5/Mo Reviewed |
+| `shopify-store-ideas-profitable-niches-2026` | 99 Profitable Shopify Store Ideas for 2026, Ranked | 99 Shopify Store Ideas 2026: Ranked by Profit Margin |
+| `shopify-free-trial-2026-complete-guide` | Shopify Free Trial 2026: 3 Days Free + $1/Month for 3 Months | Shopify Free Trial 2026: Length, Cost & How to Claim |
+
+Excerpts (meta descriptions) rewritten to match — see individual `.mdx` frontmatter for
+exact text. No slugs changed, no pruned slugs touched, no new posts created.
+
+**Noted but not touched:** `chatgpt-updates-february-2026` (20.4K impressions, 0.005% CTR,
+pos 10.2) — this looks like content staleness (queries are for "june/july 2026 chatgpt
+updates"), not a title problem; a title tweak alone won't fix a page whose news has aged
+out. Flagging for a content-refresh pass, not this round. `shopify-admin-api-guide` (4.8K
+impressions, ~0% CTR) shows heavy "official documentation" query intent that a third-party
+guide title may not be able to win regardless of wording — lower priority than the 7 above.
+
+**Next run:** get a live GSC pull (Aug 5+ data) before attempting the recovery read again.
