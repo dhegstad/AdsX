@@ -1,47 +1,53 @@
-# Paid validation — does Shopify affiliate actually pay? (small test)
+# Paid validation — CAN we acquire Shopify signups profitably? (compliant test)
 
-**The question this answers:** can we acquire a Shopify signup for **less than the ~$150 bounty**? That single number decides whether paid is a growth engine or a dead end — and it's unknowable from our ~15 non-brand organic clicks/month. Spend a few hundred dollars, get the answer in ~2 weeks.
+**The question:** can we acquire a Shopify signup for **less than the ~$150 bounty** — *within Shopify's affiliate rules*? That number decides whether paid is a growth engine or a dead end.
 
-**Why paid, why now:** AdsX's own competency is paid ads. Organic search is structurally capped here (demoted domain, ~82% AI fan-out). Paid is the only lever that scales high-intent volume predictably and gives a fast, clean read.
+> ⚠️ **Read the compliance section first.** Shopify's Affiliate Program Terms (Part A, Sec. 6.3) **ban branded-keyword bidding**. That removes the cheap, high-intent keywords and makes a profitable paid-search CAC unlikely — so this test is deliberately bounded, and a "no" is a valid, useful outcome.
 
 ---
 
-## Setup (Google Search first — highest intent)
+## Compliance rules (Shopify Affiliate Program, Part A §6.3) — do not violate
 
-**Budget:** $20–30/day × ~14 days = **$300–420 total.** One campaign, exact/phrase match, tight negatives.
+| Rule | What it means for us |
+|---|---|
+| **No bidding on "Shopify" or misspellings** | Add **`shopify`** (and common misspellings) as a **campaign negative keyword.** This also blocks "X vs shopify" / "is shopify worth it" queries — they contain the trademark. |
+| **No "Shopify" in ad copy or display domain** | Headlines/descriptions must NOT say "Shopify." Frame on the outcome ("online store", "sell digital products"). |
+| **No mimicking Shopify's ads / posing as Shopify** | No lookalike branding, no "official" framing. |
+| **Use your OWN landing page** | Ads → an adsx.com page that carries the affiliate CTA. Do **not** direct-link the affiliate URL from the ad. |
+| **Disclose the affiliate relationship** (FTC) | Landing pages already state "affiliate link — we may earn a commission." |
 
-**Ad groups (each → its best-matching landing page):**
+Violation = affiliate account termination + clawed-back commissions. Not worth it.
 
-| Ad group | Example keywords | Landing page |
+## What we CAN bid on (non-branded only)
+
+| Intent | Example keywords (no "shopify") | Landing page |
 |---|---|---|
-| **The deal** (hottest) | `shopify $1 a month`, `shopify free trial`, `start a shopify store`, `how to start shopify` | `/shopify-free-trial-deal` |
-| **Comparisons** (uses the new sprint content) | `gumroad vs shopify`, `kajabi vs shopify`, `kartra vs shopify`, `sellfy vs shopify` | the matching `/blog/*-vs-shopify-*` post |
-| **Fit / consideration** | `is shopify worth it`, `is shopify right for me` | `/is-shopify-right-for-you` |
+| **Category / start** | `start an online store`, `online store builder`, `how to sell online`, `sell digital products online`, `print on demand store` | `/start-a-shopify-store` or `/is-shopify-right-for-you` |
+| **Competitor alternatives** | `gumroad alternative`, `sellfy alternative`, `kajabi alternative`, `kartra alternative`, `gumroad vs sellfy` | the matching comparison post |
 
-**Negatives (add before launch):** `jobs`, `careers`, `login`, `stock`, `nasdaq`, `free forever`, `download`, `discount code`, `coupon`, `theme free`, `tutorial pdf`. Watch the search-terms report daily for the first 3 days and prune.
+Ad copy examples (no trademark): `Launch Your Online Store — $1/Month to Start` · `Sell Digital Products From a Store You Own` · `Which Platform Should You Actually Use?`
 
-**Ad copy (deal group) — lead with the offer:**
-- Headlines: `Start a Shopify Store — $1/Month` · `Cardless Free Trial, Then $1/mo` · `Launch on Shopify for $1/Month` · `Sell Online in 2026 — Start Free`
-- Descriptions: `Build free with no credit card, then $1/month for 3 months on any plan. See exactly how to lock it in.` · `The real 2026 Shopify offer, explained — activate the trial and the $1 deal in minutes.`
+## Setup
 
----
+- **Budget:** $20–30/day × ~14 days = **$300–420.** Google Search, exact/phrase match.
+- **Negatives (before launch):** `shopify` + misspellings, `jobs`, `login`, `free forever`, `coupon`, `download`, `crack`, `nulled`.
+- **Consider Meta/TikTok instead of / alongside search:** since branded search is off-limits, interest-based social ads to "start selling online / side hustle" audiences (still no Shopify trademark in creative) may give a better top-funnel CAC read than expensive non-branded search terms.
 
-## Landing-page readiness (do these before spending)
+## Landing-page readiness (do before spending)
 
-1. **Hero CTA gap** — `/shopify-free-trial-deal` renders its tracked "Start free trial" CTA *after* the intro, not as an immediate hero button. Paid visitors decide in seconds. **Add a prominent above-the-fold "Start free trial → $1/mo" button in the hero** (I can wire this into `HubPage` — ~20 min). Highest-leverage single fix for the test.
-2. Comparison LPs already carry top/mid/footer affiliate CTAs via the post template — fine as-is.
+1. **Hero CTA gap** — `/shopify-free-trial-deal` shows its tracked CTA *after* the intro. Add a prominent above-the-fold "Start free trial → $1/mo" button. (I can wire this into `HubPage`.)
+2. Comparison LPs already carry tracked affiliate CTAs via the post template.
 
-## Tracking (so the test is readable)
+## Tracking
 
-- CTAs already fire a GA4 event (`trackAffiliateClick`) and pass Impact subIds (`subId1=<page slug>`, `subId2=<placement>`).
-- **Add a paid marker:** append `?src=gads` to every ad's final URL, and have the CTA fold `src` into the Impact subId (small code change — I can add a `src`→subId passthrough). Then Impact conversions with that marker = paid signups. Without it, approximate by attributing Impact signups during the flight window on those LPs to paid.
-- ⚠️ Impact **Reports API scope is still pending** (clicks blocked) — so read **conversions/earnings** from the nightly Impact pull + GA4 affiliate-click events as the click proxy.
+- CTAs fire GA4 (`trackAffiliateClick`) + Impact subIds (`subId1=slug`, `subId2=placement`).
+- **Add a paid marker:** ad final URLs get `?src=gads`; fold `src` into the Impact subId (small code change) so paid signups are attributable. ⚠️ Impact **Reports API scope pending** — read conversions/earnings from the nightly pull + GA4 as the proxy.
 
 ## Read the result (the gate)
 
 `CAC = spend ÷ signups.`
-- **CAC < $150** → it works. Scale budget, keep the comparison LPs as the paid content engine. Blog becomes support.
-- **$150–300** → borderline. Optimize the hero CTA / offer framing / keyword tightness and re-read before scaling.
-- **> $300 or ~0 signups** → paid-to-affiliate doesn't clear at current conversion. Pivot: rethink the offer, add complementary affiliate offers to raise revenue-per-visitor, or treat email capture as the goal instead of an immediate signup.
+- **< $150** → compliant paid works. Scale carefully. (Unlikely on non-branded search — would be a pleasant surprise.)
+- **$150–300** → optimize LP/offer/creative and re-read.
+- **> $300 or ~0 signups** → **the expected outcome.** Paid-search-to-affiliate doesn't clear the bounty once branded terms are off-limits. Conclusion: **don't fund paid search; put the energy into organic comparison content + AI/GEO citations + email capture + a 2nd affiliate offer.**
 
-**Expectation setting:** at this budget expect ~100–300 clicks total — enough to see *directional* CAC, not a precise number. The goal is a go/no-go signal, not a scaled campaign.
+**Bottom line:** run this only as a small, bounded probe to *confirm* the economics. The compliance constraint means the realistic answer is "paid search can't clear $150," which is itself the decision — it redirects effort to the compliant, scalable levers.
