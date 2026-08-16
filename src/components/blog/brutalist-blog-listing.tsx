@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
+import { EmailCapture } from "@/components/email-capture";
 import type { BlogPostMeta } from "@/lib/blog";
 
 interface Category {
@@ -411,28 +412,8 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
         </div>
       )}
 
-      {/* CTA */}
-      <div className="p-8 md:p-16 text-center">
-        <h2
-          className="text-2xl md:text-3xl uppercase mb-4"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Stay Informed
-        </h2>
-        <p className="text-[#888] mb-8 max-w-lg mx-auto">
-          Get the latest AI search intelligence delivered to your inbox.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-          <input
-            type="email"
-            placeholder="your@email.com"
-            className="v1-input flex-grow"
-          />
-          <button className="cta-btn cta-btn-primary whitespace-nowrap">
-            Subscribe
-          </button>
-        </div>
-      </div>
+      {/* Email capture — real, DB-backed signup for the nurture series. */}
+      <EmailCapture source="blog-listing" />
     </BrutalistLayout>
   );
 }

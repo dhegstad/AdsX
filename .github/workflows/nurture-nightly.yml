@@ -1,0 +1,58 @@
+name: Email nurture drip
+
+# Sends at most one nurture email per subscriber per day (welcome catch-up, then
+# the dated sequence). State lives in Neon; sends go through Resend. Makes NO
+# commits. Ships OFF — set the repo Variable NURTURE_ENABLED=true to go live.
+# Setup (secrets, postal address, kill switch): see EMAIL-NURTURE-SETUP.md.
+
+on:
+  schedule:
+    # 16:00 UTC ≈ 12:00 ET / 09:00 PT — a reasonable send window.
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview who is due without sending"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# Never let two runs overlap (belt-and-suspenders on top of the DB claim).
+concurrency:
+  group: nurture-nightly
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Send nurture emails
+        env:
+          # Master on/off — set as a repo *Variable* so you can flip it in the
+          # GitHub UI with no code change. Anything but "true" = no sending.
+          NURTURE_ENABLED: ${{ vars.NURTURE_ENABLED }}
+          # Infra (reused from the rest of the app).
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          # CAN-SPAM: required in every email. Set before enabling.
+          BUSINESS_POSTAL_ADDRESS: ${{ vars.BUSINESS_POSTAL_ADDRESS }}
+          # Optional 2nd affiliate offer for the final email (see brief).
+          SECOND_AFFILIATE_LINK: ${{ vars.SECOND_AFFILIATE_LINK }}
+          SECOND_AFFILIATE_NAME: ${{ vars.SECOND_AFFILIATE_NAME }}
+          # Optional tuning (safe defaults in nurture-lib.mjs if unset).
+          NURTURE_MAX_PER_RUN: ${{ vars.NURTURE_MAX_PER_RUN }}
+          NURTURE_SEND_DELAY_MS: ${{ vars.NURTURE_SEND_DELAY_MS }}
+        run: node scripts/nurture-send.mjs ${{ inputs.dry_run && '--dry-run' || '' }}

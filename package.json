@@ -15,7 +15,9 @@
     "x:auth": "node scripts/x-auth.mjs",
     "x:preflight": "node scripts/x-post.mjs --preflight",
     "x:dry": "node scripts/x-post.mjs --dry-run",
-    "x:post": "node scripts/x-post.mjs"
+    "x:post": "node scripts/x-post.mjs",
+    "nurture:dry": "node --env-file=.env.local scripts/nurture-send.mjs --dry-run",
+    "nurture:send": "node --env-file=.env.local scripts/nurture-send.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",

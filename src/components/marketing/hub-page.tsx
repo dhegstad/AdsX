@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { AffiliateCTA } from "@/components/blog/affiliate-cta";
+import { EmailCapture } from "@/components/email-capture";
 import {
   SchemaScript,
   createFAQSchema,
@@ -158,6 +159,11 @@ export function HubPage({
             </div>
           </section>
         )}
+
+        {/* Email capture — catch high-intent readers not ready to start today. */}
+        <section className="border-b border-[#333]">
+          <EmailCapture source={`hub:${slug}`} variant="inline" className="m-6 md:m-10" />
+        </section>
 
         {/* Closing CTA */}
         <section className="p-6 md:p-10">
