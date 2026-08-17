@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { AffiliateCTA } from "@/components/blog/affiliate-cta";
+import { EmailCapture } from "@/components/email-capture";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
 import {
   withShopifyAffiliate,
@@ -736,9 +737,11 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
         </div>
       )}
 
-      {/* Closing CTA — tracked Shopify signup (replaces the legacy agency CTA). */}
+      {/* Closing CTA — tracked Shopify signup (replaces the legacy agency CTA),
+          then email capture as the "second bite" for readers not ready today. */}
       <div className="p-6 md:p-10">
         <AffiliateCTA slug={slug} placement="cta-footer" />
+        <EmailCapture source={`post:${slug}`} variant="inline" />
       </div>
     </BrutalistLayout>
   );

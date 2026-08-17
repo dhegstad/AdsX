@@ -13,7 +13,8 @@ export type AffiliatePlacement =
   | "inline" // a link inside the article body
   | "cta-top" // the compact CTA above the fold
   | "cta-mid" // the decision-stage box mid-article
-  | "cta-footer"; // the decision-stage box that closes every post
+  | "cta-footer" // the decision-stage box that closes every post
+  | "email"; // a CTA inside a nurture / welcome email
 
 export function isAffiliateUrl(href: string): boolean {
   try {
