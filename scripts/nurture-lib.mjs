@@ -313,11 +313,14 @@ ${cfg.postalAddress}`;
       const cta = shopifyHref("nurture-5");
       // Only recommend a real 2nd offer once SECOND_AFFILIATE_LINK is set —
       // never invent an affiliate URL. Until then, link to the blog.
+      // Offer-agnostic 2nd-affiliate slot: reads naturally whether the chosen
+      // program is a supplier tool (Spocket), an email tool (Omnisend), etc.
+      // See SECOND-AFFILIATE-OFFER-BRIEF.md. Never invents a URL when unset.
       const hasSecond = Boolean(cfg.secondOfferHref);
-      const secondName = cfg.secondOfferName || "an email marketing tool";
+      const secondName = cfg.secondOfferName || "the right tool";
       const secondBlock = hasSecond
-        ? `<p style="margin:0 0 8px;"><strong>Email marketing.</strong> Your list is your most valuable asset — start collecting emails from day one. ${ctaButton(cfg.secondOfferHref, `Set up ${secondName}`)}</p>`
-        : `<p style="margin:0 0 8px;"><strong>Email marketing.</strong> Your list is your most valuable asset — start collecting emails from day one so repeat sales don't depend on ads. (More on the exact tools in a future note.)</p>`;
+        ? `<p style="margin:0 0 8px;"><strong>The next tool I'd set up.</strong> Once orders are coming in, ${secondName} is the addition I'd make next — it pays for itself as you grow. ${ctaButton(cfg.secondOfferHref, `Set up ${secondName}`)}</p>`
+        : `<p style="margin:0 0 8px;"><strong>Email marketing.</strong> Your list is your most valuable asset — start collecting emails from day one so repeat sales don't depend on ads.</p>`;
       const subject = "Once you're live: the tools worth adding";
       const bodyHtml = `
         <p style="margin:0 0 16px;">Last one. Once your store is live and taking orders, these are the additions that actually move revenue — in priority order, so you don't drown in apps:</p>
@@ -331,7 +334,7 @@ ${cfg.postalAddress}`;
       const text = `Once you're live, the tools worth adding (in priority order):
 
 1. Reviews — social proof lifts conversion more than most design changes.
-2. Email marketing — your list is your most valuable asset; collect from day one.${hasSecond ? `\n   ${cfg.secondOfferHref}` : ""}
+2. ${hasSecond ? `The next tool I'd set up: ${secondName} — ${cfg.secondOfferHref}` : "Email marketing — your list is your most valuable asset; collect from day one."}
 3. One traffic channel done well — show up where your buyers already are.
 
 Haven't started the store yet? That's still step zero:
