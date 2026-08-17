@@ -21,6 +21,35 @@ interface Body {
   company?: string; // honeypot — real users never see or fill this
 }
 
+// Best-effort per-IP throttle. This endpoint sends an email per new address, so
+// it's an email-bombing vector; the honeypot stops dumb bots and this caps the
+// blast radius of a determined one. In-memory only — under Fluid Compute
+// instances are reused across requests, so it catches the common single-source
+// flood without any new infra. Not a substitute for a real WAF rule at scale.
+const RATE_LIMIT = 6; // requests
+const RATE_WINDOW_MS = 10 * 60 * 1000; // per 10 min per IP
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) {
+    // Bound memory: drop the oldest-keyed entries occasionally.
+    for (const k of hits.keys()) {
+      hits.delete(k);
+      if (hits.size <= 2500) break;
+    }
+  }
+  return recent.length > RATE_LIMIT;
+}
+
+function clientIp(request: NextRequest): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  return (fwd?.split(",")[0].trim() || "unknown").slice(0, 64);
+}
+
 export async function POST(request: NextRequest) {
   let data: Body;
   try {
@@ -32,6 +61,13 @@ export async function POST(request: NextRequest) {
   // Honeypot: bots fill hidden fields. Pretend success, do nothing.
   if (data.company && data.company.trim() !== "") {
     return NextResponse.json({ success: true, outcome: "exists" });
+  }
+
+  if (rateLimited(clientIp(request))) {
+    return NextResponse.json(
+      { success: false, error: "rate_limited", message: "Too many requests. Please try again shortly." },
+      { status: 429 },
+    );
   }
 
   if (!isDbConfigured()) {
