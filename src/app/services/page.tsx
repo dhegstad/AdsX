@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "AI Search Advertising Services | AdsX",
+  title: "AI Search Advertising Services",
   description:
     "Full-stack AI search advertising services. From strategy to execution, we handle everything you need to capture visibility in the AI search era.",
   path: "/services",

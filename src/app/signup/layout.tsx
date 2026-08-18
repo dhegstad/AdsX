@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Create Account | AdsX",
+  title: "Create Account",
   description: "Create your AdsX account to track AI visibility.",
   robots: {
     index: false,

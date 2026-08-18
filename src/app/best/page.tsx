@@ -6,7 +6,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Best AI Visibility Resources: Curated Guides | AdsX",
+  title: "Best AI Visibility Resources: Curated Guides",
   description:
     "Curated guides to the best AI visibility tools, strategies, and resources. Expert recommendations for improving your brand's presence across AI assistants.",
   path: "/best",

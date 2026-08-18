@@ -223,6 +223,79 @@ function main() {
     })
     .slice(0, TOP_N);
 
+  // =========================== ZOMBIE (DEAD) URLS ============================
+  // URLs Google still crawls that no longer exist on the site. The July 2026
+  // prune retired ~1,350 of these by 308-redirecting them all to /blog and /,
+  // which Google scores as SOFT 404s — so they lingered in the index for months,
+  // burning crawl budget on the domain's behalf. Retired properly on 2026-08-18
+  // (relevant redirect if it still earns clicks, otherwise 404).
+  //
+  // This section is the regression alarm. `impressionShare` should trend to ~0
+  // as Google drops the 404s. If it climbs, something is bulk-redirecting dead
+  // URLs to a generic page again — see INDEXATION-KILL-LOOP-PLAYBOOK.md.
+  const DEAD_SECTIONS = [
+    "/compare/", "/industries/", "/locations/", "/for/", "/platforms/",
+    "/glossary/", "/examples/", "/sell/", "/research/", "/start/",
+    "/apps/", "/migrate/", "/ai-ads-for/",
+  ];
+  // URLs that already resolve somewhere sensible aren't a problem — read the
+  // redirect map out of pruned-slugs.ts and next.config.ts so this section only
+  // flags genuinely unhandled dead URLs.
+  const handledTargets = new Set();
+  try {
+    const ts = fs.readFileSync("src/lib/seo/pruned-slugs.ts", "utf8");
+    for (const m of ts.matchAll(/\["([a-z0-9-]+)",\s*"([a-z0-9-]+)"\]/g)) {
+      handledTargets.add(`/blog/${m[1]}`);
+    }
+  } catch { /* map is optional */ }
+  try {
+    const cfg = fs.readFileSync("next.config.ts", "utf8");
+    for (const m of cfg.matchAll(/source:\s*"([^"]+)"/g)) handledTargets.add(m[1]);
+  } catch { /* config is optional */ }
+
+  const zombieRows = [];
+  for (const p of pages) {
+    let pathname;
+    try {
+      pathname = new URL(p.page).pathname;
+    } catch {
+      continue;
+    }
+    const isDeadSection = DEAD_SECTIONS.some((d) => pathname.startsWith(d));
+    const isDeadPost =
+      pathname.startsWith("/blog/") &&
+      pathname.split("/blog/")[1] &&
+      !livePosts.has(pathname.split("/blog/")[1].replace(/\/$/, ""));
+    if (isDeadSection || isDeadPost) {
+      zombieRows.push({
+        page: pathname,
+        clicks: p.clicks,
+        impressions: p.impressions,
+        position: Number(p.position?.toFixed?.(1) ?? p.position),
+        kind: isDeadSection ? "killed-section" : "pruned-post",
+        // already 308s to a live page on the same intent — decaying correctly
+        handled: handledTargets.has(pathname),
+      });
+    }
+  }
+  zombieRows.sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions);
+  const totalImpressions = pages.reduce((n, p) => n + p.impressions, 0) || 1;
+  // Actionable = still earning human clicks AND not yet pointed anywhere.
+  const zombieEarning = zombieRows.filter((r) => r.clicks > 0 && !r.handled);
+  const zombies = {
+    count: zombieRows.length,
+    clicks: zombieRows.reduce((n, r) => n + r.clicks, 0),
+    impressions: zombieRows.reduce((n, r) => n + r.impressions, 0),
+    impressionSharePct: Number(
+      ((zombieRows.reduce((n, r) => n + r.impressions, 0) / totalImpressions) * 100).toFixed(1)
+    ),
+    handledCount: zombieRows.filter((r) => r.handled).length,
+    // Dead URLs still earning human clicks with NO redirect yet — each needs a
+    // 308 to a live page on the same intent, or the traffic is wasted.
+    stillEarning: zombieEarning,
+    rows: zombieRows.slice(0, 200),
+  };
+
   // ================================ WRITE ====================================
   const worklist = {
     generated: new Date().toISOString(),
@@ -235,6 +308,7 @@ function main() {
       pagesEarningImpressions: pages.length,
     },
     killReconciliation: { protectCount: protect.length, safeToKillCount: safeToKill.length, protect, safeToKill },
+    zombies,
     queryMovement,
     page2Opportunities: page2,
     ctrBleeders: bleeders,
@@ -253,6 +327,10 @@ function main() {
   console.log(`  clicks 7d       : ${trend.clicks7?.toLocaleString()}${w != null ? `  (WoW ${signed(w, 0)}%)` : "  (baseline)"}`);
   console.log(`  pages in search : ${trend.distinctPages?.toLocaleString() ?? "n/a"}${trend.distinctPages_wow != null ? `  (${signed(trend.distinctPages_wow)})` : ""}  (indexation proxy)`);
   console.log(`  PROTECT (kill-list slugs now earning traffic): ${protect.length}`);
+  console.log(
+    `  zombie URLs (dead but still indexed): ${zombies.count}` +
+      `  — ${zombies.impressionSharePct}% of impressions, ${zombies.stillEarning.length} still earning clicks`
+  );
   console.log(`  page-2 opportunities: ${page2.length}   CTR bleeders: ${bleeders.length}   new queries: ${queryMovement.new.length}`);
   console.log(`  → gsc-worklist.json + ${path.join(reportsDir, `${endDate}-audit.md`)}\n`);
 }
@@ -297,6 +375,36 @@ function renderReport(w) {
     L.push("");
   }
   L.push(`Safe to remove (live, ~0 traffic): **${w.killReconciliation.safeToKillCount}** slugs (see \`gsc-worklist.json\`).`);
+  L.push("");
+
+  // --- zombie URLs -----------------------------------------------------------
+  const z = w.zombies;
+  L.push(`## 2b. Zombie URLs — dead pages Google still crawls`);
+  L.push(
+    `_Retired URLs (pruned posts + killed programmatic sections) that still draw impressions. ` +
+      `They should decay toward zero now that they 404. **If this share climbs, something is bulk-redirecting ` +
+      `dead URLs to a generic page again** — that reads as a soft 404 and keeps them alive. ` +
+      `See INDEXATION-KILL-LOOP-PLAYBOOK.md._`
+  );
+  L.push("");
+  L.push(
+    `- **${fmt(z.count)} dead URLs still indexed** — ${fmt(z.impressions)} impressions ` +
+      `(**${z.impressionSharePct}% of all site impressions**), ${fmt(z.clicks)} clicks`
+  );
+  L.push(`- ${fmt(z.handledCount)} of them already 308 to a relevant live page (decaying correctly)`);
+  if (z.stillEarning.length) {
+    L.push(
+      `- **${z.stillEarning.length} still earn human clicks with no redirect** — each needs a 308 to the live page ` +
+        `answering the same question (never \`/blog\` or \`/\`), or the traffic is thrown away:`
+    );
+    L.push("");
+    L.push(`| dead url | clicks | impr | pos | kind |`);
+    L.push(`|---|--:|--:|--:|:--|`);
+    for (const r of z.stillEarning.slice(0, 20))
+      L.push(`| ${r.page} | ${r.clicks} | ${r.impressions} | ${r.position} | ${r.kind} |`);
+  } else {
+    L.push(`- ✓ Every dead URL earning clicks is already redirected — nothing to rescue.`);
+  }
   L.push("");
 
   L.push(`## 3. Query movement${w.queryMovement.comparedTo ? ` (vs ${w.queryMovement.comparedTo})` : ""}`);

@@ -6,7 +6,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Platform Integrations | AdsX",
+  title: "Platform Integrations",
   description:
     "Get AI search visibility for your platform. We help businesses using Shopify, HubSpot, Salesforce, WordPress, and more get recommended by ChatGPT, Claude, and Perplexity.",
   path: "/integrations",

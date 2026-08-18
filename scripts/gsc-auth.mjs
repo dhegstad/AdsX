@@ -16,7 +16,10 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { exec } from "node:child_process";
 
-const SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+// Read-WRITE. Reads are the common case, but `gsc:sitemaps --fix` needs to
+// un-register stale sitemaps and submit the canonical one, which readonly
+// cannot do. One consent covers both.
+const SCOPE = "https://www.googleapis.com/auth/webmasters";
 
 function loadClient() {
   let id = process.env.GSC_OAUTH_CLIENT_ID;

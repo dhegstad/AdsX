@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { HubPage } from "@/components/marketing/hub-page";
 
 export const metadata = createPageMetadata({
-  title: "How to Start a Shopify Store (2026) — Step-by-Step | AdsX",
+  title: "How to Start a Shopify Store (2026) — Step-by-Step",
   description:
     "Start a Shopify store the practical way: what the signup actually asks, which plan to pick, and the $1/month deal that covers your first three months. No credit card to begin.",
   path: "/start-a-shopify-store",

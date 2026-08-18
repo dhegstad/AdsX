@@ -7,12 +7,21 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   async redirects() {
+    // Redirect policy (re-triaged 2026-08-18 against the 2026-08-15 GSC pull).
+    //
+    // Rule: a 301/308 is only correct when the destination genuinely answers the
+    // same intent as the source. Redirecting a removed page to the homepage or a
+    // generic listing is scored by Google as a SOFT 404 — it neither passes
+    // signal nor cleanly removes the URL. The July prune did exactly that for
+    // ~1,350 URLs (13 whole programmatic sections -> "/" or "/blog"), and 812 of
+    // them were still being crawled six weeks later for 32% of the site's total
+    // impressions and ~0 clicks.
+    //
+    // So: the killed sections below are NOT redirected any more. They have no
+    // route, so they 404 — the unambiguous removal signal. The only survivors
+    // are URLs that still earn human clicks, each pointed at a live post on the
+    // same intent (see KILLED SECTION SURVIVORS).
     return [
-      // NOTE: No apex (adsx.com) -> www redirect (the matching Vercel
-      // domain-level redirect on adsx.com was also removed). www remains
-      // canonical via the canonical/og tags + metadataBase, so SEO
-      // consolidation is preserved without a redirect.
-
       // Slug change (2026-08-01): the 1MBB post was retitled/reslugged for
       // plain-language CTR. 308-redirect the old URL so ranking equity carries over.
       {
@@ -20,202 +29,36 @@ const nextConfig: NextConfig = {
         destination: "/blog/shopify-120-day-free-trial-black-owned-businesses",
         permanent: true,
       },
+      {
+        source: "/tools/shopify-:niche-profit-calculator",
+        destination: "/tools/roas-calculator",
+        permanent: true,
+      },
 
-      // Legacy site redirects — old HTML/PDF/HTM pages from previous adsx.com site
-      // Exact matches for known legacy paths
-      {
-        source: "/content",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/content/:path*",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/prodservpart",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/prodservpart/:path*",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/pressreleasses",
-        destination: "/",
-        permanent: true,
-      },
-      // Catch-all for legacy file extensions at any path depth
-      {
-        source: "/:path*.htm",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.html",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.thm",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.pdf",
-        destination: "/",
-        permanent: true,
-      },
-      // 2026-07 indexation-recovery prune: entire programmatic sections removed
-      // (~490 URLs with ~10 total human clicks in 6 months, per the Jul 5 GSC
-      // export). :path* also matches the bare section index. Pruned blog posts
-      // (867) redirect via src/lib/seo/pruned-slugs.ts in the [slug] route.
-      { source: "/compare/:path*", destination: "/", permanent: true },
-      { source: "/industries/:path*", destination: "/", permanent: true },
-      { source: "/locations/:path*", destination: "/", permanent: true },
-      { source: "/for/:path*", destination: "/", permanent: true },
-      { source: "/platforms/:path*", destination: "/", permanent: true },
-      { source: "/glossary/:path*", destination: "/blog", permanent: true },
-      { source: "/examples/:path*", destination: "/blog", permanent: true },
-      { source: "/sell/:path*", destination: "/blog", permanent: true },
-      { source: "/research/:path*", destination: "/blog", permanent: true },
-      { source: "/start/:path*", destination: "/blog", permanent: true },
-      { source: "/apps/:path*", destination: "/blog", permanent: true },
-      { source: "/migrate/:path*", destination: "/blog", permanent: true },
-      { source: "/ai-ads-for/:path*", destination: "/shopify-ai-ads-agency", permanent: true },
-      { source: "/tools/shopify-:niche-profit-calculator", destination: "/tools/roas-calculator", permanent: true },
-      // /best curated lists: all killed except ai-visibility-courses (7 clicks),
-      // so each dead slug is listed explicitly (a :slug pattern would also
-      // capture the kept page).
-      {
-        source: "/best/ai-visibility-tools",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-optimization-agencies",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-content-optimization-practices",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/brand-monitoring-for-ai",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ecommerce-ai-visibility",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/saas-ai-visibility",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/local-business-ai-visibility",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-books",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-metrics",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-mistakes",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-roadmap",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-case-studies",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ai-visibility-checklist",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/shopify-ai-visibility-apps",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/shopify-ad-platforms",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/ecommerce-ai-marketing-strategies",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/shopify-conversion-tools",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      {
-        source: "/best/dtc-brand-growth-playbooks",
-        destination: "/best/ai-visibility-courses",
-        permanent: true,
-      },
-      // Blog consolidation: unpublished a duplicate agentic-commerce thesis post
-      // that overlapped the existing complete guide. 301 so any crawled/shared
-      // URL lands on the canonical post instead of 404ing.
-      {
-        source: "/blog/ai-unbundling-shopify-storefront-builders-buyers",
-        destination: "/blog",
-        permanent: true,
-      },
-      // Duplicate-post consolidation (2026-06): each pair below competed for the
-      // same query and split authority. We kept the more comprehensive URL and
-      // 301 the thinner near-duplicate into it.
-      {
-        source: "/blog/shopify-free-trial-guide",
-        destination: "/blog/shopify-free-trial-2026-complete-guide",
-        permanent: true,
-      },
-      {
-        source: "/blog/shopify-sms-marketing-complete-guide",
-        destination: "/blog",
-        permanent: true,
-      },
-      {
-        source: "/blog/shopify-vs-bigcommerce-2026-comparison",
-        destination: "/blog",
-        permanent: true,
-      },
-      {
-        source: "/blog/shopify-vs-ecwid-2026",
-        destination: "/blog",
-        permanent: true,
-      },
-      {
-        source: "/blog/shopify-vs-woocommerce-2026-comparison",
-        destination: "/blog",
-        permanent: true,
-      },
+      // ── KILLED SECTION SURVIVORS ──────────────────────────────────────────
+      // The 18 URLs from pruned programmatic sections that still earned human
+      // clicks in the 90 days to 2026-08-15. Each goes to the live post that
+      // answers the same question. Everything else in /glossary, /examples,
+      // /sell, /start, /apps, /compare, /industries, /locations, /platforms,
+      // /for, /migrate, /research and /ai-ads-for now 404 by design.
+      { source: "/best/dtc-brand-growth-playbooks", destination: "/blog/dtc-brand-ai-visibility-playbook", permanent: true },
+      { source: "/best/ai-visibility-tools", destination: "/blog/ai-tools-shopify-store-optimization", permanent: true },
+      { source: "/best/shopify-ad-platforms", destination: "/blog/reallocating-budget-between-meta-and-google", permanent: true },
+      { source: "/glossary/ai-attribution", destination: "/blog/first-vs-last-click-attribution-budget-impact", permanent: true },
+      { source: "/glossary/ai-price-comparison", destination: "/blog/ai-shopping-assistants-comparison-ecommerce", permanent: true },
+      { source: "/glossary/prompt-optimization", destination: "/blog/shopify-ai-visibility-complete-guide", permanent: true },
+      { source: "/glossary/sponsored-ai-results", destination: "/blog/chatgpt-product-feed-shopping-ads-setup-guide", permanent: true },
+      { source: "/glossary/ai-first-marketing", destination: "/blog/shopify-ai-visibility-complete-guide", permanent: true },
+      { source: "/glossary/ai-commerce-protocol", destination: "/blog/agentic-checkout-optimization-shopify", permanent: true },
+      { source: "/sell/3d-printed-items", destination: "/blog/shopify-for-handmade-crafts", permanent: true },
+      { source: "/sell/miniature-paintings", destination: "/blog/shopify-for-posters-art-prints", permanent: true },
+      { source: "/sell/custom-tumblers", destination: "/blog/shopify-for-custom-personalized-products", permanent: true },
+      { source: "/start/niche-vinyl-records", destination: "/blog/shopify-for-music-merchandise", permanent: true },
+      { source: "/start/luxury-chocolate-brand", destination: "/blog/shopify-for-specialty-foods", permanent: true },
+      { source: "/start/vintage-reseller", destination: "/blog/start-vintage-thrift-store-shopify", permanent: true },
+      { source: "/examples/casper", destination: "/blog/dtc-brand-ai-visibility-playbook", permanent: true },
+      { source: "/examples/peloton", destination: "/blog/dtc-brand-ai-visibility-playbook", permanent: true },
+      { source: "/ai-ads-for/womens-shoes", destination: "/blog/product-catalog-ad-performance-lever", permanent: true },
     ];
   },
   experimental: {
