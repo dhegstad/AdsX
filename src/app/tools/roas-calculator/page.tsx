@@ -52,7 +52,7 @@ const FAQS = [
 ];
 
 export const metadata: Metadata = createPageMetadata({
-  title: "ROAS Calculator: Break-Even & Profit From Ad Spend | AdsX",
+  title: "ROAS Calculator: Break-Even & Profit From Ad Spend",
   description:
     "Free ROAS calculator. Enter ad spend, revenue, and margin to instantly see your ROAS, break-even ROAS, net profit, ROI, and blended MER — and whether your ads actually make money.",
   path: "/tools/roas-calculator",

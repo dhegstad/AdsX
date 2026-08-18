@@ -1,7 +1,7 @@
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Privacy Policy | AdsX",
+  title: "Privacy Policy",
   description:
     "AdsX privacy policy. Learn how we collect, use, and protect your personal information.",
   path: "/privacy",

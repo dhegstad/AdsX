@@ -52,7 +52,7 @@ const FAQS = [
 ];
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Shopify Catalog Feed-Readiness Checker | AdsX",
+  title: "Shopify Catalog Feed-Readiness Checker",
   description:
     "Free tool: paste your Shopify product details to score ad & AI feed-readiness 0–100, with a per-factor breakdown and specific fixes to lift performance.",
   path: "/tools/feed-readiness-checker",

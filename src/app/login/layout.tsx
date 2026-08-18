@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign In | AdsX",
+  title: "Sign In",
   description: "Sign in to your AdsX visibility dashboard.",
   robots: {
     index: false,

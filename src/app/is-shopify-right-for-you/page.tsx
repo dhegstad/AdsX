@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { HubPage } from "@/components/marketing/hub-page";
 
 export const metadata = createPageMetadata({
-  title: "Is Shopify Right for You? (2026 Decision Guide) | AdsX",
+  title: "Is Shopify Right for You? (2026 Decision Guide)",
   description:
     "An honest 2026 decision guide: who Shopify is genuinely the best fit for, who should look elsewhere, how it compares to the alternatives, and a 60-second checklist to decide.",
   path: "/is-shopify-right-for-you",

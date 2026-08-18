@@ -111,9 +111,18 @@ async function api(token, path, { method = "GET", body } = {}) {
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
   if (!res.ok) {
-    throw new Error(`GSC ${method} ${path} → ${res.status}: ${await res.text()}`);
+    const detail = await res.text();
+    const err = new Error(`GSC ${method} ${path} → ${res.status}: ${detail}`);
+    err.status = res.status;
+    // Sitemap writes need the read-WRITE scope; a readonly token 403s here.
+    if (res.status === 403 && /insufficient|scope|permission/i.test(detail)) {
+      err.insufficientScope = true;
+    }
+    throw err;
   }
-  return res.json();
+  // Sitemap PUT/DELETE succeed with an empty body — don't try to parse it.
+  const text = await res.text();
+  return text ? JSON.parse(text) : {};
 }
 
 const enc = (siteUrl) => encodeURIComponent(siteUrl);
@@ -212,6 +221,26 @@ export async function listSitemaps(token, siteUrl) {
       indexed: Number(c.indexed || 0),
     })),
   }));
+}
+
+/**
+ * Register a sitemap with the property (idempotent — re-submitting refreshes it).
+ * Requires the read-write `webmasters` scope; a readonly credential gets a 403
+ * with `insufficientScope` set on the error.
+ */
+export async function submitSitemap(token, siteUrl, feedpath) {
+  await api(token, `/webmasters/v3/sites/${enc(siteUrl)}/sitemaps/${enc(feedpath)}`, {
+    method: "PUT",
+  });
+  return feedpath;
+}
+
+/** Un-register a sitemap. Use for stale paths that now 404 in GSC. */
+export async function deleteSitemap(token, siteUrl, feedpath) {
+  await api(token, `/webmasters/v3/sites/${enc(siteUrl)}/sitemaps/${enc(feedpath)}`, {
+    method: "DELETE",
+  });
+  return feedpath;
 }
 
 /**

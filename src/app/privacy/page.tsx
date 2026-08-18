@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | AdsX",
+  title: "Privacy Policy",
   description: "AdsX Privacy Policy - Learn how we collect, use, and protect your personal information.",
   alternates: {
     canonical: "https://www.adsx.com/privacy",

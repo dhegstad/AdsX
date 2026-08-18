@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | AdsX",
+  title: "Terms of Service",
   description: "AdsX Terms of Service - Read our terms and conditions for using our AI search advertising services.",
   alternates: {
     canonical: "https://www.adsx.com/terms",

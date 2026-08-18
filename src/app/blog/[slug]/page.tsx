@@ -49,8 +49,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = getPostBySlug(slug);
 
   if (!post) {
-    // Pruned in the 2026-07 indexation recovery: permanent redirect, not 404,
-    // so Google drops the URL cleanly and stray visitors land on the blog.
+    // Pruned in the 2026-07 indexation recovery. A redirect is only correct when
+    // there is a live post on the same intent — those are mapped in
+    // pruned-slugs.ts (the 71 pruned URLs still earning human clicks). Every
+    // other pruned URL falls through to a plain 404, which is the clean removal
+    // signal; the old blanket "redirect everything to /blog" made ~800 URLs look
+    // like soft 404s to Google instead of removing them.
     const prunedTarget = getPrunedRedirect(slug);
     if (prunedTarget) {
       permanentRedirect(prunedTarget);

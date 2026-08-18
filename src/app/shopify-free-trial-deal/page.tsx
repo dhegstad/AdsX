@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { HubPage } from "@/components/marketing/hub-page";
 
 export const metadata = createPageMetadata({
-  title: "Shopify Free Trial + $1/Month Deal (2026) — How It Works | AdsX",
+  title: "Shopify Free Trial + $1/Month Deal (2026)",
   description:
     "The real Shopify offer in 2026: a cardless free trial, then $1/month for your first 3 months on Basic, Grow, or Advanced. What's included, how to activate it, and who qualifies for more.",
   path: "/shopify-free-trial-deal",
