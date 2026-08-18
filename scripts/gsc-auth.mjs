@@ -21,27 +21,49 @@ import { exec } from "node:child_process";
 // cannot do. One consent covers both.
 const SCOPE = "https://www.googleapis.com/auth/webmasters";
 
+function readClientFile(path) {
+  const j = JSON.parse(fs.readFileSync(path.replace(/^~(?=$|\/)/, process.env.HOME || "~"), "utf8"));
+  const c = j.installed || j.web || j; // Desktop clients nest under "installed"
+  return c.client_id && c.client_secret
+    ? { id: c.client_id, secret: c.client_secret, from: path }
+    : null;
+}
+
 function loadClient() {
-  let id = process.env.GSC_OAUTH_CLIENT_ID;
-  let secret = process.env.GSC_OAUTH_CLIENT_SECRET;
-  const file = process.env.GSC_OAUTH_CLIENT_FILE;
-  if ((!id || !secret) && file) {
-    const path = file.replace(/^~(?=$|\/)/, process.env.HOME || "~");
-    const j = JSON.parse(fs.readFileSync(path, "utf8"));
-    const c = j.installed || j.web || j; // Desktop clients nest under "installed"
-    id = id || c.client_id;
-    secret = secret || c.client_secret;
+  // 1. explicit env vars
+  if (process.env.GSC_OAUTH_CLIENT_ID && process.env.GSC_OAUTH_CLIENT_SECRET) {
+    return {
+      id: process.env.GSC_OAUTH_CLIENT_ID,
+      secret: process.env.GSC_OAUTH_CLIENT_SECRET,
+      from: "GSC_OAUTH_CLIENT_ID / _SECRET",
+    };
   }
-  if (!id || !secret) {
-    console.error(
-      "\n  Missing OAuth client. Provide one of:\n" +
-        "    GSC_OAUTH_CLIENT_FILE=~/Downloads/client_secret_*.json  (the JSON you downloaded)\n" +
-        "    GSC_OAUTH_CLIENT_ID=... GSC_OAUTH_CLIENT_SECRET=...\n" +
-        "  Create a 'Desktop app' OAuth client — see GSC-SETUP.md.\n"
-    );
-    process.exit(1);
+  // 2. an explicitly pointed-at file, then 3. the usual on-disk locations.
+  // Re-consent is a recurring need (scope changes, revoked tokens), so this
+  // finds the client you already used instead of making you re-export it.
+  const candidates = [
+    process.env.GSC_OAUTH_CLIENT_FILE,
+    ...fs.readdirSync(".").filter((f) => /^client_secret.*\.json$/.test(f)),
+    "gsc-oauth.json", // already stores client_id + client_secret alongside the token
+  ].filter(Boolean);
+
+  for (const path of candidates) {
+    try {
+      const found = readClientFile(path);
+      if (found) return found;
+    } catch {
+      /* unreadable or not a client file — keep looking */
+    }
   }
-  return { id, secret };
+
+  console.error(
+    "\n  Missing OAuth client. Provide one of:\n" +
+      "    GSC_OAUTH_CLIENT_FILE=~/Downloads/client_secret_*.json  (the JSON you downloaded)\n" +
+      "    GSC_OAUTH_CLIENT_ID=... GSC_OAUTH_CLIENT_SECRET=...\n" +
+      "    or drop the downloaded client_secret*.json in the repo root.\n" +
+      "  Create a 'Desktop app' OAuth client — see GSC-SETUP.md.\n"
+  );
+  process.exit(1);
 }
 
 async function main() {
