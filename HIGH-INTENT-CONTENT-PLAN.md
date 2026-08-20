@@ -150,3 +150,71 @@ impressions, ~0% CTR) shows heavy "official documentation" query intent that a t
 guide title may not be able to win regardless of wording — lower priority than the 7 above.
 
 **Next run:** get a live GSC pull (Aug 5+ data) before attempting the recovery read again.
+
+---
+
+## 2026-08-20 — Wave 2 greenlight measurement + INDEXATION BLOCKER found
+
+**Data:** `npm run gsc:pull` failed (no OAuth creds in this cloud sandbox — expected). Fell
+back to the newest committed snapshot `gsc-data/2026-08-15` (90d window, final data through
+**2026-08-12**) — 8 days stale, but the first snapshot that post-dates every Jul 24 → Aug 1
+change. Site totals: 806 clicks / 305,860 impr / pos 12.72 over 90d; 28d clicks trend
+310→305→311→**268** (−14%), flat-to-down. Judged by clicks (~82% impressions are AI fan-out).
+
+### 🚨 Root-cause finding: nothing published since ~mid-June is indexed
+**All 17 net-new posts from Wave 1 (Jul 24) + the late-July batch have ZERO impressions** in
+the Aug 15 snapshot — not low, *zero*, i.e. not in `pages.json` at all, ~3 weeks after
+shipping. Meanwhile every *older* post shows data, and the **old killed slugs still pull
+impressions** (`shopify-vs-kartra-comparison` 367 impr at pos 10.9 while its fresh replacement
+`kartra-vs-shopify-2026` gets 0).
+
+The cause is the sitemap, already diagnosed in `scripts/gsc-sitemaps.mjs` (committed Aug 18,
+PR #46) but **not yet fixed on the live property** as of the Aug 15 snapshot:
+- Registered sitemaps Google sees: three dead `/sitemap/{0,1,2}.xml` chunks (404 / erroring
+  since **Jun 16**, i.e. pre-Wave-1) + a **non-www** `adsx.com/sitemap.xml` (non-canonical).
+- The real, current single-file **`www.adsx.com/sitemap.xml` is UNREGISTERED** — the one file
+  that actually lists every Wave 1+ URL is not submitted, so Google's URL set predates all new
+  content.
+
+**Fix (needs a human — cannot run here):** `npm run gsc:auth` (re-consent for the write scope),
+then `npm run gsc:sitemaps -- --fix` to un-register the dead paths and submit the canonical
+sitemap. This sandbox has no GSC credentials at all, so it cannot run either. **Until this
+ships, no new or refreshed content will be discovered via sitemap and the Wave 2 measurement
+stays invalid.**
+
+### Measurement of the interventions
+- **Wave 1 + late-July net-new (17 posts):** unmeasurable — never indexed (see above). Their
+  0-click result is a *false negative from the indexation bug*, NOT proof the content failed.
+- **Aug 11 title/CTR round (7 posts):** no clear lift. Click deltas (e.g. editions 23→20,
+  payments 14→12, starter 3→6, trending 7→10) track position drift (~0.5–1 spot slips), not CTR
+  gains. Site clicks flat-to-down over the same window. Do **not** re-churn these titles —
+  title-thrash on already-worked pages risks Google distrusting the signal.
+- **Harvest (3 striking-distance pages):** no lift; `shopify-claude-ai-integration-automation`
+  fell 42→28 clicks (pos 9.1→9.8). Internal-link harvest did not move these pages.
+
+### Wave 2 gate DECISION: NO net-new posts greenlit
+Applying the saturation rule strictly: there is **no proven live-winner analog** (we have zero
+valid click data on any post-Jul-24 net-new post), and pushing more URLs into a sitemap Google
+isn't reading is wasteful and risks the demotion signal. Greenlighting new content now would
+repeat the Wave 1 mistake at larger scale. **Blocked pending the sitemap fix + a clean post-fix
+GSC pull to re-measure Wave 1 honestly.**
+
+### Shipped this run (indexation-independent refresh)
+- **REFRESH `chatgpt-updates-february-2026`** — the site's single biggest impression page
+  (**23,174 impr / pos 10.1 / 2 clicks**, 0.009% CTR) and factually **wrong** on its two
+  headline claims: it told merchants Instant Checkout was arriving with 1M+ Shopify merchants
+  (OpenAI **retired Instant Checkout ~Mar 2026**, pivoted to discovery-first) and named GPT-5.2
+  as flagship (now **GPT-5.6 "Sol"**, Aug 2026). It was also **orphaned** (zero internal links).
+  Chose this because it's already indexed (recrawls independent of the broken sitemap), sits in
+  the preferred "refresh stale/wrong live posts" lane, and is on our strongest (AI/agentic)
+  cluster. Corrected all false claims, reframed to current Aug-2026 state (agent mode, ChatGPT
+  for Teens, Atlas/DALL·E retirements), retitled to match the live-winner queries ("ChatGPT New
+  Features 2026: The Latest Updates" — the 1,552-impr "chatgpt latest features 2026" query et
+  al.), bumped date for a fresh signal, updated FAQs, and interlinked into the AI-commerce
+  cluster (instant-checkout-readiness, universal-cart, claude-ai-integration, ai-shopping-
+  assistants) + the Shopify money hub + tracked affiliate link. Facts web-verified. Slug kept
+  (URL equity; a new slug wouldn't index given the sitemap bug). Build passed.
+
+**Next run:** cannot re-measure Wave 1 honestly until the sitemap fix lands and Google re-crawls.
+Priority order for a human: (1) run the `gsc:sitemaps --fix`, (2) re-pull GSC ~1–2 weeks later,
+(3) only then judge Wave 1 net-new on clicks and revisit the Wave 2 gate.
