@@ -1,6 +1,6 @@
 # Platform content batch — September 9, 2026
 
-Status: validated locally; awaiting the GitHub/Vercel production release. This is the additional batch Dennis authorized after the initial eight new articles and two refreshes.
+Status: **published and verified on AdsX.com**. Released through [PR 51](https://github.com/dhegstad/AdsX/pull/51), merged September 9 at 09:24 UTC; content release commit `854c6a13710ac5dd89bebfc7a18cf071abb7244c`. Vercel reports a successful production deployment. This is the additional batch Dennis authorized after the initial eight new articles and two refreshes.
 
 ## Scope
 
@@ -28,6 +28,12 @@ Primary sources were read on September 9 through web tools; localized pricing wa
 - Sitemap contains all 30 with current lastmod. RSS contains all 30 within 368 items. Three legacy aliases return the intended 308 redirects.
 - Browser checks: desktop comparison/table and homepage, mobile comparison/table and topic hub. No page overflow on the inspected views; wide tables scroll inside their container. No browser errors on reviewed pages.
 - No signup, order, or external analytics conversion was generated during testing. Search indexing, rankings, and affiliate earnings are measured after release, not inferred from publishing.
+
+## Production verification
+
+All 30 public URLs returned HTTP 200 with the correct self-canonical, H1, Article schema, dates, and intent-based CTAs. Affiliate attribution and sponsored attributes passed; the 1MBB program link remains direct. All 30 are in the live sitemap with September 9 lastmod and in the live RSS feed, which contains 368 articles. Both topic hubs link their assigned batch articles. All three legacy aliases return the intended 308 redirects. See the [machine-readable verification](platform-batch-production-2026-09-09.json).
+
+Google Search Console already had the canonical sitemap registered and reported zero sitemap errors/warnings during the September 9 audit. This confirms registration, not indexing or rankings for the new content. No paid distribution or directory submission was made as part of this batch.
 
 ## Article inventory
 

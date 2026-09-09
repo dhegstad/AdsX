@@ -2,7 +2,7 @@
 
 September 9–22, 2026 remains the original planning window. Eight new articles and two refreshes per production day was a baseline, not a ceiling. Dennis approved an additional 30-article batch for September 9: 10 brand-new URLs, 10 rebuilt previously removed URLs, and 10 existing articles substantially updated.
 
-The first eight new articles and two refreshes are published. The additional platform batch is **validated-awaiting-release**; see [its execution record](platform-batch-2026-09-09.md) and [manifest](platform-batch-2026-09-09.json). Four of its refreshes also fulfill original backlog entries R005, R008, R010, and R022; do not count those twice.
+The first eight new articles and two refreshes are published. The additional platform batch is **published**; see [its execution record](platform-batch-2026-09-09.md) and [manifest](platform-batch-2026-09-09.json). Four of its refreshes also fulfill original backlog entries R005, R008, R010, and R022; do not count those twice.
 
 The original 96 research candidates remain below. The additional batch is tracked separately rather than silently replacing unrelated app, operations, AI, and advertising candidates. Recheck overlap against the expanded library before drafting; three known overlaps are recorded in JSON. Dates are delivery targets, not scheduled automation or traffic/revenue forecasts.
 
@@ -113,12 +113,12 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 1 | 2026-09-09 | R002 | Shopify Starter: Existing-Store Limits & Upgrade Checklist | published |
 | 2 | 2026-09-10 | R003 | How to Sign Up for Shopify: Every Step (2026) | research-required |
 | 2 | 2026-09-10 | R004 | Shopify Pros and Cons 2026: The Honest List | research-required |
-| 1 | 2026-09-09 | R005 | The Cost of Running a Shopify Store: A First-Year Budget Worksheet | validated-awaiting-release |
+| 1 | 2026-09-09 | R005 | The Cost of Running a Shopify Store: A First-Year Budget Worksheet | published |
 | 3 | 2026-09-11 | R006 | Shopify App Costs: Audit and Cut Your Monthly Stack | research-required |
 | 4 | 2026-09-12 | R007 | 9 Best Shopify Bundle Apps to Boost AOV (2026) | research-required |
-| 1 | 2026-09-09 | R008 | Etsy to Shopify: Expand Your Shop with a Tested Migration Plan | validated-awaiting-release |
+| 1 | 2026-09-09 | R008 | Etsy to Shopify: Expand Your Shop with a Tested Migration Plan | published |
 | 5 | 2026-09-13 | R009 | Sell Digital Products on Shopify: 2026 Step-by-Step | research-required |
-| 1 | 2026-09-09 | R010 | Your First 30 Days on Shopify: Launch, Orders and Evidence | validated-awaiting-release |
+| 1 | 2026-09-09 | R010 | Your First 30 Days on Shopify: Launch, Orders and Evidence | published |
 | 6 | 2026-09-14 | R011 | How to Connect Claude to Shopify: 4 Ways, Step by Step | research-required |
 | 6 | 2026-09-14 | R012 | Shopify Claude AI: Automate Content, Support, Orders | research-required |
 | 7 | 2026-09-15 | R013 | Customize Your Shopify Theme With Claude Code + the Dev MCP | research-required |
@@ -130,6 +130,6 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 10 | 2026-09-18 | R019 | Shopify Payments vs Stripe vs PayPal: 2026 Fees | research-required |
 | 10 | 2026-09-18 | R020 | Shopify AI Visibility: Get Recommended by ChatGPT | research-required |
 | 11 | 2026-09-19 | R021 | Hidden Shopify Costs: 7 Fees and How to Avoid Them | research-required |
-| 1 | 2026-09-09 | R022 | Trending Products to Sell on Shopify in 2026: 12 Ideas to Validate | validated-awaiting-release |
+| 1 | 2026-09-09 | R022 | Trending Products to Sell on Shopify in 2026: 12 Ideas to Validate | published |
 | 12 | 2026-09-20 | R023 | Shopify vs Patreon 2026: Which Is Better for Creators | research-required |
 | 12 | 2026-09-20 | R024 | Shopify for Coins & Numismatics: Sell Coins in 2026 | research-required |
