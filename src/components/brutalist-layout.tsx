@@ -31,6 +31,7 @@ const footerLinks = {
   explore: [
     { label: "All Guides", href: "/blog" },
     { label: "All Topics", href: "/topics" },
+    { label: "Shopify Startup Cost Calculator", href: "/tools/shopify-startup-cost-calculator" },
     { label: "ROAS Calculator", href: "/tools/roas-calculator" },
     { label: "Feed Readiness Checker", href: "/tools/feed-readiness-checker" },
   ],

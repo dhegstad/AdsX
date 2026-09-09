@@ -76,6 +76,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       // Tools
       {
+        url: `${baseUrl}/tools/shopify-startup-cost-calculator`,
+        lastModified: PUBLICATION_UPDATED,
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+      },
+      {
         url: `${baseUrl}/tools/free-audit`,
         lastModified: CORE_PAGES_UPDATED,
         changeFrequency: 'monthly' as const,
