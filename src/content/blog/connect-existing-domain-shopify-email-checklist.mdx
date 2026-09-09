@@ -1,0 +1,82 @@
+---
+title: "How to Connect an Existing Domain to Shopify and Keep Email Working"
+excerpt: "Separate registration, DNS, storefront hosting, and email before connecting your domain, with a before-and-after verification checklist."
+date: "2026-09-09"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["start-a-store", "running-a-store"]
+tags: ["Shopify", "Tutorial"]
+---
+
+You can connect an existing domain to Shopify while keeping its registration with another provider. Before changing DNS, identify the services that use the domain, especially business email. A working storefront and a working mailbox are separate checks.
+
+This guide is for a merchant preparing a launch or migration. It deliberately uses the current values shown by Shopify and your providers rather than hard-coding DNS addresses that can change.
+
+## Understand the four services involved
+
+| Service | What it controls | Example question |
+| --- | --- | --- |
+| Registrar | Domain registration and renewal | Who renews the domain each year? |
+| DNS host | Records directing traffic and services | Where do I edit the active DNS zone? |
+| Website host | The storefront reached by visitors | Which system should receive web traffic? |
+| Email host | Mailboxes and mail delivery | Who provides my business inbox? |
+
+One provider may handle several of these. Record the actual arrangement rather than inferring it from where you purchased the domain.
+
+[Shopify's domain-connection guide](https://help.shopify.com/en/manual/domains/add-a-domain/connecting-domains) describes connecting a third-party domain and the available automatic or manual methods. A registration transfer is a different action and is not required solely to connect the website.
+
+## Prepare a change record
+
+Before editing, save the existing DNS zone or a clear record of its entries. Note the registrar, DNS provider, email provider, domain renewal status, and person responsible for the change.
+
+List other services using subdomains or verification records: help centers, landing pages, newsletters, authentication, and third-party tools. You do not need to change those services simply because the storefront moves.
+
+Confirm that you can access both the Shopify store and the active DNS host. A login at the registrar may not provide control of DNS if the domain delegates that responsibility elsewhere.
+
+## Connect through Shopify's current instructions
+
+In the Shopify domain settings, choose the existing-domain connection route and enter the domain. Use an automatic connection if it is offered and appropriate for your provider, or follow the manual instructions shown for the domain.
+
+Compare every proposed DNS change with the saved record. The web records requested for Shopify should not be confused with mailbox records or unrelated service-verification records.
+
+Do not replace an entire DNS zone with a minimal website example. If nameservers must change for a separate reason, account for the complete zone at the new DNS host before making that change.
+
+## Preserve business email
+
+[Shopify's email-hosting documentation](https://help.shopify.com/en/manual/domains/email-forwarding-and-hosting/email-hosting) states that mailbox hosting is provided by a third party. A domain connection does not automatically move your mailbox into Shopify.
+
+Keep the mail provider's required MX records and authentication records in place according to its instructions. Review SPF, DKIM, and DMARC changes with the relevant provider, especially if the migration adds a new sending service. Do not blindly combine or duplicate records copied from unrelated tutorials.
+
+Also distinguish your business inbox from Shopify's customer-notification sender settings. Receiving mail at `support@yourdomain` and sending order notifications are different workflows that may need different verification.
+
+## Check website and email separately
+
+Use the following acceptance record after the connection has propagated:
+
+| Check | Expected evidence |
+| --- | --- |
+| Main domain | Reaches the intended Shopify storefront |
+| Alternate host, such as `www` | Resolves consistently with the primary-domain choice |
+| Secure connection | Browser shows a valid HTTPS connection |
+| Important old path | Reaches the intended page or relevant redirect |
+| Incoming email | A message from an external mailbox arrives |
+| Outgoing email | A message reaches an external mailbox correctly |
+| Customer notification | The test order produces the intended notification |
+
+Record the time and result. Testing from only a browser that has cached the old site is not a complete check. Follow the provider's documented propagation window and troubleshoot the specific failed service.
+
+## Avoid cancelling the wrong product
+
+When the new website works, review old subscriptions individually. Website hosting, mailbox hosting, domain registration, and optional services may be billed separately or as a bundle.
+
+Keep registration active wherever you intend to renew it. Keep mailbox service active until any planned email migration is finished and verified. Do not cancel a bundle merely because one part of it is no longer needed.
+
+For a GoDaddy setup, the [migration-or-connection guide](/blog/migrate-from-godaddy-to-shopify) helps identify the right project before changes begin.
+
+## Pair the domain switch with launch checks
+
+Prepare the [redirect map](/blog/shopify-url-redirect-map-store-migration) before the switch and run the [test-order checklist](/blog/shopify-test-order-before-launch-checklist) when the storefront is ready. Keep source-platform access for historical orders and reconciliation until the business no longer needs it.
+
+The domain task is complete when visitors reach the correct store, important links behave correctly, and mail continues to flow through the intended provider. That is a stronger release criterion than seeing the homepage load once.

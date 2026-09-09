@@ -1,0 +1,79 @@
+---
+title: "Square Online to Shopify: A Retail Migration Checklist"
+excerpt: "Plan a Square migration around location inventory, POS decisions, payments, gift cards, online orders, and customer records."
+date: "2026-05-21"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "affiliate"
+topics: ["start-a-store"]
+tags: ["Shopify", "Migration"]
+---
+
+Moving Square Online to Shopify requires a decision about the physical store as well as the website. You can replace the online storefront, reconsider point of sale, or redesign both together. Decide which project you are doing before moving inventory or ordering hardware.
+
+For a business that relies on Square's current checkout, staff workflows, or appointment tools, a platform change must prove an operational benefit. See [Square versus Shopify](/blog/shopify-vs-square-online) for a decision framework.
+
+## Choose the boundary of the migration
+
+Write one sentence: “Shopify will own these channels, while these other systems remain in use.” Then identify the system that controls stock, prices, customer records, and order fulfillment.
+
+| Migration scope | What must be proved |
+| --- | --- |
+| Online store only | Orders and stock remain correct across the retained retail system |
+| Online and in-person sales | Staff, hardware, locations, returns, and payments work in the new setup |
+| Selected products only | Each system knows which inventory it can sell |
+| A new business location | Historical data and shared products are handled deliberately |
+
+Do not assume a Square card reader or terminal becomes a Shopify payment device. Verify supported hardware, payment services, and country availability for the destination setup before budgeting for reuse.
+
+## Audit location-level stock
+
+Export or record the current item library and inventory by location. Keep item names, SKUs, variations, barcode values, tax settings, and fulfillment responsibilities visible in the working file.
+
+A fictional retailer with 15 mugs in the shop and 25 in a warehouse has 40 units in total, but those units are not operationally interchangeable. The online store must know which location can fulfill an order. Importing “40 available” without that distinction can create collection or shipping problems.
+
+[Shopify's Square migration guide](https://help.shopify.com/en/manual/migrating-to-shopify/migrating-from-square) covers the source-specific data process and distinguishes the first-party early-access migration option from other transfer methods. Use its mapping guidance for the route available to your store.
+
+## Reconcile the pilot by SKU and location
+
+Transfer a small sample before the full catalog. Include an item with several variations, one stocked at multiple locations, an item sold out at the shop but available for shipping, and a product requiring a special fulfillment method.
+
+Compare the expected and actual stock after a test purchase. Check what the customer sees for collection and shipping. A correct product count does not prove location assignments or selling availability are correct.
+
+The [Shopify product CSV specification](https://help.shopify.com/en/manual/products/import-export/using-csv) explains the scope of product imports; inventory across multiple locations has its own process. Use the correct data route rather than flattening the source into one stock quantity.
+
+## Give gift cards, loyalty, and history separate plans
+
+For each program, answer what the customer is entitled to and how the business will honor it after launch. Record gift balances, loyalty benefits, subscriptions, and outstanding returns separately from a general customer export.
+
+Do not assume payment credentials or gift balances move automatically with customer names. Ask the relevant provider for a supported procedure and test it before communicating a transition to customers.
+
+Keep a path to earlier Square orders for refunds and bookkeeping. Decide whether staff will search an archive, use the retained Square account, or work through an approved migration tool. A migration should make that lookup predictable.
+
+## Test a day in the store
+
+Run through the following scenarios with the person who will actually operate the system:
+
+- A shipped online order.
+- A collection order that is ready at the correct location.
+- A sale of the last available unit while another channel is open.
+- A return from an earlier order.
+- A staff member with the intended permissions.
+- A printer, scanner, or payment device needed for the daily workflow.
+
+Document anything still being handled manually. A temporary workaround can be acceptable if it has an owner and a clear limit; an undocumented one tends to become a support problem.
+
+## Coordinate the final switch
+
+Record the final source stock count, the last imported order, and any orders that arrive while the transition is underway. Stop competing inventory updates in a controlled sequence. If two storefronts remain open, use verified synchronization or separate stock allocations.
+
+Prepare redirects for URLs on a domain you control and review the [domain/email checklist](/blog/connect-existing-domain-shopify-email-checklist). A Square-hosted subdomain and your own custom domain require different link-transition plans.
+
+Use the [launch test guide](/blog/shopify-test-order-before-launch-checklist) before making the new store public. Keep a named operator available for the first orders instead of assuming the import completion email means the migration is finished.
+
+## Budget beyond the website subscription
+
+Include the online plan, any POS subscription, hardware replacement, integrations, transaction costs, staff training, and overlap between systems. Compare that with the operating benefit you expect to achieve.
+
+A storefront-only move that creates extra manual stock reconciliation may cost more in staff time than it saves in software. Treat the retail workflow as part of the platform decision from the start.

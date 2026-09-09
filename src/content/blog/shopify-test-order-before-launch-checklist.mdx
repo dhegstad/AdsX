@@ -1,0 +1,83 @@
+---
+title: "How to Test a Shopify Store Before Launch: Order-to-Delivery Checklist"
+excerpt: "Verify the full buying journey with test payments, shipping, inventory, notifications, fulfillment, and a final live-mode check."
+date: "2026-09-09"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["start-a-store", "running-a-store"]
+tags: ["Shopify", "Tutorial"]
+---
+
+Before launching a Shopify store, test the complete path from choosing a product to receiving the order information needed for delivery. A checkout that accepts a test payment can still have the wrong shipping rate, stock behavior, email, or fulfillment instructions.
+
+The purpose of this checklist is to produce evidence for a launch decision. It does not require buying your own inventory or generating fake customer activity in analytics.
+
+## 1. Select the supported test method
+
+[Shopify's test-order guide](https://help.shopify.com/en/manual/checkout-settings/test-orders) describes available approaches, including a payment provider's test mode. Follow the instructions for the provider your store will actually use.
+
+The [payment test-mode documentation](https://help.shopify.com/en/manual/checkout-settings/test-orders/payments-test-mode) explains setup and test-card behavior. Use test credentials only in the supported test environment. Test mode can affect a live store's ability to take real payments, so coordinate it with the person operating the store.
+
+If a provider-specific live transaction is necessary for final validation, understand its processing and refund costs first. A refunded real transaction is not automatically cost-free.
+
+## 2. Define representative baskets
+
+Choose baskets that expose the store's important rules. More tests are useful when they cover different behavior, not when they repeat the same ordinary order.
+
+| Test basket | What it should prove |
+| --- | --- |
+| One standard physical product | Price, payment, shipping, and stock behavior |
+| Two different products | Combined shipping and order detail accuracy |
+| A specific size or color | Correct variant and SKU reach fulfillment |
+| A sold-out product | The intended availability rule works |
+| A discount or free-shipping threshold | Conditions and totals behave as intended |
+| A digital or mixed order, if offered | Correct access and physical fulfillment separation |
+| A pickup order, if offered | Correct location and customer instructions |
+
+Use fictional customer details appropriate for testing and a mailbox you control. Do not use an unrelated person's contact information to make the order look realistic.
+
+## 3. Review the buying experience on a phone
+
+Start at the homepage or a relevant landing page. Find the product through navigation and check that the description explains size, materials, compatibility, delivery expectations, and what is included.
+
+Select the intended variant and inspect the cart. Look for confusing option names, unexpected price changes, missing images, or a quantity the store should not allow.
+
+During checkout, use addresses that represent the regions you plan to serve. Test a region you do not serve as well, so you know the store does not promise an unsupported delivery method.
+
+## 4. Check totals and shipping behavior
+
+Write down the expected product subtotal, discount, shipping, and applicable tax behavior before comparing the checkout. Investigate a mismatch rather than accepting a plausible-looking total.
+
+Use the correct product and package weights. [Shopify's packaging guidance](https://help.shopify.com/en/manual/fulfillment/setup/packaging/packages-and-weights) explains why dimensions can affect carrier calculations. A correct checkout setup cannot compensate for an incorrectly measured package.
+
+For taxes, verify the settings against the registrations and obligations applicable to the business. This checklist tests the configuration you have established; it does not determine those obligations for you.
+
+## 5. Follow the order into operations
+
+After the test payment, inspect the order in Shopify and any connected fulfillment system. Confirm the SKU, selected options, quantity, location, customer instructions, and intended payment status.
+
+Check notifications separately. The customer should receive the appropriate message, and the operator should know what to do next. Review the sender identity, links, and delivery instructions rather than merely checking that an email arrived.
+
+If an app sends data to a warehouse or print provider, determine how it handles test orders before placing one. Do not assume a simulated payment prevents every connected system from acting on the order.
+
+For digital delivery, use the [Digital Products documentation](https://help.shopify.com/en/manual/products/digital-service-product/digital-downloads) to verify file or link access. A product marked as digital still needs a working delivery arrangement.
+
+## 6. Test an exception
+
+Choose a realistic cancellation, return, or failed-payment scenario supported by the testing method. Confirm the operator can find the order and follow the intended process.
+
+Record whether inventory changes as expected and whether a connected system needs a separate action. A store whose happy path works but whose cancellation path is unknown is not fully ready for ordinary customer service.
+
+## 7. Return the store to its intended selling state
+
+Before opening sales, confirm the payment provider is in the intended live state, required product availability is correct, and test-only discounts or settings have been removed. Check that the storefront is ready for public access under the chosen plan.
+
+Separate test orders from business reporting using the platform's supported handling. Verify your measurement implementation does not treat a testing session as evidence of genuine acquisition performance.
+
+## Record the launch decision
+
+For each scenario, save the date, result, issue, owner, and resolution. Use passed, failed, or unverified. A must-have left unverified should remain visible in the launch decision.
+
+Pair this checklist with the [domain/email checks](/blog/connect-existing-domain-shopify-email-checklist) and [first 30 days of operation](/blog/first-30-days-shopify-store-checklist). Launch when the customer and operator journeys work together, then watch the first real orders for differences the test environment could not reproduce.

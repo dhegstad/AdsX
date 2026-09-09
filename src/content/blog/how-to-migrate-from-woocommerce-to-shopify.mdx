@@ -1,0 +1,81 @@
+---
+title: "WooCommerce to Shopify Migration: Products, Plugins and Launch Checks"
+excerpt: "Move a WooCommerce store with a product pilot, plugin replacement map, historical-data plan, and a controlled domain switch."
+date: "2026-04-01"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "affiliate"
+topics: ["start-a-store"]
+tags: ["Shopify", "Migration"]
+---
+
+A WooCommerce to Shopify migration should begin with the work your store performs: selling products, taking payments, fulfilling orders, and supporting customers. Moving the product catalog is one part. Your WordPress theme, plugins, and operating procedures need their own decisions.
+
+This guide is for a merchant planning a move, with a developer involved when custom code or integrations require one. If you are still choosing a platform, start with the [WooCommerce versus Shopify comparison](/blog/shopify-vs-woocommerce-comparison).
+
+## 1. Build a plugin replacement map
+
+List every active WooCommerce extension and WordPress plugin that affects commerce. Group them by what would stop working if you removed them. A decorative badge and a subscription renewal system deserve different attention.
+
+| Existing job | Evidence to collect | Shopify pilot must demonstrate |
+| --- | --- | --- |
+| Variable products | Options, SKUs, price rules | Correct purchasable combinations |
+| Subscriptions | Provider, agreements, renewal records | A documented continuation or customer transition |
+| Membership access | Who has access and why | Correct access after the move |
+| Fulfillment | Warehouse IDs and order statuses | One order reaches the correct operator |
+| Content and search | Landing pages and valuable old URLs | Useful replacement pages and redirect map |
+
+Do not treat an app with a similar name as proof of equivalence. Give each required capability an owner and a pass/fail test. Keep the existing store running while these questions are unresolved.
+
+## 2. Export a representative catalog sample
+
+WooCommerce's [product importer and exporter documentation](https://woocommerce.com/document/product-csv-importer-exporter/) explains the built-in CSV workflow and the data it supports. Save an untouched export before editing a working copy.
+
+Choose a small pilot that includes your actual complexity: a simple item, a product with several variants, an item on sale, a sold-out variant, and a product with additional metadata. If your business sells downloads or subscriptions, include one of each in the test scope.
+
+[Shopify's WooCommerce migration guide](https://help.shopify.com/en/manual/migrating-to-shopify/migrating-from-woocommerce) describes manual transfer, CSV import, third-party tools, and its Store Migration app. The first-party app is in early access for certain stores and desktop use; do not assume every new account has it.
+
+For a CSV transfer, use the current Shopify template or an export from the destination store. Source and destination columns are not interchangeable just because both files end in `.csv`. Our [first-catalog import guide](/blog/shopify-product-csv-import-first-catalog) provides a review sequence.
+
+## 3. Reconcile variants before importing everything
+
+Consider a fictional clothing catalog with 40 styles, three sizes, and two colors per style. The expected total is 240 variants if every combination exists. An import showing 40 products has not proved that all 240 purchasable combinations arrived.
+
+Check product count, variant count, unique SKUs, and total stock separately. Inspect the price, stock status, image, weight, and fulfillment assignment for the pilot variants. Document legitimate exclusions, such as discontinued colors, rather than forcing the totals to match blindly.
+
+Keep WordPress-specific shortcodes and plugin output out of customer-facing descriptions. Review a description in the new storefront; a field can import successfully while displaying unusable text.
+
+## 4. Give historical data a separate destination
+
+Create a decision for customers, historical orders, reviews, gift balances, and subscriptions. For each, record whether it must become operational inside Shopify or can remain in a secure, searchable archive.
+
+Do not assume a product import carries customer passwords, saved payment credentials, subscription agreements, or app-specific records. Obtain the relevant provider's supported migration procedure before promising continuity. If an app imports orders, check whether it sends notifications or triggers fulfillment workflows before importing a live history.
+
+Existing marketing consent also needs to remain accurate. A record of a purchase is not a new newsletter opt-in. Preserve the source and scope of any consent you already have.
+
+## 5. Rebuild the storefront around a buying journey
+
+Create the homepage, collection navigation, product template, help pages, and key content destinations. Verify that an existing customer can still find the product they came for. Porting every visual detail is less valuable than preserving the information needed to buy correctly.
+
+Prepare a [redirect map](/blog/shopify-url-redirect-map-store-migration) before the domain points at Shopify. Preserve relevant content and useful paths where possible. A platform change does not guarantee better search performance.
+
+## 6. Launch with a written changeover record
+
+Record the last source export time and how you will reconcile orders or stock changes after it. Choose a quieter sales period and assign one person to confirm the final catalog and another to verify checkout and fulfillment.
+
+A practical release record contains:
+
+- The final export and import timestamps.
+- Counts and exceptions for products, variants, customers, and orders.
+- A successful [test-order checklist](/blog/shopify-test-order-before-launch-checklist).
+- The domain and email settings that must remain in service.
+- The decision maker for pausing the launch if a required workflow fails.
+
+Retain access to WooCommerce records until your refund, accounting, and support needs are covered. Once the new store accepts real orders, reversing the domain change alone will not reconcile those orders back into WooCommerce.
+
+## What does a WooCommerce migration cost?
+
+Price the catalog work, replacement apps, theme work, integrations, historical data, and staff time separately. There is no useful universal migration price without that scope. A 20-product store using ordinary checkout is a different project from a subscription business with custom fulfillment.
+
+Use the [store-fit scorecard](/blog/shopify-free-trial-evaluation-scorecard) to prove the requirements before committing to a full move. The result should be a verified workflow and a cost estimate you can explain, rather than a successful import message alone.
