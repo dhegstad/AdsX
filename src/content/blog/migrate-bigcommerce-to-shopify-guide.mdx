@@ -1,0 +1,71 @@
+---
+title: "BigCommerce to Shopify Migration: Catalog, Pricing Rules and Data"
+excerpt: "Plan a BigCommerce migration around variants, modifiers, customer pricing, integrations, and a reconciled launch."
+date: "2026-03-12"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "affiliate"
+topics: ["start-a-store"]
+tags: ["Shopify", "Migration"]
+---
+
+Moving from BigCommerce to Shopify is a catalog and business-rules project. Before transferring records, identify which prices, options, storefronts, and integrations your customers depend on. Recreating those rules correctly matters more than getting a large product count into a new admin.
+
+Use the [platform comparison](/blog/shopify-vs-bigcommerce-comparison) first if the business case for switching is still unclear. A migration is worthwhile when it resolves a specific limitation or reduces a measured operating burden.
+
+## Separate products from the rules that sell them
+
+Build a worksheet for your catalog. Include the source product ID, SKU, variant options, modifiers, categories, price rules, images, and any external system that uses those identifiers. Preserve a copy of your source exports and document the export method available in your BigCommerce account.
+
+| Requirement | Question to resolve before transfer |
+| --- | --- |
+| Inventory-bearing variants | Which combinations have their own SKU and stock count? |
+| Product modifiers | Does the choice change the item, price, or customer instructions? |
+| Customer groups and price lists | Which buyers receive which prices, and under what conditions? |
+| Multiple storefronts | Which catalog and content belong to each storefront? |
+| ERP or warehouse connection | Which system is the source of truth for stock and order status? |
+
+A text engraving field, an extra-cost customization, and a stocked size variant are three different requirements. Do not flatten them into an undifferentiated list of options. Give each a destination design and a test order.
+
+## Choose a transfer method by data type
+
+[Shopify's general migration guide](https://help.shopify.com/en/manual/migrating-to-shopify) describes manual entry, CSV files, migration apps, and professional assistance. Product CSVs are useful for a standard catalog; specialist tools may be appropriate when orders, relationships, or custom data must move.
+
+Request a written field-coverage list before paying for a migration service. “Products and customers included” does not explain whether the service covers modifiers, product relationships, customer-specific prices, or custom fields.
+
+Use the [current Shopify CSV specification](https://help.shopify.com/en/manual/products/import-export/using-csv) for the destination file. Product imports and inventory across several locations are different jobs. Do not use a single stock column as a substitute for a location-level inventory plan.
+
+## Design a pilot that can fail usefully
+
+Select a standard item, a variant-heavy item, a customized item, a sale item, and a product sold through more than one channel. Add a wholesale buyer if that is part of your business. The pilot should expose a missing capability before the full catalog depends on it.
+
+For example, a fictional replacement-parts merchant may have a base component, a compatibility selection, and an optional service. The pilot must show whether the buyer ordered the correct component and whether the service is visible to the fulfillment team. A visually similar product page is insufficient.
+
+Record expected and actual results for retail price, customer-specific price, stock decrement, packing information, and downstream order receipt. Resolve each difference before scaling the import.
+
+## Rebuild the operational connections
+
+Inventory the systems that read from or write to BigCommerce: fulfillment, accounting, email, subscriptions, reviews, feeds, and customer service. Mark each integration as replaced, retained with a new connector, or retired.
+
+Establish the cutover sequence for the system that controls stock. If two connectors can both publish quantities, identify which one will be disabled and when. Do not let the old and new systems independently overwrite the same inventory during launch.
+
+Preserve external identifiers needed for reconciliation. If new Shopify IDs replace source IDs, keep a secure mapping so your team can trace an old order or product into the new workflow.
+
+## Preserve discovery and customer access
+
+Export or collect the old URL list while BigCommerce remains accessible. Map useful category, product, and content pages to their closest new equivalents. See the [redirect worksheet](/blog/shopify-url-redirect-map-store-migration).
+
+Plan separately for historical orders, customer login, saved payments, gift balances, and repeat purchasing. Ask each provider what can transfer and what customer action is required. Avoid promising a seamless transition until the required provider has confirmed the procedure.
+
+## Calculate the actual business case
+
+Use your current contract and account invoice as the baseline. [BigCommerce's public pricing page](https://www.bigcommerce.com/pricing/) now lists Core, Growth, Scale, and Performance and distinguishes Embedded from Open Payment Providers. A remembered claim that every BigCommerce payment route has no additional platform fee is not a safe cost assumption.
+
+Compare the full destination stack with your actual current bill. Include migration implementation, overlapping subscriptions, apps, processing, ongoing development, and training. Divide one-time migration cost by credible monthly savings to estimate payback; leave the result undefined if there are no savings and justify the project through capabilities instead.
+
+## Release criteria
+
+Approve the switch when the representative orders pass, the latest inventory is reconciled, necessary pages and redirects work, and the operator can handle a return. Record who will watch orders and support requests immediately after launch.
+
+Keep source access for unresolved refunds, records, and financial reconciliation. Use our [domain and email checklist](/blog/connect-existing-domain-shopify-email-checklist) and [test-order guide](/blog/shopify-test-order-before-launch-checklist) for the final steps. The launch date should follow verified readiness, not an arbitrary number of days assigned to every migration.

@@ -1,0 +1,74 @@
+---
+title: "How to Build a Shopify Redirect Map Before a Store Migration"
+excerpt: "Map old product, category, and content URLs to useful Shopify destinations, then test redirects before and after launch."
+date: "2026-09-09"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["running-a-store", "start-a-store"]
+tags: ["Shopify", "Tutorial"]
+---
+
+A Shopify redirect map connects old public URLs with their closest useful destinations after a migration. Build it before changing the domain, while the source site and its URL history are still accessible. The deliverable is a reviewed mapping with tested destinations, not a list that sends every visitor to the homepage.
+
+This guide covers planning and verification. For the larger project, see the [WooCommerce migration](/blog/how-to-migrate-from-woocommerce-to-shopify) or [Squarespace migration](/blog/migrate-squarespace-to-shopify-guide) checklist.
+
+## Collect URLs from more than the sitemap
+
+Start with the source site's sitemap and content export. Add landing pages from analytics or Search Console, important links in email campaigns, and URLs printed on packaging or used in social profiles.
+
+A sitemap describes the current intended page set. It may omit an old product URL that still receives visitors from a useful link. Keep the source and the reason for including each URL in your working map.
+
+## Create a review table
+
+Use these columns in a document or spreadsheet:
+
+| Old path | New destination | Reason | Owner | Verified result |
+| --- | --- | --- | --- | --- |
+| `/ceramics/blue-mug` | `/products/blue-mug` | Same product | Catalog editor | Product exists |
+| `/shop/prints` | `/collections/art-prints` | Equivalent category | Store editor | Relevant collection exists |
+| `/journal/caring-for-linen` | `/blogs/guides/linen-care` | Updated care guide | Content editor | Article answers the same need |
+| `/old-limited-edition` | Review required | No current equivalent | Merchant | Decide archive or relevant replacement |
+
+These paths are fictional examples. Some source paths may conflict with Shopify's reserved routes; validate your actual paths before relying on an import.
+
+Leave ambiguous rows unresolved until someone has made a content decision. A missing destination is a planning task, not a reason to substitute the homepage automatically.
+
+## Choose destinations by reader intent
+
+For an unchanged product, use the corresponding product page. For a category, choose the equivalent collection. For an informational page, preserve or improve the information rather than sending the visitor to a shopping category that does not answer the question.
+
+If a product has no reasonable replacement, consider whether an informative archive page remains useful. If not, a genuine not-found response can be more accurate than an unrelated destination. Do not claim that any redirect guarantees preservation of rankings.
+
+Google's [site-move guidance](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) recommends mapping URLs and avoiding irrelevant bulk redirects. Use it for the broader search migration process.
+
+## Understand Shopify's routing limits
+
+[Shopify's redirect documentation](https://help.shopify.com/en/manual/online-store/menus-and-links/url-redirect) explains that redirects work from broken URLs, not URLs that still load active pages. It also lists reserved paths and restrictions. Query strings and market subfolders deserve explicit testing.
+
+Use relative destinations for pages on your primary domain and full URLs when sending visitors to another domain. A redirect configured in Shopify cannot control requests that still go to a different platform's hosted subdomain.
+
+If a proposed source path conflicts with a Shopify route, decide how the old link can be handled before launch. Do not assume importing the row overcomes the limitation.
+
+## Import a pilot and verify it
+
+Use the current sample format linked from Shopify's redirect documentation. Create a few representative redirects first, or import a small reviewed file through the URL redirects screen under Content and Menus.
+
+Test an old product, collection, article, and unusual path. Inspect the final destination and the actual page content. A URL ending at a page that technically loads but shows the wrong product is still a failed mapping.
+
+Record the status, final URL, and content match. A redirect loop or a chain through several obsolete URLs should be corrected to point directly to the intended destination where possible.
+
+## Verify again on the public domain
+
+Testing before launch can catch mapping and destination problems. After the domain switch, repeat the checks on the real public domain, including relevant language or market paths.
+
+Update internal links to point directly at current pages. Use the current destination URLs in navigation, content, and new campaigns. Redirects help visitors with old links; they should not become the normal route for every new click.
+
+Keep the sitemap aligned with the pages you want discovered. Retain useful redirects for old external links and follow the search-engine guidance for a site move rather than deleting them as soon as the new homepage works.
+
+## Triage errors after launch
+
+Review new not-found requests and relevant Search Console reports. Prioritize URLs that should exist, have valuable external links, or serve real customer journeys. Do not create meaningless content merely because a bot requested a random path.
+
+A complete redirect record says what changed, why the new destination fits, and how it was verified. Pair it with the [domain checklist](/blog/connect-existing-domain-shopify-email-checklist) so the routing and domain changes are reviewed together.

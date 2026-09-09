@@ -84,6 +84,11 @@ export function withShopifyAffiliate(
     return href;
   }
   if (SHOPIFY_MARKETING_HOST.test(url.hostname)) {
+    // 1MBB has its own enrollment route and offer. A standard affiliate link
+    // must not imply that it activates this restricted program.
+    if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?1mbb(?:\/|$)/i.test(url.pathname)) {
+      return href;
+    }
     const isRoot = url.pathname === "" || url.pathname === "/";
     return shopifyAffiliateHref({ ...opts, deepLink: isRoot ? undefined : href });
   }

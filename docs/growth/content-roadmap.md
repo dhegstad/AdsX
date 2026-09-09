@@ -1,8 +1,10 @@
-# Content roadmap — 14-day sprint
+# Content roadmap — accelerated sprint
 
-September 9–22, 2026. Target eight new articles and two substantive refreshes per production day, completing 96 new articles and 24 refreshes by September 20. September 21–22 covers fixes, distribution follow-through, and review. Publish checked batches earlier when ready. The first eight articles and two refreshes are live on AdsX.com.
+September 9–22, 2026 remains the original planning window. Eight new articles and two refreshes per production day was a baseline, not a ceiling. Dennis approved an additional 30-article batch for September 9: 10 brand-new URLs, 10 rebuilt previously removed URLs, and 10 existing articles substantially updated.
 
-These are research candidates: check overlapping intent and primary sources before writing. Replace a proposed new URL with a refresh when the existing article serves the same question. Dates are production targets, not scheduled automation or traffic/revenue forecasts.
+The first eight new articles and two refreshes are published. The additional platform batch is **validated-awaiting-release**; see [its execution record](platform-batch-2026-09-09.md) and [manifest](platform-batch-2026-09-09.json). Four of its refreshes also fulfill original backlog entries R005, R008, R010, and R022; do not count those twice.
+
+The original 96 research candidates remain below. The additional batch is tracked separately rather than silently replacing unrelated app, operations, AI, and advertising candidates. Recheck overlap against the expanded library before drafting; three known overlaps are recorded in JSON. Dates are delivery targets, not scheduled automation or traffic/revenue forecasts.
 
 | Day | Target date | ID | Topic | Proposed article | Status |
 |---|---|---|---|---|---|
@@ -103,31 +105,31 @@ These are research candidates: check overlapping intent and primary sources befo
 | 12 | 2026-09-20 | N095 | start-a-store | Before Opening a Second Shopify Store: Cost and Operations Questions | research-intent-check-required |
 | 12 | 2026-09-20 | N096 | shopify-apps | Shopify App Trials: How to Write an Acceptance Test | research-intent-check-required |
 
-## Refresh queue
+## Existing-article refreshes
 
-| Day | Target date | ID | Existing article | Status |
+| Day | Target date | ID | Article | Status |
 |---|---|---|---|---|
-| 1 | 2026-09-09 | R001 | [Gumroad vs Shopify: Digital Products, Fees & Store Setup](https://www.adsx.com/blog/gumroad-vs-shopify-2026) | published |
-| 1 | 2026-09-09 | R002 | [Shopify Starter: Existing-Store Limits & Upgrade Checklist](https://www.adsx.com/blog/shopify-starter-plan-five-dollars-review) | published |
-| 2 | 2026-09-10 | R003 | [How to Sign Up for Shopify: Every Step (2026)](https://www.adsx.com/blog/how-to-sign-up-shopify-step-by-step) | research-required |
-| 2 | 2026-09-10 | R004 | [Shopify Pros and Cons 2026: The Honest List](https://www.adsx.com/blog/shopify-pros-cons-2026) | research-required |
-| 3 | 2026-09-11 | R005 | [True Cost of a Shopify Store: First-Year Breakdown](https://www.adsx.com/blog/true-cost-running-shopify-store-first-year) | research-required |
-| 3 | 2026-09-11 | R006 | [Shopify App Costs: Audit and Cut Your Monthly Stack](https://www.adsx.com/blog/shopify-app-costs-audit-guide) | research-required |
-| 4 | 2026-09-12 | R007 | [9 Best Shopify Bundle Apps to Boost AOV (2026)](https://www.adsx.com/blog/best-shopify-bundle-apps) | research-required |
-| 4 | 2026-09-12 | R008 | [Etsy to Shopify Migration: Step-by-Step Guide (2026)](https://www.adsx.com/blog/etsy-to-shopify-migration-guide) | research-required |
-| 5 | 2026-09-13 | R009 | [Sell Digital Products on Shopify: 2026 Step-by-Step](https://www.adsx.com/blog/shopify-selling-digital-products) | research-required |
-| 5 | 2026-09-13 | R010 | [First 30 Days on Shopify: Day-by-Day Launch Checklist](https://www.adsx.com/blog/first-30-days-shopify-store-checklist) | research-required |
-| 6 | 2026-09-14 | R011 | [How to Connect Claude to Shopify: 4 Ways, Step by Step](https://www.adsx.com/blog/connect-claude-to-shopify-guide) | research-required |
-| 6 | 2026-09-14 | R012 | [Shopify Claude AI: Automate Content, Support, Orders](https://www.adsx.com/blog/shopify-claude-ai-integration-automation) | research-required |
-| 7 | 2026-09-15 | R013 | [Customize Your Shopify Theme With Claude Code + the Dev MCP](https://www.adsx.com/blog/claude-code-shopify-theme-liquid-build-guide) | research-required |
-| 7 | 2026-09-15 | R014 | [Shopify Product Catalog API Guide (2026)](https://www.adsx.com/blog/shopify-product-catalog-api-guide) | research-required |
-| 8 | 2026-09-16 | R015 | [Shopify Admin API Guide 2026: GraphQL, Auth & Limits](https://www.adsx.com/blog/shopify-admin-api-guide) | research-required |
-| 8 | 2026-09-16 | R016 | [Shopify Webhooks: Reliability Guide for App Developers](https://www.adsx.com/blog/shopify-webhooks-reliability-guide) | research-required |
-| 9 | 2026-09-17 | R017 | [How Many Shopify Apps Is Too Many? (App Audit Guide)](https://www.adsx.com/blog/how-many-shopify-apps-too-many) | research-required |
-| 9 | 2026-09-17 | R018 | [Uninstall Shopify Apps the Right Way: Leftover Code Fix](https://www.adsx.com/blog/uninstall-shopify-apps-cleanup-guide) | research-required |
-| 10 | 2026-09-18 | R019 | [Shopify Payments vs Stripe vs PayPal: 2026 Fees](https://www.adsx.com/blog/shopify-payments-vs-stripe-vs-paypal) | research-required |
-| 10 | 2026-09-18 | R020 | [Shopify AI Visibility: Get Recommended by ChatGPT](https://www.adsx.com/blog/shopify-ai-visibility-complete-guide) | research-required |
-| 11 | 2026-09-19 | R021 | [Hidden Shopify Costs: 7 Fees and How to Avoid Them](https://www.adsx.com/blog/hidden-shopify-costs-how-to-avoid) | research-required |
-| 11 | 2026-09-19 | R022 | [Shopify Trending Products 2026: 20 Picks + Margins](https://www.adsx.com/blog/trending-products-sell-shopify-2026) | research-required |
-| 12 | 2026-09-20 | R023 | [Shopify vs Patreon 2026: Which Is Better for Creators](https://www.adsx.com/blog/shopify-vs-patreon-comparison) | research-required |
-| 12 | 2026-09-20 | R024 | [Shopify for Coins & Numismatics: Sell Coins in 2026](https://www.adsx.com/blog/shopify-for-coins-numismatics) | research-required |
+| 1 | 2026-09-09 | R001 | Gumroad vs Shopify: Digital Products, Fees & Store Setup | published |
+| 1 | 2026-09-09 | R002 | Shopify Starter: Existing-Store Limits & Upgrade Checklist | published |
+| 2 | 2026-09-10 | R003 | How to Sign Up for Shopify: Every Step (2026) | research-required |
+| 2 | 2026-09-10 | R004 | Shopify Pros and Cons 2026: The Honest List | research-required |
+| 1 | 2026-09-09 | R005 | The Cost of Running a Shopify Store: A First-Year Budget Worksheet | validated-awaiting-release |
+| 3 | 2026-09-11 | R006 | Shopify App Costs: Audit and Cut Your Monthly Stack | research-required |
+| 4 | 2026-09-12 | R007 | 9 Best Shopify Bundle Apps to Boost AOV (2026) | research-required |
+| 1 | 2026-09-09 | R008 | Etsy to Shopify: Expand Your Shop with a Tested Migration Plan | validated-awaiting-release |
+| 5 | 2026-09-13 | R009 | Sell Digital Products on Shopify: 2026 Step-by-Step | research-required |
+| 1 | 2026-09-09 | R010 | Your First 30 Days on Shopify: Launch, Orders and Evidence | validated-awaiting-release |
+| 6 | 2026-09-14 | R011 | How to Connect Claude to Shopify: 4 Ways, Step by Step | research-required |
+| 6 | 2026-09-14 | R012 | Shopify Claude AI: Automate Content, Support, Orders | research-required |
+| 7 | 2026-09-15 | R013 | Customize Your Shopify Theme With Claude Code + the Dev MCP | research-required |
+| 7 | 2026-09-15 | R014 | Shopify Product Catalog API Guide (2026) | research-required |
+| 8 | 2026-09-16 | R015 | Shopify Admin API Guide 2026: GraphQL, Auth & Limits | research-required |
+| 8 | 2026-09-16 | R016 | Shopify Webhooks: Reliability Guide for App Developers | research-required |
+| 9 | 2026-09-17 | R017 | How Many Shopify Apps Is Too Many? (App Audit Guide) | research-required |
+| 9 | 2026-09-17 | R018 | Uninstall Shopify Apps the Right Way: Leftover Code Fix | research-required |
+| 10 | 2026-09-18 | R019 | Shopify Payments vs Stripe vs PayPal: 2026 Fees | research-required |
+| 10 | 2026-09-18 | R020 | Shopify AI Visibility: Get Recommended by ChatGPT | research-required |
+| 11 | 2026-09-19 | R021 | Hidden Shopify Costs: 7 Fees and How to Avoid Them | research-required |
+| 1 | 2026-09-09 | R022 | Trending Products to Sell on Shopify in 2026: 12 Ideas to Validate | validated-awaiting-release |
+| 12 | 2026-09-20 | R023 | Shopify vs Patreon 2026: Which Is Better for Creators | research-required |
+| 12 | 2026-09-20 | R024 | Shopify for Coins & Numismatics: Sell Coins in 2026 | research-required |

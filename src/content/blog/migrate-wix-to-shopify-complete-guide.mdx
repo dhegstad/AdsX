@@ -1,0 +1,74 @@
+---
+title: "Wix to Shopify Migration: Products, Bookings, Content and Domain"
+excerpt: "Move a Wix store with a checklist for catalog data, Wix-specific services, page rebuilding, redirects, and email continuity."
+date: "2026-03-12"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "affiliate"
+topics: ["start-a-store"]
+tags: ["Shopify", "Migration"]
+---
+
+To migrate a Wix store to Shopify, move the commerce data, rebuild the relevant pages and workflows, and connect the domain after testing. A Wix site can also contain bookings, events, memberships, and custom code. Those functions need separate decisions; a product import does not transfer the whole business.
+
+This guide assumes you are moving an existing Wix store. If you are comparing platforms for a new business, use [Wix versus Shopify](/blog/shopify-vs-wix-ecommerce).
+
+## Inventory everything the Wix site does
+
+Walk through the site as both a customer and an operator. Record a normal purchase, a booking if offered, a contact request, a member login, and any automation that follows those actions.
+
+| Wix component | Migration decision |
+| --- | --- |
+| Store products | Transfer the catalog and verify purchasable variants |
+| Bookings or events | Select and test the destination scheduling or ticketing workflow |
+| Blog and editorial pages | Rebuild valuable content and preserve its destination |
+| Member-only content | Define access rules and a supported customer transition |
+| Velo/custom logic | Document the business rule and have its replacement reviewed |
+| Forms and automations | Verify destination, notifications, and consent handling |
+
+A yoga business selling merchandise and classes has different requirements from an apparel store. Keep the original scheduling workflow available until the replacement can handle an actual appointment, including cancellation and staff availability.
+
+## Start with the documented product route
+
+[Shopify's Wix migration guide](https://help.shopify.com/en/manual/migrating-to-shopify/migrating-from-wix) provides a source-specific export and mapping process. It also describes an early-access Store Migration app for eligible stores. Follow the route available in your account instead of assuming a screenshot from another merchant proves availability.
+
+Keep the source export unchanged. In a separate copy, map the supported data into the destination format. [Shopify's product CSV documentation](https://help.shopify.com/en/manual/products/import-export/using-csv) is the reference for the current columns and dependencies.
+
+Choose a pilot with a simple product, several variants, a discounted product, and a sold-out option. Include a digital product if your shop sells one. Compare images, prices, stock, and order details before importing the rest.
+
+## Rebuild services as services
+
+For bookings, write a small acceptance test: a customer selects an available slot, pays or reserves under the correct policy, receives confirmation, and can follow the cancellation process. Include the staff member's view of the appointment.
+
+For memberships, specify which content or benefit each member should receive and how existing members will regain access. For custom forms, preserve the actual questions needed by the business without assuming every historical response belongs in a marketing list.
+
+These tests become your app-selection requirements. Browse candidate apps only after you know the job they must perform. Our [app permissions checklist](/blog/shopify-app-permissions-checklist-merchants) helps review access before installation.
+
+## Rebuild the pages people use
+
+Create the main buying journey: homepage, product collections, product pages, help pages, and useful editorial content. Review the content for freshness while moving it, but avoid changing the offer, navigation, and entire catalog taxonomy at once unless the business needs those changes.
+
+Suppose a fictional Wix store has 80 blog posts but only 12 are central customer resources. Rebuild and test those 12 first, then evaluate the remaining pages individually. This is a prioritization example, not a recommendation to delete the rest.
+
+For every changed public URL, choose a relevant destination. Use the [redirect map guide](/blog/shopify-url-redirect-map-store-migration). Do not send all old articles to the homepage.
+
+## Connect the domain without breaking email
+
+The domain registrar, website host, and mailbox provider can be different services. Record each before changing anything. You can [connect a third-party domain to Shopify](https://help.shopify.com/en/manual/domains/add-a-domain/connecting-domains) while retaining registration elsewhere.
+
+Save the current DNS configuration and follow the values shown by Shopify for your domain. Preserve the mailbox provider's records. The [domain and email checklist](/blog/connect-existing-domain-shopify-email-checklist) explains the checks that belong before and after the switch.
+
+## Decide when to switch
+
+A launch is ready when representative orders work, important content exists, operational replacements pass, and recent stock changes can be reconciled. Write down the last export time and how to handle orders that arrive on Wix after it.
+
+Run the [test-order checklist](/blog/shopify-test-order-before-launch-checklist) and assign someone to review the first real orders. Leave enough time to identify whether a problem came from product data, shipping, payment setup, or an integration.
+
+Keep Wix access until bookings, earlier orders, records, and subscription obligations are resolved. Cancelling a website plan before those dependencies are mapped can create avoidable support work.
+
+## How long and how much?
+
+Estimate the catalog, content, service replacements, design, and integrations separately. A small product-only site may have a short checklist; a service business with memberships requires more verification. There is no reliable universal “Wix migration takes X days” promise.
+
+For the budget, include overlap between subscriptions and the normal recurring cost after promotions. The right result is a working business on the new platform with a documented operating cost, not simply a published homepage.

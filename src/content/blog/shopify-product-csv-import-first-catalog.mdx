@@ -1,0 +1,81 @@
+---
+title: "How to Import Products into Shopify: A First-Catalog CSV Checklist"
+excerpt: "Prepare a small product CSV, protect variants and SKUs, verify the import, and avoid publishing an unchecked catalog."
+date: "2026-09-09"
+updated: "2026-09-09"
+category: "E-commerce"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["running-a-store", "start-a-store"]
+tags: ["Shopify", "Tutorial"]
+---
+
+To import your first catalog into Shopify, start from the current Shopify CSV format, import a representative sample, and verify products and variants before loading the rest. A successful upload means the file was accepted; it does not prove the catalog is ready to sell.
+
+This tutorial focuses on the import and its checks. For source-platform decisions, use the [WooCommerce](/blog/how-to-migrate-from-woocommerce-to-shopify) or [BigCommerce](/blog/migrate-bigcommerce-to-shopify-guide) migration guide.
+
+## 1. Make a safe working file
+
+Download the current template from [Shopify's product CSV reference](https://help.shopify.com/en/manual/products/import-export/using-csv), or export a correctly configured example product from the destination store. Work on a copy and keep the source export untouched.
+
+Shopify's current format includes updated column labels while retaining compatibility with older names. Copy the current template's headings exactly rather than combining columns from tutorials written at different times.
+
+Choose a pilot of roughly five representative products. This is a practical testing suggestion, not a platform limit. Include a simple item, several variants, a sold-out item, a sale item, and one product with unusual metadata.
+
+## 2. Define the expected result before importing
+
+Create a separate review table with the product name, expected variants, SKU list, intended stock behavior, and destination collection. Use it to check the imported catalog.
+
+| Pilot item | Expected result | Common problem to catch |
+| --- | --- | --- |
+| One notebook | One purchasable item | Missing price or image |
+| Shirt in three sizes | Three correct size variants | Variant rows collapsed or duplicated |
+| Sold-out print | Unavailable to purchase under the intended rule | Default stock behavior permits a sale |
+| Discounted kit | Correct normal and current prices | Confusing comparison price |
+| Fragile item | Accurate packed-weight assumptions | Wrong weight unit |
+
+The expected result should describe the business outcome. A file with the right number of rows can still produce the wrong product structure.
+
+## 3. Protect identifiers and variant relationships
+
+Treat SKUs and barcodes as identifiers rather than numbers used in calculations. Spreadsheet software can remove leading zeroes or change long values into scientific notation. Inspect the saved CSV in a text viewer if the values look altered.
+
+Keep product handles stable during the pilot. Review option names and values as a related set. Shopify warns that changing or omitting dependent option data in an update can recreate variants and affect existing variant IDs. Do not use a bulk update to experiment on products already connected to live apps.
+
+A product CSV also is not a complete migration package. Customer records, historical orders, files for digital delivery, and inventory across multiple locations require their appropriate processes. Map those jobs separately.
+
+## 4. Import without an accidental launch
+
+Follow [Shopify's import procedure](https://help.shopify.com/en/manual/products/import-export/import-products): choose the file, review the preview, and decide the publication and overwrite settings deliberately.
+
+For a new pilot, use the intended draft or unpublished state and verify it after import. For an update to an existing catalog, export a backup and understand exactly which matching products and fields can be overwritten before confirming.
+
+Do not assume an empty cell means “leave the old value alone.” The result depends on the field and import behavior. Review the current specification for the columns you change.
+
+## 5. Check the storefront and the order view
+
+Open each pilot product and compare it with the expected-result table. Inspect titles, descriptions, image order, options, prices, inventory, shipping settings, and availability.
+
+Then preview it on a phone. A description containing copied platform markup may technically import but look broken to a buyer. An image URL that worked during export may not be a dependable asset source after the old store closes.
+
+Complete an appropriate [test order](/blog/shopify-test-order-before-launch-checklist) for a representative variant. Confirm that the correct SKU and selected options appear where the person fulfilling the order needs them.
+
+## 6. Reconcile the full import
+
+Once the pilot passes, import the remaining catalog in manageable groups. Keep a record of each source file, import time, and result. Reconcile these separately:
+
+- Products created or updated.
+- Purchasable variants and their unique SKUs.
+- Images and important product content.
+- Stock quantities and location assignments.
+- Products intentionally excluded or left unpublished.
+
+For a fictional catalog of 30 products with four variants each, 30 product records and 120 variant records are different checks. If only 110 variants arrive, investigate the ten missing combinations before opening sales.
+
+## Troubleshooting without making the problem larger
+
+If the preview or result is wrong, stop and isolate a failing product in a new working file. Compare its fields with a valid product exported from Shopify. Avoid repeatedly importing the entire catalog with different settings; that makes it harder to know which change caused the problem.
+
+Record the error, the affected identifiers, and the corrected mapping. Re-run the smallest useful test, then the affected group. Keep the final verified files as part of your migration record.
+
+The import is complete when the buyer, the operator, and the stock record agree about what is being sold. Use the [starting-a-store hub](/topics/start-a-store) for the remaining launch work.

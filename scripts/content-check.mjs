@@ -2,9 +2,25 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { publicationTopics, getContentIntent, getTopicSlugs } from '../src/lib/publication.ts';
+import { withShopifyAffiliate } from '../src/lib/affiliate.ts';
 
 const batch = JSON.parse(fs.readFileSync('docs/growth/first-batch.json', 'utf8'));
-const slugs = process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review'];
+const platformBatch = JSON.parse(fs.readFileSync('docs/growth/platform-batch-2026-09-09.json', 'utf8'));
+const slugs = [...new Set(process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review', ...platformBatch.articles.map(p => p.slug)])];
+// This checks source presence. Relevance, claims, and current terms still require editorial review.
+const primarySourceHosts = new Set([
+  'help.shopify.com', 'shopify.dev', 'www.shopify.com', 'apps.shopify.com',
+  'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
+  'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
+  'support.google.com', 'www.etsy.com', 'operationhope.org',
+]);
+function isPrimarySource(href) {
+  try {
+    const url = new URL(href);
+    return url.protocol === 'https:' && (primarySourceHosts.has(url.hostname) ||
+      (url.hostname === 'github.com' && /^\/magento\/magento2(?:\/|$)/.test(url.pathname)));
+  } catch { return false; }
+}
 const validTopics = new Set(publicationTopics.map(t => t.slug));
 const all = new Map(fs.readdirSync('src/content/blog').filter(f => f.endsWith('.mdx')).map(file => {
   const parsed = matter(fs.readFileSync(path.join('src/content/blog', file), 'utf8'));
@@ -31,7 +47,7 @@ for (const slug of slugs) {
   check(!/^# /m.test(content), `${slug}: body repeats the page H1`);
   check(!/\b(?:TODO|TBD|INSERT SOURCE)\b/.test(content), `${slug}: unfinished placeholder`);
   const links = [...content.matchAll(/\[[^\]]+\]\(([^\s)]+)\)/g)].map(m => m[1]);
-  const sources = links.filter(h => /^https:\/\/(?:help\.shopify\.com|shopify\.dev|www\.shopify\.com|gumroad\.com|apps\.shopify\.com)\//.test(h));
+  const sources = links.filter(isPrimarySource);
   check(new Set(sources).size >= 2, `${slug}: needs at least two relevant primary sources`);
   const internal = links.filter(h => h.startsWith('/'));
   check(new Set(internal).size >= 2, `${slug}: needs two internal connections`);
@@ -47,5 +63,10 @@ for (const topic of publicationTopics) {
 }
 check(getContentIntent({slug:'shopify-webhooks-reliability-guide',title:'Shopify Webhooks',category:'Developers'}) === 'learn', 'Developer articles should not get new-store or app promotion');
 check(getContentIntent({slug:'post-purchase-surveys',title:'Post-purchase surveys',category:'Shopify'}) === 'learn', 'App promotion is deferred during the publication phase');
+for (const href of ['https://www.shopify.com/1mbb', 'https://www.shopify.com/1mbb/?ref=program', 'https://www.shopify.com/ca/1mbb', 'https://help.shopify.com/en/manual/intro-to-shopify/pricing-plans/free-trial']) {
+  check(withShopifyAffiliate(href, {slug: 'offer-review', placement: 'inline'}) === href, `Program and help links should stay direct: ${href}`);
+}
+const trialLink = new URL(withShopifyAffiliate('https://www.shopify.com/free-trial', {slug: 'offer-review', placement: 'inline'}));
+check(trialLink.hostname === 'shopify.pxf.io' && trialLink.searchParams.get('subId1') === 'offer-review' && trialLink.searchParams.get('subId2') === 'inline' && trialLink.searchParams.get('u') === 'https://www.shopify.com/free-trial', 'Standard trial links should retain affiliate destination and attribution');
 if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
 else console.log(`PASS: ${slugs.length} articles, six curated hubs, links, dates, and reader intent.`);
