@@ -3,10 +3,11 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
-import { withShopifyAffiliate, isAffiliateUrl } from "@/lib/affiliate";
+import { withShopifyAffiliate, isAffiliateUrl, trackAffiliateClick } from "@/lib/affiliate";
 
 interface MDXContentProps {
   content: string;
+  slug: string;
 }
 
 // YouTube embed component
@@ -46,7 +47,7 @@ function Callout({ type = "info", children }: { type?: "info" | "warning" | "tip
   );
 }
 
-export function MDXContent({ content }: MDXContentProps) {
+export function MDXContent({ content, slug }: MDXContentProps) {
   // Process content to handle custom embeds
   const processedContent = content
     // Convert YouTube links to embed syntax
@@ -90,8 +91,8 @@ export function MDXContent({ content }: MDXContentProps) {
         },
         // External links open in new tab
         a: ({ href, children, ...props }) => {
-          const isExternal = href?.startsWith("http");
-          const linkHref = href && isExternal ? withShopifyAffiliate(href) : href;
+          const isExternal = !!href && /^(https?:)?\/\//i.test(href);
+          const linkHref = href && isExternal ? withShopifyAffiliate(href, { slug, placement: "inline" }) : href;
           const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
           return (
             <a
@@ -104,6 +105,7 @@ export function MDXContent({ content }: MDXContentProps) {
                     : "noopener noreferrer"
                   : undefined
               }
+              onClick={isAffiliate ? () => trackAffiliateClick({ slug, placement: "inline" }) : undefined}
               {...props}
             >
               {children}
