@@ -1,19 +1,19 @@
 # Content roadmap — 14-day sprint
 
-September 9–22, 2026. Target eight new articles and two substantive refreshes per production day, completing 96 new articles and 24 refreshes by September 20. September 21–22 covers fixes, distribution follow-through, and review. Publish checked batches earlier when ready. The first eight articles and two refreshes are already implemented.
+September 9–22, 2026. Target eight new articles and two substantive refreshes per production day, completing 96 new articles and 24 refreshes by September 20. September 21–22 covers fixes, distribution follow-through, and review. Publish checked batches earlier when ready. The first eight articles and two refreshes are live on AdsX.com.
 
 These are research candidates: check overlapping intent and primary sources before writing. Replace a proposed new URL with a refresh when the existing article serves the same question. Dates are production targets, not scheduled automation or traffic/revenue forecasts.
 
 | Day | Target date | ID | Topic | Proposed article | Status |
 |---|---|---|---|---|---|
-| 1 | 2026-09-09 | N001 | shopify-apps | Shopify Apps: Free to Install vs Free Plan vs Free Trial | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N002 | shopify-apps | Shopify App Permissions: A Merchant’s Pre-Install Checklist | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N003 | start-a-store | A Minimal Shopify App Stack for Your First Digital Product Store | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N004 | start-a-store | Shopify Starter vs Basic: What New Stores Can Choose Now | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N005 | start-a-store | A Minimal Shopify App Stack for Your First Physical Product Store | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N006 | shopify-apps | Shopify Built-In Features vs Apps: A Merchant Decision Guide | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N007 | shopify-apps | How to Evaluate Shopify App Reviews Before You Install | implemented-awaiting-publication |
-| 1 | 2026-09-09 | N008 | start-a-store | What to Test During a Shopify Trial: A Store-Fit Scorecard | implemented-awaiting-publication |
+| 1 | 2026-09-09 | N001 | shopify-apps | Shopify Apps: Free to Install vs Free Plan vs Free Trial | published |
+| 1 | 2026-09-09 | N002 | shopify-apps | Shopify App Permissions: A Merchant’s Pre-Install Checklist | published |
+| 1 | 2026-09-09 | N003 | start-a-store | A Minimal Shopify App Stack for Your First Digital Product Store | published |
+| 1 | 2026-09-09 | N004 | start-a-store | Shopify Starter vs Basic: What New Stores Can Choose Now | published |
+| 1 | 2026-09-09 | N005 | start-a-store | A Minimal Shopify App Stack for Your First Physical Product Store | published |
+| 1 | 2026-09-09 | N006 | shopify-apps | Shopify Built-In Features vs Apps: A Merchant Decision Guide | published |
+| 1 | 2026-09-09 | N007 | shopify-apps | How to Evaluate Shopify App Reviews Before You Install | published |
+| 1 | 2026-09-09 | N008 | start-a-store | What to Test During a Shopify Trial: A Store-Fit Scorecard | published |
 | 2 | 2026-09-10 | N009 | start-a-store | Shopify for a First Store: A Product and Market Fit Worksheet | research-intent-check-required |
 | 2 | 2026-09-10 | N010 | shopify-apps | How to Compare Shopify Review Apps for a New Store | research-intent-check-required |
 | 2 | 2026-09-10 | N011 | running-a-store | A Weekly Shopify Operations Review for a Small Team | research-intent-check-required |
@@ -107,8 +107,8 @@ These are research candidates: check overlapping intent and primary sources befo
 
 | Day | Target date | ID | Existing article | Status |
 |---|---|---|---|---|
-| 1 | 2026-09-09 | R001 | [Gumroad vs Shopify: Digital Products, Fees & Store Setup](https://www.adsx.com/blog/gumroad-vs-shopify-2026) | implemented-awaiting-publication |
-| 1 | 2026-09-09 | R002 | [Shopify Starter: Existing-Store Limits & Upgrade Checklist](https://www.adsx.com/blog/shopify-starter-plan-five-dollars-review) | implemented-awaiting-publication |
+| 1 | 2026-09-09 | R001 | [Gumroad vs Shopify: Digital Products, Fees & Store Setup](https://www.adsx.com/blog/gumroad-vs-shopify-2026) | published |
+| 1 | 2026-09-09 | R002 | [Shopify Starter: Existing-Store Limits & Upgrade Checklist](https://www.adsx.com/blog/shopify-starter-plan-five-dollars-review) | published |
 | 2 | 2026-09-10 | R003 | [How to Sign Up for Shopify: Every Step (2026)](https://www.adsx.com/blog/how-to-sign-up-shopify-step-by-step) | research-required |
 | 2 | 2026-09-10 | R004 | [Shopify Pros and Cons 2026: The Honest List](https://www.adsx.com/blog/shopify-pros-cons-2026) | research-required |
 | 3 | 2026-09-11 | R005 | [True Cost of a Shopify Store: First-Year Breakdown](https://www.adsx.com/blog/true-cost-running-shopify-store-first-year) | research-required |
