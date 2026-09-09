@@ -18,6 +18,10 @@ Dennis reports $600 total Shopify affiliate earnings in the last six months. The
 
 Distribution budget: no paid directory listings, paid link packages, paid SEO subscriptions, or advertising spend. Prioritize relevant free directories, useful public resources, organic search, and AI-search discoverability. Do not misrepresent the app as an AI tool simply to enter AI directories.
 
+Directory correspondence: always use dennis@adsx.com for directory submissions, contacts, verification correspondence, and authorized follow-ups. Preserve historical receipts showing a different address; never claim they were corrected without confirmation. This does not change general website support contact details.
+
+Production timing: the September 9–22, 2026 plan replaces the original 12-week proposal. Target eight new articles and two substantive refreshes per production day, with the full 96/24 allocation by September 20 and two days for fixes/review. Ship checked work as soon as ready. Traffic, referral qualification, and revenue timing remain measured outcomes.
+
 Editorial voice: practical, candid, precise. Demonstrate expertise with primary sources, worked examples, methods, and real evidence. Label hypothetical numbers. Don't claim hands-on testing that did not happen. Disclose Shopify affiliate links and AdsX's interest in post-purchase advertising when relevant. Do not attribute generated articles to Dennis as if he personally wrote or reviewed them.
 
 Execution plan: `docs/growth/strategy-2026-09-09.md`. Backlog and directory status are maintained alongside it.

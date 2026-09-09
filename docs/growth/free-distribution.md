@@ -2,12 +2,14 @@
 
 September 9, 2026. Spend: **$0**. Verified new backlinks: **0**. Do not count a submitted URL as an accepted listing.
 
+Use **dennis@adsx.com** for every new directory submission and related correspondence. Keep historical receipts accurate. Screen the first 25 candidates within 48 hours; then screen five per production day and submit 2–3 suitable $0 opportunities when available.
+
 ## Publication copy
 
 - Name: AdsX
 - URL: https://www.adsx.com/blog
 - Feed: https://www.adsx.com/feed.xml
-- Public contact: hello@adsx.com
+- Directory submission/contact email: dennis@adsx.com
 - Short description: Independent guides to Shopify apps, ecommerce, advertising, and AI.
 - Longer description: AdsX publishes practical guides for people starting a Shopify store and merchants running an existing business. Coverage includes app categories, features, pricing, platform comparisons, store operations, advertising, and AI in commerce. Readers can use decision tables, checklists, and free calculators. The publication participates in Shopify’s affiliate program.
 - Suitable categories: Ecommerce, online retail, small business software, marketing, Shopify resources. Use only a genuinely matching directory category.
@@ -40,7 +42,7 @@ September 9, 2026. Spend: **$0**. Verified new backlinks: **0**. Do not count a 
 
 ## Feedspot receipt
 
-Submitted AdsX, the public business email hello@adsx.com, and https://www.adsx.com/blog through the publication form. The next page acknowledged the submission and offered a paid upgrade for featured placement. No paid plan was selected, and no public listing or link was verified. Retain this receipt and avoid a duplicate submission.
+Submitted AdsX, the public business email hello@adsx.com, and https://www.adsx.com/blog through the publication form. The next page acknowledged the submission and offered a paid upgrade for featured placement. No paid plan was selected, and no public listing or link was verified. Retain this receipt and avoid a duplicate submission. After Dennis specified dennis@adsx.com, the existing Manage Your Listing page was checked: no free contact-edit control was exposed. The original submission address has not been changed; no paid upgrade was selected.
 
 ## Submission rules
 
