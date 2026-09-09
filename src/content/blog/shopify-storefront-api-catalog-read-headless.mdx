@@ -177,7 +177,7 @@ query LocalizedCatalog($cursor: String) @inContext(country: CA, language: FR) {
 }
 ```
 
-With `country: CA, language: FR`, prices come back in the Canadian market's currency and titles/descriptions in French where translations exist. Omit `@inContext` and you get the shop's default context, which is a subtle bug in a multi-market storefront — buyers see the wrong currency. Always set it explicitly and pass the buyer's resolved country and language ([Shopify: `@inContext` directive](https://shopify.dev/docs/api/storefront/latest/directives/inContext)).
+With `country: CA, language: FR`, prices come back in the Canadian market's currency and titles/descriptions in French where translations exist. Omit `@inContext` and you get the shop's default context, which is a subtle bug in a multi-market storefront — buyers see the wrong currency. Always set it explicitly and pass the buyer's resolved country and language ([Shopify: `@inContext` directive](https://shopify.dev/docs/storefronts/headless/building-with-the-storefront-api/in-context)).
 
 ## What the Storefront catalog will *not* give you
 

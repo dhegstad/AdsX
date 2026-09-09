@@ -130,7 +130,7 @@ function createMarkdownComponents(slug: string): Components {
       );
     },
     a: ({ href, children, ...props }) => {
-      const isExternal = href?.startsWith("http");
+      const isExternal = !!href && /^(https?:)?\/\//i.test(href);
       // A bare YouTube link on its own line becomes a responsive embed.
       const ytId = href ? getYouTubeId(href) : null;
       const isBareLink = !!href && String(children) === href;

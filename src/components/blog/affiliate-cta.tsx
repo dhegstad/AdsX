@@ -4,11 +4,12 @@ import {
   shopifyAffiliateHref,
   trackAffiliateClick,
   type AffiliatePlacement,
+  SHOPIFY_FREE_TRIAL_URL,
 } from "@/lib/affiliate";
 
 // Land CTA clicks on Shopify's free-trial flow (the guided signup) rather than
 // the marketing homepage, while still setting the affiliate cookie.
-const FREE_TRIAL_DEEP_LINK = "https://www.shopify.com/free-trial";
+const FREE_TRIAL_DEEP_LINK = SHOPIFY_FREE_TRIAL_URL;
 
 // Verified against Shopify's 2026 offer (see how-to-sign-up-shopify-step-by-step):
 // cardless free trial, then $1/month for the first 3 months on a paid plan.

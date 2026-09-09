@@ -1,9 +1,8 @@
-// Impact (impact.com / Impact Radius) tracked link for the Shopify affiliate
-// program. The bare link drops the reader on Shopify's default signup surface;
-// append ?u=<encoded URL> to deep-link anywhere on shopify.com while still
-// setting the affiliate cookie.
+// AdsX's Impact link for the Shopify affiliate program. Keep the publisher,
+// asset and campaign IDs together; changing these can change who gets credit.
 export const SHOPIFY_AFFILIATE_LINK =
   "https://shopify.pxf.io/c/6318547/3797171/13624";
+export const SHOPIFY_FREE_TRIAL_URL = "https://www.shopify.com/free-trial";
 
 const SHOPIFY_MARKETING_HOST = /^(www\.)?shopify\.com$/;
 
@@ -17,51 +16,57 @@ export type AffiliatePlacement =
 
 export function isAffiliateUrl(href: string): boolean {
   try {
-    return new URL(href).hostname.endsWith("pxf.io");
+    const url = new URL(href);
+    return /^https?:$/.test(url.protocol) && url.hostname === "shopify.pxf.io";
   } catch {
     return false;
   }
 }
 
-interface AffiliateTagOptions {
+export interface AffiliateTagOptions {
   /** The post the click came from — reported to Impact as subId1. */
-  slug?: string;
+  slug: string;
   /** Where on the page the click came from — reported to Impact as subId2. */
-  placement?: AffiliatePlacement;
+  placement: AffiliatePlacement;
 }
 
-// Impact sub-IDs accept letters, digits, and . _ - and cap at 64 chars. Post
-// slugs already fit; this just guards against odd frontmatter values.
+// Impact allows 255-character sub-IDs. Use URL-safe page slugs without cutting
+// longer titles down to 64 characters and losing their reporting identity.
 function sanitizeSubId(value: string): string {
   return value
     .replace(/[^A-Za-z0-9._-]/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
-    .slice(0, 64);
+    .slice(0, 255);
 }
 
-// Attach per-post (subId1) and per-placement (subId2) reporting to an Impact
-// link, without overwriting a value an author already set by hand. Both surface
-// in Impact's Sub ID report, turning one undifferentiated click stream into
-// per-post, per-placement attribution.
-function tagImpactLink(url: URL, opts?: AffiliateTagOptions): string {
-  if (opts?.slug && !url.searchParams.has("subId1")) {
-    url.searchParams.set("subId1", sanitizeSubId(opts.slug));
+// The host page owns its source tags, even when an editor copies a previously
+// tagged link. Preserve brand metadata and all other reporting parameters.
+function tagImpactLink(url: URL, opts: AffiliateTagOptions): string {
+  for (const key of [...url.searchParams.keys()]) {
+    if (/^subid[12]$/i.test(key)) url.searchParams.delete(key);
   }
-  if (opts?.placement && !url.searchParams.has("subId2")) {
-    url.searchParams.set("subId2", opts.placement);
-  }
+  url.searchParams.set("subId1", sanitizeSubId(opts.slug));
+  url.searchParams.set("subId2", opts.placement);
   return url.toString();
 }
 
-// Build a fresh tracked Shopify signup link for a CTA button. `deepLink` lands
-// the reader on a specific shopify.com page (e.g. the free-trial flow) while
-// still setting the affiliate cookie; omit it for Impact's default surface.
+function shopifyDestination(href: string): string {
+  const url = new URL(href);
+  if (!/^https?:$/.test(url.protocol) || !SHOPIFY_MARKETING_HOST.test(url.hostname) || url.username || url.password) {
+    throw new TypeError("Affiliate destinations must be Shopify marketing pages.");
+  }
+  url.protocol = "https:";
+  return url.toString();
+}
+
+// Signup links explicitly select the free-trial page, so an asset's future
+// default landing-page change cannot silently change our signup CTAs.
 export function shopifyAffiliateHref(
-  opts?: AffiliateTagOptions & { deepLink?: string },
+  opts: AffiliateTagOptions & { deepLink?: string },
 ): string {
   const url = new URL(SHOPIFY_AFFILIATE_LINK);
-  if (opts?.deepLink) url.searchParams.set("u", opts.deepLink);
+  url.searchParams.set("u", shopifyDestination(opts.deepLink || SHOPIFY_FREE_TRIAL_URL));
   return tagImpactLink(url, opts);
 }
 
@@ -75,24 +80,27 @@ export function shopifyAffiliateHref(
 // finally gives those previously-untagged links per-post attribution.
 export function withShopifyAffiliate(
   href: string,
-  opts?: AffiliateTagOptions,
+  opts: AffiliateTagOptions,
 ): string {
   let url: URL;
   try {
-    url = new URL(href);
+    url = new URL(href.startsWith("//") ? `https:${href}` : href);
   } catch {
     return href;
   }
+  if (!/^https?:$/.test(url.protocol)) return href;
   if (SHOPIFY_MARKETING_HOST.test(url.hostname)) {
     // 1MBB has its own enrollment route and offer. A standard affiliate link
     // must not imply that it activates this restricted program.
     if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?1mbb(?:\/|$)/i.test(url.pathname)) {
       return href;
     }
-    const isRoot = url.pathname === "" || url.pathname === "/";
-    return shopifyAffiliateHref({ ...opts, deepLink: isRoot ? undefined : href });
+    const isRoot = url.pathname === "/" && !url.search && !url.hash;
+    return shopifyAffiliateHref({ ...opts, deepLink: isRoot ? undefined : url.toString() });
   }
-  if (url.hostname.endsWith("pxf.io")) {
+  if (url.hostname === "shopify.pxf.io") {
+    url.protocol = "https:";
+    url.searchParams.set("u", shopifyDestination(url.searchParams.get("u") || SHOPIFY_FREE_TRIAL_URL));
     return tagImpactLink(url, opts);
   }
   return href;
@@ -101,13 +109,13 @@ export function withShopifyAffiliate(
 // Client-only: report an affiliate click to GA4 so click-through can be measured
 // per post and per placement alongside Impact's bounty data. No-op on the server
 // or before gtag has loaded.
-export function trackAffiliateClick(opts?: AffiliateTagOptions): void {
+export function trackAffiliateClick(opts: AffiliateTagOptions): void {
   if (typeof window === "undefined") return;
   const gtag = (
     window as unknown as { gtag?: (...args: unknown[]) => void }
   ).gtag;
   gtag?.("event", "affiliate_click", {
-    post_slug: opts?.slug ?? "(unknown)",
-    placement: opts?.placement ?? "inline",
+    post_slug: opts.slug,
+    placement: opts.placement,
   });
 }

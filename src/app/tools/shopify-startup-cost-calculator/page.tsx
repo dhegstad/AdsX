@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { ShopifyStartupCostCalculator } from "@/components/shopify-startup-cost-calculator";
+import { ShopifyAffiliateLink } from "@/components/shopify-affiliate-link";
 import { AffiliateCTA } from "@/components/blog/affiliate-cta";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { createBreadcrumbSchema, createFAQSchema, SchemaScript } from "@/lib/seo/schemas";
@@ -59,7 +60,7 @@ export default function StartupCostCalculatorPage() {
 
       <section className="p-6 sm:p-8 md:p-12 border-b border-[#333]">
         <h2 className="text-3xl mb-5">Use your actual prices and payment terms.</h2>
-        <p className="text-[#aaa] leading-relaxed max-w-3xl">Check the <a href="https://www.shopify.com/pricing" target="_blank" rel="noopener noreferrer" className="text-[#10b981] underline underline-offset-4">Shopify quote for your location</a> and the costs of your chosen apps. Shopify distinguishes recurring, usage-based, and one-time charges in its <a href="https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges" target="_blank" rel="noopener noreferrer" className="text-[#10b981] underline underline-offset-4">billing documentation</a>. The calculator uses a normal operating month, so keep introductory discounts and annual upfront payments in a separate cash timeline.</p>
+        <p className="text-[#aaa] leading-relaxed max-w-3xl">Check the <ShopifyAffiliateLink destination="https://www.shopify.com/pricing" slug="shopify-startup-cost-calculator" placement="inline" className="text-[#10b981] underline underline-offset-4">Shopify quote for your location</ShopifyAffiliateLink> and the costs of your chosen apps. The pricing link is an affiliate link; we may earn a commission at no extra cost to you. Shopify distinguishes recurring, usage-based, and one-time charges in its <a href="https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges" target="_blank" rel="noopener noreferrer" className="text-[#10b981] underline underline-offset-4">billing documentation</a>. The calculator uses a normal operating month, so keep introductory discounts and annual upfront payments in a separate cash timeline.</p>
         <div className="grid sm:grid-cols-2 gap-4 mt-8">{[
           ["/blog/shopify-pricing-2026-every-plan-real-cost", "Compare plans and the full store cost"],
           ["/blog/true-cost-running-shopify-store-first-year", "Build your first-year cost worksheet"],
