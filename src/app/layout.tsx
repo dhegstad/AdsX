@@ -14,7 +14,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "AdsX — Start & Grow Your Shopify Store | Guides, Deals & Tools",
+    default: "AdsX — Shopify Apps, Ecommerce & Advertising",
     template: "%s | AdsX",
   },
   icons: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
       { url: '/apple-icon', type: 'image/png', sizes: '180x180' },
     ],
   },
-  description: "AdsX is a free resource for starting and growing a store on Shopify — the cardless free trial and $1/month deal, which plan to pick, selling your product niche, catalog APIs, and getting recommended by AI shopping assistants.",
+  description: "Guides to Shopify apps, starting a store, ecommerce, advertising, and AI. Compare tools and platforms and make informed decisions for your business.",
   keywords: [
     "start a shopify store",
     "how to start shopify",
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://www.adsx.com",
     siteName: "AdsX",
-    title: "AdsX — Start & Grow Your Shopify Store",
-    description: "A free resource for starting and growing a store on Shopify: the free trial and $1/month deal, plans and fees, selling your product niche, and AI shopping visibility.",
+    title: "AdsX — Shopify, Ecommerce & Advertising",
+    description: "Guides to Shopify apps, starting a store, ecommerce, advertising, and AI. Compare tools and platforms and make informed decisions for your business.",
     images: [
       {
         url: "https://www.adsx.com/opengraph-image",
@@ -74,8 +74,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AdsX — Start & Grow Your Shopify Store",
-    description: "Free guides and tools for starting a store on Shopify — the free trial and $1/month deal, plans, niches, and AI shopping visibility.",
+    title: "AdsX — Shopify, Ecommerce & Advertising",
+    description: "Guides to Shopify apps, starting a store, ecommerce, advertising, and AI. Compare tools and platforms and make informed decisions for your business.",
     creator: "@adsx",
     site: "@adsx",
     images: ["https://www.adsx.com/opengraph-image"],

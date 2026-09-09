@@ -1,9 +1,8 @@
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Contact AdsX - Get Your Free AI Visibility Audit",
-  description:
-    "Get in touch with AdsX for a free AI search visibility audit. Book a strategy call or send us a message about your AI advertising needs.",
+  title: "Contact AdsX",
+  description: "Contact AdsX about the publication, article corrections, sources, or the Shopify app in development.",
   path: "/contact",
 });
 

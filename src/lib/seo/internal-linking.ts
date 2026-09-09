@@ -1,5 +1,4 @@
-import { getAllIntegrations } from "@/lib/integrations";
-import { getAllLists } from "@/lib/curated-lists";
+import { getTopicSlugs, getContentIntent, publicationTopics } from "@/lib/publication";
 import { getAllPosts, type BlogPostMeta } from "@/lib/blog";
 
 export interface RelatedPage {
@@ -17,151 +16,13 @@ export function getRelatedPages(
   post: BlogPostMeta,
   limit: number = 3
 ): RelatedPage[] {
-  const relatedPages: RelatedPage[] = [];
-  const tags = post.tags?.map((t) => t.toLowerCase()) || [];
-  const category = post.category.toLowerCase();
-  const title = post.title.toLowerCase();
-
-  // Link to free audit tool for actionable content
-  if (category === "guide" || category === "how-to") {
-    relatedPages.push({
-      title: "Free AI Visibility Audit",
-      path: "/tools/free-audit",
-      type: "tool",
-      relevance: 0.5,
-    });
-  }
-
-  // Check integration pages for platform-specific content
-  const integrations = getAllIntegrations();
-  for (const integration of integrations) {
-    let relevance = 0;
-    const platformLower = integration.name.toLowerCase();
-
-    if (title.includes(platformLower)) {
-      relevance += 0.4;
-    }
-
-    for (const tag of tags) {
-      if (tag.includes(platformLower)) {
-        relevance += 0.3;
-      }
-    }
-
-    // Category matching
-    if (integration.category === "ecommerce" && (tags.includes("e-commerce") || tags.includes("ecommerce") || tags.includes("shopping"))) {
-      relevance += 0.2;
-    }
-
-    if (relevance > 0) {
-      relatedPages.push({
-        title: `AI Visibility for ${integration.name}`,
-        path: `/integrations/${integration.slug}`,
-        type: "integration",
-        relevance: Math.min(relevance, 1),
-      });
-    }
-  }
-
-  // Check curated lists for guide/resource content
-  const curatedLists = getAllLists();
-  const guideKeywords = ["best", "top", "guide", "how to", "tools", "resources"];
-  const isGuideContent = guideKeywords.some(k => title.includes(k) || category === "guide");
-
-  if (isGuideContent) {
-    for (const list of curatedLists.slice(0, 5)) {
-      let relevance = 0;
-
-      // Check if list keywords match post content
-      for (const keyword of list.keywords) {
-        if (title.includes(keyword.toLowerCase())) {
-          relevance += 0.35;
-        }
-        for (const tag of tags) {
-          if (keyword.toLowerCase().includes(tag)) {
-            relevance += 0.2;
-          }
-        }
-      }
-
-      if (relevance > 0) {
-        relatedPages.push({
-          title: list.title,
-          path: `/best/${list.slug}`,
-          type: "guide",
-          relevance: Math.min(relevance, 1),
-        });
-      }
-    }
-  }
-
-  // Always include the free audit tool as a conversion link
-  relatedPages.push({
-    title: "Free AI Visibility Audit",
-    path: "/tools/free-audit",
-    type: "tool",
-    relevance: 0.35,
-  });
-
-  // Always include the services page
-  relatedPages.push({
-    title: "Our AI Advertising Services",
-    path: "/services",
-    type: "service",
-    relevance: 0.15,
-  });
-
-  // Shopify conversion hubs — the affiliate money pages. Always linked so every
-  // post funnels into them; boosted on Shopify / commerce / decision-stage posts
-  // so they rank at the top of a niche post's "explore more" links.
-  const shopifyIntent =
-    title.includes("shopify") ||
-    tags.some(
-      (t) =>
-        t.includes("shopify") ||
-        t.includes("e-commerce") ||
-        t.includes("ecommerce") ||
-        t.includes("dropshipping") ||
-        t.includes("dtc")
-    ) ||
-    ["shopify", "e-commerce", "ecommerce", "developers", "getting started"].includes(
-      category
-    );
-  const decisionIntent =
-    title.includes(" vs ") ||
-    title.includes("alternative") ||
-    title.includes("right for") ||
-    title.includes("worth it") ||
-    category === "comparison";
-  relatedPages.push({
-    title: "Start a Shopify Store",
-    path: "/start-a-shopify-store",
-    type: "guide",
-    relevance: shopifyIntent ? 0.92 : 0.4,
-  });
-  relatedPages.push({
-    title: "Shopify Free Trial — $1/mo Deal",
-    path: "/shopify-free-trial-deal",
-    type: "guide",
-    relevance: shopifyIntent ? 0.88 : 0.32,
-  });
-  relatedPages.push({
-    title: "Is Shopify Right for You?",
-    path: "/is-shopify-right-for-you",
-    type: "guide",
-    relevance: decisionIntent ? 0.85 : 0.3,
-  });
-
-  // Deduplicate by path and sort by relevance
-  const seen = new Set<string>();
-  return relatedPages
-    .sort((a, b) => b.relevance - a.relevance)
-    .filter((page) => {
-      if (seen.has(page.path)) return false;
-      seen.add(page.path);
-      return true;
-    })
-    .slice(0, limit);
+  const topics = getTopicSlugs(post);
+  const pages: RelatedPage[] = publicationTopics.filter(t => topics.includes(t.slug)).map(t => ({ title: t.name, path: `/topics/${t.slug}`, type: "guide", relevance: 1 }));
+  if (getContentIntent(post) === "affiliate") pages.push({ title: "Start a Shopify store", path: "/start-a-shopify-store", type: "guide", relevance: 0.9 }, { title: "Is Shopify right for you?", path: "/is-shopify-right-for-you", type: "guide", relevance: 0.8 });
+  if (topics.includes("advertising")) pages.push({ title: "Free ROAS calculator", path: "/tools/roas-calculator", type: "tool", relevance: 0.8 });
+  if (topics.includes("development") || topics.includes("ai-commerce")) pages.push({ title: "Product feed readiness checker", path: "/tools/feed-readiness-checker", type: "tool", relevance: 0.8 });
+  if (!pages.length) pages.push({ title: "Explore Shopify and ecommerce topics", path: "/topics", type: "guide", relevance: 0.5 });
+  return pages.slice(0, limit);
 }
 
 /**

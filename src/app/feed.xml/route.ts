@@ -32,9 +32,9 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>AdsX Blog - AI Search Advertising Insights</title>
+    <title>AdsX Blog - Shopify &amp; Ecommerce Guides</title>
     <link>${siteUrl}/blog</link>
-    <description>Expert insights on AI search advertising, ChatGPT ads, content optimization for LLMs, and strategies for capturing visibility in AI-powered search.</description>
+    <description>Practical guides to Shopify apps, ecommerce, advertising, AI, and starting an online store.</description>
     <language>en-US</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>

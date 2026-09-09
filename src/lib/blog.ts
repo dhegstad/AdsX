@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import type { ContentIntent } from "./publication";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
@@ -49,6 +50,8 @@ export interface FAQItem {
 }
 
 export interface BlogPost {
+  topics?: string[];
+  intent?: ContentIntent;
   slug: string;
   title: string;
   excerpt: string;
@@ -79,6 +82,9 @@ export interface BlogPost {
 }
 
 export interface BlogPostMeta {
+  topics?: string[];
+  intent?: ContentIntent;
+  updated?: string;
   slug: string;
   title: string;
   excerpt: string;
@@ -124,9 +130,12 @@ export function getAllPosts(): BlogPostMeta[] {
       title: data.title || slug,
       excerpt: data.excerpt || "",
       date: data.date || new Date().toISOString(),
+      updated: data.updated,
+      topics: data.topics,
+      intent: data.intent,
       category: data.category || "Uncategorized",
       tags: data.tags || [],
-      author: data.author || { name: "AdsX Team", role: "AI Search Experts" },
+      author: data.author || { name: "AdsX Team", role: "Ecommerce Editorial" },
       image: data.image || extractFirstImage(content),
       readingTime: stats.text,
       featured: data.featured || false,
@@ -157,9 +166,11 @@ export function getPostBySlug(slug: string): BlogPost | null {
     content,
     date: data.date || new Date().toISOString(),
     updated: data.updated,
+    topics: data.topics,
+    intent: data.intent,
     category: data.category || "Uncategorized",
     tags: data.tags || [],
-    author: data.author || { name: "AdsX Team", role: "AI Search Experts" },
+    author: data.author || { name: "AdsX Team", role: "Ecommerce Editorial" },
     image: data.image,
     imageAlt: data.imageAlt,
     readingTime: stats.text,
@@ -333,8 +344,8 @@ export const authors: Author[] = [
   {
     slug: "adsx-team",
     name: "AdsX Team",
-    role: "AI Search Specialists",
-    bio: "The AdsX team helps brands navigate AI-powered search and get recommended by ChatGPT, Claude, Perplexity, and other AI platforms. With deep expertise in LLM optimization, paid media, and e-commerce growth, our team has driven a 340% average increase in AI mentions for clients across industries.",
+    role: "Ecommerce Editorial",
+    bio: "AdsX Team is the shared editorial byline for our Shopify and ecommerce publication. Guides combine primary sources with practical decision frameworks and clearly labeled examples. See our editorial policy for sourcing and corrections.",
     linkedin: "company/adsx",
     twitter: "adsxcom",
   },
@@ -342,7 +353,7 @@ export const authors: Author[] = [
     slug: "dennis-hegstad",
     name: "Dennis Hegstad",
     role: "Founder & CEO",
-    bio: "Dennis Hegstad is the founder and CEO of AdsX, the first advertising agency built for AI search. With a background in performance marketing and e-commerce growth, Dennis identified the shift toward AI-powered product discovery early and built AdsX to help brands capitalize on this new channel. He specializes in AI visibility strategy, Shopify growth, and building scalable paid acquisition systems.",
+    bio: "Dennis Hegstad is the founder of AdsX, an independent ecommerce publication and a Shopify app in development. AdsX covers Shopify, merchant software, advertising, and AI in commerce.",
     linkedin: "dennishegstad",
     twitter: "dennishegstad",
     knowsAbout: [
@@ -356,7 +367,7 @@ export const authors: Author[] = [
     slug: "adsx-engineering",
     name: "AdsX Engineering",
     role: "Shopify API & Commerce Engineering",
-    bio: "The AdsX engineering team builds the data pipelines that turn a Shopify product catalog into high-performing ad feeds across Google, Meta, and AI shopping agents. We work hands-on with the Shopify Admin GraphQL API, the Product Feed and Catalog APIs, metafields, and bulk operations every day, and these guides document the patterns we use in production.",
+    bio: "AdsX Engineering is the shared byline for technical guides covering Shopify APIs, product data, extensions, and development workflows. Implementation examples should be checked against the documentation for the API version you use.",
     linkedin: "company/adsx",
     twitter: "adsxcom",
     knowsAbout: [

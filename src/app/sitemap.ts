@@ -5,6 +5,7 @@ export const revalidate = 86400;
 
 import { getAllPosts, authors } from '@/lib/blog';
 import { getAllIntegrations } from '@/lib/integrations';
+import { publicationTopics } from '@/lib/publication';
 import { getAllLists } from '@/lib/curated-lists';
 
 // Single sitemap served at /sitemap.xml. With ~1,450 URLs we are far under the
@@ -16,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use a fixed date for static/programmatic pages so Google doesn't see
   // a new lastModified on every crawl (which causes it to distrust the signal).
   // Update these dates only when the actual page content changes.
+  const PUBLICATION_UPDATED = new Date('2026-09-09');
   const CORE_PAGES_UPDATED = new Date('2026-04-15');
   const PROGRAMMATIC_PAGES_UPDATED = new Date('2026-04-01');
   const LEGAL_PAGES_UPDATED = new Date('2026-01-15');
@@ -30,22 +32,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Core pages
       {
         url: baseUrl,
-        lastModified: CORE_PAGES_UPDATED,
+        lastModified: PUBLICATION_UPDATED,
         changeFrequency: 'weekly' as const,
         priority: 1,
       },
       {
         url: `${baseUrl}/about`,
-        lastModified: CORE_PAGES_UPDATED,
+        lastModified: PUBLICATION_UPDATED,
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },
       {
         url: `${baseUrl}/contact`,
-        lastModified: CORE_PAGES_UPDATED,
+        lastModified: PUBLICATION_UPDATED,
         changeFrequency: 'monthly' as const,
         priority: 0.9,
       },
+      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
       // Shopify conversion hubs (affiliate money pages)
       {
         url: `${baseUrl}/start-a-shopify-store`,
@@ -133,7 +136,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Author pages (E-E-A-T)
       ...authors.map((author) => ({
         url: `${baseUrl}/blog/author/${author.slug}`,
-        lastModified: CORE_PAGES_UPDATED,
+        lastModified: PUBLICATION_UPDATED,
         changeFrequency: 'monthly' as const,
         priority: 0.5,
       })),
@@ -153,7 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // All blog posts
     ...allPosts.map((post) => ({
       url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.date),
+      lastModified: new Date(post.updated || post.date),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),

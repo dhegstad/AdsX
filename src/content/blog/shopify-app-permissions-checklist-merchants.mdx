@@ -1,0 +1,51 @@
+---
+title: "Shopify App Permissions: A Merchant’s Pre-Install Checklist"
+excerpt: "Match requested data access to the app’s actual job, record the decision, and plan what happens when you uninstall."
+date: "2026-09-09"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps"]
+tags: ["Shopify", "shopify-apps"]
+---
+
+Review an app’s requested access by comparing it with the job you want the app to do. A fulfillment app and a storefront design app may need very different data. A long permission list is not automatically wrong, but an unexplained permission is a reason to investigate before connecting your store.
+
+Shopify displays an authorization step during [app installation](https://help.shopify.com/en/manual/apps/installing-apps). Expand the access details and read the specific actions, rather than approving from the app’s name or logo alone.
+
+## Start with a one-sentence requirement
+
+Write: “This app needs to do ___ using ___.” For example: “This app needs to produce shipping labels using order and delivery information.” That gives you a reason to expect relevant order access and a concrete basis for questioning unrelated access.
+
+Do not decide that a vendor is unsafe based only on an unfamiliar permission name. Ask what feature uses it, whether you can disable that feature, and what stops working without it. Keep the answer with the installation record.
+
+## Use a permission decision sheet
+
+| Review item | Record this | Follow up when |
+| --- | --- | --- |
+| App purpose | The workflow you actually need | The requested access serves an unused feature |
+| Read access | Data the app can retrieve | The scope is broader than the stated job |
+| Write access | Records or settings it can change | Changes could affect fulfillment, pricing, or storefront behavior |
+| Customer information | Which information and why | The explanation is vague or absent |
+| Connected services | Where else information may go | A required external account was not in the original evaluation |
+| Exit process | Export, uninstall, and data handling steps | The vendor cannot explain what remains afterward |
+
+This is an operational checklist, not a certification or legal compliance determination. A privacy policy explains a vendor’s stated practices; it does not prove every implementation detail.
+
+## Ask about data handling in plain language
+
+Send the developer a focused question through its published support channel: “We need feature X. Why does that require permission Y, and what data is retained when we stop using the app?” You are more likely to get an actionable answer than from a generic request to confirm security.
+
+Shopify’s [app selection guidance](https://help.shopify.com/en/manual/apps/finding-choosing-apps) directs merchants to developers and their privacy policies for access, use, and deletion questions. Treat an unanswered question about a business-critical requirement as unresolved in your comparison, not as a passed check.
+
+## Review access again when the job changes
+
+A store may install an app for one feature and later use several integrations. Review the record when you add those connections, change ownership of the workflow, or move to another app. Make one person responsible for keeping the register current.
+
+For a small team, a short document is enough: installation date, business owner, needed features, approved access, support answer, connected accounts, and next review date. Never put passwords or access tokens into that register.
+
+## Plan the exit before you need it
+
+List the data and settings you would need to recreate elsewhere. If the app affects the storefront, record where its blocks or embeds appear. If it handles customer-facing messages, know how those messages will continue after removal.
+
+Follow the [app cleanup guide](/blog/uninstall-shopify-apps-cleanup-guide) when retiring a tool. Review [free-to-install pricing](/blog/shopify-app-free-to-install-vs-free-plan) separately: agreeing to data access and understanding the bill are two distinct installation decisions. The [Shopify apps hub](/topics/shopify-apps) connects the full selection process.

@@ -7,11 +7,11 @@ import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Blog | AI Search Advertising Insights",
-  description: "Expert insights on AI search advertising, ChatGPT ads, content optimization for LLMs, and strategies for capturing visibility in AI-powered search.",
+  title: "Blog | Shopify & Ecommerce Guides",
+  description: "Practical guides to Shopify apps, ecommerce, advertising, AI, and starting an online store.",
   openGraph: {
-    title: "Blog | AdsX - AI Search Advertising Insights",
-    description: "Expert insights on AI search advertising, ChatGPT ads, and strategies for AI visibility.",
+    title: "Blog | AdsX - Shopify & Ecommerce Guides",
+    description: "Shopify apps, ecommerce, advertising, AI, and store setup guides.",
     type: "website",
   },
   alternates: {

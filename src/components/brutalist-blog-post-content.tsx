@@ -6,7 +6,8 @@ import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
-import { AffiliateCTA } from "@/components/blog/affiliate-cta";
+import { ArticleCTA } from "@/components/blog/article-cta";
+import { getContentIntent, getTopicSlugs, publicationTopics } from "@/lib/publication";
 import type { BlogPost, BlogPostMeta } from "@/lib/blog";
 import {
   withShopifyAffiliate,
@@ -336,6 +337,8 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
   const tocHeadings = extractHeadings(post.content);
   const markdownComponents = createMarkdownComponents(slug);
   const contentParts = splitForMidCta(post.content);
+  const intent = getContentIntent(post);
+  const topics = publicationTopics.filter((topic) => getTopicSlugs(post).includes(topic.slug));
 
   return (
     <BrutalistLayout>
@@ -557,7 +560,8 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
             )}
 
             {/* Above-the-fold signup nudge — slim so it doesn't push content down. */}
-            <AffiliateCTA slug={slug} placement="cta-top" variant="compact" />
+            {topics.length > 0 && <nav aria-label="Article topics" className="flex flex-wrap gap-3 mb-6">{topics.map((topic) => <Link key={topic.slug} href={`/topics/${topic.slug}`} className="text-sm text-[#10b981] underline">{topic.name}</Link>)}</nav>}
+            <ArticleCTA slug={slug} intent={intent} placement="cta-top" />
 
             <article className="v1-prose max-w-none break-words">
               {contentParts ? (
@@ -568,7 +572,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                   >
                     {contentParts[0]}
                   </ReactMarkdown>
-                  <AffiliateCTA slug={slug} placement="cta-mid" />
+                  <ArticleCTA slug={slug} intent={intent} placement="cta-mid" />
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={markdownComponents}
@@ -738,7 +742,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
 
       {/* Closing CTA — tracked Shopify signup (replaces the legacy agency CTA). */}
       <div className="p-6 md:p-10">
-        <AffiliateCTA slug={slug} placement="cta-footer" />
+        <ArticleCTA slug={slug} intent={intent} placement="cta-footer" />
       </div>
     </BrutalistLayout>
   );

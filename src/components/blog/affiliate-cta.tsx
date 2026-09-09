@@ -48,7 +48,7 @@ export function AffiliateCTA({
           <span className="font-semibold text-[#EAEAEA]">
             Starting a store?
           </span>{" "}
-          Build on Shopify free, then $1/month for your first 3 months.
+          Explore Shopify’s current trial offer. Affiliate link; we may earn a commission.
         </p>
         <a
           href={href}
@@ -95,7 +95,7 @@ export function AffiliateCTA({
           <strong className="text-[#EAEAEA]">
             $1/month for your first 3 months
           </strong>{" "}
-          on any plan.
+          on eligible plans. Offers vary by location and eligibility.
         </p>
 
         <ul className="mb-7 list-none space-y-2 p-0">

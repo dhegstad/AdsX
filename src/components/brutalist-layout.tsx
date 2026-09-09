@@ -8,11 +8,11 @@ interface BrutalistLayoutProps {
 }
 
 const navLinks = [
-  { label: "HOME", href: "/" },
+  { label: "TOPICS", href: "/topics" },
   { label: "BLOG", href: "/blog" },
   { label: "START A STORE", href: "/start-a-shopify-store" },
   { label: "ABOUT", href: "/about" },
-  { label: "CONTACT", href: "/contact" },
+
 ];
 
 const footerLinks = {
@@ -25,16 +25,17 @@ const footerLinks = {
     { label: "Start a Shopify Store", href: "/start-a-shopify-store" },
     { label: "Shopify Free Trial Deal", href: "/shopify-free-trial-deal" },
     { label: "Is Shopify Right for You?", href: "/is-shopify-right-for-you" },
-    { label: "Free Audit", href: "/tools/free-audit" },
-    { label: "Best Of", href: "/best" },
+    { label: "Running a Store", href: "/topics/running-a-store" },
+    { label: "Shopify Apps", href: "/topics/shopify-apps" },
   ],
   explore: [
     { label: "All Guides", href: "/blog" },
-    { label: "Integrations", href: "/integrations" },
+    { label: "All Topics", href: "/topics" },
     { label: "ROAS Calculator", href: "/tools/roas-calculator" },
     { label: "Feed Readiness Checker", href: "/tools/feed-readiness-checker" },
   ],
   legal: [
+    { label: "Editorial Policy", href: "/editorial-policy" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],
@@ -191,11 +192,12 @@ export function BrutalistLayout({ children }: BrutalistLayoutProps) {
                   className="hidden sm:block border border-[#EAEAEA] bg-[#EAEAEA] text-[#080808] px-2 py-1 text-[10px] font-bold"
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
-                  SYS: ONLINE
+                  PUBLICATION
                 </div>
 
                 {/* Mobile Menu Button */}
                 <button
+                  aria-expanded={mobileMenuOpen}
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 border border-[#333] hover:border-[#EAEAEA] transition-colors"
                   aria-label="Toggle menu"
