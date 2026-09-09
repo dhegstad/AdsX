@@ -18,6 +18,7 @@ export function getRelatedPages(
 ): RelatedPage[] {
   const topics = getTopicSlugs(post);
   const pages: RelatedPage[] = publicationTopics.filter(t => topics.includes(t.slug)).map(t => ({ title: t.name, path: `/topics/${t.slug}`, type: "guide", relevance: 1 }));
+  if (topics.includes("start-a-store")) pages.push({ title: "Shopify startup cost calculator", path: "/tools/shopify-startup-cost-calculator", type: "tool", relevance: 0.9 });
   if (getContentIntent(post) === "affiliate") pages.push({ title: "Start a Shopify store", path: "/start-a-shopify-store", type: "guide", relevance: 0.9 }, { title: "Is Shopify right for you?", path: "/is-shopify-right-for-you", type: "guide", relevance: 0.8 });
   if (topics.includes("advertising")) pages.push({ title: "Free ROAS calculator", path: "/tools/roas-calculator", type: "tool", relevance: 0.8 });
   if (topics.includes("development") || topics.includes("ai-commerce")) pages.push({ title: "Product feed readiness checker", path: "/tools/feed-readiness-checker", type: "tool", relevance: 0.8 });
