@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
+import { publicationTopics } from "@/lib/publication";
 import type { BlogPostMeta } from "@/lib/blog";
 
 interface Category {
@@ -99,10 +100,10 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
             letterSpacing: "-2px",
           }}
         >
-          AI Search<br />Optimization Blog
+          Shopify &amp;<br />Ecommerce
         </h1>
         <p className="mt-6 max-w-2xl text-[#888] text-lg">
-          Strategic intelligence on AI search visibility, optimization tactics, and the future of brand discovery.
+          Guides to starting a store, choosing apps, advertising, AI, and the work of running an ecommerce business.
         </p>
       </div>
 
@@ -111,7 +112,7 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
         {[
           { label: "TOTAL POSTS", value: String(displayTotal).padStart(2, "0") },
           { label: "CATEGORIES", value: String(categories.length).padStart(2, "0") },
-          { label: "AVG READ TIME", value: "8M" },
+          { label: "READING TOPICS", value: String(publicationTopics.length) },
         ].map((stat) => (
           <div
             key={stat.label}
@@ -139,7 +140,7 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
           className="text-xs tracking-widest text-[#888] mr-4 self-center"
           style={{ fontFamily: "var(--font-mono)" }}
         >
-          FILTER:
+          EXPLORE:
         </span>
         <Link
           href="/blog"
@@ -148,14 +149,14 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
         >
           ALL
         </Link>
-        {categories.slice(0, 5).map((cat) => (
+        {publicationTopics.map((cat) => (
           <Link
             key={cat.slug}
-            href={`/blog/category/${cat.slug}`}
+            href={`/topics/${cat.slug}`}
             className="px-3 py-1 border border-[#333] text-[#888] text-xs tracking-wider hover:border-[#EAEAEA] hover:text-[#EAEAEA] transition-colors"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            {cat.category.toUpperCase()}
+            {cat.name.toUpperCase()}
           </Link>
         ))}
       </div>
@@ -420,17 +421,11 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
           Stay Informed
         </h2>
         <p className="text-[#888] mb-8 max-w-lg mx-auto">
-          Get the latest AI search intelligence delivered to your inbox.
+          Follow new articles in your RSS reader. No account needed.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-          <input
-            type="email"
-            placeholder="your@email.com"
-            className="v1-input flex-grow"
-          />
-          <button className="cta-btn cta-btn-primary whitespace-nowrap">
-            Subscribe
-          </button>
+          <a href="/feed.xml" className="cta-btn cta-btn-primary">Follow via RSS →</a>
+          <Link href="/editorial-policy" className="cta-btn">How we publish →</Link>
         </div>
       </div>
     </BrutalistLayout>

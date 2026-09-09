@@ -11,12 +11,6 @@ interface FormData {
   message: string;
 }
 
-const stats = [
-  { label: "AI MENTIONS", value: "+340%" },
-  { label: "RESPONSE TIME", value: "24HR" },
-  { label: "BRANDS LIVE", value: "52" },
-];
-
 export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -76,31 +70,8 @@ export default function ContactPage() {
           Initiate<br />contact
         </h1>
         <p className="mt-6 max-w-2xl text-[#888] text-lg">
-          Free AI visibility audit included with every consultation.
+          Questions about AdsX, a correction to an article, or a Shopify topic we should cover? Send us a message.
         </p>
-      </div>
-
-      {/* Stats Strip */}
-      <div className="grid grid-cols-3 border-b border-[#333]">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="p-4 md:p-6 border-r last:border-r-0 border-[#333] text-center"
-          >
-            <div
-              className="text-2xl md:text-3xl text-[#10b981]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {stat.value}
-            </div>
-            <div
-              className="text-[10px] md:text-xs tracking-widest text-[#888] mt-1"
-              style={{ fontFamily: "var(--font-mono)" }}
-            >
-              {stat.label}
-            </div>
-          </div>
-        ))}
       </div>
 
       {/* Main Content */}
@@ -111,25 +82,25 @@ export default function ContactPage() {
             className="text-xs tracking-widest text-[#10b981] mb-6"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            WHAT YOU&apos;LL GET
+            GET IN TOUCH
           </div>
 
           <div className="space-y-8">
             {[
               {
                 idx: "01",
-                title: "Free AI Visibility Audit",
-                desc: "See exactly how your brand appears across ChatGPT, Gemini, Claude, and Perplexity.",
+                title: "Publication & Corrections",
+                desc: "Include the article URL and the information you think needs updating.",
               },
               {
                 idx: "02",
-                title: "Strategy Roadmap",
-                desc: "Get a custom plan to capture the AI search channel before your competitors.",
+                title: "AdsX App",
+                desc: "Ask about the app we are developing for Thank you and Order status page advertising.",
               },
               {
                 idx: "03",
-                title: "Growth Projections",
-                desc: "Understand the potential impact on leads, traffic, and revenue.",
+                title: "Research & Sources",
+                desc: "Share a useful primary source or suggest a question for a future guide.",
               },
             ].map((item) => (
               <div key={item.idx} className="flex gap-4">
@@ -203,7 +174,7 @@ export default function ContactPage() {
                 Transmission Received
               </h2>
               <p className="text-[#888] mb-8">
-                We&apos;ll respond within 24 hours with available call times.
+                We&apos;ll respond as soon as we can with available call times.
               </p>
               <button
                 onClick={() => setStatus("idle")}
@@ -307,7 +278,7 @@ export default function ContactPage() {
                   required
                   rows={4}
                   className="v1-input"
-                  placeholder="Tell us about your AI search goals..."
+                  placeholder="How can we help? Include a relevant page URL if you have one."
                 />
               </div>
 
@@ -323,7 +294,7 @@ export default function ContactPage() {
                 className="text-xs text-[#888] text-center"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                NO SPAM // 24HR RESPONSE // FREE AUDIT INCLUDED
+                PUBLICATION QUESTIONS · APP INQUIRIES · CORRECTIONS
               </div>
             </form>
           )}

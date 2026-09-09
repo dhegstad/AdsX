@@ -19,7 +19,8 @@
     "gsc:sitemaps": "node scripts/gsc-sitemaps.mjs",
     "impact:pull": "node scripts/impact-pull.mjs",
     "impact:probe": "node scripts/impact-pull.mjs --probe",
-    "data:nightly": "node scripts/gsc-pull.mjs && node scripts/gsc-audit.mjs && node scripts/impact-pull.mjs && node scripts/gsc-review.mjs"
+    "data:nightly": "node scripts/gsc-pull.mjs && node scripts/gsc-audit.mjs && node scripts/impact-pull.mjs && node scripts/gsc-review.mjs",
+    "content:check": "node scripts/content-check.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",

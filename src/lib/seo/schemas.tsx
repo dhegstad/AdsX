@@ -25,7 +25,7 @@ export function createArticleSchema(config: {
   /** "Article" (default) or "TechArticle" for developer/code guides. */
   articleType?: "Article" | "TechArticle";
 }) {
-  const isOrg = config.author === "AdsX Team";
+  const isOrg = ["AdsX Team", "AdsX Engineering"].includes(config.author);
   return {
     "@context": "https://schema.org",
     "@type": config.articleType || "Article",
@@ -35,7 +35,7 @@ export function createArticleSchema(config: {
     author: {
       "@type": isOrg ? "Organization" : "Person",
       name: config.author,
-      ...(config.authorRole && { jobTitle: config.authorRole }),
+      ...(!isOrg && config.authorRole && { jobTitle: config.authorRole }),
       ...(config.authorBio && { description: config.authorBio }),
       ...(config.authorUrl && { url: config.authorUrl }),
       ...(config.authorSameAs?.length && { sameAs: config.authorSameAs }),
@@ -143,8 +143,7 @@ export function createOrganizationSchema() {
     url: SITE_URL,
     logo: SITE_LOGO,
     description:
-      "A free resource for starting and running an online store on Shopify — guides on the Shopify free trial and $1/month deal, plans and fees, selling product niches, the Shopify catalog APIs, and AI shopping visibility.",
-    foundingDate: "2024",
+      "An independent publication about Shopify, ecommerce, apps, advertising, and AI, with a Shopify advertising app in development.",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
@@ -172,7 +171,7 @@ export function createWebsiteSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     description:
-      "Practical guides and tools for starting and growing a store on Shopify — the free trial and $1/month deal, plans and fees, product niches, catalog APIs, and AI shopping visibility.",
+      "Practical guides and free tools for Shopify merchants: store setup, apps, post-purchase commerce, advertising, AI, and development.",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,

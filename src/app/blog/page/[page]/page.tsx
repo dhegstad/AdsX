@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  const title = `Blog - Page ${pageNum} | AI Search Insights`;
-  const description = `Page ${pageNum} of expert insights on AI search advertising, ChatGPT ads, and strategies for AI visibility.`;
+  const title = `Blog - Page ${pageNum} | Shopify & Ecommerce Guides`;
+  const description = `Page ${pageNum} of guides to Shopify apps, ecommerce, advertising, AI, and running a store.`;
   const canonical = `https://www.adsx.com/blog/page/${pageNum}`;
 
   const links: Record<string, string> = {};
