@@ -2,11 +2,11 @@
 
 ## Status
 
-Prepared and pushed branch `codex/publication-growth`. Open review: https://github.com/dhegstad/AdsX/pull/49
+Released through https://github.com/dhegstad/AdsX/pull/49, merged September 9 at 08:02 UTC. Production commit: `134a1aae053b6158423adbebeeb288194bebd490`.
 
 Vercel preview: https://adsx-git-codex-publication-growth-dennishegstad-4354s-projects.vercel.app
 
-Vercel reports the preview deployment Ready. The preview is protected by Vercel login; the browser reached that login page. Desktop and mobile visual/interaction checks were performed against the local production build. The PR has not been merged, and this batch has not been deployed to production.
+Vercel reports the preview deployment Ready. The preview is protected by Vercel login; the browser reached that login page. Desktop and mobile visual/interaction checks were performed against the local production build. The PR is now merged and production is live at https://www.adsx.com. Vercel reports a successful deployment. Production checks confirmed HTTP 200 and correct canonical URLs on all eight new articles, two refreshed articles, six topic hubs, the homepage, and editorial policy. The sitemap includes all new articles and the refreshed lastmod; RSS contains 348 items.
 
 ## Completed
 
@@ -16,6 +16,7 @@ Vercel reports the preview deployment Ready. The preview is protected by Vercel 
 - Reader-intent-based Shopify affiliate CTAs and relevant next reads/tools. Prominent AdsX app promotion deferred per Dennis’s clarification.
 - 96 proposed new article slots and 24 refreshes; the original 12-week proposal has been compressed to a September 9–22 sprint; the remaining entries require research and overlap checks.
 - Free distribution log and submission copy. Feedspot acknowledged the blog URL submission and then offered paid placement; no upgrade purchased, no backlink verified.
+- SaaSHub received the corrected live Gumroad/Shopify comparison for moderation; no fee or email field was required. All future directory correspondence uses dennis@adsx.com.
 - Measurement source audit: GA4 configured, Meta/X placeholders, no Google Ads destination in the analytics component, and no working newsletter signup in the blog.
 
 ## Validation
@@ -32,4 +33,4 @@ Vercel reports the preview deployment Ready. The preview is protected by Vercel 
 
 ## Next work
 
-Publish the reviewed first batch, then produce the next researched content cohort. Connect email subscriptions and the existing advertising accounts using verified account IDs and the appropriate consent behavior. Complete relevant directory flows that meet the $0 constraint, with any required account/terms steps handled explicitly. The accelerated 14-day cadence is a roadmap, not a scheduled automation. All future directory correspondence uses dennis@adsx.com; the original Feedspot receipt retains its actual submitted email.
+The first batch is published. Produce the next researched content cohort. Connect email subscriptions and the existing advertising accounts using verified account IDs and the appropriate consent behavior. Complete relevant directory flows that meet the $0 constraint, with any required account/terms steps handled explicitly. The accelerated 14-day cadence is a roadmap, not a scheduled automation. All future directory correspondence uses dennis@adsx.com; the original Feedspot receipt retains its actual submitted email.

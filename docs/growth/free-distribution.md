@@ -30,7 +30,7 @@ Use **dennis@adsx.com** for every new directory submission and related correspon
 | Opportunity | Actual state | Next action |
 |---|---|---|
 | [Feedspot publication submission](https://www.feedspot.com/?newtour=on) | submission-received-paid-upgrade-declined | Do not upgrade or resubmit. Receipt is not evidence of a public listing or backlink. |
-| [SaaSHub comparison-post index](https://www.saashub.com/alternatives/submit) | prepared-awaiting-refreshed-article-publication | Use refreshed, live Gumroad/Shopify comparison; check for an existing entry before final submission. Do not submit the preview domain. |
+| [SaaSHub comparison-post index](https://www.saashub.com/alternatives/submit) | submitted-pending-moderation | Submission received September 9; await approval and verify the external link before counting a backlink. |
 | [SaaSHub software product listing](https://www.saashub.com/services/submit) | flow-reviewed-not-submitted | Only list the working calculator if product eligibility fits. App listing waits for launch. Obtain the browser-policy-required confirmation before accepting terms. |
 | [AlternativeTo](https://alternativeto.net/faq/) | candidate-not-submitted | Verify free submission and tool eligibility; do not present the publication itself as installed software. |
 | [Product Hunt](https://www.producthunt.com/launch) | deferred-product-launch | Coordinate a real app launch later; not part of immediate publication distribution. |
@@ -43,6 +43,12 @@ Use **dennis@adsx.com** for every new directory submission and related correspon
 ## Feedspot receipt
 
 Submitted AdsX, the public business email hello@adsx.com, and https://www.adsx.com/blog through the publication form. The next page acknowledged the submission and offered a paid upgrade for featured placement. No paid plan was selected, and no public listing or link was verified. Retain this receipt and avoid a duplicate submission. After Dennis specified dennis@adsx.com, the existing Manage Your Listing page was checked: no free contact-edit control was exposed. The original submission address has not been changed; no paid upgrade was selected.
+
+## SaaSHub comparison receipt
+
+Submitted the live Gumroad/Shopify comparison on September 9. Corrected the automatically detected product list to Shopify and Gumroad and selected eCommerce Platform. Kept the article’s original publication date of August 15. The form did not request an email or payment; dennis@adsx.com remains the contact for later directory correspondence.
+
+The site acknowledged receipt and stated that the post requires approval. [Submission record](https://www.saashub.com/alternatives/post-adsx-2026-08-15-gumroad-vs-shopify-digital-products-fees-and-store-setup). This is not yet a verified accepted backlink. Do not resubmit.
 
 ## Submission rules
 
