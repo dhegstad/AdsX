@@ -371,6 +371,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
               style={{ fontFamily: "var(--font-mono)" }}
             >
               {new Date(post.date).toLocaleDateString("en-US", {
+                timeZone: "UTC",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -379,6 +380,7 @@ export function BrutalistBlogPostContent({ post, slug, relatedPosts, relatedPage
                 <span className="text-[#10b981]">
                   {" // UPDATED "}
                   {new Date(post.updated).toLocaleDateString("en-US", {
+                    timeZone: "UTC",
                     year: "numeric",
                     month: "short",
                     day: "numeric",

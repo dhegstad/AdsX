@@ -21,6 +21,12 @@ Compare mature cohorts. A hypothetical article with 1,000 relevant sessions and 
 
 The report guides actions: strong exposure with weak relevant clicks prompts a query/title review; readers without affiliate clicks prompt a page-fit/CTA review; trials without mature paid referrals prompt an audience, plan, geography, and qualification review. New cohorts need time to qualify before comparison with mature ones.
 
-## Current boundary
+## September 16 verification
 
-Link tags and client event code are implemented; rendered links have been verified. This calculator release does not connect or claim to reconcile the external GA4 and Impact reports. Next reporting work is to confirm event receipt, inspect the actual available Impact fields, and reconcile page/placement cohorts. Older untagged referrals cannot be retroactively assigned to articles without supporting evidence.
+GA4 receipt is verified for affiliate_click, tool_used, and tool_download. Event-scoped custom dimensions are now registered: Content page maps to post_slug; Affiliate placement maps to placement; Tool maps to tool_id. These definitions support future report breakdowns and do not reconstruct historical custom-dimension data. Account totals and screenshots remain outside this public repository.
+
+For a page report, filter to affiliate_click and break down event count and total users by Content page and Affiliate placement. Keep tool_used and tool_download in a separate tool report. A click is an outbound-interest event, not a Shopify registration, qualifying referral, or purchase. No monetary value is assigned to it.
+
+Impact requires an authenticated session or authorized export before commission reconciliation can be completed. Match Impact subId1 and subId2 to the GA4 page and placement in aggregate; keep trial, full-price, locked, reversed, and paid amounts separate. Older untagged referrals cannot be retroactively assigned to articles without supporting evidence.
+
+Meta, Google Ads, and X audience tags are not active: their account identifiers and consent configuration remain prerequisites. Email capture and email sequences are deferred at the owner's request.
