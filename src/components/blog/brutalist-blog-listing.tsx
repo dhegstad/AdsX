@@ -183,6 +183,7 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   {new Date(featuredPost.date).toLocaleDateString("en-US", {
+                    timeZone: "UTC",
                     year: "numeric",
                     month: "short",
                     day: "2-digit",
@@ -298,6 +299,7 @@ export function BrutalistBlogListing({ posts, categories, currentPage, totalPage
                   style={{ fontFamily: "var(--font-mono)" }}
                 >
                   {new Date(post.date).toLocaleDateString("en-US", {
+                    timeZone: "UTC",
                     month: "short",
                     day: "2-digit",
                   }).toUpperCase()}

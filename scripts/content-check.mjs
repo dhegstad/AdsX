@@ -6,13 +6,14 @@ import { withShopifyAffiliate } from '../src/lib/affiliate.ts';
 
 const batch = JSON.parse(fs.readFileSync('docs/growth/first-batch.json', 'utf8'));
 const platformBatch = JSON.parse(fs.readFileSync('docs/growth/platform-batch-2026-09-09.json', 'utf8'));
-const slugs = [...new Set(process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review', ...platformBatch.articles.map(p => p.slug)])];
+const growthSprint = JSON.parse(fs.readFileSync('docs/growth/sprint-2026-09-16.json', 'utf8'));
+const slugs = [...new Set(process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review', ...platformBatch.articles.map(p => p.slug), ...growthSprint.articles.map(p => p.slug)])];
 // This checks source presence. Relevance, claims, and current terms still require editorial review.
 const primarySourceHosts = new Set([
   'help.shopify.com', 'shopify.dev', 'www.shopify.com', 'apps.shopify.com',
   'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
   'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
-  'support.google.com', 'www.etsy.com', 'operationhope.org',
+  'support.google.com', 'www.etsy.com', 'operationhope.org', 'www.patreon.com', 'support.patreon.com',
 ]);
 function isPrimarySource(href) {
   try {

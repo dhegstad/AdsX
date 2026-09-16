@@ -1,0 +1,75 @@
+---
+title: 'Trading Card Inventory on Shopify: Prevent Double-Selling'
+excerpt: >-
+  Build a stock-control workflow for unique cards sold across Shopify,
+  marketplaces, and events. Includes identifiers, reservations, and
+  reconciliation tests.
+date: '2026-09-16'
+updated: '2026-09-16'
+category: Guide
+tags:
+  - Shopify
+  - running a store
+author:
+  name: AdsX Team
+  role: Ecommerce Editorial
+featured: false
+intent: learn
+topics:
+  - running-a-store
+faqs: []
+---
+
+A unique trading card should have one controlled sellable quantity, even when it is offered through several channels. The main challenge is identifying the exact card and recording every sale or reservation quickly enough to prevent a second buyer from purchasing it.
+
+A synchronization app can help, but no app choice replaces a clear record of which item exists, where it is, and which system controls availability. Start with the catalog in our [Shopify trading card store guide](/blog/shopify-for-trading-cards).
+
+## Give each sellable item an unambiguous identity
+
+For a single card, record game, set, card number, language, finish, condition, grading details where relevant, and your internal identifier. Two copies with different conditions or certificates should not be interchangeable in your stock record.
+
+| Field | Example purpose |
+|---|---|
+| Internal SKU | Joins your records across channels |
+| Marketplace listing ID | Identifies the external listing to update |
+| Shopify variant reference | Identifies the exact stock record |
+| Physical location | Tells the picker where the card is stored |
+| Condition and certificate | Distinguishes similar-looking copies |
+| Availability state | Separates sellable, reserved, and unavailable items |
+| Last reconciliation | Shows when the physical count was checked |
+
+These are proposed record fields, not a requirement to expose private storage information to customers. Keep the public listing accurate while protecting operational details.
+
+## Choose who controls stock
+
+Decide which system is authoritative for quantity and which systems receive updates. Avoid two independent tools repeatedly overwriting each other. Document how online sales, in-person sales, cancellations, returns, and manual corrections enter the record.
+
+Shopify's [inventory documentation](https://help.shopify.com/en/manual/products/inventory) and [quantity management guide](https://help.shopify.com/en/manual/products/inventory/adjusting-inventory) describe the platform's inventory controls. A third-party connector has its own supported channels, update timing, and failure behavior. Verify those separately.
+
+For a very small collection, allocating different stock to different channels can be simpler than listing every unique item everywhere. The tradeoff is less exposure for each item, but the control process may be easier to maintain.
+
+## Test the failure cases before broad synchronization
+
+Start with a few low-risk sample records and a documented rollback. Test the following scenarios using supported test methods or controlled operational checks:
+
+1. A sale on Shopify reduces availability in the connected channel.
+2. An external sale updates the exact Shopify variant.
+3. A cancellation follows your intended reservation-release process.
+4. A returned card stays unavailable until its condition is inspected.
+5. A temporary connector failure produces a visible alert or review item.
+6. A renamed listing still maps to the same internal item.
+7. A partial import does not create duplicate sellable stock.
+
+Do not assume an advertised “real-time” sync prevents every simultaneous purchase. Ask the provider about normal delay, conflict resolution, and what the operator should do during an outage.
+
+## Reconcile stock at the right moments
+
+Count high-value singles before an event, after the event, and after any import or connector change. Keep physical movement and online availability aligned. If a card is removed for photography, authentication, or damage inspection, record its temporary status.
+
+A useful daily exception list contains negative or unexpected quantities, missing mappings, failed updates, and recently changed high-value records. Assign one person to resolve the exceptions and record why the quantity changed.
+
+## Compare the cost of automation with the risk
+
+Imagine a connector costs $35 per month and saves two hours of reconciliation. That is a hypothetical time-and-cost comparison, not evidence that the tool pays for itself. Add setup work and ongoing exception handling, and consider the customer-service cost of an oversold item.
+
+Use the [app usage and spending-limit checklist](/blog/shopify-app-usage-charges-spending-limits) for tools billed by listings or orders. Choose a connector after it passes your actual stock tests. Keep the physical inventory record and recovery procedure usable even when the connector is unavailable.

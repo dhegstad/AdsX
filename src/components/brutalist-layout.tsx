@@ -22,6 +22,7 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
   ],
   resources: [
+    { label: "Shopify Launch Checklist", href: "/resources/shopify-launch-checklist" },
     { label: "Start a Shopify Store", href: "/start-a-shopify-store" },
     { label: "Shopify Free Trial Deal", href: "/shopify-free-trial-deal" },
     { label: "Is Shopify Right for You?", href: "/is-shopify-right-for-you" },

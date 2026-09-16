@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Core pages
       {
         url: baseUrl,
-        lastModified: PUBLICATION_UPDATED,
+        lastModified: new Date('2026-09-16'),
         changeFrequency: 'weekly' as const,
         priority: 1,
       },
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.9,
       },
-      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
+      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: path.startsWith("/topics") ? new Date("2026-09-16") : PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
       // Shopify conversion hubs (affiliate money pages)
       {
         url: `${baseUrl}/start-a-shopify-store`,
@@ -74,10 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       },
+      // Free planning resource
+      { url: `${baseUrl}/resources/shopify-launch-checklist`, lastModified: new Date("2026-09-16"), changeFrequency: "monthly" as const, priority: 0.8 },
       // Tools
       {
         url: `${baseUrl}/tools/shopify-startup-cost-calculator`,
-        lastModified: PUBLICATION_UPDATED,
+        lastModified: new Date("2026-09-16"),
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },

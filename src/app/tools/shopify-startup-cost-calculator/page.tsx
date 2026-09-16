@@ -65,7 +65,9 @@ export default function StartupCostCalculatorPage() {
           ["/blog/shopify-pricing-2026-every-plan-real-cost", "Compare plans and the full store cost"],
           ["/blog/true-cost-running-shopify-store-first-year", "Build your first-year cost worksheet"],
           ["/blog/how-to-validate-product-demand-before-shopify-store", "Validate the product before buying stock"],
-          ["/blog/first-30-days-shopify-store-checklist", "Work through the first-month checklist"],
+          ["/resources/shopify-launch-checklist", "Print the Shopify launch checklist"],
+          ["/blog/shopify-annual-vs-monthly-billing-cash-flow", "Compare upfront and monthly billing"],
+          ["/blog/shopify-store-budget-10-50-100-orders", "Model a slower-sales month"],
         ].map(([href, title]) => <Link href={href} key={href} className="border border-[#333] hover:border-[#10b981] p-5 text-[#ccc] hover:text-[#10b981]">{title} →</Link>)}</div>
       </section>
 
