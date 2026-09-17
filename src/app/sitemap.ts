@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Core pages
       {
         url: baseUrl,
-        lastModified: new Date('2026-09-16'),
+        lastModified: new Date('2026-09-17'),
         changeFrequency: 'weekly' as const,
         priority: 1,
       },
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.9,
       },
-      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: path.startsWith("/topics") ? new Date("2026-09-16") : PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
+      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: path.startsWith("/topics") ? new Date(path === "/topics/development" ? "2026-09-16" : "2026-09-17") : PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
       // Shopify conversion hubs (affiliate money pages)
       {
         url: `${baseUrl}/start-a-shopify-store`,
@@ -79,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Tools
       {
         url: `${baseUrl}/tools/shopify-startup-cost-calculator`,
-        lastModified: new Date("2026-09-16"),
+        lastModified: new Date("2026-09-17"),
         changeFrequency: 'monthly' as const,
         priority: 0.8,
       },

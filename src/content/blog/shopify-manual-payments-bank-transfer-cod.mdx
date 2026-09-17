@@ -1,0 +1,70 @@
+---
+title: 'Shopify Manual Payments: Bank Transfer and COD Workflow'
+excerpt: >-
+  Set up a clear Shopify workflow for bank transfer and cash on delivery,
+  including unpaid orders, reconciliation, delivery handoff, and failed
+  collections.
+date: '2026-09-17'
+updated: '2026-09-17'
+category: Guide
+tags:
+  - Shopify
+  - running a store
+author:
+  name: AdsX Team
+  role: Ecommerce Editorial
+featured: false
+intent: learn
+topics:
+  - running-a-store
+faqs: []
+---
+Shopify supports manual payment methods such as bank transfer and cash on delivery. These methods let a customer place an order without an immediate online card payment. Your team must then receive, verify, and record the money using a process appropriate to that payment method.
+
+Treat “order received,” “payment received,” and “parcel delivered” as separate facts. Confusing them can lead to shipping an unpaid transfer order or marking a cash-on-delivery order paid before the carrier has collected anything.
+
+## How manual payments work in Shopify
+
+According to Shopify's [manual payment guidance](https://help.shopify.com/en/manual/payments/manual-payments), orders using these methods are recorded as unpaid until you mark them paid after receipt. Shopify does not charge third-party transaction fees for manual payments. That does not remove bank, carrier, collection, return, or operational costs.
+
+Shopify's [getting paid overview](https://help.shopify.com/en/manual/payments/getting-paid) explains the broader distinction between manual methods and provider-managed payment flows. Choose the method based on your customer's buying process and your ability to reconcile it reliably.
+
+## Bank transfer and COD need different controls
+
+| Control | Bank transfer | Cash on delivery |
+|---|---|---|
+| When money usually arrives | Before dispatch under your stated terms | At delivery, with remittance potentially later |
+| Evidence to rely on | Cleared bank receipt and matching reference | Carrier collection and remittance records |
+| Fulfillment decision | Release after your payment condition is met | Dispatch under an agreed COD arrangement |
+| Main exception | Missing, partial, or unidentified transfer | Refused parcel or failed collection |
+| Reconciliation owner | Staff checking the bank and order ledger | Staff matching carrier collection and deposit |
+
+This table is an editorial process design, not a universal promise about carriers or banks. Confirm the contract and available services in the regions you sell to.
+
+## Set clear instructions at checkout
+
+Write instructions a customer can follow without guessing: payment destination, order reference, amount and currency, expected deadline, and how to get help. For COD, explain any supported location or collection conditions and the amount due.
+
+Avoid promising immediate dispatch when staff only review transfers once each working day. State the actual review cadence in your operational notes and make the customer-facing delivery estimate compatible with it.
+
+Run a test order and inspect the instructions the customer sees. Check mobile readability, the order reference, and whether the amount still matches after a discount or shipping charge. Use the [checkout test checklist](/blog/shopify-test-order-before-launch-checklist) to record the result.
+
+## Reconcile money rather than screenshots
+
+For a transfer order, match the received amount, currency, date, and reference to the order. A customer's screenshot may help locate a transaction, but it is not your bank's confirmation that usable funds arrived.
+
+For COD, distinguish collection from carrier remittance. A delivery event is not necessarily a deposit into your account. Record the carrier reference, amount collected, any deductions, and the transfer that settles the batch. Investigate differences before treating the batch as fully reconciled.
+
+Use an exception list for partial payments, duplicate references, abandoned orders, refused deliveries, and amounts sent in the wrong currency. Assign an owner so these orders do not remain unresolved indefinitely.
+
+## Include failed deliveries in the cost model
+
+Consider a hypothetical COD test of twenty dispatched orders. If two are refused and each failed delivery creates $7 outbound shipping plus $6 return shipping, those failures cost $26 before handling or damaged stock. Spread across all twenty dispatched orders, the allowance is $1.30 per dispatch.
+
+This is not an expected refusal rate. Replace the inputs with your carrier terms and actual experience. Compare the resulting cost with the online payment route instead of comparing card fees with zero.
+
+## Decide whether the method earns its complexity
+
+Record completed paid orders, failed collections, time spent reconciling, and total delivery costs for a defined pilot period. Keep the number of available methods small enough that staff can operate them consistently.
+
+Use the [payment-provider comparison](/blog/shopify-payments-vs-stripe-vs-paypal) for online alternatives and the [shipping budget guide](/blog/shopify-first-store-shipping-budget) for delivery assumptions. Add manual payments when they solve a specific customer need and the complete process is ready.

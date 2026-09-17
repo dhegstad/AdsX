@@ -1,0 +1,70 @@
+---
+title: 'Shopify Free Shipping Threshold: Check the Margin Math'
+excerpt: >-
+  Calculate a free shipping threshold from contribution, test mixed carts and
+  discounts, and measure profit per visitor instead of average order value
+  alone.
+date: '2026-09-17'
+updated: '2026-09-17'
+category: Guide
+tags:
+  - Shopify
+  - running a store
+  - advertising
+author:
+  name: AdsX Team
+  role: Ecommerce Editorial
+featured: false
+intent: learn
+topics:
+  - running-a-store
+  - advertising
+faqs: []
+---
+A free shipping threshold should leave enough contribution to cover delivery and the other costs of the order. Setting it a fixed percentage above average order value is only a starting hypothesis. Product margins, parcel costs, discounts, and the basket mix determine whether the offer makes financial sense.
+
+Start with the smallest qualifying basket. If that basket does not work economically, hoping that shoppers add more items is a weak substitute for revising the offer.
+
+## Calculate a minimum viable qualifying basket
+
+For a simplified model, let product gross margin be 60%, payment processing be an illustrative 3% of product revenue plus $0.30, packaging and handling be $2, and shipping paid by the merchant be $6. Assume no other per-order costs in this first calculation.
+
+Contribution after those costs is:
+
+**Order revenue × (0.60 − 0.03) − $0.30 − $2 − $6**
+
+If you want at least $20 left before fixed overhead, marketing, and tax, the required product revenue is ($20 + $8.30) ÷ 0.57 = $49.65, rounded up to the nearest cent. A $50 threshold clears that target under these assumptions. It is not a universal recommendation.
+
+## Stress-test the product mix
+
+| Illustrative basket | Product margin | Shipping cost | Contribution after modeled costs |
+|---|---:|---:|---:|
+| $50, standard items | 60% | $6 | $20.20 |
+| $50, lower-margin items | 40% | $6 | $10.20 |
+| $50, expensive parcel | 60% | $12 | $14.20 |
+
+All rows include 3% plus $0.30 processing and $2 packaging/handling. They exclude acquisition spending, returns, tax, and any additional fees. Add those before deciding what contribution is acceptable.
+
+A mixed catalog may need exclusions or different shipping conditions. Heavy items, remote destinations, and low-margin products can change the answer. Use actual carrier quotes and product costs in the [shipping budget worksheet](/blog/shopify-first-store-shipping-budget).
+
+## Separate a shipping rate from a shipping discount
+
+Shopify's [shipping zones and rates documentation](https://help.shopify.com/en/manual/fulfillment/setup/shipping-rates/setting-up-shipping-rates) describes order-amount-based rates and free shipping options. Its [free shipping discount guide](https://help.shopify.com/en/manual/discounts/discount-types/free-shipping) covers a separate promotion mechanism with its own eligibility and conditions.
+
+Write down whether the offer is a permanent shipping rate or a promotion, which destinations it covers, and how it interacts with discounts. Shopify can combine rates from multiple profiles, so an item-level assumption can fail in a mixed cart. Verify the checkout result for the actual profiles and locations in your store.
+
+## Test the boundary, not just an expensive order
+
+For a proposed $50 threshold, test $49.99, $50, and $50.01 baskets. Repeat with a discount, a heavy item, a mixed-profile cart, and an address in each important shipping zone. Record the total the customer sees and the expected delivery service.
+
+Do not leave a gap between shipping tiers or cap the highest tier unintentionally. A large order that falls outside every rate is a checkout failure, even though the free shipping banner looks correct.
+
+If a $50 basket receives a $5 product discount and still gets free shipping under your configured offer, the original model changes. At the same $20 product cost, $6 shipping, $2 handling, and 3% plus $0.30 processing on $45, contribution becomes $15.35. Recalculate using the discount behavior you observe.
+
+## Measure what the offer actually changes
+
+Track contribution per completed order and per visitor, conversion rate, shipping subsidy, returns, and the share of orders barely reaching the threshold. Higher average order value can coexist with lower profit if discounts or expensive shipping consume the increase.
+
+Use comparable periods and note promotions, traffic-source changes, and stockouts. A small before-and-after sample does not establish causation. Retain the current offer long enough to collect useful evidence, then change one major variable at a time.
+
+The [startup cost calculator](/tools/shopify-startup-cost-calculator) connects order contribution with fixed costs. Your shipping threshold belongs in that larger model, not in a banner chosen only because a competitor uses it.

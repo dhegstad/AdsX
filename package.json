@@ -22,7 +22,9 @@
     "data:nightly": "node scripts/gsc-pull.mjs && node scripts/gsc-audit.mjs && node scripts/impact-pull.mjs && node scripts/gsc-review.mjs",
     "content:check": "node scripts/content-check.mjs",
     "test:startup-cost": "node --test scripts/startup-cost-calculator.test.mjs",
-    "test:affiliate": "node --test scripts/affiliate-links.test.mjs"
+    "test:affiliate": "node --test scripts/affiliate-links.test.mjs",
+    "indexnow": "node scripts/indexnow-submit.mjs",
+    "test:indexnow": "node --test scripts/indexnow.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",

@@ -1,12 +1,14 @@
 # AdsX product and publication context
 
-Updated September 9, 2026 from Dennis's instructions. This includes Dennis’s latest clarification and supersedes the former AI-search-agency positioning.
+Updated September 17, 2026 from Dennis's instructions. This includes Dennis’s latest clarification and supersedes the former AI-search-agency positioning.
 
 The AdsX Shopify app is near completion but has not been submitted to the Shopify App Store for approval. It is a free Shopify app that would show third-party advertisements on merchants' Thank you and Order status pages and share advertising revenue with participating merchants. Public availability, Shopify approval, supported merchants, revenue-share percentage, advertiser controls, and payout terms have not been confirmed. Describe the app as in development until its status is verified. Do not invent an installation URL, launch date, earnings, customers, or approved capabilities.
 
 AdsX also operates an independent publication about Shopify apps, the Shopify ecosystem, ecommerce, DTC, advertising, and practical AI applications in commerce. Broad adjacent coverage is welcome when it helps an identifiable merchant or prospective merchant make a decision or complete a task.
 
 Immediate goal: grow the publication and Shopify affiliate revenue. Content must serve both prospective and current Shopify merchants; it must not be constrained to AdsX’s one feature area. App breakdowns, categories, strategies, platform benefits, pricing, features, and comparisons are central.
+
+Email capture, newsletters, email sequences, and outreach are paused at Dennis’s September 16 instruction. Build ungated resources and focus on content, indexing, and relevant free distribution.
 
 Staged conversion paths:
 

@@ -68,6 +68,8 @@ export default function StartupCostCalculatorPage() {
           ["/resources/shopify-launch-checklist", "Print the Shopify launch checklist"],
           ["/blog/shopify-annual-vs-monthly-billing-cash-flow", "Compare upfront and monthly billing"],
           ["/blog/shopify-store-budget-10-50-100-orders", "Model a slower-sales month"],
+          ["/blog/shopify-first-payout-working-capital", "Plan the cash gap before your first payout"],
+          ["/blog/shopify-first-store-returns-budget", "Build a realistic returns allowance"],
         ].map(([href, title]) => <Link href={href} key={href} className="border border-[#333] hover:border-[#10b981] p-5 text-[#ccc] hover:text-[#10b981]">{title} →</Link>)}</div>
       </section>
 
