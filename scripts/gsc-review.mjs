@@ -25,25 +25,9 @@ const MODEL = process.env.GSC_REVIEW_MODEL || "claude-opus-4-8";
 
 const read = (p) => (fs.existsSync(p) ? fs.readFileSync(p, "utf8") : "");
 
-// Stable business grounding (from strategy memory) so the CI run doesn't depend
-// on any local ~/.claude state.
-const BUSINESS_CONTEXT = `
-AdsX = paid ads + AI visibility consulting for Shopify / e-commerce sellers. The blog
-drives Shopify signups (affiliate revenue via Impact) and consulting leads.
-
-North-star metric: real human CLICKS, not impressions. ~82% of GSC impressions are
-AI fan-out queries that can't be clicked — judge trends by clicks. The blog earns
-~180 clicks/month; the structural constraint has been de-indexation, not CTR.
-
-Two growth loops (see the playbooks below):
-  1. CTR fix loop — rewrite truncated titles/excerpts on pages that already rank.
-  2. Indexation kill/consolidate loop — remove thin, OFF-AUDIENCE programmatic pages
-     (local services, B2B SaaS) that drag sitewide quality and crowd the index.
-     BLOCKER before removing any page: verify it isn't earning real traffic.
-
-Gate discipline (non-negotiable): never mass-edit without a visible quality sample;
-verify traffic before killing; the ON-TOPIC gate is AdsX = Shopify/e-commerce sellers.
-`.trim();
+// Use the shared, owner-maintained business context in local and CI runs.
+const BUSINESS_CONTEXT = read(".agents/product-marketing-context.md").trim();
+if (!BUSINESS_CONTEXT) throw new Error("Missing AdsX product marketing context.");
 
 async function main() {
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -83,7 +67,7 @@ async function main() {
     `Rules for your output:`,
     `- Lead with the single highest-leverage move, then a ranked list (5–8 items max).`,
     `- Every item: the action, the evidence from the audit, and which loop it belongs to.`,
-    `- Weight CLICKS and INDEXATION over impressions. Protect kill-listed pages that now earn traffic.`,
+    `- Prioritize relevant clicks and verified URL index status. Do not infer AI query origin or unclickability from query text. GSC sitemap indexed=0 is not a reliable sitewide index count. Protect pages earning traffic.`,
     `- You PROPOSE. Never instruct a mass edit without a visible quality sample first.`,
     `- Be concrete and terse. Markdown. No preamble, no restating the data back.`,
   ].join("\n");
