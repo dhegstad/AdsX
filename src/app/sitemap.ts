@@ -48,7 +48,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.9,
       },
-      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({ url: `${baseUrl}${path}`, lastModified: path.startsWith("/topics") ? new Date(path === "/topics/development" ? "2026-09-16" : "2026-09-17") : PUBLICATION_UPDATED, changeFrequency: 'weekly' as const, priority: 0.8 })),
+      ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({
+        url: `${baseUrl}${path}`,
+        lastModified: ["/topics", "/topics/start-a-store", "/topics/running-a-store", "/topics/advertising"].includes(path)
+          ? new Date("2026-10-01")
+          : path.startsWith("/topics") ? new Date(path === "/topics/development" ? "2026-09-16" : "2026-09-17") : PUBLICATION_UPDATED,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      })),
       // Shopify conversion hubs (affiliate money pages)
       {
         url: `${baseUrl}/start-a-shopify-store`,
@@ -58,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       {
         url: `${baseUrl}/shopify-free-trial-deal`,
-        lastModified: CORE_PAGES_UPDATED,
+        lastModified: new Date('2026-10-01'),
         changeFrequency: 'monthly' as const,
         priority: 0.9,
       },
