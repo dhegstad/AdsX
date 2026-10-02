@@ -1,5 +1,17 @@
 # Daily publication maintenance
 
+## October 2, 2026
+
+Completed [release #61](https://github.com/dhegstad/AdsX/pull/61): expanded the Shop merchant guide with cost, eligibility, and referral measurement guidance; made five Shopify blog source citations direct while preserving commercial affiliate routing. The [release record](sprint-2026-10-02.md) and [manifest](sprint-2026-10-02.json) contain validation and the single-URL IndexNow receipt.
+
+Verified the prior SaaSHub Ecwid submission as a public nofollow backlink. The directory ledger now contains three verified public backlinks. No new submission or domain-rating gain is claimed. Calculator listing re-verification was inconclusive; preserve its prior pending status.
+
+The local production-build crawl checked 1,067 public URLs and 1,009 affiliate anchors with zero detected issues; the build, editorial checks, and 12 affiliate tests passed. Eight affected production URLs passed live verification, including all five direct citations. These checks establish link configuration, not downstream referral credit.
+
+Reused the nightly report, then checked the newest complete Search Console date and the selected Shop page. Yesterday's recent-release inspections remain fresh; no repeated bulk inspection or indexing requests. Private evidence stays in the ignored local audit directory. Impact reporting access is unchanged and does not need another notice.
+
+Leave October 1–2 content stable while it is recrawled. Next broad recent-release indexing review: October 5 or later, unless a concrete crawl or runtime failure appears. The trending-products guide remains supported by its current source; query-level evidence did not justify another rewrite today. Continue from existing roadmap candidates after checking search intent and prior releases. Email work remains paused; no purchases, social posts, or AdsX app promotion.
+
 ## October 1, 2026
 
 Completed [release #59](https://github.com/dhegstad/AdsX/pull/59): two article corrections and the free-trial landing-page rewrite. The [release record](sprint-2026-10-01.md) and [manifest](sprint-2026-10-01.json) contain the public evidence and exact IndexNow receipt. Original publication dates are preserved. No URLs were removed or consolidated.
