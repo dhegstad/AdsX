@@ -1,10 +1,10 @@
 ---
 title: 'Shop App for Merchants: Eligibility and Discovery Checklist'
 excerpt: >-
-  Check whether your products qualify for Shop, improve the customer experience,
-  and measure discovery without assuming guaranteed traffic.
+  Is Shop free? Check merchant eligibility, understand channel costs, and
+  measure Shop referrals separately from Shop Pay transactions.
 date: '2026-03-12'
-updated: '2026-09-16'
+updated: '2026-10-02'
 category: Guide
 tags:
   - Shopify
@@ -18,7 +18,13 @@ intent: learn
 topics:
   - running-a-store
   - advertising
-faqs: []
+faqs:
+  - question: Is the Shop app free for shoppers?
+    answer: Yes. Shopify describes the consumer Shop app as free on supported iOS and Android devices. Buying products is separate from downloading the app.
+  - question: Does the Shop channel charge a marketplace fee?
+    answer: Shopify lists its Shop sales channel as free with no marketplace fees. A merchant still needs an eligible Shopify plan and must account for payment processing, fulfillment, and any optional paid campaigns.
+  - question: Do Shop Pay transactions prove that Shop found the customer?
+    answer: No. Shop Pay identifies a checkout method. Use Shop channel orders, referral metrics, and acquisition reports to investigate where the customer came from.
 ---
 
 Shop can be an additional discovery and purchasing channel for eligible Shopify merchants. Treat it as a channel to configure, inspect, and measure. Having a Shopify store does not guarantee that every product will appear in Shop or that discovery will produce a predictable number of orders.
@@ -31,7 +37,19 @@ This distinction matters when you evaluate results. A payment-method report answ
 
 Shopify's [Shop channel overview](https://help.shopify.com/en/manual/online-sales-channels/shop) is the starting point for the current configuration. Review the [merchant guidelines](https://help.shopify.com/en/manual/online-sales-channels/shop/eligibility) and product restrictions before planning a launch around this channel.
 
+## Is the Shop app free?
+
+**For shoppers, yes:** Shopify's [customer-experience documentation](https://help.shopify.com/en/manual/online-sales-channels/shop/customer-experience) describes a free app for supported iOS and Android devices. Downloading it does not make the products sold through it free.
+
+**For merchants, the Shop channel is listed as free with no marketplace fees** in its [official app listing](https://apps.shopify.com/shop), checked October 2, 2026. That describes the channel, not the total cost of operating a store. Budget separately for your Shopify plan, payment processing, stock, fulfillment, and returns.
+
+[Shop Campaigns](https://help.shopify.com/en/manual/online-sales-channels/shop/shop-campaigns) is a separate paid advertising program with conversion-based charges. Keep campaign costs separate from organic discovery when reviewing profitability. A free channel listing does not mean a paid campaign is enabled or required.
+
 ## Run an eligibility and catalog check
+
+The current [display requirements](https://help.shopify.com/en/manual/online-sales-channels/shop/eligibility/requirements) include an active Starter plan or higher, activated Shopify Payments, a chargeback rate below 1% over the previous six months, and at least one eligible product. The Online Store must not be private, and password or age-verification apps can affect compatibility. Shopify also identifies Network Intelligence as a prerequisite in its channel overview; review that setting and its explanation before changing it.
+
+Eligible merchants can appear in Shop even without installing the channel. Installing it provides management features; it is not a promise of visibility for every product. Shopify says eligibility changes can take up to 48 hours to appear in approval status.
 
 | Check | Evidence to keep | Action if it fails |
 |---|---|---|
@@ -54,6 +72,17 @@ If a customer repeatedly asks whether an accessory is included, answer that ques
 These are customer-experience improvements. We are not claiming that a particular title format or update frequency is a disclosed Shop ranking factor. Shopify does not promise that following this checklist will create a particular discovery result.
 
 ## Measure a channel experiment
+
+Shopify's [Shop analytics guide](https://help.shopify.com/en/manual/online-sales-channels/shop/analytics) separates orders placed through Shop from orders referred to your online store. It also documents a Shop Pay transactions report. Those are different measures, so label them explicitly in your review.
+
+| Question | Evidence to check | What it does not establish |
+|---|---|---|
+| Were products seen in Shop? | Shop product impressions | A sale or a unique customer |
+| Were orders placed through Shop? | Shop channel orders | That every buyer was new to your brand |
+| Did Shop refer visits to the store? | Acquisition report filtered to UTM source `shop_app` | That every referred visit became an order |
+| Did a shopper use accelerated checkout? | Shop Pay transactions | That Shop originally acquired that shopper |
+
+Start in **Sales channels → Shop** for channel metrics. To investigate referred sessions, use **Analytics → Reports**, open an acquisition report such as Sessions by referrer, and filter UTM source to `shop_app`. Some Shop metrics may be unavailable until enough customers use Shop. Record missing data as unavailable, rather than as zero performance.
 
 Choose a fixed review window and keep a dated record of changes. If you improve ten listings, record their identifiers and the changes made. Note promotions, stockouts, price changes, or major traffic campaigns that occur during the same period.
 

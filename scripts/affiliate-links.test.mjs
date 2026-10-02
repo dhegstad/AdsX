@@ -31,8 +31,8 @@ test('root Shopify URLs use the tracked signup flow, including HTTP and protocol
   }
 });
 
-test('pricing and source links retain their intended destination, query and fragment through Impact', () => {
-  for (const destination of ['https://www.shopify.com/no-en/pricing', 'https://www.shopify.com/blog/validate-product-ideas?example=1&section=2#steps']) {
+test('commercial links retain their intended destination, query and fragment through Impact', () => {
+  for (const destination of ['https://www.shopify.com/no-en/pricing', 'https://www.shopify.com/free-trial?example=1&section=2#steps']) {
     const url = parsed(withShopifyAffiliate(destination, tags));
     assert.equal(url.searchParams.get('u'), destination);
     assert.equal(url.searchParams.get('subId1'), tags.slug);
@@ -40,9 +40,9 @@ test('pricing and source links retain their intended destination, query and frag
 });
 
 test('HTTP deep links are upgraded to HTTPS in both direct and existing Impact links', () => {
-  const target = 'http://www.shopify.com/blog';
+  const target = 'http://www.shopify.com/pricing';
   for (const href of [target, `${SHOPIFY_AFFILIATE_LINK}?u=${encodeURIComponent(target)}`]) {
-    assert.equal(parsed(withShopifyAffiliate(href, tags)).searchParams.get('u'), 'https://www.shopify.com/blog');
+    assert.equal(parsed(withShopifyAffiliate(href, tags)).searchParams.get('u'), 'https://www.shopify.com/pricing');
   }
 });
 
@@ -59,6 +59,15 @@ test('restricted 1MBB program references keep their dedicated enrollment destina
   for (const href of ['https://www.shopify.com/1mbb', 'https://www.shopify.com/ca/1mbb?ref=program']) {
     assert.equal(withShopifyAffiliate(href, tags), href);
   }
+});
+
+test('editorial blog citations stay direct, including localized paths, queries and fragments', () => {
+  for (const href of ['https://www.shopify.com/blog', 'https://shopify.com/blog/trending-products', 'https://www.shopify.com/ca/blog/validate-product-ideas?example=1#steps', '//www.shopify.com/no-en/blog/trending-products']) {
+    const result = withShopifyAffiliate(href, tags);
+    assert.equal(result, href);
+    assert.equal(isAffiliateUrl(result), false);
+  }
+  assert.equal(parsed(withShopifyAffiliate('https://www.shopify.com/blogger', tags)).hostname, 'shopify.pxf.io');
 });
 
 test('documentation, app listings and non-Shopify destinations are not replaced with a signup page', () => {

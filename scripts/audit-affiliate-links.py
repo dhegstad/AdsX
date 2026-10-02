@@ -173,7 +173,8 @@ def main():
                         row['host'] = host
                         shopify_direct.append(row)
                         result['directShopifyCount'] += 1
-                        if host in ('shopify.com', 'www.shopify.com') and not re.match(r'^/(?:[a-z]{2}(?:-[a-z]{2})?/)?1mbb(?:/|$)', parsed.path, re.I):
+                        # Editorial citations and restricted program links stay direct.
+                        if host in ('shopify.com', 'www.shopify.com') and not re.match(r'^/(?:[a-z]{2}(?:-[a-z]{2})?/)?(?:1mbb|blog)(?:/|$)', parsed.path, re.I):
                             issues.append({**row, 'type': 'untracked_shopify_marketing_link'})
                 if len(pages) % 100 == 0:
                     print(f'Crawled {len(pages)} URLs; {len(affiliate)} affiliate anchors', flush=True)
