@@ -70,8 +70,8 @@ export function shopifyAffiliateHref(
   return tagImpactLink(url, opts);
 }
 
-// Rewrite an outbound link found in post markdown so every Shopify link is
-// tracked and attributed:
+// Track commercial Shopify links found in post markdown. Editorial source
+// citations and restricted program enrollment links stay direct:
 //   • bare shopify.com        → the Impact link, deep-linked back to the
 //                               original destination
 //   • an existing Impact link → the same link with subId reporting attached
@@ -90,9 +90,9 @@ export function withShopifyAffiliate(
   }
   if (!/^https?:$/.test(url.protocol)) return href;
   if (SHOPIFY_MARKETING_HOST.test(url.hostname)) {
-    // 1MBB has its own enrollment route and offer. A standard affiliate link
-    // must not imply that it activates this restricted program.
-    if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?1mbb(?:\/|$)/i.test(url.pathname)) {
+    // Blog articles are editorial sources, not signup CTAs. 1MBB has its own
+    // enrollment route; a standard affiliate link must not imply eligibility.
+    if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?(?:1mbb|blog)(?:\/|$)/i.test(url.pathname)) {
       return href;
     }
     const isRoot = url.pathname === "/" && !url.search && !url.hash;
