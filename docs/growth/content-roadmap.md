@@ -107,6 +107,8 @@ The original 96 research candidates remain below. The additional batch is tracke
 
 ## Existing-article refreshes
 
+October 3 maintenance reconciled R006 with its [September 16 release](sprint-2026-09-16.json) and completed R018 in the [October 3 release](sprint-2026-10-03.json). The original target dates below remain planning history; release manifests record actual delivery.
+
 | Day | Target date | ID | Article | Status |
 |---|---|---|---|---|
 | 1 | 2026-09-09 | R001 | Gumroad vs Shopify: Digital Products, Fees & Store Setup | published |
@@ -114,7 +116,7 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 2 | 2026-09-10 | R003 | How to Sign Up for Shopify: Every Step (2026) | research-required |
 | 2 | 2026-09-10 | R004 | Shopify Pros and Cons 2026: The Honest List | research-required |
 | 1 | 2026-09-09 | R005 | The Cost of Running a Shopify Store: A First-Year Budget Worksheet | published |
-| 3 | 2026-09-11 | R006 | Shopify App Costs: Audit and Cut Your Monthly Stack | research-required |
+| 3 | 2026-09-11 | R006 | Shopify App Costs: Audit Every Subscription and Fee | published |
 | 4 | 2026-09-12 | R007 | 9 Best Shopify Bundle Apps to Boost AOV (2026) | research-required |
 | 1 | 2026-09-09 | R008 | Etsy to Shopify: Expand Your Shop with a Tested Migration Plan | published |
 | 5 | 2026-09-13 | R009 | Sell Digital Products on Shopify: 2026 Step-by-Step | research-required |
@@ -126,7 +128,7 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 8 | 2026-09-16 | R015 | Shopify Admin API Guide 2026: GraphQL, Auth & Limits | research-required |
 | 8 | 2026-09-16 | R016 | Shopify Webhooks: Reliability Guide for App Developers | research-required |
 | 9 | 2026-09-17 | R017 | How Many Shopify Apps Is Too Many? (App Audit Guide) | research-required |
-| 9 | 2026-09-17 | R018 | Uninstall Shopify Apps the Right Way: Leftover Code Fix | research-required |
+| 9 | 2026-09-17 | R018 | How to Uninstall Shopify Apps: Code and Billing Cleanup | published |
 | 10 | 2026-09-18 | R019 | Shopify Payments vs Stripe vs PayPal: 2026 Fees | research-required |
 | 10 | 2026-09-18 | R020 | Shopify AI Visibility: Get Recommended by ChatGPT | research-required |
 | 11 | 2026-09-19 | R021 | Hidden Shopify Costs: 7 Fees and How to Avoid Them | research-required |
