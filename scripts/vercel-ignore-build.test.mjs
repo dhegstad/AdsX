@@ -31,3 +31,22 @@ test('deployment comparison includes all commits and fails open without a safe b
     assert.equal(shouldSkipBuild({ cwd, env: { ...env, VERCEL_GIT_PREVIOUS_SHA: codeBase } }), false);
   } finally { rmSync(cwd, { recursive: true, force: true }); }
 });
+
+test('a first preview resolves public main without a local origin remote', () => {
+  const root = mkdtempSync(path.join(tmpdir(), 'adsx-preview-'));
+  const cwd = path.join(root, 'checkout');
+  const remote = path.join(root, 'remote.git');
+  mkdirSync(cwd);
+  const git = (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim();
+  try {
+    git('init', '-b', 'main'); git('config', 'user.name', 'Test'); git('config', 'user.email', 'test@example.com');
+    writeFileSync(path.join(cwd, 'package.json'), '{}'); git('add', '.'); git('commit', '-m', 'app');
+    git('clone', '--bare', cwd, remote);
+    git('switch', '-c', 'records'); mkdirSync(path.join(cwd, 'docs'));
+    writeFileSync(path.join(cwd, 'docs', 'release.md'), 'Verified'); git('add', '.'); git('commit', '-m', 'records');
+    const env = { VERCEL_GIT_COMMIT_REF: 'records', VERCEL_GIT_PREVIOUS_SHA: '0'.repeat(40) };
+    assert.equal(shouldSkipBuild({ cwd, remote, env }), true);
+    writeFileSync(path.join(cwd, 'package.json'), '{"changed":true}'); git('add', '.'); git('commit', '-m', 'app update');
+    assert.equal(shouldSkipBuild({ cwd, remote, env }), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
