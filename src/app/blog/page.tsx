@@ -3,8 +3,8 @@ import { getPaginatedPosts, getAllCategories } from "@/lib/blog";
 import { BrutalistBlogListing } from "@/components/blog/brutalist-blog-listing";
 import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
-// Enable ISR for blog listing - revalidate every hour
-export const revalidate = 3600;
+// Repository content changes only on deployment; avoid timed regeneration.
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "Blog | Shopify & Ecommerce Guides",

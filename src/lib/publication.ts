@@ -43,6 +43,58 @@ export function getContentIntent(post: PublicationPost): ContentIntent {
 // Reading paths keep the growing Whop library organized by the reader’s job.
 export const whopReadingPaths = [
 {
+  "id": "home-services",
+  "name": "Home services and trades",
+  "description": "Package local work, confirm the scope, and connect payments to completed visits.",
+  "slugs": [
+    "whop-for-hvac-businesses",
+    "whop-for-auto-detailing",
+    "whop-for-house-cleaning",
+    "whop-for-pressure-washing",
+    "whop-for-lawn-care",
+    "whop-for-plumbers",
+    "whop-for-electricians",
+    "whop-for-handyman-businesses",
+    "whop-for-painting-contractors"
+  ]
+},
+{
+  "id": "beauty-services",
+  "name": "Beauty and appointment businesses",
+  "description": "Make consultation, service selection, booking time, and the remaining balance clear.",
+  "slugs": [
+    "whop-for-nail-technicians",
+    "whop-for-hair-stylists",
+    "whop-for-estheticians",
+    "whop-for-brow-artists",
+    "whop-for-lash-artists"
+  ]
+},
+{
+  "id": "local-teaching-care",
+  "name": "Teaching, fitness, and pet care",
+  "description": "Define sessions, recurring plans, attendance, and realistic delivery capacity.",
+  "slugs": [
+    "whop-for-pet-groomers",
+    "whop-for-dog-walkers-pet-sitters",
+    "whop-for-personal-trainers",
+    "whop-for-tutors",
+    "whop-for-music-teachers"
+  ]
+},
+{
+  "id": "freelance-services",
+  "name": "Freelancers and independent professionals",
+  "description": "Scope projects, manage revisions, and price continuing work with visible limits.",
+  "slugs": [
+    "whop-for-photographers",
+    "whop-for-videographers",
+    "whop-for-web-designers",
+    "whop-for-virtual-assistants",
+    "whop-for-professional-organizers"
+  ]
+},
+{
   "id": "advertising",
   "name": "Advertising and measurement",
   "description": "Choose a campaign workflow, connect Shopify tracking, plan a budget, and interpret the results.",

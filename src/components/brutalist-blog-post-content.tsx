@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
+import { getBlogDisplayImage } from "@/lib/blog-display-image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { ArticleCTA } from "@/components/blog/article-cta";
 import { getContentIntent, getTopicSlugs, publicationTopics } from "@/lib/publication";
@@ -16,6 +17,18 @@ import {
 } from "@/lib/affiliate";
 import type { RelatedPage } from "@/lib/seo/internal-linking";
 import { isWhopReferralUrl, trackWhopReferralClick } from "@/lib/whop-referral";
+
+const officialVideos: Record<string, { label: string; source: string; poster?: string }> = {
+  "https://whopvideo.app/videos/1778598814627-ad3c5ygu.mp4": {
+    label: "Introducing Whop Ads: official Meta launch video",
+    source: "https://whop.com/blog/watch/whop-ads-launch/",
+    poster: "https://whopvideo.app/thumbnails/1778598817090-dtfckunq.jpg",
+  },
+  "https://storage.ghost.io/c/12/7b/127b828b-bdc2-4972-9cf2-de857df9c324/content/media/2025/07/CalendarBookings_ScheduleAndEdit.mp4": {
+    label: "Whop Calendar Bookings: official availability setup demonstration",
+    source: "https://whop.com/blog/calendar-bookings-app/",
+  },
+};
 
 function slugify(text: string): string {
   return text
@@ -135,8 +148,9 @@ function createMarkdownComponents(slug: string): Components {
       // A bare YouTube link on its own line becomes a responsive embed.
       const ytId = href ? getYouTubeId(href) : null;
       const isBareLink = !!href && String(children) === href;
-      // Verified official launch asset, embedded only when its URL stands alone.
-      if (isBareLink && href === "https://whopvideo.app/videos/1778598814627-ad3c5ygu.mp4") {
+      // Only verified official assets are embedded, and only as standalone URLs.
+      const officialVideo = href ? officialVideos[href] : undefined;
+      if (isBareLink && officialVideo) {
         return (
           <span className="my-8 block">
             <video
@@ -144,11 +158,11 @@ function createMarkdownComponents(slug: string): Components {
               controls
               playsInline
               preload="none"
-              poster="https://whopvideo.app/thumbnails/1778598817090-dtfckunq.jpg"
-              aria-label="Introducing Whop Ads: official Meta launch video"
+              poster={officialVideo.poster}
+              aria-label={officialVideo.label}
             >
               <source src={href} type="video/mp4" />
-              <a href="https://whop.com/blog/watch/whop-ads-launch/">Watch the official Whop Ads introduction</a>
+              <a href={officialVideo.source}>{officialVideo.label}</a>
             </video>
           </span>
         );
@@ -296,7 +310,7 @@ function createMarkdownComponents(slug: string): Components {
         <figure className="my-8">
           <div className="relative aspect-video border border-[#333] overflow-hidden">
             <Image
-              src={src}
+              src={getBlogDisplayImage(src)}
               alt={alt || ""}
               fill
               className="object-cover"

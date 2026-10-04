@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// Fixed artwork is generated once at build time.
+export const dynamic = 'force-static';
 
 export async function GET() {
   return new ImageResponse(
