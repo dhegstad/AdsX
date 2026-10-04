@@ -1,5 +1,13 @@
 # Daily publication maintenance
 
+## October 4, 2026 — affiliate strategy clarification
+
+Dennis clarified that AdsX targets affiliate revenue from Shopify, Shopify apps covered in the publication, and Whop. He also confirmed his employment at Whop and his goal of improving its merchant experience and growth. Updated product context, daily publishing instructions, and reporting guidance to distinguish the three revenue sources, program approval, qualifying actions, and earned/paid commissions. Added app-partner research and evidence-based Whop product feedback to future work. No new app partnership, attributed conversion, or commission is claimed.
+
+Updated the existing active 09:00 America/Chicago heartbeat, preserving its three-new-articles minimum and existing boundaries. Added employment disclosure to the five Whop articles, Whop hub, launch checklist, editorial policy, and navigation text. No article dates, referral destinations, or event definitions were changed. These are disclosure updates, not additional new publications. No repeat IndexNow submission is needed for this small follow-up to today's newly submitted pages.
+
+Editorial checks passed for 81 tracked articles and seven hubs; all 15 referral tests and the 465-route build passed. Checked built output on eight affected pages for disclosure, canonicals, referral links, and checklist inputs, plus the unrelated store-starting hub and navigation text. Deployment and live verification follow the PR release process. Unrelated local files and existing open PR45/PR34/PR25 are preserved.
+
 ## October 4, 2026 — publishing expansion
 
 Completed the new Whop cluster in [PR67](https://github.com/dhegstad/AdsX/pull/67) and the final resource adjustment in [PR68](https://github.com/dhegstad/AdsX/pull/68): five new articles, a Whop reading hub, and an interactive on-page launch checklist. Added five original illustrations and one verified official video embed, sponsored Whop referral routing, separate Whop click events, both-platform disclosure, sitemap/navigation updates, and fixes for image hydration and absolute schema image URLs. The [manifest](publication-2026-10-04-whop.json) and [release record](publication-2026-10-04-whop.md) hold the evidence.

@@ -20,6 +20,7 @@ export default function WhopLaunchChecklistPage() {
       <h1 className="text-4xl md:text-6xl max-w-4xl mt-6">Your Whop launch checklist</h1>
       <p className="text-[#bbb] max-w-3xl mt-6 text-lg leading-relaxed">Take one offer from a clear promise to a correctly delivered order. Work through these 18 checks before expanding your catalog or sending more traffic to checkout.</p>
       <p className="text-sm text-[#888] mt-4">Published October 4, 2026 · No email required · An AdsX planning resource</p>
+      <p className="text-sm text-[#aaa] mt-4 max-w-3xl">AdsX owner Dennis Hegstad is employed at Whop, and AdsX participates in Whop’s partner referral program. <Link className="underline text-[#10b981]" href="/editorial-policy">Read our editorial policy.</Link></p>
       <Image src="/images/whop/ecommerce-workflow.png" alt="Four connected stages: offer, payment, delivery, and support." width={1280} height={720} className="mt-8 max-w-3xl w-full border border-[#333]" />
     </header>
     <WhopLaunchChecklist />

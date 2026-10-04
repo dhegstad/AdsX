@@ -1,6 +1,6 @@
 # How AdsX affiliate reporting works
 
-The report should connect the reader's starting page with the commercial outcome. Its purpose is to choose which topics and conversion paths deserve more work.
+The report should connect the reader's starting page with the commercial outcome. Its purpose is to choose which topics and conversion paths deserve more work. As clarified October 4, AdsX targets affiliate revenue from Shopify, individual Shopify apps covered in the publication, and Whop. Track those sources separately before calculating an overall total; the Shopify reporting below is not a report of all three.
 
 | Measure | Source | Decision it supports |
 |---|---|---|
@@ -38,3 +38,13 @@ The enrolled Whop Partners dashboard issued `https://whop.com/start/?code=YDMPYR
 Whop article links emit `whop_referral_click` with `post_slug`, `placement`, and `provider: whop` when gtag is available. This deliberately uses a separate event from Shopify's existing `affiliate_click`, so the Shopify reporting series is not silently mixed with another provider. Source code tests confirm the event payload and sponsored links; actual GA4 event receipt and attributed Whop commissions still require their own evidence. Do not label the click event as a paid conversion or assign it a monetary value.
 
 The dashboard-issued Whop link does not include a verified per-article attribution parameter. Do not invent one. Page-level outbound interest can be measured by the click event; partner-level credited businesses and earnings must be read from Whop. Do not claim a person-level or article-level commission join without provider evidence. No referral email invitations or paid partner services were used.
+
+## Shopify app referrals and combined reporting
+
+App affiliate programs are separate from Shopify's merchant-referral program. An app install, trial, subscription, and qualifying commission can be different stages under the app vendor's contract. Before monetizing a recommendation, verify the official program, approval, AdsX-owned referral URL, qualifying action, commission terms, supported tracking parameters, and reporting access. No app-specific program activation or new commission is claimed by this strategy update.
+
+Use a provider/program field in the reporting model. Preserve the established Shopify `affiliate_click` and Whop `whop_referral_click` definitions; add explicit provider identification for app events when their integrations are implemented. Do not send app referrals through Shopify's Impact signup link, pool app clicks into the existing Shopify series, or invent provider attribution parameters. Keep source citations direct.
+
+For each provider, report relevant landing sessions, outbound clicks, provider-attributed actions, qualifying referrals, and pending/approved/reversed/paid commissions where the provider exposes them. Retain currency, reporting window, and status; do not add unlike currencies or count the same commission again when it is paid. Aggregate only compatible amounts. Mark unavailable attribution as unavailable, not zero or estimated revenue. The original $3,000/month goal applies to Shopify; Dennis has not set a combined three-source revenue target.
+
+Dennis's Whop employment and AdsX's referral relationship belong in public disclosures. Product feedback for Whop is a separate output: observed friction or documentation gaps, supporting evidence, merchant impact, and a suggested improvement. It is not an affiliate conversion metric, and an inferred issue must not be reported as a tested failure.
