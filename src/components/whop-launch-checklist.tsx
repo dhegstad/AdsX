@@ -8,10 +8,9 @@ export function WhopLaunchChecklist() {
   const [checked, setChecked] = useState<Set<string>>(new Set());
   const total = groups.reduce((sum, group) => sum + group.items.length, 0);
   return <>
-    <div className="border-b border-[#333] p-6 md:px-12 flex flex-wrap gap-5 items-center justify-between print:hidden">
+    <div className="border-b border-[#333] p-6 md:px-12 flex flex-wrap gap-5 items-center justify-between">
       <p role="status" className="text-[#10b981]">{checked.size} of {total} checks complete</p>
-      <button type="button" onClick={() => window.print()} className="border border-[#777] px-5 py-3 hover:bg-[#222]">Print checklist</button>
-      <p className="w-full text-sm text-[#aaa]">Checks stay on this page until you refresh. Print or save a PDF to keep your record. Nothing is submitted.</p>
+      <p className="w-full text-sm text-[#aaa]">Use the checks as you review your setup. They reset when you refresh this page. Nothing is submitted.</p>
     </div>
     <div className="grid md:grid-cols-2">{groups.map(group => <section key={group.name} className="p-6 md:p-10 border-b border-r border-[#333] break-inside-avoid">
       <h2 className="text-2xl mb-5">{group.name}</h2>
