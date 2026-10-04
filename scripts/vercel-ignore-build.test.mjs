@@ -21,15 +21,15 @@ test('deployment comparison includes all commits and fails open without a safe b
     commit('docs/growth/record.md');
     commit('scripts/vercel-ignore-build.mjs');
     const env = { VERCEL_ENV: 'production', VERCEL_GIT_PREVIOUS_SHA: base };
-    assert.equal(shouldSkipBuild({ cwd, env }), true);
+    assert.equal(shouldSkipBuild({ cwd, remote: cwd, env }), true);
     commit('src/content/blog/new.mdx');
     commit('docs/growth/second-record.md');
-    assert.equal(shouldSkipBuild({ cwd, env }), false, 'content in an earlier commit still builds');
-    assert.equal(shouldSkipBuild({ cwd, env: {} }), false);
-    assert.equal(shouldSkipBuild({ cwd, env: { ...env, VERCEL_GIT_PREVIOUS_SHA: 'a'.repeat(40) } }), false);
+    assert.equal(shouldSkipBuild({ cwd, remote: cwd, env }), false, 'content in an earlier commit still builds');
+    assert.equal(shouldSkipBuild({ cwd, remote: cwd, env: {} }), false);
+    assert.equal(shouldSkipBuild({ cwd, remote: cwd, env: { ...env, VERCEL_GIT_PREVIOUS_SHA: 'a'.repeat(40) } }), false);
     const codeBase = git('rev-parse', 'HEAD');
     git('rm', 'src/content/blog/new.mdx'); git('commit', '-m', 'remove page');
-    assert.equal(shouldSkipBuild({ cwd, env: { ...env, VERCEL_GIT_PREVIOUS_SHA: codeBase } }), false);
+    assert.equal(shouldSkipBuild({ cwd, remote: cwd, env: { ...env, VERCEL_GIT_PREVIOUS_SHA: codeBase } }), false);
   } finally { rmSync(cwd, { recursive: true, force: true }); }
 });
 
