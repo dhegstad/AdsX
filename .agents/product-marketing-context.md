@@ -1,6 +1,6 @@
 # AdsX product and publication context
 
-Updated September 17, 2026 from Dennis's instructions. This includes Dennis’s latest clarification and supersedes the former AI-search-agency positioning.
+Updated October 4, 2026 from Dennis's instructions. This includes Dennis’s latest clarification and supersedes the former AI-search-agency positioning.
 
 The AdsX Shopify app is near completion but has not been submitted to the Shopify App Store for approval. It is a free Shopify app that would show third-party advertisements on merchants' Thank you and Order status pages and share advertising revenue with participating merchants. Public availability, Shopify approval, supported merchants, revenue-share percentage, advertiser controls, and payout terms have not been confirmed. Describe the app as in development until its status is verified. Do not invent an installation URL, launch date, earnings, customers, or approved capabilities.
 
@@ -27,3 +27,13 @@ Production timing: the September 9–22, 2026 plan replaces the original 12-week
 Editorial voice: practical, candid, precise. Demonstrate expertise with primary sources, worked examples, methods, and real evidence. Label hypothetical numbers. Don't claim hands-on testing that did not happen. Disclose Shopify affiliate links and AdsX's interest in post-purchase advertising when relevant. Do not attribute generated articles to Dennis as if he personally wrote or reviewed them.
 
 Execution plan: `docs/growth/strategy-2026-09-09.md`. Backlog and directory status are maintained alongside it.
+
+## October 4 publishing expansion
+
+Dennis explicitly set a minimum of three genuinely new blog posts per daily run, plus additional useful SEO resources where distinct needs justify them. Refreshes and cosmetic changes do not count toward the minimum. This replaces earlier maintenance guidance against a publication quota. Maintain a researched backlog to meet the cadence without duplicate intent, unsupported claims, or filler; report a concrete shortfall if necessary. Daily automation remains at 9 a.m. America/Chicago.
+
+Whop.com is now an authorized editorial and referral focus alongside Shopify: ecommerce capabilities, product launches with public evidence, setup, pricing, comparisons, and merchant workflows. Do not announce an unverified end-to-end launch or assume every physical fulfillment feature is generally available. Dennis was asked for the public launch source on October 4; verified current capabilities can be covered independently.
+
+The existing Whop account was enrolled as a standard Whop Partner on October 4. Its dashboard issued `https://whop.com/start/?code=YDMPYR`; use this exact owned signup route. It is distinct from the optional Verified Partner application, which was not completed. No payouts, merchant referrals, or commissions are claimed from enrollment alone. Keep Whop source documentation direct and label commercial links as sponsored. Do not use the third-party referral URL in an onboarding plugin skill.
+
+Every new article should have useful original or properly sourced imagery with alt text. Add verified official video embeds when they help explain the task. Write natural, practical prose with original examples; keep the editorial policy’s honest AI-assistance and team-authorship disclosure. No fake human bylines or invented testing. Email marketing remains paused.

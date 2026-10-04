@@ -31,7 +31,7 @@ export function createArticleSchema(config: {
     "@type": config.articleType || "Article",
     headline: config.title,
     description: config.description,
-    image: config.image || `${SITE_URL}/blog/${config.slug}/opengraph-image`,
+    image: config.image ? new URL(config.image, SITE_URL).href : `${SITE_URL}/blog/${config.slug}/opengraph-image`,
     author: {
       "@type": isOrg ? "Organization" : "Person",
       name: config.author,
