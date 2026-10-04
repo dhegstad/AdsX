@@ -1,0 +1,67 @@
+---
+title: "Whop Multi-Product Checkout: A Merchant’s Test Plan"
+excerpt: "Use a worked two-item cart to check quantities, discounts, taxes, delivery, and refunds in Whop’s announced multi-product checkout."
+date: "2026-10-04"
+category: "Guides"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["whop"]
+tags: ["Whop", "Ecommerce and AI"]
+image: "/images/whop/whop-multi-product-checkout.png"
+imageAlt: "An accurate total must stay connected to the items being delivered."
+---
+
+Whop’s announced multi-product checkout lets merchants evaluate a shopping flow in which one customer purchases several items together. The useful test is whether those line items remain correct through totals, payment, fulfillment, and refunds—not simply whether the cart opens.
+
+**Disclosure:** AdsX owner Dennis Hegstad is employed at Whop. AdsX may earn a commission from qualifying businesses referred through our signup links. This article uses public sources reviewed October 4, 2026; examples are illustrative unless stated otherwise. [Editorial policy](/editorial-policy).
+
+![An accurate total must stay connected to the items being delivered.](/images/whop/whop-multi-product-checkout.png)
+
+*Original AdsX illustration.*
+
+Whop named the feature in its [October 1 announcement](https://x.com/whop/status/2105729371076190669). Its [Blueprints guide](https://whop.com/blog/whop-blueprints/) describes websites connected to products and checkout, and its [physical-products page](https://whop.com/network/solutions/physical-products/) describes the broader commerce offering. We have not processed a transaction through the newly announced cart; the plan below is for merchant acceptance testing.
+
+## Start with a cart whose total you know
+
+Consider a hypothetical shirt priced at $30 and two totes priced at $15 each. The merchandise subtotal is $60 before shipping, taxes, discounts, and any other disclosed charges.
+
+| Check | Expected record |
+| --- | --- |
+| Shirt selection | Correct color and size, quantity one |
+| Tote selection | Correct item, quantity two |
+| Merchandise subtotal | $60 |
+| Other charges | Separately understandable and applicable to the order |
+| Final amount | Matches the payment confirmation |
+| Fulfillment record | One shirt and two totes with the right identities |
+
+Avoid choosing a test cart you cannot calculate independently. A plausible-looking total can conceal a duplicate quantity or a price from the wrong variant.
+
+## Follow changes through every stage
+
+Change the tote quantity from two to one. The merchandise subtotal should change from $60 to $45 in this example. Check the cart, checkout, payment record, and order summary for agreement. Then remove the shirt and confirm that its variant information does not remain attached to the remaining item.
+
+For a discount, write down the intended scope before applying it. Does it apply to all merchandise, one item, or a minimum basket amount? Verify the behavior actually available in your account. This guide does not assume a particular discount engine or stacking rule.
+
+Test a mixed cart only if you intend to sell one. A physical item plus digital access creates two delivery obligations. The buyer should understand which part is shipped and which part is accessed online.
+
+## Check payment outcomes, not only the happy path
+
+A successful payment should produce the intended order once. An abandoned or unsuccessful attempt should not release goods. If a customer retries, your operational record should distinguish the failed attempt from the completed purchase.
+
+Use a provider-supported test environment or an authorized controlled transaction when verifying payment behavior. Do not call a frontend preview an end-to-end payment test. Our [launch checklist](/resources/whop-launch-checklist) provides a place to record the evidence you have actually checked.
+
+A receipt also does not establish that a parcel has shipped. Confirm who sees the order, which address reaches fulfillment, and how the customer learns what happens next.
+
+## Plan a partial refund before you need one
+
+Suppose the shirt is unavailable after payment but the two totes can still ship. Your team needs a decision about refunding the shirt, handling any associated charges, updating stock, and notifying the customer.
+
+Whop’s [refund documentation](https://docs.whop.com/manage-your-business/manage-payments/issuing-refunds) describes full and partial refunds. A payment refund does not by itself explain your physical return or stock process. Record the item, amount, reason, and remaining delivery commitment together.
+
+For itemized tax and account-specific tax services, inspect the actual checkout and current settings. Avoid assuming that a line on the order total establishes every tax responsibility for your business.
+
+## Use the results to decide when to launch
+
+Keep a short record of each scenario, its expected outcome, the evidence, and any unresolved issue. Prioritize wrong amounts, wrong variants, duplicate orders, and missing delivery details before cosmetic preferences.
+
+Read the [variant planning guide](/blog/whop-product-variants-inventory), then [sign up for Whop through our partner link](https://whop.com/start/?code=YDMPYR). Build one representative cart and check the whole journey before increasing the assortment or traffic.

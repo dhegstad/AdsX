@@ -1,0 +1,66 @@
+---
+title: "Whop Product Variants and Inventory: Plan Your Catalog"
+excerpt: "Build a clear variant and stock model for a Whop store, with a worked apparel catalog and checks for sold-out items and inventory changes."
+date: "2026-10-04"
+category: "Guides"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["whop"]
+tags: ["Whop", "Ecommerce and AI"]
+image: "/images/whop/whop-product-variants-inventory.png"
+imageAlt: "Each sellable combination needs an unambiguous stock identity."
+---
+
+A product variant is a specific combination a customer can buy: a navy shirt in medium, for example. Whop’s October 1 ecommerce announcement includes native variants and inventory. Before entering a catalog, decide how each combination will be named, stocked, priced, and identified in an order.
+
+**Disclosure:** AdsX owner Dennis Hegstad is employed at Whop. AdsX may earn a commission from qualifying businesses referred through our signup links. This article uses public sources reviewed October 4, 2026; examples are illustrative unless stated otherwise. [Editorial policy](/editorial-policy).
+
+![Each sellable combination needs an unambiguous stock identity.](/images/whop/whop-product-variants-inventory.png)
+
+*Original AdsX illustration.*
+
+The [official feature announcement](https://x.com/whop/status/2105729371076190669) establishes the new capabilities. Whop’s [Blueprints guide](https://whop.com/blog/whop-blueprints/) explains the hosted-store path, while its [product documentation](https://docs.whop.com/manage-your-business/products/create-product) covers the underlying offer setup. This is a catalog-planning guide, not a tested walkthrough of every new inventory control.
+
+## Separate the product from the sellable combination
+
+“Everyday shirt” is the product. “Everyday shirt, navy, medium” is the item the warehouse needs to pick. If two options affect what gets shipped, they should not disappear into a generic order note.
+
+Here is a hypothetical opening catalog:
+
+| Stock identity | Product | Color | Size | Available units |
+| --- | --- | --- | --- | ---: |
+| SH-NV-S | Everyday shirt | Navy | Small | 8 |
+| SH-NV-M | Everyday shirt | Navy | Medium | 12 |
+| SH-CR-S | Everyday shirt | Cream | Small | 5 |
+| SH-CR-M | Everyday shirt | Cream | Medium | 0 |
+| TOTE-NT | Canvas tote | Natural | One size | 20 |
+
+These identifiers are examples. Use your existing warehouse identifiers if you have them, and check the fields Whop exposes before importing data. The important requirement is an unambiguous match between the customer's choice and the fulfilled item.
+
+## Choose an inventory owner
+
+Decide which system is authoritative for stock. If you also sell at events or through another storefront, a number in one dashboard can become stale quickly. Write down how stock changes reach each sales channel and what happens when that update fails.
+
+Whop’s [physical-products page](https://whop.com/network/solutions/physical-products/) advertises a Shopify fulfillment connection. That does not describe every variant mapping or stock conflict rule. Ask for the supported integration behavior and inspect it with representative products before relying on it.
+
+For a small pilot, keep a reconciliation sheet with opening units, paid units, canceled units, adjustments, and closing units. The equation should explain the stock position without guessing. A returned item should only become available again when your own restocking decision is complete.
+
+## Test the awkward combinations first
+
+The cream medium shirt above has zero units. Check how that choice appears to a customer and whether an old link can still reach an unavailable option. A friendly stock message is more useful than a checkout failure after the buyer has entered their details.
+
+Next, check a cart containing two sizes of the same shirt. The order needs two distinct lines or an equally clear representation. Then check a quantity change, a variant with a different price, and an image that should change with the selected color.
+
+These are acceptance criteria to run in your own setup. Do not assume that seeing a size selector proves that stock is reserved, decremented, or synchronized correctly.
+
+## Avoid using membership limits as physical stock
+
+Whop’s older payment and membership workflows include purchase limits. A limit on how many people can buy an offer is not automatically the same as inventory for a physical SKU. The newly announced ecommerce inventory should be evaluated for the physical-store workflow you are actually using.
+
+Likewise, a bundle of two physical items introduces component stock questions. Record whether the bundle consumes each item's inventory and what happens when only one component is returned. Start with ordinary products before adding combinations your team cannot reconcile.
+
+## Build a catalog you can explain
+
+Use the [multi-product checkout checks](/blog/whop-multi-product-checkout) to follow your variants into an order, then review the [physical-product launch guide](/blog/how-to-sell-physical-products-on-whop) for delivery ownership.
+
+[Create your Whop store through our partner link](https://whop.com/start/?code=YDMPYR) and begin with a handful of representative products. Clear identities and reliable stock records are more useful than a large catalog that your fulfillment team has to interpret manually.

@@ -1,5 +1,7 @@
 # Content roadmap — accelerated sprint
 
+October 4 Whop expansion: 25 additional articles are tracked in [the separate plan](whop-expansion-plan-2026-10-04.json) and [release manifest](publication-2026-10-04-whop-expansion.json). Consult the release status before counting them as published. The five earlier Whop articles are a separate batch; four receive evidence updates here. Daily work continues across Shopify, Shopify apps, Whop, and adjacent AI/ecommerce topics.
+
 September 9–22, 2026 remains the original planning window. Eight new articles and two refreshes per production day was a baseline, not a ceiling. Dennis approved an additional 30-article batch for September 9: 10 brand-new URLs, 10 rebuilt previously removed URLs, and 10 existing articles substantially updated.
 
 The first eight new articles and two refreshes are published. The additional platform batch is **published**; see [its execution record](platform-batch-2026-09-09.md) and [manifest](platform-batch-2026-09-09.json). Four of its refreshes also fulfill original backlog entries R005, R008, R010, and R022; do not count those twice.
