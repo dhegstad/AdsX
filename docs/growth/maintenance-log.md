@@ -1,5 +1,16 @@
 # Daily publication maintenance
 
+## October 4, 2026 — Whop advertising publication
+
+Published and production-verified all eight user-requested Whop Ads guides in [release #73](https://github.com/dhegstad/AdsX/pull/73). [Manifest](publication-2026-10-04-whop-ads.json): 6,674 words, eight original diagrams, an official launch video, a new eight-guide reading path, three hub updates, and three contextual inbound links. The Whop library contains 38 articles; the site contains 427 blog articles. Every new guide uses the exact owned Whop referral URL with sponsored attributes and employment/referral disclosure. Sources remain direct; no AdsX campaign or customer outcome was invented.
+
+Validation passed: editorial checks for 114 tracked articles and seven hubs, 12 Shopify and three Whop referral tests, production build with 498 routes, and fourteen local/live routes plus eight images. Canonicals, indexability configuration, schema, dates, sitemap membership, source links, and referral tags checked. Sitemap has 470 URLs. All eight mobile pages contained their layout; the official video played without a media error. Two Shopify documentation URLs challenged automated fetching, but their relevant content was verified through the web reader; twelve other source URLs returned 200.
+
+One free IndexNow batch notified nine URLs: eight new guides and the substantially expanded Whop hub. Receipt is not evidence of crawling, indexing, rankings, or affiliate commissions. Private QA artifacts remain ignored. Unrelated local files and open email/reporting PRs were preserved; no paid APIs, advertising spend, emails, social posts, or app-install promotion.
+
+Next useful action: preserve this cohort for measurement, research three distinct next intents, and resolve the channel-availability and external-purchase reporting documentation differences before publishing more specific feature claims. No new search or partner outcome measurement is claimed by this publication run.
+
+
 ## October 4, 2026 — 25-article Whop expansion
 
 Dennis requested official Whop/X/employee research and at least 25 additional Whop articles. Resolved the launch evidence gap using @whop’s October 1 ecommerce thread and October 2 migration announcement. Retrieved 353 official blog pages into an ignored research corpus and reviewed the sources needed for five groups of original merchant guides. Public sources and product/documentation feedback are summarized in [the research record](whop-research-2026-10-04.md).

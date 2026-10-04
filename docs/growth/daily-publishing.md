@@ -31,6 +31,9 @@ Dennis is employed at Whop and also wants the publication to improve merchant un
 
 ## Research queue after the expanded Whop library
 
+The later October 4 [Whop Ads release](publication-2026-10-04-whop-ads.json) adds eight published intents and brings the Whop library to 38 articles. Reuse those guides. Further channel-specific tutorials require verified campaign access: merchant docs still list TikTok/Google as coming soon while the API names them; Snapchat remains coming soon and YouTube placements are unconfirmed. The pixel guide and campaign schema also describe purchase/ROAS scope differently. These are public documentation gaps to resolve before making stronger claims, not reasons to duplicate the current articles.
+
+
 The October 4 expansion covers 25 additional intents across ecommerce/AI, services, coaching/courses, paid communities, and payments/platforms. Read [the expansion manifest](publication-2026-10-04-whop-expansion.json) and [source research](whop-research-2026-10-04.md) before drafting. Earlier candidates for digital delivery, refunds, tracking, installments, and launch analysis are now covered; do not recreate them under another title. The official October 1 launch source is verified, so the prior evidence blocker is resolved.
 
 | Candidate | Distinct reader task | Original contribution to develop |

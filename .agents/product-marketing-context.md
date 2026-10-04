@@ -44,3 +44,7 @@ The existing Whop account was enrolled as a standard Whop Partner on October 4. 
 Every new article should have useful original or properly sourced imagery with alt text. Add verified official video embeds when they help explain the task. Write natural, practical prose with original examples; keep the editorial policy’s honest AI-assistance and team-authorship disclosure. No fake human bylines or invented testing. Email marketing remains paused.
 
 Dennis explicitly excludes printing from the project. Do not build or promote print/PDF resources, add print controls, or open print dialogs during QA. Keep resources useful directly on the website and focus on publishing, organic visibility, and referral conversions.
+
+## Whop advertising coverage
+
+Dennis approved the eight-article Whop Ads cluster on October 4, and it is published in `docs/growth/publication-2026-10-04-whop-ads.json`. Cover advertising workflows, Shopify integrations, acquisition economics, measurement, and practical AI preparation. This is editorial authorization, not authorization to fund or activate campaigns. Keep account availability and public documentation conflicts explicit. All Whop commercial CTAs retain the verified owned signup route above.
