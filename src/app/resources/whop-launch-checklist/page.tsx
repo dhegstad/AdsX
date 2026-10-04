@@ -7,24 +7,13 @@ import { createBreadcrumbSchema, SchemaScript } from "@/lib/seo/schemas";
 
 export const metadata = createPageMetadata({
   title: "Whop Launch Checklist: Product, Checkout & Delivery",
-  description: "An ungated, interactive Whop launch checklist with 18 checks for your offer, fees, checkout, fulfillment, exceptions, and first orders. Print or save a PDF.",
+  description: "An interactive Whop launch checklist with 18 checks for your offer, fees, checkout, fulfillment, exceptions, and first orders. No email required.",
   path: "/resources/whop-launch-checklist",
   image: "https://www.adsx.com/images/whop/ecommerce-workflow.png",
 });
 
 export default function WhopLaunchChecklistPage() {
   return <BrutalistLayout><main data-whop-checklist>
-    <style>{`@media print {
-      body:has([data-whop-checklist]), body:has([data-whop-checklist]) .v1-page { background: white !important; color: #111 !important; }
-      body:has([data-whop-checklist]) .v1-page * { background: transparent !important; }
-      body:has([data-whop-checklist]) .noise-overlay, body:has([data-whop-checklist]) footer, body:has([data-whop-checklist]) nav, body:has([data-whop-checklist]) header:not([data-resource-header]) { display: none !important; }
-      [data-whop-checklist] * { color: #111 !important; background: transparent !important; border-color: #bbb !important; }
-      [data-whop-checklist] header { padding: 0 0 12px !important; }
-      [data-whop-checklist] header img { display: none; }
-      [data-whop-checklist] h1 { font-size: 28px !important; }
-      [data-whop-checklist] section { padding: 16px !important; break-inside: avoid; }
-      [data-whop-checklist] a { text-decoration: underline; }
-    }`}</style>
     <SchemaScript schema={createBreadcrumbSchema([{ name: "Home", path: "/" }, { name: "Whop", path: "/topics/whop" }, { name: "Launch checklist", path: "/resources/whop-launch-checklist" }])} />
     <header data-resource-header className="p-6 md:p-12 border-b border-[#333]">
       <Link className="text-[#10b981] text-sm" href="/topics/whop">← Whop guides</Link>
