@@ -19,6 +19,7 @@ test('deployment comparison includes all commits and fails open without a safe b
     git('init'); git('config', 'user.name', 'Test'); git('config', 'user.email', 'test@example.com');
     const base = commit('package.json');
     commit('docs/growth/record.md');
+    commit('scripts/vercel-ignore-build.mjs');
     const env = { VERCEL_ENV: 'production', VERCEL_GIT_PREVIOUS_SHA: base };
     assert.equal(shouldSkipBuild({ cwd, env }), true);
     commit('src/content/blog/new.mdx');

@@ -1,7 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
-const recordsOnly = /^(?:docs\/|gsc-data\/|impact-data\/|\.agents\/|README\.md$)/;
+// This hook and its test affect deployment decisions, not application output;
+// Vercel executes the version in the new checkout before deciding to build.
+const recordsOnly = /^(?:docs\/|gsc-data\/|impact-data\/|\.agents\/|README\.md$|scripts\/vercel-ignore-build(?:\.test)?\.mjs$)/;
 
 export function shouldSkipBuild({ env = process.env, cwd = process.cwd(), remote = 'https://github.com/dhegstad/AdsX.git', report = () => {} } = {}) {
   const git = (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
