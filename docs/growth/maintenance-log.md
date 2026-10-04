@@ -1,5 +1,15 @@
 # Daily publication maintenance
 
+## October 4, 2026
+
+Completed [release #65](https://github.com/dhegstad/AdsX/pull/65): rebuilt the bundle-app guide around three verified options, current price conditions, an original contribution example, and an inventory/checkout acceptance matrix. Corrected native bundle capability claims and removed unsupported performance percentages. Four inbound descriptions now match the revised guide without resetting their dates. Original URL, publication date, and topic membership are preserved. The [record](sprint-2026-10-04.md) and [manifest](sprint-2026-10-04.json) contain release evidence and the single-article IndexNow receipt.
+
+Editorial checks passed for 76 tracked articles and six hubs; 12 affiliate tests and the production build passed. Twelve local and live routes passed relevant status, canonical, indexing, date, source-link, and commercial affiliate-tag checks. The sitemap still has 430 URLs. These checks verify configuration, not downstream commissions. Marked roadmap R007 published.
+
+Reused the newest available nightly snapshot, checked the newest complete date with a read-only query, and inspected the selected existing guide. Reporting remains delayed; private analytics remain in the ignored audit directory. Existing commercial/recent-release inspection results are reused. No unchanged Impact access notice, repeated Google request, or directory submission. Local preview server stopped.
+
+Leave October 1–4 changes stable while recrawled. Next broad recent-release indexing review remains October 5 or later. Inspect primary sources before considering the older Editions guide or another app-selection backlog item, and check prior release manifests to avoid repeating completed September work. Email work remains paused; no purchases, paid APIs, social posts, or AdsX app promotion. Unrelated local work and open PR45/PR34/PR25 remain intact.
+
 ## October 3, 2026
 
 Completed [release #63](https://github.com/dhegstad/AdsX/pull/63): rewrote the existing app-uninstall guide to correct theme-preview inference, external subscription billing, and unsupported deletion/performance claims. Added an app-removal record, diagnostic matrix, and storefront acceptance checklist using five current primary sources. Preserve the URL and original publication date. The [release record](sprint-2026-10-03.md) and [manifest](sprint-2026-10-03.json) contain validation, deployment, and the single-article IndexNow receipt.

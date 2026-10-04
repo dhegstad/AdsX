@@ -107,6 +107,8 @@ The original 96 research candidates remain below. The additional batch is tracke
 
 ## Existing-article refreshes
 
+October 4 maintenance completed R007 in the [bundle-app comparison release](sprint-2026-10-04.json).
+
 October 3 maintenance reconciled R006 with its [September 16 release](sprint-2026-09-16.json) and completed R018 in the [October 3 release](sprint-2026-10-03.json). The original target dates below remain planning history; release manifests record actual delivery.
 
 | Day | Target date | ID | Article | Status |
@@ -117,7 +119,7 @@ October 3 maintenance reconciled R006 with its [September 16 release](sprint-202
 | 2 | 2026-09-10 | R004 | Shopify Pros and Cons 2026: The Honest List | research-required |
 | 1 | 2026-09-09 | R005 | The Cost of Running a Shopify Store: A First-Year Budget Worksheet | published |
 | 3 | 2026-09-11 | R006 | Shopify App Costs: Audit Every Subscription and Fee | published |
-| 4 | 2026-09-12 | R007 | 9 Best Shopify Bundle Apps to Boost AOV (2026) | research-required |
+| 4 | 2026-09-12 | R007 | Best Shopify Bundle Apps: 3 Options by Use Case | published |
 | 1 | 2026-09-09 | R008 | Etsy to Shopify: Expand Your Shop with a Tested Migration Plan | published |
 | 5 | 2026-09-13 | R009 | Sell Digital Products on Shopify: 2026 Step-by-Step | research-required |
 | 1 | 2026-09-09 | R010 | Your First 30 Days on Shopify: Launch, Orders and Evidence | published |
