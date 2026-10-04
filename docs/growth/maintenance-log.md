@@ -1,5 +1,17 @@
 # Daily publication maintenance
 
+## October 4, 2026 — publishing expansion
+
+Completed the new Whop cluster in [PR67](https://github.com/dhegstad/AdsX/pull/67) and the final resource adjustment in [PR68](https://github.com/dhegstad/AdsX/pull/68): five new articles, a Whop reading hub, and an interactive on-page launch checklist. Added five original illustrations and one verified official video embed, sponsored Whop referral routing, separate Whop click events, both-platform disclosure, sitemap/navigation updates, and fixes for image hydration and absolute schema image URLs. The [manifest](publication-2026-10-04-whop.json) and [release record](publication-2026-10-04-whop.md) hold the evidence.
+
+The existing daily heartbeat now requires at least three genuinely new articles at 09:00 America/Chicago, plus useful additional SEO resources and maintenance. Refreshes do not count. [Daily publishing guidance](daily-publishing.md), product context, and the roadmap were updated. Printing is explicitly excluded from future product work and QA.
+
+Enrolled the existing account as a standard Whop Partner and copied its own dashboard-issued referral link. The optional Verified Partner upgrade and payout configuration are not claimed complete. No email invitation was sent. Account screenshots stay private. The broad launch request is supported by current capability guides; a dated end-to-end launch-news piece awaits a public announcement or approved evidence.
+
+Validation passed: 81 tracked articles, seven curated hubs, 15 referral tests, 465-route production build, 14 local and live routes, five original image inspections, nine Whop primary-source URLs, and mobile/desktop article media plus checklist behavior. IndexNow accepted seven new URLs with HTTP 200; no indexing or ranking gain is claimed. There are now 394 blog articles and 437 sitemap URLs. The resource has no print control. Local preview processes were stopped.
+
+This expansion reuses the morning maintenance context and makes no new GSC or commission measurement claim. Unrelated files and open PR45/PR34/PR25 remain untouched. No paid service, social post, email marketing, directory submission, or unapproved AdsX app promotion. Next run: research three distinct new reader needs, preserve the new cohort long enough to measure, and follow the scheduled recent-release indexing review rather than repeatedly submitting unchanged URLs.
+
 ## October 4, 2026
 
 Completed [release #65](https://github.com/dhegstad/AdsX/pull/65): rebuilt the bundle-app guide around three verified options, current price conditions, an original contribution example, and an inventory/checkout acceptance matrix. Corrected native bundle capability claims and removed unsupported performance percentages. Four inbound descriptions now match the revised guide without resetting their dates. Original URL, publication date, and topic membership are preserved. The [record](sprint-2026-10-04.md) and [manifest](sprint-2026-10-04.json) contain release evidence and the single-article IndexNow receipt.
