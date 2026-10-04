@@ -1,11 +1,11 @@
 {
   "as_of": "2026-10-04",
-  "status": "validated-awaiting-production",
+  "status": "published-and-production-verified",
   "articles": [
     {
       "slug": "whop-ads-guide",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 751,
       "image": "/images/whop/whop-ads-guide.png",
@@ -21,7 +21,7 @@
     {
       "slug": "whop-facebook-instagram-ads",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 827,
       "image": "/images/whop/whop-facebook-instagram-ads.png",
@@ -35,7 +35,7 @@
     {
       "slug": "whop-ads-shopify-stores",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 829,
       "image": "/images/whop/whop-ads-shopify-stores.png",
@@ -48,7 +48,7 @@
     {
       "slug": "install-whop-pixel-shopify",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 880,
       "image": "/images/whop/install-whop-pixel-shopify.png",
@@ -62,7 +62,7 @@
     {
       "slug": "whop-ads-budget-break-even-cpa",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 832,
       "image": "/images/whop/whop-ads-budget-break-even-cpa.png",
@@ -74,7 +74,7 @@
     {
       "slug": "whop-ads-vs-meta-ads-manager",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 838,
       "image": "/images/whop/whop-ads-vs-meta-ads-manager.png",
@@ -88,7 +88,7 @@
     {
       "slug": "whop-ads-purchase-tracking-roas",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 853,
       "image": "/images/whop/whop-ads-purchase-tracking-roas.png",
@@ -101,7 +101,7 @@
     {
       "slug": "whop-ai-ad-campaign-preparation",
       "kind": "new",
-      "status": "validated-awaiting-production",
+      "status": "published-and-production-verified",
       "source_reviewed_on": "2026-10-04",
       "word_count": 864,
       "image": "/images/whop/whop-ai-ad-campaign-preparation.png",
@@ -132,7 +132,13 @@
     "External purchase/ROAS descriptions differ between pixel guide and campaign schema; explain the discrepancy and verify report scope against a known order.",
     "Eight original diagrams and one official Whop launch video. Owned referral URL retained exactly; source links remain direct."
   ],
-  "deployment": null,
+  "deployment": {
+    "pull_request": "https://github.com/dhegstad/AdsX/pull/73",
+    "commit": "3044416d82081ae15cd572b92cc0154b741ea312",
+    "production_deployment": "https://adsx-2dxhl1a8s-dennishegstad-4354s-projects.vercel.app",
+    "status": "Ready",
+    "canonical_origin": "https://www.adsx.com"
+  },
   "verification": {
     "editorial": "114 tracked articles and seven curated hubs passed",
     "affiliate_tests": "12 Shopify and three Whop tests passed",
@@ -219,7 +225,106 @@
       "issues": 0
     },
     "source_links": "12 source URLs returned HTTP 200; two Shopify Help Center URLs returned an automated-client challenge but their complete relevant content was read successfully through the web research tool.",
-    "visual": "Desktop guide and mobile pixel article inspected; no page overflow at 390px. Official launch video played with duration 27.968 seconds and no media error."
+    "visual": "All eight articles passed mobile overflow and sponsored-referral checks at 390px. Desktop article/video and the new Whop reading path inspected. Official video played with duration 27.968 seconds and no media error. Production Whop hub visually confirmed.",
+    "production": {
+      "checked_at": "2026-10-04T16:42:14.306Z",
+      "base": "https://www.adsx.com",
+      "pages": [
+        {
+          "path": "/blog/whop-ads-guide",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-facebook-instagram-ads",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-ads-shopify-stores",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/install-whop-pixel-shopify",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-ads-budget-break-even-cpa",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-ads-vs-meta-ads-manager",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-ads-purchase-tracking-roas",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-ai-ad-campaign-preparation",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/topics/whop",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/topics/advertising",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/topics/ai-commerce",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/shopify-free-trial-deal",
+          "status": 200,
+          "shopify_links": 4
+        },
+        {
+          "path": "/blog",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/gumroad-vs-shopify-2026",
+          "status": 200,
+          "shopify_links": 4
+        }
+      ],
+      "sitemap_url_count": 470,
+      "new_articles": 8,
+      "new_pages": 0,
+      "images": 8,
+      "issues": 0
+    }
   },
-  "indexnow": null
+  "indexnow": {
+    "submittedAt": "2026-10-04T16:42:25.538Z",
+    "endpoint": "https://api.indexnow.org/indexnow",
+    "httpStatus": 200,
+    "outcome": "received",
+    "urlCount": 9,
+    "urls": [
+      "https://www.adsx.com/blog/whop-ads-guide",
+      "https://www.adsx.com/blog/whop-facebook-instagram-ads",
+      "https://www.adsx.com/blog/whop-ads-shopify-stores",
+      "https://www.adsx.com/blog/install-whop-pixel-shopify",
+      "https://www.adsx.com/blog/whop-ads-budget-break-even-cpa",
+      "https://www.adsx.com/blog/whop-ads-vs-meta-ads-manager",
+      "https://www.adsx.com/blog/whop-ads-purchase-tracking-roas",
+      "https://www.adsx.com/blog/whop-ai-ad-campaign-preparation",
+      "https://www.adsx.com/topics/whop"
+    ],
+    "note": "Eight new articles and the substantially expanded Whop hub. Small inbound-link and single-pick changes are not resubmitted. Receipt does not establish crawling, indexing, ranking, or AI citation."
+  }
 }

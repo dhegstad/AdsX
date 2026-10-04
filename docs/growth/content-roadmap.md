@@ -1,5 +1,7 @@
 # Content roadmap — accelerated sprint
 
+October 4 advertising follow-up: all eight requested Whop Ads articles are published and production-verified. See [the release manifest](publication-2026-10-04-whop-ads.json). The Whop library now has 38 articles, including a dedicated advertising reading path. These eight intents are covered; do not recreate the pillar, Meta setup, Shopify fit, pixel installation, budget, manager comparison, attribution, or AI preparation articles as new posts.
+
 October 4 Whop expansion: 25 additional articles are published and production-verified, tracked in [the separate plan](whop-expansion-plan-2026-10-04.json) and [release manifest](publication-2026-10-04-whop-expansion.json). The Whop library now contains 30 articles. The five earlier Whop articles are a separate batch; four receive evidence updates here. Daily work continues across Shopify, Shopify apps, Whop, and adjacent AI/ecommerce topics.
 
 September 9–22, 2026 remains the original planning window. Eight new articles and two refreshes per production day was a baseline, not a ceiling. Dennis approved an additional 30-article batch for September 9: 10 brand-new URLs, 10 rebuilt previously removed URLs, and 10 existing articles substantially updated.
