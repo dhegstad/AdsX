@@ -135,6 +135,24 @@ function createMarkdownComponents(slug: string): Components {
       // A bare YouTube link on its own line becomes a responsive embed.
       const ytId = href ? getYouTubeId(href) : null;
       const isBareLink = !!href && String(children) === href;
+      // Verified official launch asset, embedded only when its URL stands alone.
+      if (isBareLink && href === "https://whopvideo.app/videos/1778598814627-ad3c5ygu.mp4") {
+        return (
+          <span className="my-8 block">
+            <video
+              className="aspect-video w-full border border-[#333] bg-black"
+              controls
+              playsInline
+              preload="none"
+              poster="https://whopvideo.app/thumbnails/1778598817090-dtfckunq.jpg"
+              aria-label="Introducing Whop Ads: official Meta launch video"
+            >
+              <source src={href} type="video/mp4" />
+              <a href="https://whop.com/blog/watch/whop-ads-launch/">Watch the official Whop Ads introduction</a>
+            </video>
+          </span>
+        );
+      }
       if (ytId && isBareLink) {
         return (
           <span className="my-8 block">

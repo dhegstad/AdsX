@@ -14,13 +14,13 @@ const primarySourceHosts = new Set([
   'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
   'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
   'support.google.com', 'www.ecwid.com', 'support.ecwid.com', 'www.etsy.com', 'operationhope.org', 'www.patreon.com', 'support.patreon.com',
-  'docs.whop.com', 'help.whop.com',
+  'docs.whop.com', 'help.whop.com', 'newsroom.whop.com', 'www.facebookblueprint.com',
 ]);
 function isPrimarySource(href) {
   try {
     const url = new URL(href);
     return url.protocol === 'https:' && (primarySourceHosts.has(url.hostname) ||
-      (url.hostname === 'whop.com' && /^\/(?:network\/(?:solutions|product|pricing)|blog)(?:\/|$)/.test(url.pathname)) ||
+      (url.hostname === 'whop.com' && /^\/(?:network\/(?:solutions|products?|pricing)|blog)(?:\/|$)/.test(url.pathname)) ||
       (url.hostname === 'github.com' && /^\/magento\/magento2(?:\/|$)/.test(url.pathname)));
   } catch { return false; }
 }
