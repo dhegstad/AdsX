@@ -1,5 +1,15 @@
 # Daily publication maintenance
 
+## October 4, 2026 — 25-article Whop expansion
+
+Dennis requested official Whop/X/employee research and at least 25 additional Whop articles. Resolved the launch evidence gap using @whop’s October 1 ecommerce thread and October 2 migration announcement. Retrieved 353 official blog pages into an ignored research corpus and reviewed the sources needed for five groups of original merchant guides. Public sources and product/documentation feedback are summarized in [the research record](whop-research-2026-10-04.md).
+
+Prepared 25 new articles (about 16,000 words), 25 original diagrams, and three relevant official video embeds. Every article includes the existing owned Whop partner CTA and employment/affiliate disclosure. Updated four earlier Whop guides to reflect the native-store launch and clarify billing behavior. Expanded the Whop hub into five reading paths covering all 30 Whop articles, with a fallback list so later publications remain discoverable. Updated the source context, daily queue, roadmap, AI navigation, and sitemap dates; removed an old printing-oriented link label encountered in the shared topic template.
+
+Editorial checks passed for 106 tracked articles and seven hubs; all 15 referral tests and the 490-route build passed. The 37-route local check verified canonical/indexability, 29 article CTAs and images, source links, schema, video URLs, and a 462-URL sitemap. Desktop and mobile samples passed; table overflow remains inside its container. The original 25-image contact sheet was reviewed. Three Shopify source URLs challenged the raw HTTP client but were accessible through web research; they were not incorrectly removed as broken links.
+
+Release is awaiting production verification in the [manifest](publication-2026-10-04-whop-expansion.json). Existing private analytics from today were reused; no traffic or commission improvement is claimed. No account enrollment, directory submission, email action, social post, purchase, or paid model call was needed. Unrelated local files and open PR45/PR34/PR25 remain untouched. Next: verify production, submit new/substantially changed URLs once, then measure this cohort after 7/28 days while the daily queue continues across all three affiliate revenue sources.
+
 ## October 4, 2026 — affiliate strategy clarification
 
 Dennis clarified that AdsX targets affiliate revenue from Shopify, Shopify apps covered in the publication, and Whop. He also confirmed his employment at Whop and his goal of improving its merchant experience and growth. Updated product context, daily publishing instructions, and reporting guidance to distinguish the three revenue sources, program approval, qualifying actions, and earned/paid commissions. Added app-partner research and evidence-based Whop product feedback to future work. No new app partnership, attributed conversion, or commission is claimed.

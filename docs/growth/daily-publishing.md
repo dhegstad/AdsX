@@ -29,21 +29,21 @@ Dennis is employed at Whop and also wants the publication to improve merchant un
 5. Carry the reviewed batch through a focused GitHub PR and the existing Vercel release process. Attach every created PR to the task. Verify production before recording publication. Do not merge paused email or unrelated reporting work.
 6. Send free IndexNow notifications once for genuinely new/substantially changed live URLs. Selective Google requests are optional; receipts are not indexing or ranking proof. Update manifests, roadmap, and the durable log with evidence and the next action.
 
-## Research queue after the first Whop batch
+## Research queue after the expanded Whop library
 
-These are candidates, not verified briefs or a license to publish overlapping pages. Compare with the expanded library before selecting them; replace a duplicate with another distinct intent.
+The October 4 expansion covers 25 additional intents across ecommerce/AI, services, coaching/courses, paid communities, and payments/platforms. Read [the expansion manifest](publication-2026-10-04-whop-expansion.json) and [source research](whop-research-2026-10-04.md) before drafting. Earlier candidates for digital delivery, refunds, tracking, installments, and launch analysis are now covered; do not recreate them under another title. The official October 1 launch source is verified, so the prior evidence blocker is resolved.
 
-| Candidate | Reader task | Original contribution to develop |
+| Candidate | Distinct reader task | Original contribution to develop |
 | --- | --- | --- |
-| Whop digital-product access setup | Deliver the correct resource after payment | Access matrix for files, lessons, and community tiers |
-| Whop refund and cancellation workflow | Handle the operational consequences of a refund | Payment/access/physical-delivery exception map |
-| Whop tracking links and reporting | Compare campaigns without confusing clicks with revenue | Worked reporting reconciliation table |
-| Physical product plus a paid community | Decide whether the combined offer is worth operating | Fulfillment and support capacity model |
-| Whop recurring offer versus installments | Choose the right charge and delivery promise | Timeline showing cash receipts and service obligations |
-| Whop ecommerce launch analysis | Understand a documented new release | Public availability, setup, and capability evidence matrix; awaiting a public launch source |
+| Physical merchandise plus community access | Coordinate two kinds of delivery in one offer | Item/access exception map; verify actual mixed-cart support before claiming it |
+| Selling an AI service on Whop | Scope a maintained service with customer data boundaries | Example acceptance brief, maintenance cost, and permission model |
+| Whop website SEO migration | Preserve discovery when changing hosts | Verified canonical, redirect, sitemap, and domain control capabilities; avoid duplicating the general migration checklist |
+| Whop versus another course platform | Choose around delivery and total cost | Current primary-source comparison and a distinct learner workflow |
 | Shopify first-store catalog planning | Build a usable initial assortment | Sample catalog with explicit operational tradeoffs |
 | Shopify checkout payment-method selection | Choose methods for an identified customer mix | Cost and eligibility comparison using current sources |
 | AI-assisted product comparison writing | Produce accurate merchant-facing comparisons | A sourced brief, faulty draft, and verified revision |
+
+These are research candidates, not verified claims or guaranteed search demand. Keep the Shopify and app-affiliate work active alongside Whop coverage.
 
 Review cohorts at sensible intervals rather than rewriting yesterday's work daily. Measure 7/28-day discovery and traffic, referral clicks, and available attributed outcomes separately. The daily output commitment does not guarantee a date for traffic leadership or revenue targets.
 

@@ -11,7 +11,7 @@ image: "/images/whop/physical-product-handoff.png"
 imageAlt: "The required information and checks between a paid order and a shipped parcel."
 ---
 
-To sell a physical product on Whop, create the offer and price, collect the information needed to deliver it, and connect the payment to your fulfillment process. Before sharing the checkout publicly, verify that a successful payment produces the correct order and that a failed or refunded payment does not result in an unwanted shipment.
+To sell a physical product on Whop, choose the native storefront or an appropriate payment-and-fulfillment connection, configure the catalog and price, and define how paid orders will be delivered. Before sharing the checkout publicly, verify that a successful payment produces the correct order and that a failed or refunded payment does not result in an unwanted shipment.
 
 This guide follows Whop’s public documentation as reviewed on October 4, 2026. We have not run a warehouse or test store through this flow. The launch checks below are our recommended acceptance criteria. AdsX may earn a commission from qualifying Whop referrals.
 
@@ -25,9 +25,11 @@ Write the product promise before configuring the dashboard. Include what is in t
 
 For a hypothetical first release of 40 ceramic mugs, the offer might be one mug in one of two colors, with a stated dispatch window and a clearly defined delivery region. That is easier to validate than a launch with dozens of sizes, colors, bundles, and subscription options at once.
 
-Keep a small product record with an internal identifier, option values, sellable quantity, package weight, and fulfillment contact. Even if you collect an option as a checkout answer, the person packing the order needs an unambiguous product identifier.
+Keep a small product record with an internal identifier, option values, sellable quantity, package weight, and fulfillment contact. Use the [variant planning guide](/blog/whop-product-variants-inventory) to give each sellable combination an unambiguous identity for the person packing the order.
 
 ## 2. Create the product and choose the billing model
+
+Whop’s [October 1 feature announcement](https://x.com/whop/status/2105729371076190669) includes native variants, inventory, and multi-product checkout. Its [Blueprints guide](https://whop.com/blog/whop-blueprints/) describes the hosted website route. If you are building a new native store, start with that route and check its current catalog controls; do not substitute membership purchase limits for physical stock.
 
 Whop’s [create-product instructions](https://docs.whop.com/manage-your-business/products/create-product) cover naming the product, adding a headline and banner, selecting pricing, attaching experiences where needed, and preparing the product page. For an ordinary single purchase, select one-time pricing. Use recurring pricing only when the offer truly includes recurring charges and delivery or access.
 
@@ -37,7 +39,9 @@ A membership and a refill shipment may both use recurring billing, but they make
 
 ## 3. Choose the fulfillment path available to your business
 
-The [DTC ecommerce guide](https://docs.whop.com/supported-business-models/dtc-ecommerce) describes using custom fields for details such as shipping address, size, and color, with webhooks and an automation service connecting the sale to fulfillment.
+For the native store route, verify how the paid order reaches the person or service shipping it. The launch announcement confirms catalog and checkout features; it does not establish every merchant’s warehouse connection.
+
+For an external fulfillment setup, the [DTC ecommerce guide](https://docs.whop.com/supported-business-models/dtc-ecommerce) describes custom fields, webhooks, and an automation service. This is a documented alternative workflow, not a requirement that every native store must use those same components.
 
 Whop’s [physical-products page](https://whop.com/network/solutions/physical-products/) also advertises a Shopify fulfillment connection. If you have a Shopify store, confirm the setup and supported behavior available to your account. The public setup guide does not provide enough detail to promise that every variant, shipping rule, inventory location, or refund will map automatically.
 

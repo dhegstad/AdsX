@@ -10,7 +10,7 @@ export interface PublicationPost {
 }
 
 export const publicationTopics = [
-  { slug: "whop", name: "Whop ecommerce", description: "Product setup, checkout, fees, physical fulfillment, and platform comparisons for businesses evaluating Whop.", intro: "Follow an offer from a clear product promise through payment, delivery, and support. These guides explain Whop’s documented workflows, show where integrations need verification, and compare the operating choices with Shopify.", intent: "learn" as const, picks: ["whop-ecommerce-guide", "whop-vs-shopify", "how-to-sell-physical-products-on-whop", "whop-fees-ecommerce", "whop-checkout-links-guide"] },
+  { slug: "whop", name: "Whop business guides", description: "Practical Whop guides for ecommerce stores, AI, services, coaching, courses, paid communities, payments, and platforms.", intro: "Build a business you can deliver well. Explore Whop’s ecommerce launch, plan a service or course, create a paid community, and understand payments. Start with the reading path that matches what you sell.", intent: "learn" as const, picks: ["whop-ecommerce-guide", "whop-vs-shopify", "how-to-sell-physical-products-on-whop", "whop-fees-ecommerce", "whop-checkout-links-guide"] },
   { slug: "start-a-store", name: "Start a store", description: "Choose a platform, understand the costs, and get your first Shopify store ready to take orders.", intro: "Start with the decision your business actually needs to make. These guides cover platform fit, plans, product niches, and the first steps of running a store. Work through setup before adding a stack of apps.", intent: "affiliate" as const, picks: ["shopify-without-inventory-business-models", "shopify-vs-ecwid-first-store", "shopify-free-vs-paid-theme-first-store", "how-to-validate-product-demand-before-shopify-store", "shopify-vs-woocommerce-comparison", "shopify-vs-big-cartel", "shopify-pricing-2026-every-plan-real-cost", "shopify-free-trial-2026-complete-guide", "how-to-migrate-from-woocommerce-to-shopify", "shopify-digital-products-app-stack-first-store", "shopify-app-stack-first-physical-store"] },
   { slug: "shopify-apps", name: "Shopify apps", description: "Find the right apps, understand permissions and pricing, and keep your store's software manageable.", intro: "An app should solve a specific store problem. Start with the job, check what Shopify already provides, and compare the total cost and permissions before installing. This collection combines merchant buying guides with app operations and ecosystem coverage.", intent: "learn" as const, picks: ["shopify-apps-ai-visibility", "shopify-app-usage-charges-spending-limits", "shopify-review-app-selection-checklist", "shopify-app-free-to-install-vs-free-plan", "shopify-app-permissions-checklist-merchants", "shopify-built-in-features-vs-apps", "how-to-evaluate-shopify-app-reviews", "how-many-shopify-apps-too-many", "shopify-app-costs-audit-guide", "uninstall-shopify-apps-cleanup-guide"] },
   { slug: "running-a-store", name: "Running a store", description: "Operations, customer experience, profitability, and the practical decisions behind an ecommerce business.", intro: "Running a store means connecting your catalog, fulfillment, customer service, and margins. Use these guides to review a workflow, understand a tradeoff, or fix an operational gap. Start with the problem you can observe before adding software or changing a process.", intent: "learn" as const, picks: ["shopify-free-shipping-threshold-margin", "shopify-manual-payments-bank-transfer-cod", "first-30-days-shopify-store-checklist", "shopify-product-csv-import-first-catalog", "shopify-test-order-before-launch-checklist", "shopify-url-redirect-map-store-migration", "connect-existing-domain-shopify-email-checklist", "shopify-app-costs-audit-guide"] },
@@ -39,3 +39,72 @@ export function getContentIntent(post: PublicationPost): ContentIntent {
   if (topics.includes("start-a-store")) return "affiliate";
   return "learn";
 }
+
+// Reading paths keep the growing Whop library organized by the reader’s job.
+export const whopReadingPaths = [
+  {
+    "id": "ecommerce-ai",
+    "name": "Ecommerce and AI",
+    "description": "Understand the new store launch, plan a catalog, and evaluate AI recommendations.",
+    "slugs": [
+      "whop-ecommerce-guide",
+      "whop-vs-shopify",
+      "whop-ecommerce-launch-2026",
+      "whop-website-migration-checklist",
+      "whop-product-variants-inventory",
+      "whop-multi-product-checkout",
+      "whop-economic-intelligence-guide",
+      "how-to-sell-physical-products-on-whop"
+    ]
+  },
+  {
+    "id": "services",
+    "name": "Service businesses",
+    "description": "Turn a defined offer into a workable payment, booking, and client-delivery process.",
+    "slugs": [
+      "whop-for-service-businesses",
+      "whop-agency-client-portal",
+      "whop-consulting-retainers",
+      "whop-invoices-guide",
+      "whop-calendar-bookings-guide",
+      "whop-checkout-links-guide"
+    ]
+  },
+  {
+    "id": "coaching-courses",
+    "name": "Coaching and courses",
+    "description": "Price your time, design useful learning, and make access rules clear.",
+    "slugs": [
+      "whop-coaching-business-setup",
+      "whop-coaching-packages-pricing",
+      "whop-create-online-course",
+      "whop-course-curriculum-guide",
+      "whop-course-community-bundle"
+    ]
+  },
+  {
+    "id": "communities",
+    "name": "Paid communities",
+    "description": "Choose your community format, configure access, and help members get started.",
+    "slugs": [
+      "whop-paid-community-guide",
+      "whop-discord-paid-access",
+      "whop-telegram-paid-group",
+      "whop-membership-tiers",
+      "whop-member-onboarding"
+    ]
+  },
+  {
+    "id": "payments-operations",
+    "name": "Payments and platforms",
+    "description": "Deliver files, choose billing, handle exceptions, and measure commercial results.",
+    "slugs": [
+      "whop-fees-ecommerce",
+      "whop-digital-downloads-guide",
+      "whop-subscriptions-vs-installments",
+      "whop-refunds-cancellations",
+      "whop-tracking-links-analytics",
+      "whop-for-platforms-marketplaces"
+    ]
+  }
+];

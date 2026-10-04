@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({
         url: `${baseUrl}${path}`,
-        lastModified: ["/topics", "/topics/whop", "/topics/start-a-store", "/topics/running-a-store", "/topics/shopify-apps", "/topics/advertising", "/editorial-policy"].includes(path) ? new Date("2026-10-04")
+        lastModified: ["/topics", "/topics/whop", "/topics/ai-commerce", "/topics/start-a-store", "/topics/running-a-store", "/topics/shopify-apps", "/topics/advertising", "/editorial-policy"].includes(path) ? new Date("2026-10-04")
           : path === "/topics/running-a-store"
           ? new Date("2026-10-02")
           : ["/topics", "/topics/start-a-store"].includes(path) ? new Date("2026-10-01")
