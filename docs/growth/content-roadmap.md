@@ -141,3 +141,7 @@ October 3 maintenance reconciled R006 with its [September 16 release](sprint-202
 | 1 | 2026-09-09 | R022 | Trending Products to Sell on Shopify in 2026: 12 Ideas to Validate | published |
 | 12 | 2026-09-20 | R023 | Shopify vs Patreon 2026: Which Is Better for Creators | research-required |
 | 12 | 2026-09-20 | R024 | Shopify for Coins & Numismatics: Sell Coins in 2026 | research-required |
+
+## October 4 service-business release
+
+The [24-guide service-business batch](publication-2026-10-04-whop-services.json) is live, bringing the Whop library to 62 articles. Home trades, beauty, pet care, teaching/fitness, creative freelancers, web design, virtual assistance, and organizing are covered. Future work should answer distinct unmet questions and follow initial discovery/referral evidence; do not create generic occupation substitutions. Preserve new pages through their first 7/28-day observation periods. Review project-specific infrastructure usage after a complete week under the new [cost controls](deployment-cost-controls.md).
