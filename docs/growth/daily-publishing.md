@@ -59,3 +59,9 @@ Alongside publishing, research free official affiliate programs for apps already
 Dennis explicitly excludes printing from this project. Do not build or promote print/PDF resources, add print controls, or open print dialogs during QA. Keep resources useful directly on the website; focus on articles, organic visibility, and referral conversions.
 
 No paid directories, subscriptions, ads, API calls, or optional paid model review. Email capture, newsletters, outreach, verification-email work, and social posts remain paused. No promotion of installation of the unapproved AdsX app. Free directory work can supplement publishing when relevant; use dennis@adsx.com if contact is required and distinguish a submission from a public backlink. User action is needed for identity or payout details when actually requested by the service; ordinary research and publishing should continue independently.
+
+## Service-business expansion and deployment costs
+
+The October 4 service-business batch adds 24 distinct guides; see `publication-2026-10-04-whop-services.json`. Reuse these intents rather than publishing another set of near-identical industry pages. The Whop hub groups the library into home services, beauty, teaching/fitness/pet care, freelance work, and the established ecommerce/advertising paths. Build future coverage around unanswered operational questions or evidence from search, not another occupation-name substitution.
+
+Follow [deployment cost controls](deployment-cost-controls.md): batch releases, retain the smaller verified build machine, skip records-only deployments, and preserve static blog caching. Add a checked-in SVG/PNG pair to the illustration registry for new diagrams. Keep precise account usage in ignored local files and compare actual project spend after a complete observation period.

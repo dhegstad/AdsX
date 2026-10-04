@@ -48,3 +48,9 @@ Dennis explicitly excludes printing from the project. Do not build or promote pr
 ## Whop advertising coverage
 
 Dennis approved the eight-article Whop Ads cluster on October 4, and it is published in `docs/growth/publication-2026-10-04-whop-ads.json`. Cover advertising workflows, Shopify integrations, acquisition economics, measurement, and practical AI preparation. This is editorial authorization, not authorization to fund or activate campaigns. Keep account availability and public documentation conflicts explicit. All Whop commercial CTAs retain the verified owned signup route above.
+
+## Service businesses and infrastructure
+
+On October 4, Dennis requested broad Whop coverage for specific service businesses and solopreneurs, including HVAC, auto detailing, nails, hair, esthetics, brows, and lashes. The resulting 24-guide batch is tracked in `docs/growth/publication-2026-10-04-whop-services.json`. Explain which documented payment/booking features fit the service and which specialist operations still need another tool. Do not imply universal industry approval or unverified field-service, salon, medical-record, routing, or session-credit functionality.
+
+Dennis also prioritized minimum infrastructure cost with good performance. Follow `docs/growth/deployment-cost-controls.md`; batch publishing and avoid documentation-only rebuilds. Keep precise billing/account reports private. Measure actual savings rather than extrapolating a partial month's usage into a guaranteed reduction.

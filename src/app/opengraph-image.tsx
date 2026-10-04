@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// Fixed artwork is generated once at build time.
+export const dynamic = 'force-static';
 
 export const alt = 'AdsX — Start and grow your Shopify store';
 export const size = {

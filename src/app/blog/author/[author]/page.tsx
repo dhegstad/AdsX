@@ -9,7 +9,8 @@ interface PageProps {
   params: Promise<{ author: string }>;
 }
 
-export const revalidate = 86400;
+// Repository content changes only on deployment; avoid timed regeneration.
+export const revalidate = false;
 
 export async function generateStaticParams() {
   return authors.map((author) => ({ author: author.slug }));

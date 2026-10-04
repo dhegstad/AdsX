@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
-// Cache sitemap for 24 hours to avoid regenerating on every crawl request
-export const revalidate = 86400;
+// Repository content changes only on deployment; avoid timed regeneration.
+export const revalidate = false;
 
 import { getAllPosts, authors } from '@/lib/blog';
 import { getAllIntegrations } from '@/lib/integrations';

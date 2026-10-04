@@ -3,6 +3,7 @@ import Image from "next/image";
 import { BrutalistLayout } from "@/components/brutalist-layout";
 import { publicationTopics } from "@/lib/publication";
 import type { BlogPostMeta } from "@/lib/blog";
+import { getBlogDisplayImage } from "@/lib/blog-display-image";
 
 interface Category {
   category: string;
@@ -42,7 +43,7 @@ function CardThumbnail({
   if (post.image) {
     return (
       <Image
-        src={post.image}
+        src={getBlogDisplayImage(post.image)}
         alt={post.title}
         fill
         priority={priority}
