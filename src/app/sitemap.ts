@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...["/app", "/topics", "/editorial-policy", ...publicationTopics.map(t => `/topics/${t.slug}`)].map(path => ({
         url: `${baseUrl}${path}`,
-        lastModified: ["/topics/shopify-apps", "/topics/advertising"].includes(path) ? new Date("2026-10-04")
+        lastModified: ["/topics", "/topics/whop", "/topics/start-a-store", "/topics/running-a-store", "/topics/shopify-apps", "/topics/advertising", "/editorial-policy"].includes(path) ? new Date("2026-10-04")
           : path === "/topics/running-a-store"
           ? new Date("2026-10-02")
           : ["/topics", "/topics/start-a-store"].includes(path) ? new Date("2026-10-01")
@@ -83,6 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       },
+      { url: `${baseUrl}/resources/whop-launch-checklist`, lastModified: new Date("2026-10-04"), changeFrequency: "monthly" as const, priority: 0.8 },
       // Free planning resource
       { url: `${baseUrl}/resources/shopify-launch-checklist`, lastModified: new Date("2026-09-16"), changeFrequency: "monthly" as const, priority: 0.8 },
       // Tools

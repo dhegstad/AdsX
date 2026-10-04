@@ -6,7 +6,7 @@ import { withShopifyAffiliate } from '../src/lib/affiliate.ts';
 
 const batch = JSON.parse(fs.readFileSync('docs/growth/first-batch.json', 'utf8'));
 const platformBatch = JSON.parse(fs.readFileSync('docs/growth/platform-batch-2026-09-09.json', 'utf8'));
-const growthSprints = fs.readdirSync('docs/growth').filter(file => /^sprint-\d{4}-\d{2}-\d{2}\.json$/.test(file)).flatMap(file => JSON.parse(fs.readFileSync(path.join('docs/growth', file), 'utf8')).articles);
+const growthSprints = fs.readdirSync('docs/growth').filter(file => /^(?:sprint|publication)-\d{4}-\d{2}-\d{2}(?:-[a-z0-9-]+)?\.json$/.test(file)).flatMap(file => JSON.parse(fs.readFileSync(path.join('docs/growth', file), 'utf8')).articles);
 const slugs = [...new Set(process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review', ...platformBatch.articles.map(p => p.slug), ...growthSprints.map(p => p.slug)])];
 // This checks source presence. Relevance, claims, and current terms still require editorial review.
 const primarySourceHosts = new Set([
@@ -14,11 +14,13 @@ const primarySourceHosts = new Set([
   'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
   'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
   'support.google.com', 'www.ecwid.com', 'support.ecwid.com', 'www.etsy.com', 'operationhope.org', 'www.patreon.com', 'support.patreon.com',
+  'docs.whop.com', 'help.whop.com',
 ]);
 function isPrimarySource(href) {
   try {
     const url = new URL(href);
     return url.protocol === 'https:' && (primarySourceHosts.has(url.hostname) ||
+      (url.hostname === 'whop.com' && /^\/(?:network\/(?:solutions|product|pricing)|blog)(?:\/|$)/.test(url.pathname)) ||
       (url.hostname === 'github.com' && /^\/magento\/magento2(?:\/|$)/.test(url.pathname)));
   } catch { return false; }
 }
@@ -47,7 +49,13 @@ for (const slug of slugs) {
   if (data.updated) check(Date.parse(data.updated) >= Date.parse(data.date), `${slug}: updated before publication`);
   check(!/^# /m.test(content), `${slug}: body repeats the page H1`);
   check(!/\b(?:TODO|TBD|INSERT SOURCE)\b/.test(content), `${slug}: unfinished placeholder`);
-  const links = [...content.matchAll(/\[[^\]]+\]\(([^\s)]+)\)/g)].map(m => m[1]);
+  const links = [...content.matchAll(/(?<!!)\[[^\]]+\]\(([^\s)]+)\)/g)].map(m => m[1]);
+  const images = [...content.matchAll(/!\[([^\]]*)\]\(([^\s)]+)\)/g)];
+  for (const [, alt, src] of images) {
+    check(alt.trim().length > 0, `${slug}: image needs useful alt text`);
+    if (src.startsWith('/')) check(fs.existsSync(path.join('public', src)), `${slug}: missing local image ${src}`);
+  }
+  if (data.topics?.includes('whop')) check(images.length > 0, `${slug}: new Whop article needs an explanatory image`);
   const sources = links.filter(isPrimarySource);
   check(new Set(sources).size >= 2, `${slug}: needs at least two relevant primary sources`);
   const internal = links.filter(h => h.startsWith('/'));
@@ -70,4 +78,4 @@ for (const href of ['https://www.shopify.com/1mbb', 'https://www.shopify.com/1mb
 const trialLink = new URL(withShopifyAffiliate('https://www.shopify.com/free-trial', {slug: 'offer-review', placement: 'inline'}));
 check(trialLink.hostname === 'shopify.pxf.io' && trialLink.searchParams.get('subId1') === 'offer-review' && trialLink.searchParams.get('subId2') === 'inline' && trialLink.searchParams.get('u') === 'https://www.shopify.com/free-trial', 'Standard trial links should retain affiliate destination and attribution');
 if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
-else console.log(`PASS: ${slugs.length} articles, six curated hubs, links, dates, and reader intent.`);
+else console.log(`PASS: ${slugs.length} articles, ${publicationTopics.length} curated hubs, links, dates, images, and reader intent.`);

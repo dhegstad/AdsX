@@ -15,6 +15,7 @@ import {
   trackAffiliateClick,
 } from "@/lib/affiliate";
 import type { RelatedPage } from "@/lib/seo/internal-linking";
+import { isWhopReferralUrl, trackWhopReferralClick } from "@/lib/whop-referral";
 
 function slugify(text: string): string {
   return text
@@ -157,7 +158,8 @@ function createMarkdownComponents(slug: string): Components {
         href && isExternal
           ? withShopifyAffiliate(href, { slug, placement: "inline" })
           : href;
-      const isAffiliate = !!linkHref && isAffiliateUrl(linkHref);
+      const isWhopReferral = !!linkHref && isWhopReferralUrl(linkHref);
+      const isAffiliate = !!linkHref && (isAffiliateUrl(linkHref) || isWhopReferral);
       return (
         <a
           href={linkHref}
@@ -171,7 +173,9 @@ function createMarkdownComponents(slug: string): Components {
           }
           onClick={
             isAffiliate
-              ? () => trackAffiliateClick({ slug, placement: "inline" })
+              ? () => isWhopReferral
+                ? trackWhopReferralClick(slug)
+                : trackAffiliateClick({ slug, placement: "inline" })
               : undefined
           }
           className="text-[#10b981] underline underline-offset-4 hover:text-[#EAEAEA] transition-colors"
@@ -181,11 +185,14 @@ function createMarkdownComponents(slug: string): Components {
         </a>
       );
     },
-    p: ({ children, ...props }) => (
-      <p className="mb-6 text-[#ccc] leading-relaxed text-base" style={{ fontFamily: "var(--font-body)" }} {...props}>
-        {children}
-      </p>
-    ),
+    p: ({ children, node, ...props }) => {
+      // Markdown wraps standalone images in paragraphs, but our image renderer
+      // creates a figure. A figure inside a p is invalid HTML and forces React
+      // to rebuild the article after the browser repairs the server markup.
+      const containsImage = node?.children.some(child => child.type === "element" && child.tagName === "img");
+      if (containsImage) return <div className="my-8">{children}</div>;
+      return <p className="mb-6 text-[#ccc] leading-relaxed text-base" style={{ fontFamily: "var(--font-body)" }} {...props}>{children}</p>;
+    },
     strong: ({ children, ...props }) => (
       <strong className="text-[#EAEAEA] font-bold" {...props}>
         {children}

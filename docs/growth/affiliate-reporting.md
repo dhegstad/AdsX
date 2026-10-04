@@ -30,3 +30,11 @@ For a page report, filter to affiliate_click and break down event count and tota
 Impact requires an authenticated session or authorized export before commission reconciliation can be completed. Match Impact subId1 and subId2 to the GA4 page and placement in aggregate; keep trial, full-price, locked, reversed, and paid amounts separate. Older untagged referrals cannot be retroactively assigned to articles without supporting evidence.
 
 Meta, Google Ads, and X audience tags are not active: their account identifiers and consent configuration remain prerequisites. Email capture and email sequences are deferred at the owner's request.
+
+## October 4 Whop referral expansion
+
+The enrolled Whop Partners dashboard issued `https://whop.com/start/?code=YDMPYR`. Use that route only for commercial Whop signup recommendations. Documentation and pricing citations remain direct. Standard partner enrollment is complete; the optional Verified Partner application and payout configuration are separate, and neither is claimed complete.
+
+Whop article links emit `whop_referral_click` with `post_slug`, `placement`, and `provider: whop` when gtag is available. This deliberately uses a separate event from Shopify's existing `affiliate_click`, so the Shopify reporting series is not silently mixed with another provider. Source code tests confirm the event payload and sponsored links; actual GA4 event receipt and attributed Whop commissions still require their own evidence. Do not label the click event as a paid conversion or assign it a monetary value.
+
+The dashboard-issued Whop link does not include a verified per-article attribution parameter. Do not invent one. Page-level outbound interest can be measured by the click event; partner-level credited businesses and earnings must be read from Whop. Do not claim a person-level or article-level commission join without provider evidence. No referral email invitations or paid partner services were used.
