@@ -38,7 +38,7 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 3 | 2026-09-11 | N024 | start-a-store | Moving From Social DMs to a Shopify Checkout | research-intent-check-required |
 | 4 | 2026-09-12 | N025 | shopify-apps | Shopify Returns Apps: Self-Service vs Manual Approval | research-intent-check-required |
 | 4 | 2026-09-12 | N026 | running-a-store | How to Document Your Order-to-Fulfillment Handoff | research-intent-check-required |
-| 4 | 2026-09-12 | N027 | ai-commerce | How to Check AI-Generated Product Comparison Tables | implemented-release-pending |
+| 4 | 2026-09-12 | N027 | ai-commerce | How to Check AI-Generated Product Comparison Tables | published |
 | 4 | 2026-09-12 | N028 | advertising | A UTM Naming Template for a Small Ecommerce Team | research-intent-check-required |
 | 4 | 2026-09-12 | N029 | start-a-store | A First-Store Budget at 10, 50, and 100 Monthly Orders | research-intent-check-required |
 | 4 | 2026-09-12 | N030 | shopify-apps | Shopify Subscription Apps: Customer Portal Requirements | research-intent-check-required |
@@ -148,4 +148,4 @@ The [24-guide service-business batch](publication-2026-10-04-whop-services.json)
 
 ## October 7 merchant workflows
 
-Three researched backlog intents are implemented in [the release manifest](publication-2026-10-07-merchant-workflows.json): first-store assortment planning, AI product comparison verification (N027), and Whop AI service packages. Check the manifest for live verification before counting publication.
+Three researched backlog intents are published and production-verified in [the release manifest](publication-2026-10-07-merchant-workflows.json): first-store assortment planning, AI product comparison verification (N027), and Whop AI service packages. All three URLs passed live verification; original October 7 publication dates are retained.
