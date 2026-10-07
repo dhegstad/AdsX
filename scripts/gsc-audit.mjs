@@ -4,8 +4,8 @@
  *
  * Reads the latest snapshot written by gsc-pull.mjs and turns it into decisions,
  * weighted to how AdsX actually operates (see memory + the two playbooks):
- *   - Headline is CLICKS + INDEXATION, not impressions (~82% of impressions are
- *     AI fan-out that can't be clicked). Judge by clicks.
+ *   - Keep search impressions, clicks, and indexing evidence separate.
+ *     These exports do not identify AI fan-out or affiliate conversions.
  *   - Automates the indexation-loop BLOCKER: which kill-list slugs are still live
  *     AND now earn real traffic → PROTECT (removing them throws away clicks).
  *   - CTR bleeders are secondary and position-aware (not a naive 2% target), and
@@ -21,7 +21,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const DATA_DIR = "gsc-data";
+const DATA_DIR = process.env.GSC_DATA_DIR || ".local-audits/reporting/gsc-data";
 const BLOG_DIR = "src/content/blog";
 const MIN_IMPR_BLEEDER = 50; // ignore noise below this
 const MIN_IMPR_PAGE2 = 30;
@@ -313,7 +313,7 @@ function main() {
     page2Opportunities: page2,
     ctrBleeders: bleeders,
   };
-  fs.writeFileSync("gsc-worklist.json", JSON.stringify(worklist, null, 2));
+  fs.writeFileSync(path.join(DATA_DIR, "gsc-worklist.json"), JSON.stringify(worklist, null, 2));
 
   const report = renderReport(worklist);
   const reportsDir = path.join(DATA_DIR, "reports");
@@ -332,7 +332,7 @@ function main() {
       `  — ${zombies.impressionSharePct}% of impressions, ${zombies.stillEarning.length} still earning clicks`
   );
   console.log(`  page-2 opportunities: ${page2.length}   CTR bleeders: ${bleeders.length}   new queries: ${queryMovement.new.length}`);
-  console.log(`  → gsc-worklist.json + ${path.join(reportsDir, `${endDate}-audit.md`)}\n`);
+  console.log(`  → ${path.join(DATA_DIR, "gsc-worklist.json")} + ${path.join(reportsDir, `${endDate}-audit.md`)}\n`);
 }
 
 // -------------------------------------------------------------------- rendering
@@ -346,7 +346,7 @@ function renderReport(w) {
   L.push(`_Property ${w.siteUrl} · window ${w.window.startDate}→${w.window.endDate} (${w.window.days}d, ${w.window.dataState}) · through ${t.lastFinalDay}_`);
   L.push("");
   L.push(`## 1. Headline — clicks & indexation`);
-  L.push(`> Judge by clicks, not impressions: ~82% of impressions are AI fan-out that can't be clicked.`);
+  L.push(`> Search impressions, organic clicks, outbound affiliate clicks, and commissions are different measures. This export does not isolate AI fan-out traffic.`);
   L.push("");
   L.push(`- **Clicks (7d):** ${fmt(t.clicks7)}${wowStr}`);
   if (t.clicks28 != null) L.push(`- **Clicks (28d):** ${fmt(t.clicks28)}${momStr}`);
@@ -354,7 +354,7 @@ function renderReport(w) {
   L.push(
     t.sitemapIndexed > 0
       ? `- **Sitemap indexed:** ${fmt(t.sitemapIndexed)} of ${fmt(w.indexation.sitemapSubmitted)} submitted`
-      : `- **Sitemap:** ${fmt(w.indexation.sitemapSubmitted)} submitted _(Google's API no longer reports an indexed count — track "pages in search" above, or URL Inspection for exact status)_`
+      : `- **Sitemap:** ${fmt(w.indexation.sitemapSubmitted)} submitted _(an indexed value of zero does not establish the site's indexed-page count; use URL Inspection for sampled URL status)_`
   );
   L.push(`- **Avg position:** ${t.avgPosition ?? "n/a"}`);
   L.push("");
@@ -371,10 +371,10 @@ function renderReport(w) {
       L.push(`| ${p.slug} | ${p.clicks} | ${p.impressions} | ${p.position ?? "—"} |`);
     L.push("");
   } else {
-    L.push(`✓ No live kill-listed page is currently earning traffic — the removal batch is clean to proceed.`);
+    L.push(`No live kill-listed page has recorded clicks in this window. This alone does not justify removal; review page age, historical traffic, links, and distinct reader value.`);
     L.push("");
   }
-  L.push(`Safe to remove (live, ~0 traffic): **${w.killReconciliation.safeToKillCount}** slugs (see \`gsc-worklist.json\`).`);
+  L.push(`Candidates needing manual review (live, ~0 recorded traffic): **${w.killReconciliation.safeToKillCount}** slugs (see \`gsc-worklist.json\`).`);
   L.push("");
 
   // --- zombie URLs -----------------------------------------------------------

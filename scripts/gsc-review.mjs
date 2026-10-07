@@ -20,7 +20,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const DATA_DIR = "gsc-data";
+const DATA_DIR = process.env.GSC_DATA_DIR || ".local-audits/reporting/gsc-data";
 const MODEL = process.env.GSC_REVIEW_MODEL || "claude-opus-4-8";
 
 const read = (p) => (fs.existsSync(p) ? fs.readFileSync(p, "utf8") : "");
@@ -30,6 +30,10 @@ const BUSINESS_CONTEXT = read(".agents/product-marketing-context.md").trim();
 if (!BUSINESS_CONTEXT) throw new Error("Missing AdsX product marketing context.");
 
 async function main() {
+  if (process.env.GSC_PAID_REVIEW_ENABLED !== "true") {
+    console.log("GSC paid model review is disabled. Use the deterministic audit.");
+    return;
+  }
   if (!process.env.ANTHROPIC_API_KEY) {
     console.log(
       `\n  GSC REVIEW — skipped (no ANTHROPIC_API_KEY).\n` +
@@ -44,7 +48,7 @@ async function main() {
     : null;
   const endDate = latest?.snapshot || "latest";
   const auditReport = read(path.join(DATA_DIR, "reports", `${endDate}-audit.md`)) || read(path.join(DATA_DIR, "reports", "latest-audit.md"));
-  const worklist = read("gsc-worklist.json");
+  const worklist = read(path.join(DATA_DIR, "gsc-worklist.json"));
   if (!auditReport && !worklist) {
     console.log(`\n  GSC REVIEW — no audit found; run gsc-audit.mjs first. Skipping.\n`);
     return;
