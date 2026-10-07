@@ -1,0 +1,82 @@
+---
+title: "Which Payment Methods Should Your Shopify Store Offer?"
+excerpt: "Choose checkout payment methods around your customers' countries, currencies, and purchase types, then verify a small set of realistic buying scenarios."
+date: "2026-10-07"
+category: "Guides"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "affiliate"
+topics: ["start-a-store", "running-a-store"]
+tags: ["Shopify", "Payments", "International commerce"]
+image: "/images/editorial/shopify-payment-methods-customer-markets.png"
+imageAlt: "Three checks for a payment method: customer market, method eligibility, and the actual checkout experience."
+---
+
+Choose Shopify payment methods by working backward from the customers you intend to serve. A method belongs in your launch plan when those customers can use it, your store qualifies to offer it, and your team understands what happens after payment. A long row of payment logos does not establish any of those things.
+
+For a new store, start with the countries you can reliably ship to and support. For an existing store, use completed orders, checkout problems, and customer requests to decide which additional methods deserve attention. Treat country-level traffic as a clue, not proof that visitors want a particular way to pay.
+
+**Disclosure:** AdsX may earn a commission from qualifying Shopify referrals through signup links. The examples below are original planning scenarios. Official documentation was reviewed October 7, 2026; eligibility and account terms can change.
+
+![Three checks for a payment method: customer market, method eligibility, and the actual checkout experience.](/images/editorial/shopify-payment-methods-customer-markets.png)
+
+*Original AdsX payment-selection illustration.*
+
+## Separate the provider decision from the customer decision
+
+A payment provider handles processing. A payment method is how the customer pays. Choosing a provider does not finish the work of deciding what an eligible shopper will see.
+
+If you are still comparing processing arrangements, read our [Shopify Payments, Stripe, and PayPal comparison](/blog/shopify-payments-vs-stripe-vs-paypal). This guide focuses on the next question: which buying situations should your checkout accommodate?
+
+Write a short launch brief with your business location, intended customer countries, selling currencies, and purchase types. “A US business selling one-time purchases domestically” and “a US business shipping recurring orders to several countries” need different checks, even if their storefronts look similar.
+
+## Build a customer-market shortlist
+
+Shopify's [local payment-method documentation](https://help.shopify.com/en/manual/payments/shopify-payments/local-payment-methods) says availability depends on the customer's country and eligible currency. Countries outside the business's location also need to be configured as markets. Some methods have limited or early access availability.
+
+For example, the documentation identifies Bancontact for Belgium and iDEAL | Wero for the Netherlands. These are candidates to investigate for those audiences, not promises that every store or checkout will display them.
+
+Use a working table like this before making changes:
+
+| Customer situation | Evidence to gather | Decision to make |
+| --- | --- | --- |
+| Domestic shoppers buying once | Actual checkout options and payment questions | Establish a dependable initial payment path |
+| Shoppers in a second country | Shipping capability, currency, market eligibility, customer requests | Investigate relevant local methods |
+| Existing customers reordering on mobile | Where customers abandon checkout or ask for help | Check the returning-buyer experience on a phone |
+| Subscribers | Gateway, app, and recurring-payment compatibility | Verify the subscription checkout separately |
+
+For a store with little data, keep this table short. It is reasonable to launch in one supported market and expand after learning how orders behave. Enabling more countries creates fulfillment and support obligations as well as payment opportunities.
+
+## Check the currency at the point of payment
+
+A price displayed in a shopper's currency is not sufficient evidence that the final charge will use that currency. Shopify's [international payments guide](https://help.shopify.com/en/manual/international/payments) distinguishes local-currency processing through Shopify Payments or Adyen with compatible methods from other provider setups that convert back to the store currency at checkout.
+
+For each priority market, record three separate observations: the currency on the product page, the currency at checkout, and the currency shown by the supported payment flow. Also establish which currency your business receives in payouts. Do not label all four simply “currency support.”
+
+Imagine a shop adding Belgium as a second market. Its worksheet could read: “Belgian shipping address; euro display; investigate Bancontact eligibility; confirm final checkout currency; confirm refund workflow.” That is a useful task list. “Accept European payments” leaves too much unspecified.
+
+## Test subscriptions as their own purchase type
+
+A method that works for a one-time order may not work for recurring billing. Shopify's [subscription considerations](https://help.shopify.com/en/manual/products/purchase-options/subscriptions/considerations) explains that subscriptions need supported gateways and payment methods; local, manual, and other methods may be unavailable.
+
+Keep separate checks for a one-time cart, a subscription cart, and a mixed cart if you sell all three. Record what the customer sees and whether the next payment can be collected under the chosen setup. Use our [subscription customer-portal checklist](/blog/shopify-subscription-app-customer-portal-checklist) for the account-management work that follows the first purchase.
+
+## Review the operational consequences
+
+For every shortlisted method, answer four questions before activation:
+
+- How will staff distinguish a pending payment from a completed payment?
+- What is the process for a failed or abandoned payment?
+- Where will refunds be initiated and reconciled?
+- Which charges and payout rules apply under the store's actual agreement?
+
+Check the method's own documentation and your account terms for those answers. Do not copy the card-processing workflow into every row. If you also offer bank transfer or cash on delivery, our [manual payment guide](/blog/shopify-manual-payments-bank-transfer-cod) explains why order handling needs its own rules.
+
+Shopify also warns that conflicting additional gateways can prevent local-method activation. Review the affected checkout paths before changing an existing gateway; disabling it can affect customers who currently use it.
+
+## Verify a small, representative set of checkouts
+
+Use the provider's supported testing process and the [Shopify test-order checklist](/blog/shopify-test-order-before-launch-checklist). Keep a dated record of the market, currency, cart type, device, available methods, and outcome. Do not treat a test-mode result as proof that every live local method is available.
+
+After a change, compare eligible checkout sessions and completed orders over a useful observation period. Track payment failures and support requests separately. A change in overall conversion can reflect shipping, inventory, traffic quality, or pricing; it does not isolate the effect of a payment method.
+
+If you are evaluating the platform for a first store, [start a Shopify trial](https://www.shopify.com/free-trial) and build one representative checkout around your real market requirements. Check the offer and eligibility shown at signup. The useful outcome is a clear answer about your store's intended payment flow before you commit to a broader launch.
