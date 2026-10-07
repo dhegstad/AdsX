@@ -1,13 +1,13 @@
 {
   "date": "2026-10-07",
   "triggered_by": "2026-10-07T20:42:05.717Z heartbeat; separate batch from merchant-workflows release",
-  "status": "validated-awaiting-release",
+  "status": "published-production-verified",
   "new_article_count": 3,
   "articles": [
     {
       "slug": "shopify-payment-methods-customer-markets",
       "title": "Which Payment Methods Should Your Shopify Store Offer?",
-      "status": "ready-for-validation",
+      "status": "published",
       "new": true,
       "kind": "new",
       "url": "https://www.adsx.com/blog/shopify-payment-methods-customer-markets"
@@ -15,7 +15,7 @@
     {
       "slug": "shopify-subscription-app-customer-portal-checklist",
       "title": "Shopify Subscription Apps: A Customer Portal Checklist",
-      "status": "ready-for-validation",
+      "status": "published",
       "new": true,
       "kind": "new",
       "url": "https://www.adsx.com/blog/shopify-subscription-app-customer-portal-checklist"
@@ -23,7 +23,7 @@
     {
       "slug": "whop-vs-thinkific",
       "title": "Whop vs Thinkific: Which Fits Your Course Business?",
-      "status": "ready-for-validation",
+      "status": "published",
       "new": true,
       "kind": "new",
       "url": "https://www.adsx.com/blog/whop-vs-thinkific"
@@ -67,6 +67,31 @@
       "internalRoutesChecked": 56,
       "sitemapUrls": 500,
       "issues": 0
+    },
+    "production": {
+      "at": "2026-10-07T20:55:23.366Z",
+      "base": "https://www.adsx.com",
+      "newArticles": 3,
+      "results": [
+        {
+          "path": "/blog/shopify-payment-methods-customer-markets",
+          "status": 200,
+          "shopify_links": 4
+        },
+        {
+          "path": "/blog/shopify-subscription-app-customer-portal-checklist",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-vs-thinkific",
+          "status": 200,
+          "shopify_links": 0
+        }
+      ],
+      "internalRoutesChecked": 56,
+      "sitemapUrls": 500,
+      "issues": 0
     }
   },
   "next": "Observe the October 7 cohorts after seven days; research unmet merchant tasks before drafting.",
@@ -84,5 +109,25 @@
       "https://whop.com/network/pricing/"
     ],
     "method": "Documentation-based comparison and original acceptance criteria; no hands-on platform claims. Current plan distinctions and regional/payment limitations reviewed before drafting."
+  },
+  "release": {
+    "pull_request": "https://github.com/dhegstad/AdsX/pull/79",
+    "commit": "a835697453d120bc2cbe2cd5cb8ac9ba52610ba9",
+    "preview": "https://adsx-m1du7igdp-dennishegstad-4354s-projects.vercel.app",
+    "production": "https://adsx-2fzb9yq80-dennishegstad-4354s-projects.vercel.app",
+    "build_machine": "2 cores, 8 GB; preview and production Ready"
+  },
+  "indexnow": {
+    "submittedAt": "2026-10-07T20:55:37.051Z",
+    "endpoint": "https://api.indexnow.org/indexnow",
+    "httpStatus": 200,
+    "outcome": "received",
+    "urlCount": 3,
+    "urls": [
+      "https://www.adsx.com/blog/shopify-payment-methods-customer-markets",
+      "https://www.adsx.com/blog/shopify-subscription-app-customer-portal-checklist",
+      "https://www.adsx.com/blog/whop-vs-thinkific"
+    ],
+    "note": "Three genuinely new articles. Existing hub links do not warrant repeat submission. Receipt does not establish crawling, indexing, ranking, or AI citation."
   }
 }
