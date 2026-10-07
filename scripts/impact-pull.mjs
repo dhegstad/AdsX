@@ -43,7 +43,7 @@ import {
   dateWindows,
 } from "./impact-lib.mjs";
 
-const DATA_DIR = "impact-data";
+const DATA_DIR = process.env.IMPACT_DATA_DIR || ".local-audits/reporting/impact-data";
 
 function arg(flag, fallback) {
   const i = process.argv.indexOf(flag);

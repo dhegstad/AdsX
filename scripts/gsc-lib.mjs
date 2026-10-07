@@ -204,7 +204,7 @@ export async function querySearchAnalytics(token, siteUrl, opts) {
   return out;
 }
 
-/** Sitemaps + their submitted/indexed counts (the real "indexed pages" number). */
+/** Sitemap API fields; indexed: 0 does not establish the sitewide indexed count. */
 export async function listSitemaps(token, siteUrl) {
   const json = await api(token, `/webmasters/v3/sites/${enc(siteUrl)}/sitemaps`);
   return (json.sitemap || []).map((s) => ({

@@ -2,6 +2,10 @@
 
 Updated October 4, 2026 following Dennis's explicit request. The existing `adsx-daily-blog-maintenance` heartbeat is now named **AdsX daily publishing and growth** and runs every day at 09:00 America/Chicago in the same task. Its live prompt was updated through the Codex automation tool. This policy supersedes the earlier low-volume maintenance guidance, including historical statements against an article quota.
 
+## Reporting storage — October 7 correction
+
+Reuse fresh ignored local reports. The public GitHub nightly workflow is disabled because it wrote analytics to public branches; a private-repository guard and paid-review removal are now in place. Local `npm run gsc:nightly` writes to `.local-audits/reporting/gsc-data/` and runs only free API retrieval and deterministic analysis. Read [the current reporting guide](../../GSC-SETUP.md) before the next pull. Existing public history was not erased.
+
 ## Required daily output
 
 Publish at least **three genuinely new blog articles per run**. Refreshes, repaired links, title changes, and updated dates do not count. Add useful tools, checklists, comparison resources, or curated hubs when they answer another reader need. Three new posts is the minimum, not a ceiling. Maintain a research backlog so source access or a duplicate topic does not automatically shrink the day's output. Report a precise shortfall if a real blocker prevents publication; do not claim a draft is live or pad the count with duplicate search intents.
@@ -39,12 +43,12 @@ The October 4 expansion covers 25 additional intents across ecommerce/AI, servic
 | Candidate | Distinct reader task | Original contribution to develop |
 | --- | --- | --- |
 | Physical merchandise plus community access | Coordinate two kinds of delivery in one offer | Item/access exception map; verify actual mixed-cart support before claiming it |
-| Selling an AI service on Whop | Scope a maintained service with customer data boundaries | Example acceptance brief, maintenance cost, and permission model |
+| Published October 7: [AI service packages](/blog/whop-ai-automation-service-packages) | Scope a maintained service with customer data boundaries | Example acceptance brief, maintenance cost, and permission model |
 | Whop website SEO migration | Preserve discovery when changing hosts | Verified canonical, redirect, sitemap, and domain control capabilities; avoid duplicating the general migration checklist |
 | Whop versus another course platform | Choose around delivery and total cost | Current primary-source comparison and a distinct learner workflow |
-| Shopify first-store catalog planning | Build a usable initial assortment | Sample catalog with explicit operational tradeoffs |
+| Published October 7: [first assortment](/blog/shopify-first-store-product-assortment) | Build a usable initial assortment | Sample catalog with explicit operational tradeoffs |
 | Shopify checkout payment-method selection | Choose methods for an identified customer mix | Cost and eligibility comparison using current sources |
-| AI-assisted product comparison writing | Produce accurate merchant-facing comparisons | A sourced brief, faulty draft, and verified revision |
+| Published October 7: [comparison review](/blog/ai-product-comparison-table-checklist) | Produce accurate merchant-facing comparisons | A sourced brief, faulty draft, and verified revision |
 
 These are research candidates, not verified claims or guaranteed search demand. Keep the Shopify and app-affiliate work active alongside Whop coverage.
 

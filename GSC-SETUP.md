@@ -1,15 +1,8 @@
-# GSC Pipeline — Setup (one-time, ~5 min)
+# Search Console reporting
 
-Connects Search Console to the repo over the API so you never hand-export CSVs again,
-and runs a nightly **audit → review → plan** in GitHub Actions.
+New reports stay in ignored local storage. The October 7 maintenance review disabled the public GitHub reporting workflow: it had been publishing snapshots into a public branch and attempting an optional paid model review. The workflow now also requires a private repository. This prevents new publication; it does not erase historical snapshots, logs, or PR bodies.
 
-```
-scripts/gsc-auth.mjs    →  one-time OAuth consent (mints a refresh token)
-scripts/gsc-pull.mjs    →  pulls GSC data to gsc-data/ (replaces the manual export)
-scripts/gsc-audit.mjs   →  deterministic signals → gsc-worklist.json + dated report
-scripts/gsc-review.mjs  →  Claude turns the audit into a fix/kill/write-next plan
-.github/workflows/gsc-nightly.yml  →  runs all three nightly, opens/updates one PR
-```
+Reuse a fresh complete report before fetching again. The daily Codex publishing task can run `npm run gsc:nightly` locally when needed; no paid model is called. Its default output is `.local-audits/reporting/gsc-data/`, including `latest.json`, dated snapshots, reports, and `gsc-worklist.json`. `GSC_DATA_DIR` can select another private destination. Never point it at tracked files for this public project. Impact uses `.local-audits/reporting/impact-data/` by default and its own authorized credentials.
 
 ## Auth: OAuth (recommended for the `adsx.com` org)
 
@@ -59,67 +52,25 @@ Your browser opens → approve with the account that owns the GSC property. The 
 `gsc-oauth.json` (git-ignored) and prints three values for GitHub. Then confirm it works:
 
 ```bash
-npm run gsc:pull      # auto-detects your property, writes gsc-data/<date>/
-npm run gsc:audit     # writes gsc-worklist.json + gsc-data/reports/<date>-audit.md
+npm run gsc:pull      # auto-detects your property, writes .local-audits/reporting/gsc-data/<date>/
+npm run gsc:audit     # writes worklist + reports inside the private data directory
 ```
 
 The pull prints which property it picked. If it picks the wrong one, set
 `GSC_SITE_URL=sc-domain:adsx.com` in `.env` (the pull output lists the exact strings) and re-run.
 
-To also generate the Claude plan locally: `export ANTHROPIC_API_KEY=sk-ant-...` then `npm run gsc:review`.
+Paid model review is excluded from the daily commands and disabled by default. Do not enable it under the current no-paid-API instruction.
 
-### 5. Wire up GitHub Actions (the nightly run)
+## Operating the report
 
-In the repo on GitHub → **Settings → Secrets and variables → Actions → New repository secret**,
-add the three values `npm run gsc:auth` printed:
+Keep the daily task responsible for reading the latest complete date, separating delayed days from zero traffic, and using spaced URL Inspection checks. Impressions, organic clicks, outbound affiliate clicks, qualified referrals, and commissions are different measures. The Search Console export does not identify an AI fan-out share or establish affiliate revenue.
 
-- `GSC_OAUTH_CLIENT_ID`
-- `GSC_OAUTH_CLIENT_SECRET`
-- `GSC_OAUTH_REFRESH_TOKEN`
+A page with no clicks is a review candidate, not an automatic deletion candidate. Inspect age, historical traffic, links, and distinct reader value before consolidation. Do not count a sitemap API `indexed: 0` as the site's indexed-page total.
 
-Optional: add `ANTHROPIC_API_KEY` (enables the nightly Claude plan; without it you still get the
-deterministic audit) and, only if auto-detect picked the wrong property, a repo **variable**
-`GSC_SITE_URL`.
+## Private storage and access
 
-Then: **Settings → Actions → General → Workflow permissions** → enable
-**"Allow GitHub Actions to create and approve pull requests"** → **Save**.
-
-Test it: **Actions → GSC nightly audit → Run workflow**. It should open a **GSC nightly audit**
-PR. After that it runs every night at 09:00 UTC on its own.
-
----
-
-## How it works day-to-day
-
-- Every night the workflow commits a fresh `gsc-data/` snapshot to the evergreen
-  `gsc-nightly` branch and opens/updates **one** PR whose body is that night's plan.
-- **Merging the PR** lands the snapshot on `main` and grows `gsc-data/history.jsonl` — which
-  powers week-over-week trends. Review cadence = merge cadence.
-- The audit is weighted to how AdsX operates: **clicks + indexation** are the headline
-  (impressions are mostly AI fan-out), and it automates the indexation-loop **BLOCKER** by
-  flagging any kill-listed page that's still earning traffic.
-
-## Tips
-
-- **Activate the ★ CTR cross-reference:** run `node scripts/ctr-audit.mjs` to regenerate
-  `ctr-worklist.json` against the current 335-post corpus (the committed one predates the
-  prune). Then the audit marks CTR bleeders that already have a queued title/meta fix.
-- **Deeper history:** `npm run gsc:pull -- --full` pulls the full ~16 months (GSC max) instead
-  of the default trailing 90 days.
-- **Token stopped working?** If a nightly run fails with `invalid_grant`, the refresh token was
-  revoked/expired — re-run `npm run gsc:auth` and update the `GSC_OAUTH_REFRESH_TOKEN` secret.
-  (Only happens on External/Testing apps left unpublished — see step 2.)
-
-## Alternative: service account (only if your org doesn't block keys)
-
-If you're not under a restrictive org: create a service account, download a JSON key, add its
-email as a user in Search Console (Settings → Users and permissions), then drop the key at
-`./gsc-sa-key.json` locally / set the `GSC_SA_KEY` secret in CI. The pipeline uses it
-automatically when no OAuth credentials are present. `scripts/gsc-lib.mjs` supports both.
-
-## Security
-
-- Read-only GSC access only (scope `webmasters.readonly`).
-- `gsc-oauth.json`, `gsc-sa-key.json`, and `client_secret*.json` are git-ignored — credentials
-  never enter the repo. In CI they live only in GitHub secrets.
-- `gsc-data/` snapshots **are** committed (data, not secrets).
+- `.local-audits/` and OAuth/service-account credential files are ignored. Keep raw metrics out of public release records and PR descriptions.
+- The local scripts use existing read-only Google access. `scripts/gsc-lib.mjs` supports OAuth or a service account already granted access to the property.
+- Leave the public GitHub workflow disabled. Its private-repository guard is a second protection, not a reason to re-enable it here.
+- Existing reports in repository history and PR #25 were not erased or rewritten in this maintenance release. Any historical cleanup needs a separately scoped repository operation.
+- If moving reporting to a private service later, verify repository access, logs, artifacts, retention, and costs before enabling automatic uploads. No paid review is needed.

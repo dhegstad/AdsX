@@ -43,7 +43,7 @@ coverage/
 adsx-export/
 adsx.com-Performance-on-Search-*/
 
-# GSC credentials — NEVER commit. (gsc-data/ snapshots ARE committed.)
+# GSC credentials — NEVER commit. (new reports belong in .local-audits/).
 gsc-sa-key.json
 *.sa-key.json
 *-service-account*.json
@@ -54,10 +54,13 @@ client_secret*.json
 # X (Twitter) OAuth token — NEVER commit.
 x-oauth.json
 
-# Impact (impact.com) credentials — NEVER commit. (impact-data/ snapshots ARE committed.)
+# Impact (impact.com) credentials — NEVER commit. (new reports belong in .local-audits/).
 impact-auth.json
 
 .claude/worktrees/
 
 # gstack session/analytics scratch
 .gstack/
+
+# Private maintenance evidence and analytics
+.local-audits/

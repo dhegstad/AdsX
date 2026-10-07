@@ -29,7 +29,7 @@ import {
   today,
 } from "./gsc-lib.mjs";
 
-const DATA_DIR = "gsc-data";
+const DATA_DIR = process.env.GSC_DATA_DIR || ".local-audits/reporting/gsc-data";
 
 function arg(flag, fallback) {
   const i = process.argv.indexOf(flag);

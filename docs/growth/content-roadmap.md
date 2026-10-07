@@ -38,7 +38,7 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 3 | 2026-09-11 | N024 | start-a-store | Moving From Social DMs to a Shopify Checkout | research-intent-check-required |
 | 4 | 2026-09-12 | N025 | shopify-apps | Shopify Returns Apps: Self-Service vs Manual Approval | research-intent-check-required |
 | 4 | 2026-09-12 | N026 | running-a-store | How to Document Your Order-to-Fulfillment Handoff | research-intent-check-required |
-| 4 | 2026-09-12 | N027 | ai-commerce | How to Check AI-Generated Product Comparison Tables | research-intent-check-required |
+| 4 | 2026-09-12 | N027 | ai-commerce | How to Check AI-Generated Product Comparison Tables | implemented-release-pending |
 | 4 | 2026-09-12 | N028 | advertising | A UTM Naming Template for a Small Ecommerce Team | research-intent-check-required |
 | 4 | 2026-09-12 | N029 | start-a-store | A First-Store Budget at 10, 50, and 100 Monthly Orders | research-intent-check-required |
 | 4 | 2026-09-12 | N030 | shopify-apps | Shopify Subscription Apps: Customer Portal Requirements | research-intent-check-required |
@@ -145,3 +145,7 @@ October 3 maintenance reconciled R006 with its [September 16 release](sprint-202
 ## October 4 service-business release
 
 The [24-guide service-business batch](publication-2026-10-04-whop-services.json) is live, bringing the Whop library to 62 articles. Home trades, beauty, pet care, teaching/fitness, creative freelancers, web design, virtual assistance, and organizing are covered. Future work should answer distinct unmet questions and follow initial discovery/referral evidence; do not create generic occupation substitutions. Preserve new pages through their first 7/28-day observation periods. Review project-specific infrastructure usage after a complete week under the new [cost controls](deployment-cost-controls.md).
+
+## October 7 merchant workflows
+
+Three researched backlog intents are implemented in [the release manifest](publication-2026-10-07-merchant-workflows.json): first-store assortment planning, AI product comparison verification (N027), and Whop AI service packages. Check the manifest for live verification before counting publication.

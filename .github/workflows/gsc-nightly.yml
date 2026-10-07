@@ -1,8 +1,8 @@
 name: GSC nightly audit
 
-# Pulls Search Console data (inbound) + impact.com affiliate data (outbound) over
-# their APIs, runs the deterministic audit + the Claude plan, then commits the
-# snapshots and opens/updates a single PR.
+# Private-repository reporting only. AdsX is public: this job must remain
+# disabled there because snapshots, logs, branches, and PR bodies expose data.
+# Daily maintenance uses ignored local reports until private storage is set up.
 # Setup: GSC-SETUP.md (search) and IMPACT-SETUP.md (affiliate). The Impact step
 # skips cleanly until its secrets are set, so GSC keeps working on its own.
 
@@ -24,7 +24,11 @@ concurrency:
 
 jobs:
   audit:
+    if: github.event.repository.private == true
     runs-on: ubuntu-latest
+    env:
+      GSC_DATA_DIR: gsc-data
+      IMPACT_DATA_DIR: impact-data
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,13 +67,6 @@ jobs:
           IMPACT_REPORT_ID: ${{ vars.IMPACT_REPORT_ID }} # optional; auto-discovers if unset
         run: node scripts/impact-pull.mjs
 
-      # 3) Claude plan (optional — no-ops without ANTHROPIC_API_KEY).
-      - name: Review + plan
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GSC_REVIEW_MODEL: ${{ vars.GSC_REVIEW_MODEL }}
-        run: node scripts/gsc-review.mjs
-
       # 4) Commit the snapshot + reports and open/update one evergreen PR.
       - name: Commit snapshot and open/update PR
         env:
@@ -79,7 +76,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A gsc-data gsc-worklist.json
+          git add -A gsc-data
           if [ -d impact-data ]; then git add -A impact-data; fi
           if git diff --cached --quiet; then
             echo "No GSC/Impact changes today — nothing to commit."
@@ -92,10 +89,8 @@ jobs:
           git commit -m "GSC nightly audit $DATE"
           git push --force-with-lease origin "$BRANCH"
 
-          # Body = the Claude plan if present, else the deterministic audit,
-          # with the affiliate (impact.com) summary appended when present.
-          BODY=gsc-data/reports/latest-plan.md
-          [ -s "$BODY" ] || BODY=gsc-data/reports/latest-audit.md
+          # Deterministic audit only; paid model reviews are excluded.
+          BODY=gsc-data/reports/latest-audit.md
           if [ -s impact-data/reports/latest-impact.md ]; then
             COMBINED="$RUNNER_TEMP/pr-body.md"
             cp "$BODY" "$COMBINED"
