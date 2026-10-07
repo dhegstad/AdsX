@@ -45,9 +45,9 @@ The October 4 expansion covers 25 additional intents across ecommerce/AI, servic
 | Physical merchandise plus community access | Coordinate two kinds of delivery in one offer | Item/access exception map; verify actual mixed-cart support before claiming it |
 | Published October 7: [AI service packages](/blog/whop-ai-automation-service-packages) | Scope a maintained service with customer data boundaries | Example acceptance brief, maintenance cost, and permission model |
 | Whop website SEO migration | Preserve discovery when changing hosts | Verified canonical, redirect, sitemap, and domain control capabilities; avoid duplicating the general migration checklist |
-| Whop versus another course platform | Choose around delivery and total cost | Current primary-source comparison and a distinct learner workflow |
+| Published October 7: [Whop vs Thinkific](/blog/whop-vs-thinkific) | Choose around delivery and total cost | Current primary-source comparison and a distinct learner workflow |
 | Published October 7: [first assortment](/blog/shopify-first-store-product-assortment) | Build a usable initial assortment | Sample catalog with explicit operational tradeoffs |
-| Shopify checkout payment-method selection | Choose methods for an identified customer mix | Cost and eligibility comparison using current sources |
+| Published October 7: [payment-method selection](/blog/shopify-payment-methods-customer-markets) | Choose methods for an identified customer mix | Cost and eligibility comparison using current sources |
 | Published October 7: [comparison review](/blog/ai-product-comparison-table-checklist) | Produce accurate merchant-facing comparisons | A sourced brief, faulty draft, and verified revision |
 
 These are research candidates, not verified claims or guaranteed search demand. Keep the Shopify and app-affiliate work active alongside Whop coverage.
@@ -69,3 +69,10 @@ No paid directories, subscriptions, ads, API calls, or optional paid model revie
 The October 4 service-business batch adds 24 distinct guides; see `publication-2026-10-04-whop-services.json`. Reuse these intents rather than publishing another set of near-identical industry pages. The Whop hub groups the library into home services, beauty, teaching/fitness/pet care, freelance work, and the established ecommerce/advertising paths. Build future coverage around unanswered operational questions or evidence from search, not another occupation-name substitution.
 
 Follow [deployment cost controls](deployment-cost-controls.md): batch releases, retain the smaller verified build machine, skip records-only deployments, and preserve static blog caching. Add a checked-in SVG/PNG pair to the illustration registry for new diagrams. Keep precise account usage in ignored local files and compare actual project spend after a complete observation period.
+
+
+## Research-ready follow-ups after the October 7 second batch
+
+- **Subscription inventory exceptions:** distinguish an uncreated order from a failed payment and a delayed shipment. The [Shopify contract guide](https://help.shopify.com/en/manual/products/purchase-options/subscriptions/shopify-subscriptions/manage-subscriptions/manage-contracts) and [subscription considerations](https://help.shopify.com/en/manual/products/purchase-options/subscriptions/considerations) provide primary-source starting points. Develop an original staff exception map; check existing operations coverage before drafting. This is separate from the published customer-portal selection checklist.
+- **Course assessment design:** turn a lesson into an observable learner task and a documented completion rule. The [Whop educational-program guide](https://docs.whop.com/supported-business-models/educational-programs) documents assessment and completion controls. Compare intent with the existing curriculum article, verify a second relevant primary source, and only proceed with a distinct assessment example. Do not claim accreditation.
+- **Organizational course buying:** research who purchases, who learns, and who receives progress information. Current [Thinkific plan documentation](https://www.thinkific.com/pricing/) offers a starting point, while the reviewed Whop course documentation leaves workflow questions to resolve. Confirm exact support before recommending a Whop configuration; this candidate remains research-gated.

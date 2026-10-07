@@ -41,7 +41,7 @@ The original 96 research candidates remain below. The additional batch is tracke
 | 4 | 2026-09-12 | N027 | ai-commerce | How to Check AI-Generated Product Comparison Tables | published |
 | 4 | 2026-09-12 | N028 | advertising | A UTM Naming Template for a Small Ecommerce Team | research-intent-check-required |
 | 4 | 2026-09-12 | N029 | start-a-store | A First-Store Budget at 10, 50, and 100 Monthly Orders | research-intent-check-required |
-| 4 | 2026-09-12 | N030 | shopify-apps | Shopify Subscription Apps: Customer Portal Requirements | research-intent-check-required |
+| 4 | 2026-09-12 | N030 | shopify-apps | Shopify Subscription Apps: Customer Portal Requirements | published |
 | 4 | 2026-09-12 | N031 | running-a-store | Product Data Quality Checks Before Launching a New Collection | research-intent-check-required |
 | 4 | 2026-09-12 | N032 | ai-commerce | A Merchant Workflow for Updating Product FAQs With AI | research-intent-check-required |
 | 5 | 2026-09-13 | N033 | advertising | How to Document Advertising Attribution Gaps | research-intent-check-required |
@@ -149,3 +149,8 @@ The [24-guide service-business batch](publication-2026-10-04-whop-services.json)
 ## October 7 merchant workflows
 
 Three researched backlog intents are published and production-verified in [the release manifest](publication-2026-10-07-merchant-workflows.json): first-store assortment planning, AI product comparison verification (N027), and Whop AI service packages. All three URLs passed live verification; original October 7 publication dates are retained.
+
+
+## October 7 platform-decision batch
+
+Three additional intents are live in [the separate release manifest](publication-2026-10-07-platform-decisions.json): payment methods by customer market, subscription customer-portal requirements (N030), and Whop versus Thinkific for a course business. This run adds three URLs; the two October 7 releases together add six. Keep them stable during initial discovery.
