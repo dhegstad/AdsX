@@ -14,7 +14,7 @@ const primarySourceHosts = new Set([
   'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
   'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
   'support.google.com', 'www.ecwid.com', 'support.ecwid.com', 'www.etsy.com', 'operationhope.org', 'www.patreon.com', 'support.patreon.com',
-  'docs.whop.com', 'help.whop.com', 'newsroom.whop.com', 'www.facebookblueprint.com',
+  'www.thinkific.com', 'support.thinkific.com', 'docs.whop.com', 'help.whop.com', 'newsroom.whop.com', 'www.facebookblueprint.com',
 ]);
 function isPrimarySource(href) {
   try {
