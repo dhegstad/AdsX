@@ -154,3 +154,7 @@ Three researched backlog intents are published and production-verified in [the r
 ## October 7 platform-decision batch
 
 Three additional intents are live in [the separate release manifest](publication-2026-10-07-platform-decisions.json): payment methods by customer market, subscription customer-portal requirements (N030), and Whop versus Thinkific for a course business. This run adds three URLs; the two October 7 releases together add six. Keep them stable during initial discovery.
+
+## October 8 merchant controls
+
+Published three new guides on gift-card setup, subscription inventory exceptions, and Whop promo-code duration. See [release evidence](publication-2026-10-08-merchant-controls.json). Original examples and diagrams support each distinct intent; no additional resource page was needed. The researched next candidates are recorded in [daily publishing](daily-publishing.md).
