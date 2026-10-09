@@ -41,13 +41,15 @@ function CardThumbnail({
   priority?: boolean;
 }) {
   if (post.image) {
+    const displayImage = getBlogDisplayImage(post.image);
+    const isIllustration = displayImage !== post.image;
     return (
       <Image
-        src={getBlogDisplayImage(post.image)}
+        src={displayImage}
         alt={post.title}
         fill
         priority={priority}
-        className="object-cover"
+        className={isIllustration ? "object-contain" : "object-cover"}
         sizes={sizes}
       />
     );

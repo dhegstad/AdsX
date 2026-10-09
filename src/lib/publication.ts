@@ -117,6 +117,7 @@ export const whopReadingPaths = [
       "whop-ecommerce-guide",
       "whop-vs-shopify",
       "whop-ecommerce-launch-2026",
+      "whop-api-cli-ecommerce-store-checkout",
       "whop-website-migration-checklist",
       "whop-product-variants-inventory",
       "whop-multi-product-checkout",

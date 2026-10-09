@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-08",
+  "triggered_by": "Explicit request for a Whop API/CLI ecommerce store and checkout article",
+  "status": "validated-awaiting-release",
+  "new_article_count": 1,
+  "articles": [
+    {
+      "slug": "whop-api-cli-ecommerce-store-checkout",
+      "title": "Build an Ecommerce Store With the Whop API and CLI",
+      "kind": "new",
+      "new": true,
+      "status": "validated-awaiting-release",
+      "url": "https://www.adsx.com/blog/whop-api-cli-ecommerce-store-checkout"
+    }
+  ],
+  "scope": "One new developer tutorial in addition to the completed three-article daily batch. No Whop merchant account, product, checkout, payment, or hosted store created.",
+  "research": {
+    "cli": "@whop/cli 0.25.0",
+    "api_version": "2026-10-07-2",
+    "method": "Local help and schema inspection without authentication; primary public docs; original illustrative commands and React component. No transaction or fulfillment test.",
+    "key_findings": [
+      "Current variants command replaces deprecated plans compatibility group; plan_ IDs and checkout plan_id remain",
+      "Current CLI overview says no sandbox/test/dry-run mode; older blog sandbox examples are not reused",
+      "App init uses company_id while commerce commands use account_id"
+    ],
+    "sources": [
+      {
+        "url": "https://www.npmjs.com/package/@whop/cli",
+        "status": 403,
+        "finalUrl": "https://www.npmjs.com/package/@whop/cli"
+      },
+      {
+        "url": "https://docs.whop.com/cli/overview",
+        "status": 200,
+        "finalUrl": "https://docs.whop.com/cli/overview"
+      },
+      {
+        "url": "https://github.com/whopio/whop-public-cli#authentication",
+        "status": 200,
+        "finalUrl": "https://github.com/whopio/whop-public-cli"
+      },
+      {
+        "url": "https://docs.whop.com/api-reference/products/create-product",
+        "status": 200,
+        "finalUrl": "https://docs.whop.com/api-reference/products/create-product"
+      },
+      {
+        "url": "https://docs.whop.com/developer/api/idempotency",
+        "status": 200,
+        "finalUrl": "https://docs.whop.com/developer/api/idempotency"
+      },
+      {
+        "url": "https://docs.whop.com/api-reference/checkout-configurations/create-checkout-configuration",
+        "status": 200,
+        "finalUrl": "https://docs.whop.com/api-reference/checkout-configurations/create-checkout-configuration"
+      },
+      {
+        "url": "https://github.com/whopio/whop-public-cli#ship-apps",
+        "status": 200,
+        "finalUrl": "https://github.com/whopio/whop-public-cli"
+      },
+      {
+        "url": "https://docs.whop.com/elements/latest/checkout/overview",
+        "status": 200,
+        "finalUrl": "https://docs.whop.com/elements/latest/checkout/overview"
+      },
+      {
+        "url": "https://whop.com/blog/integrate-checkout-api/",
+        "status": 200,
+        "finalUrl": "https://whop.com/blog/integrate-checkout-api/"
+      }
+    ],
+    "source_note": "npm website challenges automated HTTP (403); package identity/version and command schemas verified through official npm registry and local package inspection."
+  },
+  "media": "Original explanatory SVG/PNG; verified official video not needed for version-specific code walkthrough.",
+  "verification": {
+    "editorial": "148 tracked articles and 7 curated hubs passed",
+    "affiliate": "12 Shopify and 3 Whop checks passed",
+    "build": "559 routes built successfully",
+    "examples": {
+      "shellBlocksSyntaxChecked": 8,
+      "tsxBlocksTranspiled": 1,
+      "cliFlagsCheckedAgainst0250Schema": 26,
+      "apiWrites": 0,
+      "paymentTests": 0,
+      "note": "Syntax/schema checks only; no authenticated commands or live API mutations."
+    },
+    "local": {
+      "at": "2026-10-09T01:41:19.606Z",
+      "base": "http://localhost:3100",
+      "newArticles": 1,
+      "internalRoutesChecked": 32,
+      "codeBlocks": 9,
+      "sitemapUrls": 504,
+      "issues": 0
+    },
+    "media": "Original diagram inspected; mobile 390px page has no horizontal overflow, code blocks scroll within their containers; desktop featured illustration now fits completely. Photographic crop behavior unchanged."
+  },
+  "maintenance": [
+    "Registered explanatory images use contain fitting in blog listings, preserving complete diagrams in wide featured thumbnails; photographic crops unchanged",
+    "Contextual inbound link and Whop ecommerce reading path added; existing article dates preserved"
+  ]
+}
