@@ -1,14 +1,14 @@
 {
   "date": "2026-10-09",
   "triggered_by": "Daily publication heartbeat",
-  "status": "validated-awaiting-release",
+  "status": "published-production-verified",
   "new_article_count": 3,
   "articles": [
     {
       "slug": "shopify-gift-card-refunds",
       "kind": "new",
       "new": true,
-      "status": "validated",
+      "status": "published",
       "url": "https://www.adsx.com/blog/shopify-gift-card-refunds",
       "title": "Shopify Gift Card Refunds: Three Cases to Handle Correctly"
     },
@@ -16,7 +16,7 @@
       "slug": "shopify-draft-order-inventory-reservations",
       "kind": "new",
       "new": true,
-      "status": "validated",
+      "status": "published",
       "url": "https://www.adsx.com/blog/shopify-draft-order-inventory-reservations",
       "title": "Shopify Draft Orders: Reserve Stock Without Losing Track"
     },
@@ -24,7 +24,7 @@
       "slug": "whop-waitlist-capacity-admissions",
       "kind": "new",
       "new": true,
-      "status": "validated",
+      "status": "published",
       "url": "https://www.adsx.com/blog/whop-waitlist-capacity-admissions",
       "title": "Whop Waitlists: Manage Applications for a Limited Cohort"
     }
@@ -39,7 +39,7 @@
   "verification": {
     "editorial": "151 tracked articles and 7 hubs passed",
     "affiliate": "12 Shopify and 3 Whop tests passed",
-    "build": "Production build succeeded; 555 prerendered routes",
+    "build": "562 generated routes; 555 entries in prerender manifest",
     "local": {
       "at": "2026-10-09T14:09:15.940Z",
       "base": "http://localhost:3100",
@@ -65,7 +65,32 @@
       "sitemapUrls": 507,
       "issues": 0
     },
-    "media": "All three original diagrams inspected. At 390px, page width 382px, images loaded, tables scroll within containers. Viewport reset after QA."
+    "media": "All three original diagrams inspected. At 390px, page width 382px, images loaded, tables scroll within containers. Viewport reset after QA.",
+    "production": {
+      "at": "2026-10-09T14:14:50.684Z",
+      "base": "https://www.adsx.com",
+      "newArticles": 3,
+      "results": [
+        {
+          "path": "/blog/shopify-gift-card-refunds",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/shopify-draft-order-inventory-reservations",
+          "status": 200,
+          "shopify_links": 0
+        },
+        {
+          "path": "/blog/whop-waitlist-capacity-admissions",
+          "status": 200,
+          "shopify_links": 0
+        }
+      ],
+      "internalRoutesChecked": 43,
+      "sitemapUrls": 507,
+      "issues": 0
+    }
   },
   "next": "Keep this cohort stable until October 16 measurement. Recheck recent indexing on or after October 12.",
   "research": {
@@ -108,5 +133,25 @@
       }
     ],
     "method": "Public primary documentation and original illustrative examples. No merchant transactions performed."
+  },
+  "release": {
+    "pull_request": "https://github.com/dhegstad/AdsX/pull/86",
+    "commit": "0a2e7c34f9250b0e351203c626299d7d1b0f7b5c",
+    "preview": "https://adsx-p8v6neqs0-dennishegstad-4354s-projects.vercel.app",
+    "production": "https://adsx-px5afi8f9-dennishegstad-4354s-projects.vercel.app",
+    "build_machine": "2 cores, 8 GB"
+  },
+  "indexnow": {
+    "submittedAt": "2026-10-09T14:15:06.937Z",
+    "endpoint": "https://api.indexnow.org/indexnow",
+    "httpStatus": 200,
+    "outcome": "received",
+    "urlCount": 3,
+    "urls": [
+      "https://www.adsx.com/blog/shopify-gift-card-refunds",
+      "https://www.adsx.com/blog/shopify-draft-order-inventory-reservations",
+      "https://www.adsx.com/blog/whop-waitlist-capacity-admissions"
+    ],
+    "note": "Three genuinely new articles. Existing hub links do not warrant repeat submission. Receipt does not establish crawling, indexing, ranking, or AI citation."
   }
 }
