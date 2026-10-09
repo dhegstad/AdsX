@@ -1,0 +1,96 @@
+---
+title: "Shopify Draft Orders: Reserve Stock Without Losing Track"
+excerpt: "Use timed draft-order inventory reservations for quotes, assign an owner, and keep available stock, customer promises, and payment status aligned."
+date: "2026-10-09"
+category: "Guides"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["running-a-store"]
+tags: ["Shopify", "Draft orders", "Inventory"]
+image: "/images/editorial/shopify-draft-order-inventory-reservations.png"
+imageAlt: "Illustrative stock split: twelve mugs on hand, four committed to a draft-order reservation, and eight available for other customers."
+---
+
+A Shopify draft order does not hold stock merely because you added a product to a quote. Use the draft's inventory reservation when you intend to set units aside, and give that reservation an expiry and an owner. Otherwise, another customer can buy the stock while the first customer is still deciding.
+
+This is particularly useful for a small batch, a negotiated order, or a customer who needs time to approve a purchase. It also creates a responsibility: a hold that nobody reviews can prevent a ready buyer from purchasing inventory you still have.
+
+![Illustrative stock split: twelve mugs on hand, four committed to a draft-order reservation, and eight available for other customers.](/images/editorial/shopify-draft-order-inventory-reservations.png)
+
+*Original AdsX stock-allocation illustration. Quantities are hypothetical.*
+
+## What Shopify reserves
+
+The [draft-order documentation](https://help.shopify.com/en/manual/fulfillment/managing-orders/create-orders/create-draft) says reserved units become Committed and cannot be purchased by other customers. Without a reservation, the units remain Available. Inventory tracking must be enabled for the product.
+
+In the desktop admin, open **Orders → Drafts**, select or create the draft, and add the catalog products. In the actions menu, choose **Reserve inventory**, set the expiry date and time, then confirm. Review the saved draft and quantities before telling the customer their stock is held.
+
+The same documentation explains that custom items are not inventory-tracked. Do not substitute a typed custom line for an existing variant when the purpose is to reserve that variant's stock. A line that looks like “blue mug” is not necessarily connected to the blue mug in your catalog.
+
+Our instructions follow public documentation reviewed October 9, 2026. We have not created a reservation or completed a payment in your store.
+
+## Work through a twelve-mug example
+
+Assume one location has twelve saleable blue mugs, no existing commitments, and no damaged stock. A business customer requests four mugs while checking an internal budget.
+
+| Stage | Available | Committed | On hand |
+| --- | --- | --- | --- |
+| Before the quote | 12 | 0 | 12 |
+| Draft saved without a hold | 12 | 0 | 12 |
+| Four-unit reservation recorded | 8 | 4 | 12 |
+
+This model follows Shopify's [inventory-state definitions](https://help.shopify.com/en/manual/inventory-and-locations/fundamentals/inventory-states). On hand includes Available, Committed, and Unavailable quantities. Reserving units changes which customers can buy them; it does not put four new mugs on the shelf or prove payment arrived.
+
+Now imagine another customer buys three of the eight available mugs. Review the current inventory before extending the first customer's hold. Do not keep using the original “twelve available” note after real activity has changed the picture.
+
+For a business with multiple locations, record the variant and relevant fulfillment location. A quantity elsewhere is not automatically a dispatch promise from the location your team intends to use.
+
+## Decide how long a quote deserves a hold
+
+The right duration depends on how scarce the stock is and how long a customer reasonably needs to decide. Start with a policy your team can operate consistently, rather than granting an indefinite hold whenever somebody asks.
+
+For example, a pottery shop might use this internal policy for one batch:
+
+| Decision | Illustrative rule |
+| --- | --- |
+| Eligible quote | Named customer, exact variant, confirmed quantity |
+| Initial hold | Until 3 p.m. the next business day |
+| Extension | Owner reviews current demand and approves a new deadline |
+| Customer declines | Owner resolves the hold promptly |
+| Deadline passes | Owner checks actual reservation and stock state before making another promise |
+
+These are suggested business rules, not Shopify defaults. State the time zone in customer-facing deadlines. “Tomorrow afternoon” is ambiguous when a customer and staff member are in different places.
+
+A concise message for this example would be: “We have reserved four blue mugs until 3 p.m. Eastern on the agreed date. If you need longer, contact us before then so we can check availability.” Only use that wording after verifying the reservation was saved.
+
+## Separate stock, price, and payment
+
+A reservation answers who can buy particular units. It does not settle every other term of the quote. Keep three fields in the staff record: stock deadline, quoted commercial terms, and payment status.
+
+A customer may approve the price before transferring money. A transfer may arrive with an unclear reference. A customer may ask to change the quantity after the hold was created. Each event needs a review of the underlying record, not just a reassuring reply.
+
+If the customer will pay by transfer, the [manual-payment workflow](/blog/shopify-manual-payments-bank-transfer-cod) explains the handoff from payment receipt to fulfillment. Do not mark an order paid simply to make the stock look allocated. Record the real payment evidence through the correct workflow.
+
+Use the [first-order testing checklist](/blog/shopify-test-order-before-launch-checklist) to plan how staff will verify the invoice, payment state, and fulfillment handoff. The reservation alone is not an end-to-end checkout test.
+
+## Give every reservation a next action
+
+A useful reservation register can be a small internal table alongside the draft records:
+
+| Field | Why the next staff member needs it |
+| --- | --- |
+| Draft reference and customer | Find the actual hold rather than recreate it |
+| Variant, location, quantity | Identify the units being promised |
+| Expiry with time zone | Know when to review the promise |
+| Owner | Avoid two people independently extending it |
+| Customer decision | Distinguish waiting, accepted, and declined |
+| Payment evidence | Keep money separate from inventory allocation |
+| Next review | Prevent an unresolved exception from disappearing |
+
+Check for duplicate drafts for the same request before creating another hold. If a customer changes from four mugs to six, review the existing draft and available stock; do not leave the old four-unit promise in place while silently creating a second six-unit promise.
+
+## End the day with a short exception review
+
+Review holds reaching their deadline, requests awaiting an extension, and accepted quotes whose payment cannot be matched. For each one, write the next action and owner. After any release or expiry, confirm the current inventory state before offering those units to someone else.
+
+Measure how much stock is held and how many reservations become completed orders over a consistent period. A large number of drafts is not revenue, and a long hold is not automatically better customer service. The useful outcome is that staff can explain every stock promise and fulfill the orders that actually proceed.
