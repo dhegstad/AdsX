@@ -86,3 +86,7 @@ Primary sources reviewed October 8; these are candidates, not promised traffic o
 - **Whop capacity-limited admissions:** the [waitlist documentation](https://docs.whop.com/manage-your-business/products/create-waitlist) covers checkout-link configuration, review, and admission. Develop an original capacity and acceptance checklist for a small service cohort. Existing checkout coverage only names the setting. Verify billing timing, capacity behavior, and a second source before stronger claims; approval is documented as granting access. This editorial candidate does not authorize AdsX email capture or outreach.
 
 Today's three new articles are recorded in [the release manifest](publication-2026-10-08-merchant-controls.json). Observe their first seven complete days on or after October 15; avoid repeated submissions or cosmetic refreshes. Bold Subscriptions is a researched app-partner candidate in the ledger, without enrollment or an owned link.
+
+## October 8 additional technical coverage
+
+The requested [Whop API/CLI store guide](/blog/whop-api-cli-ecommerce-store-checkout) is published; do not count a second setup/checkout rewrite as a new intent. Its CLI 0.25.0 contract uses variants but retains plan_ IDs and checkout plan_id. Check version-specific help/schema for follow-ons. Public production/sandbox documentation differs by source; never claim a test environment or payment result without verifying the exact supported flow. The wide featured-thumbnail illustration crop noted earlier is resolved in this release.
