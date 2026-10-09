@@ -90,3 +90,15 @@ Today's three new articles are recorded in [the release manifest](publication-20
 ## October 8 additional technical coverage
 
 The requested [Whop API/CLI store guide](/blog/whop-api-cli-ecommerce-store-checkout) is published; do not count a second setup/checkout rewrite as a new intent. Its CLI 0.25.0 contract uses variants but retains plan_ IDs and checkout plan_id. Check version-specific help/schema for follow-ons. Public production/sandbox documentation differs by source; never claim a test environment or payment result without verifying the exact supported flow. The wide featured-thumbnail illustration crop noted earlier is resolved in this release.
+
+## October 9 completed follow-ups and next research
+
+The gift-card refund, draft-order reservation, and Whop capacity-admission candidates above are now published in [today's manifest](publication-2026-10-09-merchant-exceptions.json). These are three new articles, with original examples and diagrams. Do not repeat their intents.
+
+Next useful editorial work:
+
+- Audit the existing AI inventory-forecasting guide rather than publish another generic forecasting overview. Its accuracy/savings percentages and app recommendations need current primary support. Shopify's [Stocky transition guidance](https://help.shopify.com/en/manual/inventory-and-locations/transitioning-from-stocky) is a current source for checking retired workflows. Check traffic before any consolidation; no page removal is authorized by this finding.
+- Research a distinct quote-price-change workflow: [draft-order documentation](https://help.shopify.com/en/manual/fulfillment/managing-orders/create-orders/create-draft) separates price locking from stock reservations. A useful follow-up must add a concrete price-change example and verify bundle limitations, rather than retell today's stock guide.
+- Research Whop admission exceptions only after resolving failed-charge/access/capacity behavior through public primary evidence. Today's guide explicitly leaves those account-specific outcomes untested; a second article cannot invent the missing state transitions.
+
+Recent commercial and release inspections from October 7 remain fresh. Next spaced review on or after October 12; preserve October 9 content for seven-day measurement on or after October 16. Infrastructure cost observation remains due after October 11.

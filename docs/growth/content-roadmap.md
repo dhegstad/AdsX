@@ -162,3 +162,7 @@ Published three new guides on gift-card setup, subscription inventory exceptions
 ## October 8 Whop API/CLI request
 
 Published [Build an Ecommerce Store With the Whop API and CLI](/blog/whop-api-cli-ecommerce-store-checkout), a distinct technical walkthrough in addition to the daily three-article batch. See [release evidence](publication-2026-10-08-whop-cli.json). Reuse this intent rather than duplicating the CLI setup, variant configuration, and hosted-checkout workflow.
+
+## October 9 merchant exceptions
+
+Published three researched follow-ups: [gift-card refunds](/blog/shopify-gift-card-refunds), [draft-order reservations](/blog/shopify-draft-order-inventory-reservations), and [Whop waitlist admissions](/blog/whop-waitlist-capacity-admissions). See [release evidence](publication-2026-10-09-merchant-exceptions.json). Observe the cohort through October 16 before cosmetic changes.
