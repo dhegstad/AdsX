@@ -158,3 +158,7 @@ Three additional intents are live in [the separate release manifest](publication
 ## October 8 merchant controls
 
 Published three new guides on gift-card setup, subscription inventory exceptions, and Whop promo-code duration. See [release evidence](publication-2026-10-08-merchant-controls.json). Original examples and diagrams support each distinct intent; no additional resource page was needed. The researched next candidates are recorded in [daily publishing](daily-publishing.md).
+
+## October 8 Whop API/CLI request
+
+Published [Build an Ecommerce Store With the Whop API and CLI](/blog/whop-api-cli-ecommerce-store-checkout), a distinct technical walkthrough in addition to the daily three-article batch. See [release evidence](publication-2026-10-08-whop-cli.json). Reuse this intent rather than duplicating the CLI setup, variant configuration, and hosted-checkout workflow.
