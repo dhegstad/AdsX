@@ -102,3 +102,7 @@ Next useful editorial work:
 - Research Whop admission exceptions only after resolving failed-charge/access/capacity behavior through public primary evidence. Today's guide explicitly leaves those account-specific outcomes untested; a second article cannot invent the missing state transitions.
 
 Recent commercial and release inspections from October 7 remain fresh. Next spaced review on or after October 12; preserve October 9 content for seven-day measurement on or after October 16. Infrastructure cost observation remains due after October 11.
+
+## October 12 pending release
+
+Three new guides and the inventory forecasting correction are validated but not live; GitHub rejected both pushes. Resume the existing branch before drafting duplicate intents. See [manifest](publication-2026-10-12-merchant-workflows.json). The quote-price workflow and forecasting audit are completed locally, pending deployment. Next research should return to a distinct first-store buyer decision; Whop access-clock and overlapping entitlement behavior remain unverified and must not be invented.
