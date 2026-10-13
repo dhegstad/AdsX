@@ -106,3 +106,7 @@ Recent commercial and release inspections from October 7 remain fresh. Next spac
 ## October 12 pending release
 
 Three new guides and the inventory forecasting correction are validated but not live; GitHub rejected both pushes. Resume the existing branch before drafting duplicate intents. See [manifest](publication-2026-10-12-merchant-workflows.json). The quote-price workflow and forecasting audit are completed locally, pending deployment. Next research should return to a distinct first-store buyer decision; Whop access-clock and overlapping entitlement behavior remain unverified and must not be invented.
+
+## October 13 release completed
+
+The October 12 pending batch is now live: three new guides plus the inventory forecasting correction, [PR88](https://github.com/dhegstad/AdsX/pull/88). Quote-price research and the forecasting audit above are completed; do not repeat. First live date is October 13. Keep these intents stable through October 20. Next: distinct prospective-merchant content and a separate tested dependency security release. Whop access-clock/overlapping entitlement questions still require evidence.
