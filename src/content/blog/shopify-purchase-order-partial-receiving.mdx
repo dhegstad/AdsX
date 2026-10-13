@@ -1,0 +1,77 @@
+---
+title: "Shopify Purchase Orders: Receive Partial Supplier Deliveries"
+excerpt: "Reconcile ordered, accepted, rejected, and outstanding units in Shopify when a supplier delivers an order across multiple shipments."
+date: "2026-10-12"
+category: "Guides"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["running-a-store"]
+tags: ["Shopify", "Purchase orders", "Inventory"]
+image: "/images/editorial/shopify-purchase-order-partial-receiving.png"
+imageAlt: "A 50-unit order is reconciled into 28 accepted units, two rejected units, and 20 still outstanding."
+---
+
+When a supplier sends only part of a Shopify purchase order, record what actually arrived and keep the remainder unresolved until you know its outcome. The purchase agreement, shipment, and saleable inventory are different records. Treating the first delivery as the whole order can make stock look available before it reaches your shelves.
+
+This guide uses a hypothetical 50-unit delivery to show a receiving handoff. It follows public documentation reviewed October 12, 2026; we have not received inventory in your store.
+
+![A 50-unit order is reconciled into 28 accepted units, two rejected units, and 20 still outstanding.](/images/editorial/shopify-purchase-order-partial-receiving.png)
+
+*Original AdsX receiving-reconciliation illustration.*
+
+## Start with the purchase order and its linked transfer
+
+Shopify's [purchase-order overview](https://help.shopify.com/en/manual/inventory-and-locations/purchase-orders) distinguishes the supplier agreement from the inventory movement. After supplier confirmation and marking the purchase order Ordered, the documented workflow creates a linked inventory transfer for shipments and receiving.
+
+The [receiving instructions](https://help.shopify.com/en/manual/inventory-and-locations/purchase-orders/creating-inventory-transfers) place **Create transfer** on the purchase order. Select the destination and save. Receiving then happens on the linked transfer under **Products → Transfers**, using **Receive items** and the appropriate quantities and actions.
+
+Before recording a receipt, match the supplier, purchase-order reference, destination, and exact variants. A box labeled “blue bottles” needs more identification if the catalog contains several sizes. Put the paperwork and counted goods in the same review before changing stock.
+
+## Reconcile the first shipment
+
+Assume the agreed order contains 50 identical bottles. The first shipment contains 30. Two are visibly damaged, leaving 28 that pass the store's receiving checks. The other 20 have not arrived.
+
+| Classification | Units | Staff action in this example |
+| --- | --- | --- |
+| Accepted | 28 | Record the checked units as accepted |
+| Rejected | 2 | Record rejection and retain the damage evidence |
+| Still outstanding | 20 | Follow up on the remaining delivery |
+| Total agreed order | 50 | Reconcile all outcomes to this reference |
+
+Shopify documents that accepted units become available at the destination, rejected units do not add available stock, and unresolved quantities keep the transfer in progress. Cancellation is an option for units never shipped. Do not classify the missing 20 as canceled simply because they were absent from the first box.
+
+The example assumes no other inventory activity and a quality check before acceptance. It is not a demonstration of your warehouse integration. If another app controls inventory disposition, verify how its state changes interact with the receiving record.
+
+## Keep the damaged goods and supplier claim connected
+
+A rejected quantity records an inventory outcome. Your team still needs to decide what happens to the physical bottles and the supplier's invoice.
+
+Give the exception an owner. Record the affected variant, quantity, shipment reference, observed issue, and the supplier's agreed resolution. Keep the damaged goods away from saleable stock while that decision is pending. Do not infer a supplier credit merely from a rejected receipt.
+
+For example, the supplier might agree to replace the two damaged bottles in a later shipment. Document that agreement and reconcile the replacement through the appropriate record. Otherwise, the warehouse might count a replacement while purchasing assumes it is part of the original outstanding 20.
+
+Avoid silently changing the original agreement to make the numbers look tidy. Shopify notes that linked transfers and purchase orders operate independently; edits to one do not automatically update the other. Reconcile any amendment deliberately.
+
+## Receive the remainder without counting it twice
+
+When the next shipment arrives, check the reference and the unresolved quantity before using any bulk action. “Accept all” is only appropriate when the goods and scope actually match what the action will record.
+
+An internal receiving note for the example could say: “Shipment one: 28 accepted, two rejected; shipment two expected: 20 original units; two replacements pending separate confirmation.” This makes the obligations visible without relying on somebody remembering a phone call.
+
+Use a simple closing checklist:
+
+- Every delivered unit has a recorded disposition.
+- Outstanding original units remain distinguishable from replacements.
+- Duplicate packing slips have not produced duplicate receipts.
+- The supplier's commercial resolution is recorded separately.
+- The destination's saleable stock agrees with the accepted goods.
+
+The final check is about the inventory the store can actually sell. Shopify's [inventory-state definitions](https://help.shopify.com/en/manual/inventory-and-locations/fundamentals/inventory-states) distinguish Incoming from Available; goods on their way are not automatically available for purchase. Do not use a supplier's dispatch notice as evidence that stock has been received.
+
+## Give purchasing a usable exception report
+
+A daily exception report need not be complicated. For each unresolved delivery, show the expected quantity, accepted quantity, rejected quantity, outstanding quantity, owner, and next review date. Include the current supplier response, especially when a promised arrival date changes.
+
+Track recurring issues by supplier and variant over a consistent period. One damaged delivery is an exception to investigate, not enough evidence to declare a supplier unreliable. Repeated late or short deliveries may justify changing lead-time assumptions or purchasing arrangements.
+
+For customer-facing stock commitments, continue with the [draft-order reservation guide](/blog/shopify-draft-order-inventory-reservations). For the wider launch handoff, use the [order-testing checklist](/blog/shopify-test-order-before-launch-checklist). Accurate receiving is the foundation for both: it tells the next person what can be promised today.
