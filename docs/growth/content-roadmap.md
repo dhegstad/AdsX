@@ -168,3 +168,5 @@ Published [Build an Ecommerce Store With the Whop API and CLI](/blog/whop-api-cl
 Published three researched follow-ups: [gift-card refunds](/blog/shopify-gift-card-refunds), [draft-order reservations](/blog/shopify-draft-order-inventory-reservations), and [Whop waitlist admissions](/blog/whop-waitlist-capacity-admissions). See [release evidence](publication-2026-10-09-merchant-exceptions.json). Observe the cohort through October 16 before cosmetic changes.
 
 October 12: [three-guide batch and one correction](publication-2026-10-12-merchant-workflows.json) validated locally, release blocked by GitHub push failure. Zero new live pages; resume existing branch before repeating these intents.
+
+October 13: the October 12 pending batch is now published in PR88: three genuinely new articles and one correction. The quote-price workflow and forecasting audit are resolved. Review the live cohort on or after October 20.
