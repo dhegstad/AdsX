@@ -110,3 +110,15 @@ Three new guides and the inventory forecasting correction are validated but not 
 ## October 13 release completed
 
 The October 12 pending batch is now live: three new guides plus the inventory forecasting correction, [PR88](https://github.com/dhegstad/AdsX/pull/88). Quote-price research and the forecasting audit above are completed; do not repeat. First live date is October 13. Keep these intents stable through October 20. Next: distinct prospective-merchant content and a separate tested dependency security release. Whop access-clock/overlapping entitlement questions still require evidence.
+
+## October 14 completed and next research
+
+Three new guides and a substantial trial-setup correction are live in [the manifest](publication-2026-10-14-launch-controls.json). Do not duplicate private-mode access checks, package weight boundaries, or service-intake question design.
+
+Research candidates, with primary starting points reviewed October 14:
+
+- **Agentic plan to full store:** [Shopify access documentation](https://help.shopify.com/en/manual/online-store/setting-up/agentic-plan) distinguishes preparing a store from publishing it. Compare the existing agentic library first; add a second source on plan transition and a concrete merchant decision before drafting.
+- **Whop organic-channel tracking links:** [tracking-link documentation](https://docs.whop.com/manage-your-business/growth-marketing/tracking-links) and [checkout-link documentation](https://docs.whop.com/manage-your-business/payment-processing/create-checkout-link) support a store-vs-checkout destination decision. Distinguish merchant sales reporting from AdsX partner commissions; avoid duplicating paid-ads ROAS coverage. Use an original naming and reconciliation example, not invented dashboard results.
+- **Combined Shopify shipping profiles:** [combined-rate documentation](https://help.shopify.com/en/manual/fulfillment/setup/shipping-profiles/combined-shipping-rates) and [rate troubleshooting](https://help.shopify.com/en/manual/fulfillment/setup/shipping-rates/troubleshooting) support a multi-origin cart investigation. Check overlap with existing shipping setup articles before drafting a distinct exception workflow.
+
+Security work remains a separate tested release: registry candidates Next.js 16.3.8 and better-auth 1.6.22 exist, but were not installed or certified compatible in this publication run. Recheck current advisories before choosing versions.
