@@ -16,3 +16,7 @@ Primary review: [Next.js 16.3.8](https://github.com/vercel/next.js/releases/tag/
 ## Remaining work
 
 Review the remaining mail/serialization/transitive packages separately, with compatible updates and focused tests. Preserve the cost controls and static publication rendering. Release status and live verification belong in the maintenance log after deployment.
+
+## Released
+
+[PR93](https://github.com/dhegstad/AdsX/pull/93), commit 01cbbfd, is deployed to production. Verified the production domain maps to the new deployment; auth health, anonymous session, login/signup, 39 internal publication routes, referral links, media, and the sitemap passed. Repeated reads of a new article returned Vercel cache HIT. No production signup, payment, email, or authenticated OAuth callback was performed.

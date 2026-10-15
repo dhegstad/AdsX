@@ -122,3 +122,15 @@ Research candidates, with primary starting points reviewed October 14:
 - **Combined Shopify shipping profiles:** [combined-rate documentation](https://help.shopify.com/en/manual/fulfillment/setup/shipping-profiles/combined-shipping-rates) and [rate troubleshooting](https://help.shopify.com/en/manual/fulfillment/setup/shipping-rates/troubleshooting) support a multi-origin cart investigation. Check overlap with existing shipping setup articles before drafting a distinct exception workflow.
 
 Security work remains a separate tested release: registry candidates Next.js 16.3.8 and better-auth 1.6.22 exist, but were not installed or certified compatible in this publication run. Recheck current advisories before choosing versions.
+
+## October 15 completed and next research
+
+Three new articles are live in [the manifest](publication-2026-10-15-store-decisions.json). Existing Whop tracking coverage already answers the proposed organic-link task; do not recreate it.
+
+Researched next candidates, checked against titles and public sources October 15:
+
+- **Whop payout status versus bank receipt:** [payout troubleshooting](https://docs.whop.com/manage-your-business/manage-payouts/troubleshoot-payouts) distinguishes Requested, Processing, Completed, and Canceled. Develop an original status/evidence worksheet; verify a second primary source on methods. Keep merchant payouts, product affiliates, and the AdsX partner program separate. Do not execute withdrawals.
+- **Whop team roles for a first hire:** [role documentation](https://docs.whop.com/manage-your-business/team-management/manage-team-roles) supports a task-to-permission matrix. Verify a second primary source and review agency-portal overlap before drafting; include an access-removal checklist. No invitations or emails need to be sent to research or publish this guide.
+- **Shopify shipping options by market after upgrade:** [upgrade documentation](https://help.shopify.com/en/manual/fulfillment/setup/shipping-options/whats-changing-with-shipping) is early access, not universal availability. A distinct article could investigate migrated product collections, Markets permissions, and post-upgrade acceptance checks. Today's profile guide covers combined-rate diagnosis; do not repeat it. Follow the linked rate-calculation documentation before using examples.
+
+Next technical work: remaining mail, serialization, and transitive dependency advisories. Next.js and Better Auth patch validation is recorded in [the security note](security-maintenance-2026-10-15.md). Avoid broad force upgrades.
