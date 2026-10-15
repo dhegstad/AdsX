@@ -174,3 +174,7 @@ October 13: the October 12 pending batch is now published in PR88: three genuine
 ## October 14 launch and checkout controls
 
 Published three new guides on private-mode launch checks, package weights at checkout, and Whop service-intake questions; corrected the existing trial setup guide. See [manifest](publication-2026-10-14-launch-controls.json). Observe the new cohort through October 21.
+
+## October 15 store decisions
+
+Published three guides: Agentic-plan storefront transition, combined-profile shipping diagnosis, and Whop membership trial design. See [manifest](publication-2026-10-15-store-decisions.json). The tracking-link candidate was rejected as duplicate intent. Keep the cohort stable through October 22.
