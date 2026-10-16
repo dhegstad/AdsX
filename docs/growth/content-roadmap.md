@@ -178,3 +178,7 @@ Published three new guides on private-mode launch checks, package weights at che
 ## October 15 store decisions
 
 Published three guides: Agentic-plan storefront transition, combined-profile shipping diagnosis, and Whop membership trial design. See [manifest](publication-2026-10-15-store-decisions.json). The tracking-link candidate was rejected as duplicate intent. Keep the cohort stable through October 22.
+
+## October 16 merchant controls
+
+Published three guides covering Whop payout reconciliation, first-hire roles, and Shopify shipping migration checks. See [manifest](publication-2026-10-16-merchant-controls.json). Keep this cohort stable through October 23.
