@@ -186,3 +186,7 @@ Published three guides covering Whop payout reconciliation, first-hire roles, an
 ## October 17 merchant choices
 
 Published store credit versus gift cards, direct-link product launches, and Whop custom affiliate planning. See [manifest](publication-2026-10-17-merchant-choices.json). Observe through October 24; avoid cosmetic refreshes.
+
+## October 18 operations review
+
+Published order routing, fulfillment-hold release, and Whop payment-health cohort reporting. See [manifest](publication-2026-10-18-operations-review.json). Observe through October 25 before cosmetic updates.

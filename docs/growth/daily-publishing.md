@@ -154,3 +154,13 @@ Three new articles are live in [the manifest](publication-2026-10-17-merchant-ch
 - **Whop payment-health reporting:** [public payment-health documentation](https://docs.whop.com/trust-and-safety/account-health/payment-health.md), found through the official index, distinguishes 30-day filing-window rates from purchase-date cohorts. Create an original example explaining mature comparison windows. Check overlap with existing refund/cancellation coverage. Verify network-specific thresholds from primary sources before using any broad threshold claim in the Whop page. No private account data or dashboard access needed for a sourced explainer.
 
 Keep the remaining dependency backlog separate from editorial changes unless a targeted update is fully tested. Latest patch work is in the October 16 log.
+
+## October 18 completed and next research
+
+Three new articles are live in [the manifest](publication-2026-10-18-operations-review.json). The invoice candidate was rejected because whop-invoices-guide already covers it. Researched next candidates, October 18; complete body-level overlap review before drafting:
+
+- **Shopify seasonal pause and reopening budget:** [pause guidance](https://help.shopify.com/en/manual/your-account/pause-store) and [vacation options](https://help.shopify.com/en/manual/online-store/shopify-vacation-setting). Distinguish billing effective date, checkout availability, continuing app charges, and reopening readiness. Check current regional pricing before quoting. Existing private-mode guide covers launch access, not this operating/billing decision.
+- **Shopify ownership handoff:** [official transfer checklist](https://help.shopify.com/en/manual/your-account/manage-orgs-and-stores/change-transfer-ownership). Develop a responsibility inventory for domains, apps, payments, and account ownership. Verify a second primary source; explain the checklist without performing transfers or sharing credentials. No dedicated title found.
+- **Shopify customer-account migration acceptance:** [upgrade guide](https://help.shopify.com/en/manual/customers/customer-accounts/upgrade) and [customization options](https://help.shopify.com/en/manual/customers/customer-accounts/upgrade/customization-options). Inventory custom sign-in, app features, and legacy automation dependencies. Current upgrade docs supersede older search snippets about rollback and Multipass; recheck exact claims. No dedicated title found. This is merchant education, not AdsX email work.
+
+The remaining dependency backlog remains separate from publication work unless a targeted update has adequate regression validation.
