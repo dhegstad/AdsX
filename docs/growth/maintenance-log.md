@@ -217,3 +217,11 @@ Published **3 new articles**, **0 substantial refreshes**, **0 additional resour
 Passed 171-article/seven-hub editorial checks, 15 referral tests, 581-route build, 40 local/live internal routes, canonical/schema/date/media checks, and 525 sitemap URLs. All three mobile layouts checked at 390px with loaded images and no document overflow. IndexNow receipt covers only the three new URLs, not indexing or ranking gains.
 
 Fresh private Search Console data ends October 16. Spaced inspections of two October 9 articles and the commercial trial page were saved privately; indexing and referral performance remain separate. No new commission evidence inferred. Captured a private public-source Whop documentation improvement for immature cohorts and threshold scope, without coworker messages. Replenished the research backlog and rejected duplicate invoice intent. Keep the new cohort stable through October 25. Unrelated local files and PR81/45/34/25 preserved; no paid tools, email work, printing, or unapproved app promotion.
+
+## October 19 — store transitions
+
+Published **3 new articles**, **0 substantial refreshes**, **0 additional resources**, and **3 original illustrations** through [PR101](https://github.com/dhegstad/AdsX/pull/101). See [manifest](publication-2026-10-19-store-transitions.json). Added three contextual inbound links and topic reading paths without changing older dates.
+
+Passed 174-article/seven-hub editorial checks, 15 referral tests, a 584-route build, 30 local/live internal routes, canonical/schema/date/media checks, and 528 sitemap URLs. All three mobile layouts inspected at 390px with loaded images and no document overflow. IndexNow receipt covers three new URLs only, not indexing or ranking gains.
+
+Fresh private Search Console reporting ends October 17. Reused October 18 spaced URL inspections; no removals or repeated requests. Affiliate outcomes remain separate from traffic and clicks; no fresh commission evidence claimed. Private Whop documentation feedback records legacy API deep-link redirects and recommends surfacing the existing migration guide. No coworker messages sent. Replenished the source-backed backlog. Keep this cohort stable through October 26. Unrelated files and PR81/45/34/25 preserved. No paid tools, email work, printing, or unapproved app promotion.
