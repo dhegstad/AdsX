@@ -190,3 +190,7 @@ Published store credit versus gift cards, direct-link product launches, and Whop
 ## October 18 operations review
 
 Published order routing, fulfillment-hold release, and Whop payment-health cohort reporting. See [manifest](publication-2026-10-18-operations-review.json). Observe through October 25 before cosmetic updates.
+
+## October 19 store transitions
+
+Published seasonal pause budgets, ownership handoffs, and customer-account upgrades. See [manifest](publication-2026-10-19-store-transitions.json). Keep stable through October 26. Next research prioritizes Whop API migration and two distinct Shopify workflows.
