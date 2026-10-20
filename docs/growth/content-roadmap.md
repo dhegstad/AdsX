@@ -194,3 +194,7 @@ Published order routing, fulfillment-hold release, and Whop payment-health cohor
 ## October 19 store transitions
 
 Published seasonal pause budgets, ownership handoffs, and customer-account upgrades. See [manifest](publication-2026-10-19-store-transitions.json). Keep stable through October 26. Next research prioritizes Whop API migration and two distinct Shopify workflows.
+
+## October 20 recovery checks
+
+Published Whop V2 migration, Shopify backup recovery, and discount-combination testing. See [manifest](publication-2026-10-20-recovery-checks.json). Keep stable through October 27. Next research covers bundle inventory, digital asset access, and ambiguous-request recovery.
