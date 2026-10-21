@@ -198,3 +198,7 @@ Published seasonal pause budgets, ownership handoffs, and customer-account upgra
 ## October 20 recovery checks
 
 Published Whop V2 migration, Shopify backup recovery, and discount-combination testing. See [manifest](publication-2026-10-20-recovery-checks.json). Keep stable through October 27. Next research covers bundle inventory, digital asset access, and ambiguous-request recovery.
+
+## October 21 purchase controls
+
+Published Shopify bundle price maintenance, digital-product access, and Whop API retry recovery. See [manifest](publication-2026-10-21-purchase-controls.json). Keep stable through October 28. Next research covers service booking, adaptive pricing, and iOS purchase pricing.
