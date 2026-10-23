@@ -202,3 +202,7 @@ Published Whop V2 migration, Shopify backup recovery, and discount-combination t
 ## October 21 purchase controls
 
 Published Shopify bundle price maintenance, digital-product access, and Whop API retry recovery. See [manifest](publication-2026-10-21-purchase-controls.json). Keep stable through October 28. Next research covers service booking, adaptive pricing, and iOS purchase pricing.
+
+## October 23 checkout choices
+
+Published Shopify service booking, Whop adaptive pricing, and iOS purchase pricing. See [manifest](publication-2026-10-23-checkout-choices.json). Keep stable through October 30. Next research covers theme replacement, collaborator access, and higher checkout-link approval.
