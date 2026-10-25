@@ -253,3 +253,11 @@ Passed 183-article/seven-hub editorial checks, 15 referral tests, a 593-route pr
 Fresh private Search Console data ends October 21. Spaced inspection reports the October 19 pause/reopening article submitted/indexed; the commercial trial page reports unknown to Google and needs a later focused indexing review. No removals or repeat indexing requests. No new qualifying-referral or commission evidence claimed. Whop feedback records unclear buyer conversion-fee detail and the need to scope iOS policy language to actual supported purchase paths. No coworker messages sent.
 
 Automatic GitHub/Vercel preview and production triggers worked during this release; no manual fallback or duplicate build was needed. Preserve the cohort through October 30. Replenished sourced backlog. Latest prior publication record was October 21; no October 22 release was found, and today's three are counted only for this run. Unrelated local work and PR81/45/34/25 preserved. Email, paid tools, printing, social, and unapproved app promotion remain paused.
+
+## October 24 — merchant handoffs and checkout approval
+
+Published three new articles: Shopify theme replacement handoff, collaborator project access, and Whop higher checkout-link approval. See [release manifest](publication-2026-10-24-merchant-handoffs.json). Added three contextual inbound links and topic picks; existing dates preserved. Original illustrations included in each article; no suitable verified official video identified.
+
+Validation: 186 tracked articles and 7 hubs, 15 referral tests, production build with 596 routes, mobile review at 390px, and local/live URL checks. Canonicals, schema, image assets, internal routes, sitemap membership, Whop owned link/disclosure and Shopify commercial-page routing verified. IndexNow receipt is recorded in the manifest and is not proof of indexing or ranking. No paid model review or additional infrastructure was used.
+
+Fresh complete GSC reporting was reviewed privately. Reused October 23 spaced indexing inspections rather than resubmitting unchanged URLs. Affiliate commissions were not inferred from clicks. Directory work and paused email tasks were left unchanged. Research backlog replenished; private documentation feedback saved without sending it to coworkers. Preserve this batch through October 31 unless a factual or functional issue emerges.
