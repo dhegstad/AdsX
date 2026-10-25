@@ -19,6 +19,11 @@ import type { RelatedPage } from "@/lib/seo/internal-linking";
 import { isWhopReferralUrl, trackWhopReferralClick } from "@/lib/whop-referral";
 
 const officialVideos: Record<string, { label: string; source: string; poster?: string }> = {
+  "https://storage.ghost.io/c/12/7b/127b828b-bdc2-4972-9cf2-de857df9c324/content/media/2026/10/Website-migrations.mp4": {
+    label: "Whop official website migration demonstration",
+    source: "https://whop.com/blog/website-migrations/",
+    poster: "/images/editorial/migrate-shopify-to-whop.png",
+  },
   "https://whopvideo.app/videos/1778598814627-ad3c5ygu.mp4": {
     label: "Introducing Whop Ads: official Meta launch video",
     source: "https://whop.com/blog/watch/whop-ads-launch/",
