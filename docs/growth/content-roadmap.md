@@ -214,3 +214,7 @@ Published Shopify theme replacement, collaborator project access, and Whop highe
 ## October 24 — Whop funding and migration expansion
 
 Nine additional articles published at Dennis’s request: confirmed Series D news, Shopify Ventures implications, and Shopify, BigCommerce, Magento/Adobe Commerce, WooCommerce, Wix, Squarespace, and GoDaddy migrations. [Manifest](publication-2026-10-24-whop-funding-migrations.json). The existing migration checklist links the platform cluster. Future pieces should answer distinct migration needs rather than duplicate the funding announcement.
+
+## October 25 — additional Whop source platforms
+
+Published Square Online, Ecwid, and Big Cartel migration guides. [Manifest](publication-2026-10-25-whop-platform-migrations.json). Distinct workflows: POS/shared-stock ownership, embedded-store entry paths, and limited-collection/open-order reconciliation. The existing migration checklist links all three. Next research candidates: PrestaShop multilingual catalogs, OpenCart extensions, and Shopware sales channels; verify primary docs and existing coverage first.
