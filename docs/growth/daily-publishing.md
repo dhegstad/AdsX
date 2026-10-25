@@ -217,3 +217,9 @@ No relevant verified official video was identified for this batch; original expl
 Completed nine additional publications beyond the daily three. Funding coverage uses Whop’s October 21 primary announcement: $200M Series D, $5.1B valuation, led by Sequoia and Shopify Ventures. Migration coverage uses the October 12 website documentation and source-platform references; most-website-migrations-within-an-hour is attributed to Whop, not promised for full operational cutover. Owned referral CTA and employment disclosure in every article.
 
 Observe the seven migration guides before creating adjacent pages. Next useful source research: importer data/support matrix, custom-domain/redirect handling, and confirmed migration case studies with disclosed scope and measured timing. Do not invent connector support or extrapolate URL scanning to private data transfer. Existing general migration checklist remains the cluster entry point.
+
+## October 25 — daily batch complete
+
+Three genuinely new Whop migration guides published, each with an original illustration, exact owned referral CTA, employment disclosure, primary sources, and a worked example. No duplicate funding article or generic platform-name substitution. Fresh existing private Search Console reporting reused; recent releases remain unchanged to allow measurement. No new affiliate commission result established.
+
+Pending product documentation questions are recorded privately: embedded-catalog discovery, shared-stock synchronization, and reconciling limited stock with private open orders. They are research questions, not observed defects. No external outreach.

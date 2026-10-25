@@ -267,3 +267,11 @@ Fresh complete GSC reporting was reviewed privately. Reused October 23 spaced in
 Published nine new articles plus two existing-page link/source improvements. [Release manifest](publication-2026-10-24-whop-funding-migrations.json). Nine original diagrams; official 30-second migration video added through the existing allowlist with no preload and direct source fallback. Playback verified. Original publication dates preserved on refreshes.
 
 195 tracked articles/7 hubs passed editorial checks; 15 referral tests passed; production build generated 606 routes. All nine mobile layouts inspected at 390px with loaded images and no document overflow. Local and production URL checks passed, including 39 internal routes, 549 sitemap entries, canonicals, schema, images and exact owned Whop referrals with sponsored attributes/disclosures. Nine new URLs submitted to IndexNow; receipt is not evidence of indexing or ranking. Reused same-day private reporting and kept unrelated local files/PRs untouched. Documentation gaps captured privately; no external outreach or paid tools used.
+
+## October 25 — Whop platform migrations
+
+Published three new articles: Square Online, Ecwid, and Big Cartel to Whop. Added reading paths to the existing migration checklist without changing its publication date. [Release manifest](publication-2026-10-25-whop-platform-migrations.json).
+
+198 tracked articles and seven hubs passed editorial checks; all 15 referral tests passed; production build generated 609 routes. All three mobile pages inspected at 390px, images loaded and no document overflow. Local and production verification passed for canonicals, schema, original illustrations, exact sponsored Whop CTA and employment disclosure, 30 internal routes and 552 sitemap entries. Three new URLs received by IndexNow; receipt is not an indexing or ranking result.
+
+Reused the fresh private report with complete Search Console data through October 22 and the spaced prior inspections. Kept analytics outside the repository. One content preview and production release; this records-only update uses the build-skip rule. Unrelated local files and open releases preserved. Next action: research the next distinct source platforms and measure this cluster when complete data covers publication.
