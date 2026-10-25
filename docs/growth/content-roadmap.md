@@ -206,3 +206,7 @@ Published Shopify bundle price maintenance, digital-product access, and Whop API
 ## October 23 checkout choices
 
 Published Shopify service booking, Whop adaptive pricing, and iOS purchase pricing. See [manifest](publication-2026-10-23-checkout-choices.json). Keep stable through October 30. Next research covers theme replacement, collaborator access, and higher checkout-link approval.
+
+## October 24 merchant handoffs
+
+Published Shopify theme replacement, collaborator project access, and Whop higher checkout-link approval. See [manifest](publication-2026-10-24-merchant-handoffs.json). Keep stable through October 31. Next research covers collection troubleshooting, seasonal redirects, and campaign destination review.
