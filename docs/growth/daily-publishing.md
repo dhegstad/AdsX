@@ -211,3 +211,9 @@ Next candidates, sources reviewed October 24; recheck before drafting:
 - Whop campaign destination review: checkout versus store page. [Official tracking links](https://docs.whop.com/manage-your-business/growth-marketing/tracking-links) supports both destinations and plan selection. Evaluate whether a practical campaign matrix adds enough distinct value beyond the existing tracking overview; merge into that guide if not. No assumed attribution window or commission guarantee.
 
 No relevant verified official video was identified for this batch; original explanatory images were used.
+
+## October 24 — requested Whop expansion
+
+Completed nine additional publications beyond the daily three. Funding coverage uses Whop’s October 21 primary announcement: $200M Series D, $5.1B valuation, led by Sequoia and Shopify Ventures. Migration coverage uses the October 12 website documentation and source-platform references; most-website-migrations-within-an-hour is attributed to Whop, not promised for full operational cutover. Owned referral CTA and employment disclosure in every article.
+
+Observe the seven migration guides before creating adjacent pages. Next useful source research: importer data/support matrix, custom-domain/redirect handling, and confirmed migration case studies with disclosed scope and measured timing. Do not invent connector support or extrapolate URL scanning to private data transfer. Existing general migration checklist remains the cluster entry point.

@@ -210,3 +210,7 @@ Published Shopify service booking, Whop adaptive pricing, and iOS purchase prici
 ## October 24 merchant handoffs
 
 Published Shopify theme replacement, collaborator project access, and Whop higher checkout-link approval. See [manifest](publication-2026-10-24-merchant-handoffs.json). Keep stable through October 31. Next research covers collection troubleshooting, seasonal redirects, and campaign destination review.
+
+## October 24 — Whop funding and migration expansion
+
+Nine additional articles published at Dennis’s request: confirmed Series D news, Shopify Ventures implications, and Shopify, BigCommerce, Magento/Adobe Commerce, WooCommerce, Wix, Squarespace, and GoDaddy migrations. [Manifest](publication-2026-10-24-whop-funding-migrations.json). The existing migration checklist links the platform cluster. Future pieces should answer distinct migration needs rather than duplicate the funding announcement.
