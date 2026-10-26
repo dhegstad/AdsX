@@ -10,6 +10,7 @@ const growthSprints = fs.readdirSync('docs/growth').filter(file => /^(?:sprint|p
 const slugs = [...new Set(process.argv.slice(2).length ? process.argv.slice(2) : [...batch.map(p => p.slug), 'gumroad-vs-shopify-2026', 'shopify-starter-plan-five-dollars-review', ...platformBatch.articles.map(p => p.slug), ...growthSprints.map(p => p.slug)])];
 // This checks source presence. Relevance, claims, and current terms still require editorial review.
 const primarySourceHosts = new Set([
+  'devdocs.prestashop-project.org', 'docs.prestashop-project.org', 'docs.opencart.com', 'developer.shopware.com', 'docs.shopware.com',
   'docs.bigcommerce.com', 'experienceleague.adobe.com', 'support.wix.com', 'www.godaddy.com', 'support.apple.com', 'help.shopify.com', 'shopify.dev', 'www.shopify.com', 'apps.shopify.com',
   'gumroad.com', 'woocommerce.com', 'www.bigcommerce.com', 'www.bigcartel.com',
   'www.wix.com', 'squareup.com', 'business.adobe.com', 'developers.google.com',
