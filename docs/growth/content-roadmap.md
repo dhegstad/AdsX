@@ -218,3 +218,7 @@ Nine additional articles published at Dennis’s request: confirmed Series D new
 ## October 25 — additional Whop source platforms
 
 Published Square Online, Ecwid, and Big Cartel migration guides. [Manifest](publication-2026-10-25-whop-platform-migrations.json). Distinct workflows: POS/shared-stock ownership, embedded-store entry paths, and limited-collection/open-order reconciliation. The existing migration checklist links all three. Next research candidates: PrestaShop multilingual catalogs, OpenCart extensions, and Shopware sales channels; verify primary docs and existing coverage first.
+
+## October 26 — localized and customized stores
+
+Published PrestaShop, OpenCart, and Shopware migration guides. [Manifest](publication-2026-10-26-whop-platform-migrations.json). Distinct needs: product-language combinations, extension behavior, and sales-channel scope. Existing migration checklist links all three. Next researched candidates: Etsy listing exports versus order records, and eBay inventory/order ownership for an owned-store launch. Primary source references are in the roadmap JSON; verify marketplace policies and intent overlap before publication.

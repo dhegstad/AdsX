@@ -275,3 +275,11 @@ Published three new articles: Square Online, Ecwid, and Big Cartel to Whop. Adde
 198 tracked articles and seven hubs passed editorial checks; all 15 referral tests passed; production build generated 609 routes. All three mobile pages inspected at 390px, images loaded and no document overflow. Local and production verification passed for canonicals, schema, original illustrations, exact sponsored Whop CTA and employment disclosure, 30 internal routes and 552 sitemap entries. Three new URLs received by IndexNow; receipt is not an indexing or ranking result.
 
 Reused the fresh private report with complete Search Console data through October 22 and the spaced prior inspections. Kept analytics outside the repository. One content preview and production release; this records-only update uses the build-skip rule. Unrelated local files and open releases preserved. Next action: research the next distinct source platforms and measure this cluster when complete data covers publication.
+
+## October 26 — additional Whop migration guides
+
+Published PrestaShop, OpenCart, and Shopware guides and added reading paths to the existing migration checklist. [Release manifest](publication-2026-10-26-whop-platform-migrations.json). Original date of the checklist preserved. Official source hosts added to editorial validation.
+
+201 tracked articles and seven hubs passed editorial checks; 15 referral tests passed; production build generated 612 routes. All three mobile layouts inspected at 390px with loaded illustrations and no document overflow. Local and production checks cover exact sponsored Whop referral URLs/disclosures, canonicals, schema, images, 30 internal routes and 555 sitemap entries. Three new URLs received by IndexNow; submission is not proof of indexing or ranking.
+
+Fresh private Search Console reporting reviewed through October 24; two spaced URL inspections completed. Shopify-to-Whop migration article is submitted and indexed. Commercial trial-page inspection remains unchanged; no repeated submission. Affiliate revenue not inferred from organic traffic. Reporting and merchant feedback remain private. Content batch uses one preview and production release; records-only update skips rebuilds. Next: observe recent migration coverage and research distinct marketplace transitions.
