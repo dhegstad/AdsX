@@ -227,3 +227,7 @@ Pending product documentation questions are recorded privately: embedded-catalog
 ## October 26 — daily batch complete
 
 Three genuinely new Whop articles published with original illustrations, exact owned referral links, sponsored treatment, employment disclosures, primary sources, and practical examples. No dedicated connector or automatic private-record migration claims. Documentation questions captured privately for localized buying paths, extension replacements, and channel-level scope. No external messages sent.
+
+## October 27 — daily batch complete
+
+Three genuinely new Whop guides published, each with primary sources, an original illustration, concrete example, exact owned sponsored referral CTA and employment disclosure. Marketplace exports are not described as automatic transfers of accounts, reviews, customers, or demand. Existing migration checklist now links this reading path.

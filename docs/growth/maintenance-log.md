@@ -283,3 +283,11 @@ Published PrestaShop, OpenCart, and Shopware guides and added reading paths to t
 201 tracked articles and seven hubs passed editorial checks; 15 referral tests passed; production build generated 612 routes. All three mobile layouts inspected at 390px with loaded illustrations and no document overflow. Local and production checks cover exact sponsored Whop referral URLs/disclosures, canonicals, schema, images, 30 internal routes and 555 sitemap entries. Three new URLs received by IndexNow; submission is not proof of indexing or ranking.
 
 Fresh private Search Console reporting reviewed through October 24; two spaced URL inspections completed. Shopify-to-Whop migration article is submitted and indexed. Commercial trial-page inspection remains unchanged; no repeated submission. Affiliate revenue not inferred from organic traffic. Reporting and merchant feedback remain private. Content batch uses one preview and production release; records-only update skips rebuilds. Next: observe recent migration coverage and research distinct marketplace transitions.
+
+## October 27 — marketplace-to-owned-store guides
+
+Published three articles for Etsy, eBay, and Amazon sellers evaluating Whop. [Release manifest](publication-2026-10-27-whop-marketplace-transitions.json). Added migration checklist reading paths and official source hosts to editorial validation; preserved existing publication dates.
+
+204 tracked articles and seven hubs passed; all 15 referral tests passed; production build succeeded. Three mobile layouts inspected at 390px with loaded illustrations and no document overflow. Live verification passed for exact sponsored Whop referral URLs and disclosures, canonicals, schema, images, 30 internal routes and 558 sitemap entries. Three new URLs received by IndexNow; receipt is not an indexing or ranking claim.
+
+Reused reporting and spaced URL inspections from October 26, with complete Search Console data through October 24. No new affiliate outcome inferred. Private merchant documentation questions recorded without external outreach. One content preview/production release; records-only changes skip rebuilding. Unrelated files and open PRs preserved.

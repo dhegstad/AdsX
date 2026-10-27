@@ -222,3 +222,7 @@ Published Square Online, Ecwid, and Big Cartel migration guides. [Manifest](publ
 ## October 26 — localized and customized stores
 
 Published PrestaShop, OpenCart, and Shopware migration guides. [Manifest](publication-2026-10-26-whop-platform-migrations.json). Distinct needs: product-language combinations, extension behavior, and sales-channel scope. Existing migration checklist links all three. Next researched candidates: Etsy listing exports versus order records, and eBay inventory/order ownership for an owned-store launch. Primary source references are in the roadmap JSON; verify marketplace policies and intent overlap before publication.
+
+## October 27 — marketplace transitions
+
+Published Etsy, eBay, and Amazon seller guides for an independent Whop storefront. [Manifest](publication-2026-10-27-whop-marketplace-transitions.json). Distinct scope: personalization and independent demand; unique-unit inventory; fulfillment mapping. Etsy/eBay candidates from October 26 are completed. Avoid more marketplace-name substitutions; next review query evidence and unanswered workflow needs.
