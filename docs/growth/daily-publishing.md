@@ -231,3 +231,7 @@ Three genuinely new Whop articles published with original illustrations, exact o
 ## October 27 — daily batch complete
 
 Three genuinely new Whop guides published, each with primary sources, an original illustration, concrete example, exact owned sponsored referral CTA and employment disclosure. Marketplace exports are not described as automatic transfers of accounts, reviews, customers, or demand. Existing migration checklist now links this reading path.
+
+## October 28 — daily batch complete
+
+Three genuinely new Whop migration workflow guides published, each with original imagery, primary sources, a worked example, exact owned sponsored referral URL and employment disclosure. Added inbound paths from the migration checklist. No suitable official video added for these operational workflows.
