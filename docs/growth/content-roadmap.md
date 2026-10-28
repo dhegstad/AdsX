@@ -226,3 +226,7 @@ Published PrestaShop, OpenCart, and Shopware migration guides. [Manifest](public
 ## October 27 — marketplace transitions
 
 Published Etsy, eBay, and Amazon seller guides for an independent Whop storefront. [Manifest](publication-2026-10-27-whop-marketplace-transitions.json). Distinct scope: personalization and independent demand; unique-unit inventory; fulfillment mapping. Etsy/eBay candidates from October 26 are completed. Avoid more marketplace-name substitutions; next review query evidence and unanswered workflow needs.
+
+## October 28 — migration handoffs
+
+Published search URL mapping, open-order ownership, and outstanding Shopify gift-card balance planning for Whop moves. [Manifest](publication-2026-10-28-whop-migration-handoffs.json). Preserve this cohort through November 4. Next sourced research: Shopify collection troubleshooting across legacy and new models; review existing Whop ads/ecommerce/fees content using private query evidence before expanding similar intents.

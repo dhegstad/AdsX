@@ -291,3 +291,11 @@ Published three articles for Etsy, eBay, and Amazon sellers evaluating Whop. [Re
 204 tracked articles and seven hubs passed; all 15 referral tests passed; production build succeeded. Three mobile layouts inspected at 390px with loaded illustrations and no document overflow. Live verification passed for exact sponsored Whop referral URLs and disclosures, canonicals, schema, images, 30 internal routes and 558 sitemap entries. Three new URLs received by IndexNow; receipt is not an indexing or ranking claim.
 
 Reused reporting and spaced URL inspections from October 26, with complete Search Console data through October 24. No new affiliate outcome inferred. Private merchant documentation questions recorded without external outreach. One content preview/production release; records-only changes skip rebuilding. Unrelated files and open PRs preserved.
+
+## October 28 — search, orders and outstanding value
+
+Published three new migration handoff articles. [Release manifest](publication-2026-10-28-whop-migration-handoffs.json). Existing migration checklist now links the guides; dates preserved. No dedicated private-order or gift-card transfer capability inferred from website importing.
+
+Passed 207-article/seven-hub editorial checks, 15 referral tests, production build, and three mobile layout checks at 390px with loaded images and no overflow. Local/live verification covers 31 internal routes, 561 sitemap URLs, canonical/schema/date/media, exact sponsored Whop referral routes and employment disclosures. Three genuinely new URLs received by IndexNow; no indexing/ranking claim.
+
+Fresh complete Search Console data through October 26 reviewed privately. Reused October 26 spaced inspections, without repeated indexing requests. No affiliate outcomes inferred from traffic. Private merchant documentation questions retained without outreach. Backlog replenished with verified Shopify collection-model sources. Existing unrelated files/PRs preserved. One preview/production content release; records-only update skips rebuilding.
