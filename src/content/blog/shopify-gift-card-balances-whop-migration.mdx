@@ -1,0 +1,64 @@
+---
+title: "Shopify to Whop: Plan Outstanding Gift Cards Before You Move"
+excerpt: "Separate gift-card products from issued balances, review Shopify export limits, and define a supported redemption plan before a Whop launch."
+date: "2026-10-28"
+category: "Guides"
+author: {"name":"AdsX Team","role":"Ecommerce Editorial"}
+intent: "learn"
+topics: ["whop"]
+tags: ["Whop","Migration and platform decisions"]
+image: "/images/editorial/shopify-gift-card-balances-whop-migration.png"
+imageAlt: "Gift-card handoff: reconcile outstanding value, verify redemption support, and prevent duplicate use."
+---
+
+Before moving a Shopify store to Whop, review the gift cards you have already issued. A gift-card product page describes something you sell. An issued card represents value a customer can still use. Rebuilding the first does not transfer the second.
+
+This guide helps you prepare the handoff and ask the right compatibility questions. It does not establish a native Whop gift-card importer or a supported way to redeem Shopify codes in Whop checkout.
+
+**Disclosure:** Dennis Hegstad works at Whop. AdsX may earn compensation from qualifying Whop referrals. Sources reviewed October 28, 2026. Examples are illustrative; these are proposed checks, not migrations AdsX has tested.
+
+![Gift-card handoff: reconcile outstanding value, verify redemption support, and prevent duplicate use.](/images/editorial/shopify-gift-card-balances-whop-migration.png)
+
+*Original AdsX explanatory illustration.*
+
+## Understand what the export contains
+
+Shopify's [gift-card management documentation](https://help.shopify.com/en/manual/products/gift-card-products/manage-purchased-gift-cards) says its standard CSV includes only the last four characters of each code. It is useful for reviewing balances, but cannot recreate the cards or migrate them to another system on its own. Shopify also distinguishes issued gift cards from gift-card products in its [backup and duplication guidance](https://help.shopify.com/en/manual/shopify-admin/duplicate-store).
+
+Do not put partial codes into a destination field and assume they are usable credentials. Preserve the export as a restricted reconciliation reference and confirm the actual migration requirements before changing anything customers rely on.
+
+The [Whop website migration guide](https://whop.com/blog/website-migrations/) describes a public website workflow. It does not establish transfer of issued stored value. Ask for an explicit supported route rather than inferring it from a successful product-page import.
+
+## Reconcile value before designing the replacement
+
+Build an internal view of outstanding balances by currency and status. Separate issued-but-unused cards from partly redeemed cards and disabled records. Resolve discrepancies against the source system before using the numbers as a migration baseline.
+
+For an illustrative store, 12 cards have $50 remaining and eight have $20 remaining. That is $760 of outstanding value, not 20 new $50 cards. Reissuing every card at its original value would create an extra $240 of purchasing power in this example.
+
+Keep balances in their original currencies. Adding a US-dollar card to a Canadian-dollar card as though the values were interchangeable produces an unusable reconciliation total. Any currency treatment needs an explicit approved policy and supported implementation.
+
+## Ask destination questions in concrete terms
+
+| Question | Evidence needed before launch |
+| --- | --- |
+| Can the destination represent stored value? | Supported feature and merchant eligibility |
+| How does a customer redeem it? | Verified checkout behavior and identity process |
+| Does partial use preserve the remainder? | A documented or safely verified balance workflow |
+| Can the same value remain usable at the source? | A cutover rule preventing duplicate redemption |
+| What happens after a return? | Clear ownership and supported value restoration |
+
+A discount code is not automatically equivalent to a gift card. A percentage reduction, a one-use fixed discount, and a reusable balance have different behavior. Do not choose a workaround because its label sounds close enough.
+
+## Compare continuity options before retiring Shopify
+
+Depending on the supported capabilities and your obligations, you may need to retain the existing redemption route temporarily, arrange a provider-supported transfer, or agree on another appropriate resolution. Verify applicable terms and requirements with the people responsible for the business; this article does not prescribe a legal or accounting treatment.
+
+The practical decision is whether a legitimate holder can use the correct remaining value without paying twice, losing access, or redeeming it twice. If that cannot be demonstrated, the storefront move is not ready to replace that part of the customer experience.
+
+## Keep a controlled change log during the transition
+
+Balances can change after an export. Record redemptions, adjustments, and any approved replacement issuance between the snapshot and cutover. Give one person responsibility for reconciliation and another a review role when practical.
+
+Use a small set of representative cases in the acceptance plan: unused value, partial value, a purchase larger than the balance, and a return. Follow the providers' supported testing methods rather than creating real financial activity casually. Document actual results separately from planned checks.
+
+See the [Shopify-to-Whop migration guide](/blog/migrate-shopify-to-whop) for the broader store preparation and the [website migration checklist](/blog/whop-website-migration-checklist) for launch ownership. To evaluate your destination, [sign up for Whop through AdsX's partner link](https://whop.com/start/?code=YDMPYR), then confirm how outstanding customer value will be handled before closing the source workflow.
