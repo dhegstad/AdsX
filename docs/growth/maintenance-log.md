@@ -299,3 +299,11 @@ Published three new migration handoff articles. [Release manifest](publication-2
 Passed 207-article/seven-hub editorial checks, 15 referral tests, production build, and three mobile layout checks at 390px with loaded images and no overflow. Local/live verification covers 31 internal routes, 561 sitemap URLs, canonical/schema/date/media, exact sponsored Whop referral routes and employment disclosures. Three genuinely new URLs received by IndexNow; no indexing/ranking claim.
 
 Fresh complete Search Console data through October 26 reviewed privately. Reused October 26 spaced inspections, without repeated indexing requests. No affiliate outcomes inferred from traffic. Private merchant documentation questions retained without outreach. Backlog replenished with verified Shopify collection-model sources. Existing unrelated files/PRs preserved. One preview/production content release; records-only update skips rebuilding.
+
+## October 29 — catalog troubleshooting and migration acceptance
+
+Published three new articles. [Manifest](publication-2026-10-29-catalog-migration.json). Added inbound links from the migration and theme-handoff guides without changing original dates.
+
+Passed 210 tracked articles/seven hubs, 15 referral tests, production build, and all three mobile views at 390px with loaded images and no overflow. Local/live checks cover 39 internal routes, 564 sitemap URLs, schema, canonicals, images and referral attribution configuration. IndexNow received three new URLs; no indexing or ranking gains inferred.
+
+Fresh final Search Console data through October 27 reviewed privately. Spaced inspection confirms PrestaShop migration submitted/indexed; commercial trial page is now discovered-currently not indexed. No repeated submission or affiliate revenue claim. Private documentation questions retained without outreach. Backlog updated; unrelated local work and PRs preserved. Records-only changes skip rebuilding.

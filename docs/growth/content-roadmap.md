@@ -230,3 +230,7 @@ Published Etsy, eBay, and Amazon seller guides for an independent Whop storefron
 ## October 28 — migration handoffs
 
 Published search URL mapping, open-order ownership, and outstanding Shopify gift-card balance planning for Whop moves. [Manifest](publication-2026-10-28-whop-migration-handoffs.json). Preserve this cohort through November 4. Next sourced research: Shopify collection troubleshooting across legacy and new models; review existing Whop ads/ecommerce/fees content using private query evidence before expanding similar intents.
+
+## October 29 — catalog troubleshooting and migration acceptance
+
+Published collection troubleshooting, Shopify promotion carryover to Whop, and product media migration checks. [Manifest](publication-2026-10-29-catalog-migration.json). Next research covers collection publication scheduling and customer access continuity; verify intent overlap before drafting. Observe this cohort through November 5.
