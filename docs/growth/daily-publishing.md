@@ -239,3 +239,7 @@ Three genuinely new Whop migration workflow guides published, each with original
 ## October 29 — daily batch complete
 
 Three new articles, three original illustrations, and contextual inbound links. Two Whop articles have the exact owned sponsored referral route and employment disclosure; the Shopify troubleshooting article serves current merchants and links relevant operating guides. No suitable official video forced into these workflows.
+
+## October 30 — daily batch complete
+
+Three new articles with primary sources, original illustrations and contextual inbound links. Both Whop articles include owned sponsored referral URLs and employment disclosure. No suitable official video forced into the operational guides.

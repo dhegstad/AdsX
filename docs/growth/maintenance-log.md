@@ -307,3 +307,11 @@ Published three new articles. [Manifest](publication-2026-10-29-catalog-migratio
 Passed 210 tracked articles/seven hubs, 15 referral tests, production build, and all three mobile views at 390px with loaded images and no overflow. Local/live checks cover 39 internal routes, 564 sitemap URLs, schema, canonicals, images and referral attribution configuration. IndexNow received three new URLs; no indexing or ranking gains inferred.
 
 Fresh final Search Console data through October 27 reviewed privately. Spaced inspection confirms PrestaShop migration submitted/indexed; commercial trial page is now discovered-currently not indexed. No repeated submission or affiliate revenue claim. Private documentation questions retained without outreach. Backlog updated; unrelated local work and PRs preserved. Records-only changes skip rebuilding.
+
+## October 30 — launch continuity
+
+Published three new articles covering collection scheduling, subscription eligibility, and form routing. [Manifest](publication-2026-10-30-launch-continuity.json). Added reading paths without changing existing dates.
+
+Passed 213-article/seven-hub editorial validation, 15 referral tests, final production build, and mobile review at 390px. Live canonical/schema/media/internal-link/referral and sitemap checks passed; exact counts in manifest. IndexNow received three new URLs, not proof of indexing or ranking.
+
+Fresh complete Search Console data through October 28 reviewed privately. Reused October 29 inspections; no repeated unchanged requests. No affiliate outcomes inferred. Private documentation questions and source-backed backlog saved without outreach. Unrelated work preserved; records-only release skips rebuilding.

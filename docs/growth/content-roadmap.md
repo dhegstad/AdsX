@@ -234,3 +234,7 @@ Published search URL mapping, open-order ownership, and outstanding Shopify gift
 ## October 29 — catalog troubleshooting and migration acceptance
 
 Published collection troubleshooting, Shopify promotion carryover to Whop, and product media migration checks. [Manifest](publication-2026-10-29-catalog-migration.json). Next research covers collection publication scheduling and customer access continuity; verify intent overlap before drafting. Observe this cohort through November 5.
+
+## October 30 — launch continuity
+
+Published Shopify collection scheduling, Whop subscription eligibility review, and migrated form-routing checks. [Manifest](publication-2026-10-30-launch-continuity.json). These complete distinct needs from the prior backlog. Observe through November 6; investigate documented migration exceptions only where further practical analysis is useful.
