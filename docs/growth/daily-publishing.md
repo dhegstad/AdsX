@@ -243,3 +243,7 @@ Three new articles, three original illustrations, and contextual inbound links. 
 ## October 30 — daily batch complete
 
 Three new articles with primary sources, original illustrations and contextual inbound links. Both Whop articles include owned sponsored referral URLs and employment disclosure. No suitable official video forced into the operational guides.
+
+## October 31 — three additional migration guides
+
+Published Webflow Ecommerce, Volusion and Shift4Shop to Whop guides. All include original explanatory illustrations, direct primary citations, the owned sponsored referral URL and employment disclosure. No platform-specific official video forced into these guides.
