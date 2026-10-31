@@ -238,3 +238,7 @@ Published collection troubleshooting, Shopify promotion carryover to Whop, and p
 ## October 30 — launch continuity
 
 Published Shopify collection scheduling, Whop subscription eligibility review, and migrated form-routing checks. [Manifest](publication-2026-10-30-launch-continuity.json). These complete distinct needs from the prior backlog. Observe through November 6; investigate documented migration exceptions only where further practical analysis is useful.
+
+## October 31 — Webflow, Volusion and Shift4Shop
+
+Published three distinct platform migration guides covering content dependencies, export reconciliation, and option/pricing behavior. [Manifest](publication-2026-10-31-whop-platform-migrations.json). Existing migration checklist links all three. Keep stable through November 7; follow-up topics require verified destination behavior and distinct reader needs.

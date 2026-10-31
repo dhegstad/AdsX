@@ -315,3 +315,11 @@ Published three new articles covering collection scheduling, subscription eligib
 Passed 213-article/seven-hub editorial validation, 15 referral tests, final production build, and mobile review at 390px. Live canonical/schema/media/internal-link/referral and sitemap checks passed; exact counts in manifest. IndexNow received three new URLs, not proof of indexing or ranking.
 
 Fresh complete Search Console data through October 28 reviewed privately. Reused October 29 inspections; no repeated unchanged requests. No affiliate outcomes inferred. Private documentation questions and source-backed backlog saved without outreach. Unrelated work preserved; records-only release skips rebuilding.
+
+## October 31 — additional source platforms
+
+Three new guides published and linked from the migration checklist, preserving existing publication dates. Added official source hosts to content validation. [Manifest](publication-2026-10-31-whop-platform-migrations.json).
+
+Passed 216-article/seven-hub editorial checks, 15 referral tests, production build and three mobile layout checks at 390px. Live verification covers exact sponsored Whop referral URLs, disclosures, images, canonicals, schema, 33 internal routes and 570 sitemap entries. IndexNow received all three new URLs; receipt does not establish indexing or rankings.
+
+Fresh complete Search Console data through October 29 reviewed privately; reused October 29 URL inspections on the spaced schedule. No new affiliate outcome inferred. Source-backed backlog and merchant documentation questions retained; no outreach. Unrelated files and active PRs preserved. One content preview/production release, with records-only rebuilds skipped.
