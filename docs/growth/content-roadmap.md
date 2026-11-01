@@ -250,3 +250,7 @@ Published three distinct platform migration guides covering content dependencies
 ## November 1 — first Shopify AI batch shipped
 
 P01–P03 are published: merchant prompt library, app-function replacement guide, and one-prompt admin-app brief. See [release manifest](publication-2026-11-01-ai-merchant-workflows.json). Whop AI revision prompts complete the three-article batch. P07 is covered by P03; do not create a duplicate catalog-checker article. Next candidates are P05/P06 theme workflows plus the existing developer-guide refresh; verify current theme constraints before writing.
+
+### November 1 — App-specific replacement guides shipped
+
+Kiwi basic chart display, Hextom simple announcement bar and Tabs Studio basic accordion guides are live. Merchant library now contains 35 prompts, including 15 for these replacements, cost comparison, preservation, acceptance, handoff and billing verification. P05/P06 fulfilled with named-app guides; preserve P04 developer refresh as the next distinct maintenance task. Future replacement guides should select a specific function and compare free/native options and net savings, rather than promise full paid-app clones.
