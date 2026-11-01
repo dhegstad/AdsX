@@ -1,0 +1,222 @@
+[
+  {
+    "id": "app-audit",
+    "title": "Audit your app stack",
+    "category": "Planning",
+    "tool": "General assistant",
+    "inputs": "App names, bills, used features and connected systems",
+    "prompt": "Map each supplied Shopify app to the functions we actually use. Separate storefront display, admin work, automation and external integrations. Identify overlapping features and missing dependency information. Recommend what to investigate before keeping, replacing or removing each app. Do not recommend uninstalling anything yet.",
+    "output": "A feature and dependency table",
+    "review": "Compare the table with app settings and ask the people using each workflow.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "build-buy",
+    "title": "Compare build versus buy",
+    "category": "Planning",
+    "tool": "General assistant",
+    "inputs": "Subscription cost, build estimate, maintenance hours and hourly cost",
+    "prompt": "Compare keeping this app with building the limited replacement described here. Calculate twelve-month cash costs and show labor separately. Include hosting, maintenance, support and update assumptions. Identify which unknown could reverse the decision. Do not invent a savings figure.",
+    "output": "An assumption-based cost comparison",
+    "review": "Recalculate the arithmetic and distinguish hypothetical inputs from actual quotes.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "spec",
+    "title": "Write a narrow app brief",
+    "category": "Planning",
+    "tool": "General assistant",
+    "inputs": "One merchant problem and three representative examples",
+    "prompt": "Turn this merchant problem into a one-page app specification. Define its user, data inputs, visible output, read or write actions, exclusions, failure states and acceptance cases. Recommend the appropriate Shopify surface. Ask about missing requirements before proposing implementation.",
+    "output": "A reviewable specification",
+    "review": "Make sure the specification excludes unrelated features and names the platform surface.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "catalog-checker",
+    "title": "Build a catalog QA admin app",
+    "category": "Admin apps",
+    "tool": "Sidekick Generate app",
+    "inputs": "Product statuses to include and the definition of missing data",
+    "prompt": "Generate a read-only Shopify admin app listing products without a meaningful description or product image. Show title, status and missing fields, with a way to review the product. Handle pagination, loading, failures and an empty result. Do not modify products or send data externally. Explain unsupported requirements and permissions before installation.",
+    "output": "An app draft and permission explanation",
+    "review": "Compare known complete and incomplete records, including one beyond the first results page.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "team-tasks",
+    "title": "Draft a team task tracker",
+    "category": "Admin apps",
+    "tool": "Sidekick Generate app",
+    "inputs": "Task fields, team workflow and storage requirements",
+    "prompt": "Plan a simple Shopify admin task tracker for our internal team. We need task title, owner, due date and status. First explain whether the required storage and team behavior are supported in this environment. Flag unsupported features. Do not use customer records as task storage or request unrelated permissions. Build only after the plan is reviewed.",
+    "output": "A feasibility plan, then a scoped app draft",
+    "review": "Verify persistence, staff access and required fields; do not assume a visible list is durable storage.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "reorder-review",
+    "title": "Plan a reorder review dashboard",
+    "category": "Admin apps",
+    "tool": "Sidekick Generate app",
+    "inputs": "Date range, inventory locations and supplier lead times",
+    "prompt": "Plan a read-only reorder review dashboard using supported store data. Explain the sales period, stock measure and proposed calculation. Identify missing supplier lead times and stock adjustments. Show assumptions beside results. Do not create purchase orders or change inventory. Flag unsupported data before building.",
+    "output": "A dashboard plan with data gaps",
+    "review": "Check calculations on known products and handle returns, stockouts and location differences.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "requirements",
+    "title": "Find missing app requirements",
+    "category": "Development",
+    "tool": "Coding agent",
+    "inputs": "App specification and relevant repository files",
+    "prompt": "Review this specification against the current Shopify documentation and this repository. List missing API fields, permissions, persistence requirements and failure behavior. Separate supported implementation paths from assumptions. Do not modify files or run store mutations during this review.",
+    "output": "A gap list with source references",
+    "review": "Open the cited documentation and resolve blocking questions before implementation.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "acceptance",
+    "title": "Write acceptance cases",
+    "category": "Development",
+    "tool": "Coding agent",
+    "inputs": "Feature brief and sample records",
+    "prompt": "Create acceptance cases for this feature: normal use, empty data, invalid inputs, permission failure and partial network failure. State expected output and evidence for each case. Use supplied fixtures rather than private customer data. Do not claim tests have run.",
+    "output": "A test matrix",
+    "review": "Ensure cases test the desired behavior rather than merely repeat implementation details.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "permissions",
+    "title": "Review requested permissions",
+    "category": "Development",
+    "tool": "Coding agent",
+    "inputs": "Manifest, routes and feature list",
+    "prompt": "Compare the requested Shopify permissions with the code paths and feature requirements provided. Explain each scope and identify unused or excessive access. Distinguish read from write access. Do not remove a scope automatically; list the impact and a verification step.",
+    "output": "A permission review",
+    "review": "Confirm every required action remains possible and no secret is included in the report.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "rollback",
+    "title": "Prepare a rollback plan",
+    "category": "Development",
+    "tool": "Coding agent",
+    "inputs": "Deployment method, changed files and data changes",
+    "prompt": "Write a rollback plan for this change. Separate code rollback from data recovery. Identify backups, compatibility concerns, the person who can stop rollout and the evidence needed to resume. Do not assume reverting code reverses stored data changes.",
+    "output": "A release and recovery checklist",
+    "review": "Verify that recovery steps exist in the actual environment before deployment.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "size-chart",
+    "title": "Draft a size-chart section",
+    "category": "Theme",
+    "tool": "Coding agent with theme access",
+    "inputs": "Unpublished theme, size table, product mapping and units",
+    "prompt": "In the unpublished theme copy, propose a size-chart section using the supplied measurements and units. Inspect existing theme patterns first. Include accessible headings and mobile behavior. Keep chart assignment explicit per product. Do not publish the theme or invent measurements. Explain how the merchant edits the data.",
+    "output": "A theme change proposal or draft",
+    "review": "Review different products, long labels, keyboard access and narrow screens before publishing.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "announcement",
+    "title": "Draft an announcement bar",
+    "category": "Theme",
+    "tool": "Coding agent with theme access",
+    "inputs": "Unpublished theme, approved text and destination",
+    "prompt": "Inspect this theme for an existing announcement setting before adding code. If a new section is needed, build a simple text-and-link announcement bar in the unpublished copy using existing conventions. Include editor settings and readable mobile styling. Do not add tracking, timers or fabricated urgency. Do not publish.",
+    "output": "A native-setting recommendation or small section draft",
+    "review": "Check the destination, contrast, keyboard access and behavior when the text is empty.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "product-facts",
+    "title": "Write product copy from facts",
+    "category": "Content",
+    "tool": "Sidekick or general assistant",
+    "inputs": "Approved specifications and brand voice",
+    "prompt": "Draft a concise product description using only these supplied facts. Separate included items from optional accessories. Preserve dimensions, materials and compatibility exactly. List unanswered buying questions separately. Do not add certifications, performance claims or delivery promises. Return a draft without publishing.",
+    "output": "A factual product-description draft",
+    "review": "Compare every claim, quantity and unit with the supplied specifications.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "faq",
+    "title": "Draft product FAQs",
+    "category": "Content",
+    "tool": "Sidekick or general assistant",
+    "inputs": "Real questions, approved product facts and policies",
+    "prompt": "Turn these real customer questions into a short product FAQ. Answer only from the supplied facts and current policies. Mark unanswerable questions for review. Avoid repeating the description and do not invent guarantees. Return draft text only.",
+    "output": "A question-and-answer draft",
+    "review": "Check policy dates and ensure each answer resolves the actual question.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "comparison",
+    "title": "Build a product comparison",
+    "category": "Content",
+    "tool": "General assistant",
+    "inputs": "Product fact sheets and comparison criteria",
+    "prompt": "Compare these products using the supplied facts and criteria. Use the same units, mark unavailable information and keep opinion separate from fact. Do not pick a winner without a stated customer need. Return a table and the questions a buyer should resolve.",
+    "output": "A comparison table",
+    "review": "Verify source facts and avoid treating missing information as a negative product feature.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "alt-text",
+    "title": "Describe product images",
+    "category": "Content",
+    "tool": "Vision-capable assistant",
+    "inputs": "Product images and their page context",
+    "prompt": "Draft concise alt text for each supplied image based on what is visible and its purpose on the page. Distinguish product color or angle where useful. Do not infer material, certification or included accessories from appearance alone. Flag decorative images for human review.",
+    "output": "Image-by-image alt-text suggestions",
+    "review": "Inspect each image and avoid unnecessary repetition or keyword stuffing.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "collection",
+    "title": "Plan collection merchandising",
+    "category": "Planning",
+    "tool": "Sidekick or general assistant",
+    "inputs": "Collection goal, product data and constraints",
+    "prompt": "Propose a collection merchandising brief for this goal using the supplied products. Explain grouping, ordering and exclusions. Identify stock or seasonality assumptions and distinguish recommendations from verified facts. Do not move or publish products.",
+    "output": "A merchandising proposal",
+    "review": "Review available stock, customer intent and business constraints before applying changes.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "mobile-qa",
+    "title": "Review mobile shopping",
+    "category": "Theme",
+    "tool": "Browser-capable coding agent",
+    "inputs": "Preview URL and target device widths",
+    "prompt": "Review this preview as a mobile shopper. Inspect product options, price visibility, purchase controls, images and navigation at the supplied widths. Report observable issues with evidence and reproduction steps. Do not place orders or change the site. Distinguish screenshots from interactions actually tested.",
+    "output": "An evidence-based issue list",
+    "review": "Reproduce findings and prioritize blockers over cosmetic preferences.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "discount-review",
+    "title": "Check a discount brief",
+    "category": "Planning",
+    "tool": "General assistant",
+    "inputs": "Eligibility, combinations, dates, currency and examples",
+    "prompt": "Review this proposed discount specification for ambiguity. Work through the supplied carts, eligible products, combination rules and date boundaries. List expected outcomes and missing facts. Do not create a discount or assume the platform supports an unstated rule.",
+    "output": "A discount acceptance matrix",
+    "review": "Validate supported rules in Shopify and confirm totals before activation.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "analytics",
+    "title": "Explain a store report",
+    "category": "Planning",
+    "tool": "Sidekick or general assistant",
+    "inputs": "Authorized report, date range and metric definitions",
+    "prompt": "Analyze this report using its stated date range and metric definitions. Separate traffic, orders, revenue, refunds and contribution where available. Identify missing denominators and reporting delays. Show calculations, distinguish correlation from causation, and suggest one useful next investigation.",
+    "output": "A bounded report analysis",
+    "review": "Check totals, time zones, comparison periods and whether revenue is gross or net.",
+    "status": "Illustrative prompt — not execution-tested"
+  }
+]

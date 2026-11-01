@@ -83,6 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       },
+      { url: `${baseUrl}/resources/shopify-merchant-prompt-library`, lastModified: new Date("2026-11-01"), changeFrequency: "monthly" as const, priority: 0.8 },
       { url: `${baseUrl}/resources/whop-launch-checklist`, lastModified: new Date("2026-10-04"), changeFrequency: "monthly" as const, priority: 0.8 },
       // Free planning resource
       { url: `${baseUrl}/resources/shopify-launch-checklist`, lastModified: new Date("2026-09-16"), changeFrequency: "monthly" as const, priority: 0.8 },
