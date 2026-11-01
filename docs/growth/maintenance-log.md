@@ -331,3 +331,7 @@ Refreshed five existing Shopify cost and Whop fee/ads/ecommerce guides at Dennis
 Editorial checks, 15 referral tests, production build, mobile layouts, and live checks across all five pages and 74 internal routes passed. Exact Whop partner URL and Shopify publisher/page/placement tags verified. IndexNow received five substantially changed URLs; no indexing or revenue gain inferred. Private analytics baseline and access requirements remain outside the public repository.
 
 Next: prioritize practical Whop AI prompting and website-building coverage, connect authorized affiliate reporting, and allow these refreshed pages a 28-day measurement window before another broad rewrite.
+
+## November 1 — Shopify AI editorial priority
+
+Dennis prioritized Shopify apps, AI app-function replacement, one-prompt app builds and a merchant prompt library. Saved a 12-item roadmap and a 20-prompt resource brief, with existing-overlap mapping and current official Sidekick/AI Toolkit sources. New primary focus is recorded in the main roadmap; Whop AI remains a secondary daily track. This is planning only: zero new articles/resources published and no prompt execution or merchant-store changes claimed. Next delivery: prompt library, replacement decision guide and narrow admin-app walkthrough, alongside correction of the existing developer tutorial.
