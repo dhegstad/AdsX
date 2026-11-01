@@ -323,3 +323,11 @@ Three new guides published and linked from the migration checklist, preserving e
 Passed 216-article/seven-hub editorial checks, 15 referral tests, production build and three mobile layout checks at 390px. Live verification covers exact sponsored Whop referral URLs, disclosures, images, canonicals, schema, 33 internal routes and 570 sitemap entries. IndexNow received all three new URLs; receipt does not establish indexing or rankings.
 
 Fresh complete Search Console data through October 29 reviewed privately; reused October 29 URL inspections on the spaced schedule. No new affiliate outcome inferred. Source-backed backlog and merchant documentation questions retained; no outreach. Unrelated files and active PRs preserved. One content preview/production release, with records-only rebuilds skipped.
+
+## October 31 — AI store-building and referral improvements
+
+Refreshed five existing Shopify cost and Whop fee/ads/ecommerce guides at Dennis’s request. Added original AI prompts, revision instructions, checkout checks, and contextual signup paths; revised Shopify payment-fee query alignment and first-year budgeting. Removed obsolete Ads channel rollout claims. Original publication dates preserved. [Release manifest](publication-2026-10-31-ai-referral-improvements.json). Zero new articles in this follow-up.
+
+Editorial checks, 15 referral tests, production build, mobile layouts, and live checks across all five pages and 74 internal routes passed. Exact Whop partner URL and Shopify publisher/page/placement tags verified. IndexNow received five substantially changed URLs; no indexing or revenue gain inferred. Private analytics baseline and access requirements remain outside the public repository.
+
+Next: prioritize practical Whop AI prompting and website-building coverage, connect authorized affiliate reporting, and allow these refreshed pages a 28-day measurement window before another broad rewrite.
