@@ -1,5 +1,7 @@
 # Content roadmap — accelerated sprint
 
+October 31 priority: Dennis requests more practical Whop AI website-building and prompting coverage. Five existing conversion guides were refreshed in [this release](publication-2026-10-31-ai-referral-improvements.json), including the ecommerce pillar. Research distinct offer-specific build workflows and real merchant questions before drafting; do not duplicate that pillar or default to more platform-name migration variations. Keep those refreshed pages stable for measurement and connect authorized referral reporting.
+
 October 4 advertising follow-up: all eight requested Whop Ads articles are published and production-verified. See [the release manifest](publication-2026-10-04-whop-ads.json). The Whop library now has 38 articles, including a dedicated advertising reading path. These eight intents are covered; do not recreate the pillar, Meta setup, Shopify fit, pixel installation, budget, manager comparison, attribution, or AI preparation articles as new posts.
 
 October 4 Whop expansion: 25 additional articles are published and production-verified, tracked in [the separate plan](whop-expansion-plan-2026-10-04.json) and [release manifest](publication-2026-10-04-whop-expansion.json). The Whop library now contains 30 articles. The five earlier Whop articles are a separate batch; four receive evidence updates here. Daily work continues across Shopify, Shopify apps, Whop, and adjacent AI/ecommerce topics.
