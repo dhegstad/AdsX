@@ -335,3 +335,11 @@ Next: prioritize practical Whop AI prompting and website-building coverage, conn
 ## November 1 — Shopify AI editorial priority
 
 Dennis prioritized Shopify apps, AI app-function replacement, one-prompt app builds and a merchant prompt library. Saved a 12-item roadmap and a 20-prompt resource brief, with existing-overlap mapping and current official Sidekick/AI Toolkit sources. New primary focus is recorded in the main roadmap; Whop AI remains a secondary daily track. This is planning only: zero new articles/resources published and no prompt execution or merchant-store changes claimed. Next delivery: prompt library, replacement decision guide and narrow admin-app walkthrough, alongside correction of the existing developer tutorial.
+
+## November 1 — Shopify AI workflows and prompt library published
+
+Published three new articles: app-function replacement, a one-prompt catalog QA brief, and Whop AI website revisions. Added the ungated 20-prompt Shopify merchant library with search, category filtering and copy buttons. All prompts are labeled illustrative and untested; the article/resource UI was tested, not generated merchant apps. [Release manifest](publication-2026-11-01-ai-merchant-workflows.json).
+
+Passed 219-article/seven-hub editorial checks, 15 referral tests, production build, four mobile views, library search/empty/filter/exact-copy checks, and live canonical/schema/image/referral/internal-link/sitemap checks. Original diagrams inspected. IndexNow received three new articles and the resource; no indexing or ranking result inferred.
+
+Updated the recurring task to the November 1 Shopify AI priority while retaining a Whop AI track and three-new-article minimum. Fresh Search Console report complete through October 30 reviewed privately; reused recent inspections and left October 31 refreshes stable. Affiliate access state unchanged; no revenue inference. No email, paid APIs, external outreach or merchant-store changes. Next: research theme size-chart and announcement-bar workflows, refresh the existing developer guide, and collect real build evidence when authorized account access permits.

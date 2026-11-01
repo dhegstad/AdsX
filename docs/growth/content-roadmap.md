@@ -246,3 +246,7 @@ Published Shopify collection scheduling, Whop subscription eligibility review, a
 ## October 31 — Webflow, Volusion and Shift4Shop
 
 Published three distinct platform migration guides covering content dependencies, export reconciliation, and option/pricing behavior. [Manifest](publication-2026-10-31-whop-platform-migrations.json). Existing migration checklist links all three. Keep stable through November 7; follow-up topics require verified destination behavior and distinct reader needs.
+
+## November 1 — first Shopify AI batch shipped
+
+P01–P03 are published: merchant prompt library, app-function replacement guide, and one-prompt admin-app brief. See [release manifest](publication-2026-11-01-ai-merchant-workflows.json). Whop AI revision prompts complete the three-article batch. P07 is covered by P03; do not create a duplicate catalog-checker article. Next candidates are P05/P06 theme workflows plus the existing developer-guide refresh; verify current theme constraints before writing.
