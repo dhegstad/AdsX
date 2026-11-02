@@ -349,3 +349,11 @@ Updated the recurring task to the November 1 Shopify AI priority while retaining
 Published three additional user-requested guides for basic Kiwi size charts, Hextom announcement bars and Tabs Studio product accordions. Expanded the library from 20 to 35 prompts, with a dedicated category, guide links and wider mobile search field. Current official plan prices and free alternatives are distinguished from hypothetical net savings after labor. No merchant implementation, measured savings or app affiliate enrollment claimed. [Release manifest](publication-2026-11-01-app-replacements.json).
 
 Editorial, affiliate, build, media, browser and live-page checks passed. Original diagrams inspected; official Shopify video source verified and direct watch fallback included because embed playback was not confirmed in the test browser. IndexNow receipt recorded for the three guides and substantially expanded resource; no indexing or ranking inference. Next: prioritize native Flow workflows versus recurring automation fees, and update the existing developer guide rather than duplicating it.
+
+## November 2 — AI tool decisions, acceptance checks and offer briefs
+
+Published three new articles: Shopify Flow/Sidekick/custom-app selection, AI-built app testing, and Whop AI storefront offer briefing. Added reading-path links from the 35-prompt library without claiming additional prompts. Original diagrams, primary sources, illustrative prompts and exact Whop referral/disclosure included. [Release manifest](publication-2026-11-02-ai-decisions.json).
+
+Passed editorial, 15 referral tests, build, mobile and live canonical/schema/image/internal-link/sitemap checks. IndexNow received the three new URLs; no ranking/indexing inference. Fresh Search Console complete through October 31 reviewed privately; November 1 content remains too recent to assess. Prior indexing inspections reused; affiliate access unchanged. No email, paid APIs or merchant account mutations.
+
+Next: source-refresh the existing developer tutorial and older automation guide, whose broad time-savings/pricing claims need correction. Whop product feedback recorded privately: a generated product/price/CTA review summary could help merchants reconcile the offer before launch; no observed user-testing claim or external message.

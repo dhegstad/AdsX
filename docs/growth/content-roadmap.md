@@ -254,3 +254,7 @@ P01–P03 are published: merchant prompt library, app-function replacement guide
 ### November 1 — App-specific replacement guides shipped
 
 Kiwi basic chart display, Hextom simple announcement bar and Tabs Studio basic accordion guides are live. Merchant library now contains 35 prompts, including 15 for these replacements, cost comparison, preservation, acceptance, handoff and billing verification. P05/P06 fulfilled with named-app guides; preserve P04 developer refresh as the next distinct maintenance task. Future replacement guides should select a specific function and compare free/native options and net savings, rather than promise full paid-app clones.
+
+### November 2 — Decision and verification guides shipped
+
+P08 (Flow/Sidekick/custom app) and P10 (AI app acceptance) are published, alongside the Whop AI storefront offer brief. The prompt library links the new Shopify guides. Next maintenance: update the existing developer tutorial and shopify-ai-workflow-automation-2026, replacing unsupported time-savings and stale pricing with sourced, bounded guidance. Preserve original dates and avoid duplicate-intent replacements.
