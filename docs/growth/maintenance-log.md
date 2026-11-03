@@ -357,3 +357,11 @@ Published three new articles: Shopify Flow/Sidekick/custom-app selection, AI-bui
 Passed editorial, 15 referral tests, build, mobile and live canonical/schema/image/internal-link/sitemap checks. IndexNow received the three new URLs; no ranking/indexing inference. Fresh Search Console complete through October 31 reviewed privately; November 1 content remains too recent to assess. Prior indexing inspections reused; affiliate access unchanged. No email, paid APIs or merchant account mutations.
 
 Next: source-refresh the existing developer tutorial and older automation guide, whose broad time-savings/pricing claims need correction. Whop product feedback recorded privately: a generated product/price/CTA review summary could help merchants reconcile the offer before launch; no observed user-testing claim or external message.
+
+## November 3 — Replacement costs, order tagging and multiple Whop offers
+
+Published three new guides: full-cost AI app replacement worksheet, limited SC Order Tagger-to-Flow rule, and multi-offer Whop AI website prompt. Expanded the library from 35 to 38 original illustrative prompts. Substantively corrected the older automation guide, removing unsupported savings/timing/cost claims and preserving its original date and URL. [Release manifest](publication-2026-11-03-ai-costs-tagging.json).
+
+Passed editorial, 15 referral tests, build, diagram/mobile/search/copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received the five changed URLs; receipt is not indexing evidence. Fresh complete GSC through November 1 reviewed privately; targeted library and commercial-page inspections recorded privately. No affiliate results inferred or unchanged access blocker repeated. No paid services, email work or merchant-account mutations.
+
+Next: source-refresh the existing Claude Code developer guide, then research specialist apps worth keeping. Whop multi-offer configuration review question retained privately as proposed product feedback, not observed merchant testing. Keep recent conversion pages stable.

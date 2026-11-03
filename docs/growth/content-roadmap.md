@@ -258,3 +258,7 @@ Kiwi basic chart display, Hextom simple announcement bar and Tabs Studio basic a
 ### November 2 — Decision and verification guides shipped
 
 P08 (Flow/Sidekick/custom app) and P10 (AI app acceptance) are published, alongside the Whop AI storefront offer brief. The prompt library links the new Shopify guides. Next maintenance: update the existing developer tutorial and shopify-ai-workflow-automation-2026, replacing unsupported time-savings and stale pricing with sourced, bounded guidance. Preserve original dates and avoid duplicate-intent replacements.
+
+### November 3 — Costs and bounded automation
+
+P09 published with a worked cash-versus-labor comparison and sensitivity prompt. A specific order-tagging replacement guide and Whop multi-offer website prompt complete the three-article batch. Library now 38 prompts. Older automation guide corrected; existing developer-guide refresh remains next maintenance priority. Check app-audit intent overlap before P11; prioritize evidenced specialist-app decisions for P12.
