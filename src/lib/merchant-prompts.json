@@ -398,5 +398,38 @@
     "review": "Check the app provider and Shopify billing records after the relevant billing cycle.",
     "status": "Illustrative prompt — not execution-tested",
     "guide": "/blog/replace-shopify-app-functions-with-ai"
+  },
+  {
+    "id": "tag-rule-plan",
+    "title": "Plan one order-tagging rule",
+    "category": "App replacements",
+    "tool": "General assistant + Shopify Flow editor",
+    "inputs": "Exact rule, tag spelling, downstream consumers and plan",
+    "prompt": "Draft a Flow plan for [event and condition] adding [exact tag]. Do not change fulfillment, inventory or existing tags. Identify editor fields I must verify. Include matching, nonmatching and missing-data cases. List downstream dependencies and exclude historical backfill unless separately specified. Do not claim installation or test success.",
+    "output": "A bounded configuration plan and cases",
+    "review": "Confirm fields in Flow and inspect final tags after other processes run.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "cost-sensitivity",
+    "title": "Stress-test replacement economics",
+    "category": "App replacements",
+    "tool": "General assistant",
+    "inputs": "Actual billing interval, avoidable charges, setup estimate and maintenance range",
+    "prompt": "Compare [app] with replacing only [function] over [period]. Separate cash charges and owner labor. Calculate break-even only when recurring savings are positive. Double maintenance in a second scenario. Account for retained features that prevent cancellation. Keep 30-day cycles distinct from calendar years and mark unknown costs.",
+    "output": "Base and higher-maintenance cost scenarios",
+    "review": "Recalculate arithmetic and verify charges really stop.",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "tag-conflicts",
+    "title": "Investigate a disappearing order tag",
+    "category": "App replacements",
+    "tool": "General assistant",
+    "inputs": "Redacted event timeline, Flow result and other tag-writing systems",
+    "prompt": "Review this timeline for an order tag that appears after Flow runs and later disappears. Separate observed events from hypotheses. Identify other writers to inspect and evidence needed to establish which update changed the tag. Do not recommend a blind delay, disable workflows or change live orders.",
+    "output": "An evidence-based investigation checklist",
+    "review": "Confirm the responsible writer before altering workflow timing.",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
