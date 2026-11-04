@@ -431,5 +431,29 @@
     "output": "An evidence-based investigation checklist",
     "review": "Confirm the responsible writer before altering workflow timing.",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "badge-scope",
+    "title": "Scope one product badge",
+    "category": "App replacements",
+    "tool": "Coding assistant + unpublished theme",
+    "inputs": "Theme files, exact tag, approved label and placement",
+    "prompt": "Inspect this unpublished Shopify theme. Propose the smallest change to show [label] for products with [exact tag] at [placement]. Reuse theme conventions, preserve existing controls and identify missing product context. Do not edit shared product tags or publish. Include tagged, untagged, long-title and phone checks plus removal instructions.",
+    "output": "A narrow theme-change proposal",
+    "review": "Check native settings first and verify every intended placement.",
+    "guide": "/blog/replace-flair-basic-product-badge-ai-shopify",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "app-state-owner",
+    "title": "Review app records and responsibilities",
+    "category": "Planning",
+    "tool": "General assistant",
+    "inputs": "Public app docs, redacted configuration and required operations",
+    "prompt": "Review replacing [app function]. Map persistent records, scheduled actions, customer controls, integrations and failure recovery to their current owners. State evidence needed before a replacement assumes each responsibility. Separate read-only helpers from full replacement. Mark unsupported migration paths unknown and do not recommend uninstalling yet.",
+    "output": "A responsibility and evidence table",
+    "review": "Have staff who handle exceptions verify requirements and ownership.",
+    "guide": "/blog/when-to-keep-shopify-app-vs-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
