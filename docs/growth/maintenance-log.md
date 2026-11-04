@@ -365,3 +365,11 @@ Published three new guides: full-cost AI app replacement worksheet, limited SC O
 Passed editorial, 15 referral tests, build, diagram/mobile/search/copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received the five changed URLs; receipt is not indexing evidence. Fresh complete GSC through November 1 reviewed privately; targeted library and commercial-page inspections recorded privately. No affiliate results inferred or unchanged access blocker repeated. No paid services, email work or merchant-account mutations.
 
 Next: source-refresh the existing Claude Code developer guide, then research specialist apps worth keeping. Whop multi-offer configuration review question retained privately as proposed product feedback, not observed merchant testing. Keep recent conversion pages stable.
+
+## November 4 — Badges, specialist-app ownership and Whop image briefs
+
+Published three new guides: basic Flair badge replacement, specialist-app retention decisions (P12), and Whop AI image preparation. Expanded the merchant library from 38 to 40 prompts. Refreshed the existing Claude Code developer guide (P04) to current scaffolding/toolkit guidance and removed unsupported timing guarantees; original date, URL and development-hub placement preserved. [Manifest](publication-2026-11-04-ai-boundaries.json).
+
+Passed editorial, 15 referral tests, build, image/mobile/search/copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received five changed URLs; no indexing/ranking inference. Fresh GSC complete through November 2 reviewed privately; November 3 inspections reused on the spaced schedule. No affiliate outcomes inferred, paid APIs or email work. No merchant builds or savings claimed as tested.
+
+Next: evaluate distinct merchant questions in the AI cluster before adding more adjacent variations; P11 overlaps existing cost-audit coverage. Seek actual build evidence only through authorized test access. Whop asset-source/placement review question retained privately as proposed documentation/product feedback, not observed friction.

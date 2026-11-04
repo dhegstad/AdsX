@@ -262,3 +262,7 @@ P08 (Flow/Sidekick/custom app) and P10 (AI app acceptance) are published, alongs
 ### November 3 — Costs and bounded automation
 
 P09 published with a worked cash-versus-labor comparison and sensitivity prompt. A specific order-tagging replacement guide and Whop multi-offer website prompt complete the three-article batch. Library now 38 prompts. Older automation guide corrected; existing developer-guide refresh remains next maintenance priority. Check app-audit intent overlap before P11; prioritize evidenced specialist-app decisions for P12.
+
+### November 4 — App ownership and storefront assets
+
+P12 published and P04 source-refreshed. A narrowly scoped product-badge replacement and Whop AI image brief complete the three new guides. Library now 40 prompts. Keep the new cohort stable for measurement; check P11 against existing cost-audit intent before drafting. Prioritize evidence-backed implementation follow-ups over additional generic build-versus-buy pages.
