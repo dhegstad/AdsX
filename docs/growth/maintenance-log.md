@@ -373,3 +373,11 @@ Published three new guides: basic Flair badge replacement, specialist-app retent
 Passed editorial, 15 referral tests, build, image/mobile/search/copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received five changed URLs; no indexing/ranking inference. Fresh GSC complete through November 2 reviewed privately; November 3 inspections reused on the spaced schedule. No affiliate outcomes inferred, paid APIs or email work. No merchant builds or savings claimed as tested.
 
 Next: evaluate distinct merchant questions in the AI cluster before adding more adjacent variations; P11 overlaps existing cost-audit coverage. Seek actual build evidence only through authorized test access. Whop asset-source/placement review question retained privately as proposed documentation/product feedback, not observed friction.
+
+## November 5 — Product pairings, low-stock alerts and Whop support pages
+
+Published three new guides: a limited Selleasy recommendation alternative, a basic Stockie alert alternative using Flow, and a Whop AI customer-support page brief. Expanded the library from 40 to 42 prompts. Current official prices, free alternatives and hypothetical labor costs distinguish gross avoided charges from net savings. Prompts remain illustrative and untested. [Manifest](publication-2026-11-05-ai-merchandising.json).
+
+Passed editorial, 15 referral tests, build, diagrams/mobile/library search-copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received four changed URLs; no indexing or ranking result inferred. Fresh GSC complete through November 3 reviewed privately; recent inspections reused. Conversion pages kept stable; affiliate access unchanged. No merchant-account changes, messages, paid tools or measured savings claimed.
+
+Next: research Search & Discovery synonym curation against existing search/SEO coverage; require stronger location-specific evidence before expanding stock automation. Whop support-page versus inbound-support documentation question retained privately for Dennis, not sent externally.
