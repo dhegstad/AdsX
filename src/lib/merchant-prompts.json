@@ -455,5 +455,29 @@
     "review": "Have staff who handle exceptions verify requirements and ownership.",
     "guide": "/blog/when-to-keep-shopify-app-vs-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "recommendation-map",
+    "title": "Review complementary product pairings",
+    "category": "App replacements",
+    "tool": "General assistant + Search & Discovery",
+    "inputs": "Product identifiers, specifications and approved compatibility facts",
+    "prompt": "Using only this product table, propose up to three complementary items for each main product. Return identifiers, reason, supporting field and unresolved compatibility questions. Separate substitutes into a related-products table. Do not invent compatibility, purchase history or discounts. Mark missing evidence needs review. Do not edit the store. Start with ten products.",
+    "output": "A product-pairing review sheet",
+    "review": "Verify compatibility and theme support; inspect the actual storefront before removing an app.",
+    "guide": "/blog/replace-selleasy-product-recommendations-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "low-stock-crossing",
+    "title": "Plan a low-stock threshold alert",
+    "category": "App replacements",
+    "tool": "General assistant + Shopify Flow",
+    "inputs": "Single-location stock rule, threshold and fixed staff recipient",
+    "prompt": "Plan a Shopify Flow alert when tracked variant inventory moves from at least 5 to below 5. Verify current trigger fields in the editor; do not invent workflow JSON or enable anything. Use a fixed staff recipient. Test 6-to-4, 4-to-3, 3-to-8, 8-to-2 and already-low items. Flag missing values and multi-location limitations. Do not place orders, change inventory or contact customers.",
+    "output": "A bounded workflow plan and acceptance table",
+    "review": "Test in an authorized setup; verify run history and receipt, then assign ongoing ownership.",
+    "guide": "/blog/replace-stockie-basic-alert-shopify-flow-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
