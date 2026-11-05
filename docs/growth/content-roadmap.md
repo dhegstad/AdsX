@@ -266,3 +266,7 @@ P09 published with a worked cash-versus-labor comparison and sensitivity prompt.
 ### November 4 — App ownership and storefront assets
 
 P12 published and P04 source-refreshed. A narrowly scoped product-badge replacement and Whop AI image brief complete the three new guides. Library now 40 prompts. Keep the new cohort stable for measurement; check P11 against existing cost-audit intent before drafting. Prioritize evidence-backed implementation follow-ups over additional generic build-versus-buy pages.
+
+### November 5 — Merchandising and stock alert functions
+
+Published recommendation-pairing and threshold-alert guides plus a Whop AI support-page brief. Merchant library now 42 prompts. Next candidate: synonym curation using approved catalog terminology; official Search & Discovery documentation supports the feature, but check existing intent before drafting. Location-specific alerts and Whop inbound support need further evidence; do not expand by merely changing labels.
