@@ -381,3 +381,11 @@ Published three new guides: a limited Selleasy recommendation alternative, a bas
 Passed editorial, 15 referral tests, build, diagrams/mobile/library search-copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received four changed URLs; no indexing or ranking result inferred. Fresh GSC complete through November 3 reviewed privately; recent inspections reused. Conversion pages kept stable; affiliate access unchanged. No merchant-account changes, messages, paid tools or measured savings claimed.
 
 Next: research Search & Discovery synonym curation against existing search/SEO coverage; require stronger location-specific evidence before expanding stock automation. Whop support-page versus inbound-support documentation question retained privately for Dennis, not sent externally.
+
+## November 6 — Search diagnosis, product copy and keyboard review
+
+Published three new guides: AI-assisted zero-result search diagnosis, a bounded Sidekick alternative to product-description apps, and keyboard-navigation review prompts for Whop AI websites. Expanded the library from 42 to 44 prompts. Current source discrepancies led to a diagnosis workflow rather than unverified synonym setup; description pricing and hypothetical incremental labor are separated. [Manifest](publication-2026-11-06-ai-search-copy.json).
+
+Passed editorial, 15 referral tests, build, diagram/mobile/library search-copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received four changed URLs; no ranking or indexing inference from the receipt. Latest complete analytics and spaced inspections reviewed privately; no affiliate outcomes inferred or repeated access blocker. Recent conversion pages kept stable. No merchant-account mutations or tested-build claims.
+
+Next: obtain current surface evidence before a synonym walkthrough. Research a distinct native theme-block generation task against existing display guides; keep actual build evidence separate from illustrative prompts. Whop keyboard acceptance documentation suggestion retained privately for Dennis, not sent externally.

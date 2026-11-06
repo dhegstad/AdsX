@@ -270,3 +270,7 @@ P12 published and P04 source-refreshed. A narrowly scoped product-badge replacem
 ### November 5 — Merchandising and stock alert functions
 
 Published recommendation-pairing and threshold-alert guides plus a Whop AI support-page brief. Merchant library now 42 prompts. Next candidate: synonym curation using approved catalog terminology; official Search & Discovery documentation supports the feature, but check existing intent before drafting. Location-specific alerts and Whop inbound support need further evidence; do not expand by merely changing labels.
+
+### November 6 — Search, descriptions and keyboard paths
+
+Three new guides and two prompts published; library now 44 prompts. Synonym-specific instructions deferred because older indexed docs and the current page differ. Next research: a distinct native theme-block generation use case, with current support/limitations and overlap checks against badge, chart and accordion coverage. Avoid further generic AI decision pages without new evidence.
