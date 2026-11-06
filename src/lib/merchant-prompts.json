@@ -479,5 +479,29 @@
     "review": "Test in an authorized setup; verify run history and receipt, then assign ongoing ownership.",
     "guide": "/blog/replace-stockie-basic-alert-shopify-flow-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "zero-result-audit",
+    "title": "Diagnose searches with no results",
+    "category": "Planning",
+    "tool": "General assistant + Search & Discovery reports",
+    "inputs": "Redacted search queries, report dates and catalog facts",
+    "prompt": "Classify these queries as possible naming mismatch, visibility issue, missing assortment, ambiguous intent or unknown. Return query, candidate product identifier, supporting evidence, next manual check and a justified fix. Separate no-results and no-clicks cases. Do not invent products, demand, synonyms or availability. Do not edit the store. Prioritize ten rows and explain why.",
+    "output": "An evidence-based search issue list",
+    "review": "Reproduce queries in the intended market and verify current admin controls.",
+    "guide": "/blog/shopify-zero-result-search-ai-audit",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "description-fact-sheet",
+    "title": "Draft a description from verified facts",
+    "category": "Content",
+    "tool": "Sidekick product editor or general assistant",
+    "inputs": "Approved facts, included items, exclusions and brand voice",
+    "prompt": "Draft a short product opening and features list using only the approved fact sheet. Preserve measurements and distinguish included items from accessories. Do not invent benefits, certifications, compatibility, care or shipping promises. Put missing facts in a separate review list and return a claim-to-source table. Do not publish or change other product fields.",
+    "output": "A draft plus separate review notes",
+    "review": "Remove working notes before saving. Verify claims and implied benefits; preserve the old description.",
+    "guide": "/blog/replace-product-description-app-sidekick",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
