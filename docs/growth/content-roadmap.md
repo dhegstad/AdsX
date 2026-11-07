@@ -1,6 +1,6 @@
 # Content roadmap — accelerated sprint
 
-November 7 batch: translation replacement, native AI feature-block generation and read-only AI CSV change review prepared in [the release manifest](publication-2026-11-07-shopify-ai.json). Prompt library expands to 47. Next distinct research: actual theme-generation outcomes using an authorized test store, and current translation-app partner eligibility. Newsletter prerequisites are tracked in [the readiness audit](newsletter-readiness-2026-11-07.md).
+November 7 batch: translation replacement, native AI feature-block generation and read-only AI CSV change review published in [the release manifest](publication-2026-11-07-shopify-ai.json). Prompt library expands to 47. Next distinct research: actual theme-generation outcomes using an authorized test store, and current translation-app partner eligibility. Newsletter prerequisites are tracked in [the readiness audit](newsletter-readiness-2026-11-07.md).
 
 November 7 controlling priority: [Shopify, AI, affiliate revenue and newsletter subscribers](shopify-ai-newsletter-priority-2026-11-07.md). Default to three distinct Shopify/merchant-AI articles daily; Whop is occasional, with no daily quota. Resume opt-in newsletter acquisition while keeping the prompt library ungated. This supersedes the older mix below.
 
