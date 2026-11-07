@@ -394,3 +394,8 @@ Next: obtain current surface evidence before a synonym walkthrough. Research a d
 ## 2026-11-07 — Editorial and newsletter priority
 
 Updated product context, roadmap and daily automation for Shopify/merchant AI as the default three-article mix; removed mandatory Whop coverage. Resumed optional opt-in newsletter acquisition under Dennis’s new instruction, preserving ungated resources and outreach restrictions. Added a concrete revenue/subscriber brief and separate measurement requirements. New publications: 0 (strategy update). No signup integration or campaign completion claimed. Next: audit existing email routes/Resend and paused email implementation, then verify a contextual opt-in path.
+
+
+## November 7 — Shopify AI publishing and newsletter readiness
+
+Prepared three new Shopify/AI guides and three additional merchant prompts. Current translation guidance reflects store-specific eight-versus-two-language availability; all prompts remain explicitly untested. Editorial, affiliate, build and local URL/media/canonical/schema checks passed. Newsletter production prerequisites were audited; see newsletter-readiness-2026-11-07.md. No messages sent or subscriber acquisition claimed. Fresh complete GSC data through November 4 reviewed privately; November 6 inspections reused on the spaced schedule. Affiliate access unchanged. Publication completion and live evidence are tracked in publication-2026-11-07-shopify-ai.json.
