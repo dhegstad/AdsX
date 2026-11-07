@@ -389,3 +389,8 @@ Published three new guides: AI-assisted zero-result search diagnosis, a bounded 
 Passed editorial, 15 referral tests, build, diagram/mobile/library search-copy and live canonical/schema/media/referral/internal-link/sitemap checks. IndexNow received four changed URLs; no ranking or indexing inference from the receipt. Latest complete analytics and spaced inspections reviewed privately; no affiliate outcomes inferred or repeated access blocker. Recent conversion pages kept stable. No merchant-account mutations or tested-build claims.
 
 Next: obtain current surface evidence before a synonym walkthrough. Research a distinct native theme-block generation task against existing display guides; keep actual build evidence separate from illustrative prompts. Whop keyboard acceptance documentation suggestion retained privately for Dennis, not sent externally.
+
+
+## 2026-11-07 — Editorial and newsletter priority
+
+Updated product context, roadmap and daily automation for Shopify/merchant AI as the default three-article mix; removed mandatory Whop coverage. Resumed optional opt-in newsletter acquisition under Dennis’s new instruction, preserving ungated resources and outreach restrictions. Added a concrete revenue/subscriber brief and separate measurement requirements. New publications: 0 (strategy update). No signup integration or campaign completion claimed. Next: audit existing email routes/Resend and paused email implementation, then verify a contextual opt-in path.
