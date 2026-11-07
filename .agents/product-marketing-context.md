@@ -8,11 +8,11 @@ AdsX also operates a publication about Shopify apps, the Shopify ecosystem, ecom
 
 Immediate goal: grow the publication and affiliate revenue from three sources: Shopify merchant referrals, the Shopify apps covered in the publication, and Whop merchant referrals. Content must serve both prospective and current merchants; it must not be constrained to AdsX’s one feature area. App breakdowns, categories, strategies, platform benefits, pricing, features, and comparisons are central. Optimize for qualified referrals and earned/paid commissions, alongside useful organic and AI-search discovery; traffic and outbound clicks are intermediate measures.
 
-Email capture, newsletters, email sequences, and outreach are paused at Dennis’s September 16 instruction. Build ungated resources and focus on content, indexing, and relevant free distribution.
+Dennis’s November 7 instruction resumes opt-in email capture and newsletter audience development. Keep resources ungated; cold outreach remains paused. Prioritize Shopify and practical merchant AI over Whop, with affiliate revenue and confirmed subscribers as outcomes. Follow docs/growth/shopify-ai-newsletter-priority-2026-11-07.md; it supersedes older cadence and email-pause statements below.
 
 Staged conversion paths:
 
-- Existing merchants: app selection / comparisons / setup guides → relevant verified app affiliate link → the app program’s qualifying action and commission. Keep unmonetized app recommendations when they are useful. Email capture remains paused; consented remarketing is a later path once configured.
+- Existing merchants: app selection / comparisons / setup guides → relevant verified app affiliate link → the app program’s qualifying action and commission. Keep unmonetized app recommendations when they are useful. Offer optional newsletter signup once its consent and subscription flow are configured and verified.
 - Later, at hundreds of thousands of monthly visitors/clicks: add prominent AdsX install CTAs and market the approved app to these audiences. Do not introduce app-acquisition CTAs during the current publication phase.
 - Prospective merchants: platform decisions / setup / niche guides → tracked Shopify affiliate link → trial → qualifying full-price referral.
 - Whop prospects: platform-fit / cost / launch / operating guides → owned Whop partner link → credited merchant and eligible commission under the program’s terms.
@@ -41,7 +41,7 @@ Whop.com is now an authorized editorial and referral focus alongside Shopify: ec
 
 The existing Whop account was enrolled as a standard Whop Partner on October 4. Its dashboard issued `https://whop.com/start/?code=YDMPYR`; use this exact owned signup route. It is distinct from the optional Verified Partner application, which was not completed. No payouts, merchant referrals, or commissions are claimed from enrollment alone. Keep Whop source documentation direct and label commercial links as sponsored. Do not use the third-party referral URL in an onboarding plugin skill.
 
-Every new article should have useful original or properly sourced imagery with alt text. Add verified official video embeds when they help explain the task. Write natural, practical prose with original examples; keep the editorial policy’s honest AI-assistance and team-authorship disclosure. No fake human bylines or invented testing. Email marketing remains paused.
+Every new article should have useful original or properly sourced imagery with alt text. Add verified official video embeds when they help explain the task. Write natural, practical prose with original examples; keep the editorial policy’s honest AI-assistance and team-authorship disclosure. No fake human bylines or invented testing. The November 7 opt-in newsletter priority supersedes the earlier email pause.
 
 Dennis explicitly excludes printing from the project. Do not build or promote print/PDF resources, add print controls, or open print dialogs during QA. Keep resources useful directly on the website and focus on publishing, organic visibility, and referral conversions.
 

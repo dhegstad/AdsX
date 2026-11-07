@@ -29,7 +29,7 @@ For a page report, filter to affiliate_click and break down event count and tota
 
 Impact requires an authenticated session or authorized export before commission reconciliation can be completed. Match Impact subId1 and subId2 to the GA4 page and placement in aggregate; keep trial, full-price, locked, reversed, and paid amounts separate. Older untagged referrals cannot be retroactively assigned to articles without supporting evidence.
 
-Meta, Google Ads, and X audience tags are not active: their account identifiers and consent configuration remain prerequisites. Email capture and email sequences are deferred at the owner's request.
+Meta, Google Ads, and X audience tags are not active: their account identifiers and consent configuration remain prerequisites. November 7: opt-in newsletter acquisition is authorized; integration and consent verification remain prerequisites. Track confirmed subscribers and signup conversion separately from affiliate outcomes. Campaign sending requires explicit authorization.
 
 ## October 4 Whop referral expansion
 
