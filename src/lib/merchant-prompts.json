@@ -503,5 +503,41 @@
     "review": "Remove working notes before saving. Verify claims and implied benefits; preserve the old description.",
     "guide": "/blog/replace-product-description-app-sidekick",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "translation-review",
+    "title": "Review a storefront translation",
+    "category": "Content",
+    "tool": "General assistant + bilingual reviewer",
+    "inputs": "Source text, candidate translation, target locale and approved glossary",
+    "prompt": "Compare the source and candidate translation using only the approved fact sheet and glossary. Return source phrase, translated phrase, meaning change, number or unit mismatch, glossary conflict and question for a bilingual reviewer. Separate uncertain judgments from evidenced discrepancies. Do not invent policies, certify accuracy or publish changes.",
+    "output": "A review queue for a fluent reviewer",
+    "review": "Check all supported and unsupported storefront surfaces; human approval remains necessary.",
+    "guide": "/blog/shopify-translate-adapt-langify-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "feature-block",
+    "title": "Generate a simple theme feature block",
+    "category": "Development",
+    "tool": "Shopify theme editor block generation",
+    "inputs": "Eligible theme, approved content, images and unpublished duplicate",
+    "prompt": "Create a three-card product feature block with editable headings, body, optional image and alt text. Use theme typography and colors. Stack on narrow screens and allow long text without clipping. Hide absent images. Render optional links only with both label and URL. Use semantic headings and visible focus. No external requests, tracking, animation, product edits, cart changes or checkout changes. Explain settings and remaining tests.",
+    "output": "An initial theme block to inspect",
+    "review": "Check eligibility, empty fields, long text, keyboard links and multiple instances before publishing.",
+    "guide": "/blog/shopify-ai-theme-feature-block",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "csv-diff-review",
+    "title": "Review an AI-edited product CSV",
+    "category": "Planning",
+    "tool": "CSV-capable assistant + deterministic comparison",
+    "inputs": "Untouched original, candidate, allowed fields and identifiers",
+    "prompt": "Compare both CSVs read-only using a CSV parser. Report headers, row counts and matching rule. Stop on ambiguous identities; do not assume SKU is unique. List every added/deleted column or record and changed value, with identifier, field, old value, new value and whether allowed. Flag populated cells becoming blank and variant/image relationships changing. Do not fix, normalize or import. Report incomplete comparisons.",
+    "output": "A complete change report or an explicit comparison failure",
+    "review": "Independently check counts and identities; approve a representative small import with a recovery plan.",
+    "guide": "/blog/shopify-ai-product-csv-change-review",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
