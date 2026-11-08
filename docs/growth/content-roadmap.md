@@ -278,3 +278,8 @@ Published recommendation-pairing and threshold-alert guides plus a Whop AI suppo
 ### November 6 — Search, descriptions and keyboard paths
 
 Three new guides and two prompts published; library now 44 prompts. Synonym-specific instructions deferred because older indexed docs and the current page differ. Next research: a distinct native theme-block generation use case, with current support/limitations and overlap checks against badge, chart and accordion coverage. Avoid further generic AI decision pages without new evidence.
+
+
+## November 8 — Forms, image fidelity and Inbox configuration
+
+Three new Shopify merchant workflows published; the ungated prompt library now has 50 entries. See [manifest](publication-2026-11-08-shopify-ai.json). Keep recent conversion pages stable. Next research: a store's newsletter signup-to-confirmation reconciliation workflow (distinct from today's form replacement), and product-image rejection criteria as an expansion of today's guide rather than another replacement article. Source starting points: Shopify Forms creation/shared settings and Shopify media generation docs linked in the new guides. Verify actual sending integration and plan availability before publishing setup claims. Privy program terms conflict recorded in the partner ledger; no owned app referral link enabled.
