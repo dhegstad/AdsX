@@ -539,5 +539,41 @@
     "review": "Independently check counts and identities; approve a representative small import with a recovery plan.",
     "guide": "/blog/shopify-ai-product-csv-change-review",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "signup-promise",
+    "title": "Draft an honest newsletter signup",
+    "category": "Content",
+    "tool": "General assistant + Shopify Forms",
+    "inputs": "Audience, real content promise, cadence, incentive and configured subscription process",
+    "prompt": "Draft three signup options with title up to 50 characters, content up to 100 and button up to 25. Count characters including spaces. Use only the supplied incentive and cadence. Do not invent benefits, deadlines, discounts or subscriber counts. Write a success message that matches the actual confirmation process. List settings a person must verify. Do not publish or send email.",
+    "output": "Three copy options and a configuration review list",
+    "review": "Independently count characters; test consent, existing customers, confirmation and unsubscribe.",
+    "guide": "/blog/shopify-forms-privy-ai-signup",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "background-preservation",
+    "title": "Edit a background without changing the product",
+    "category": "Content",
+    "tool": "Shopify file editor, subject to current eligibility",
+    "inputs": "An authorized product photo and preservation checklist",
+    "prompt": "Place the photographed product on a neutral light-gray studio surface. Preserve exact shape, proportions, color, texture, label and visible details. Use a soft contact shadow. Do not add props, accessories, packaging, text or products. Do not remove marks or wear relevant to the item sold. Keep the product fully visible with space around its outline.",
+    "output": "An image candidate for fidelity review",
+    "review": "Untested prompt; compare original and candidate at actual pixels and storefront size. Reject changed product details.",
+    "guide": "/blog/shopify-ai-background-editor-photoroom",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "inbox-persona",
+    "title": "Draft a bounded Inbox agent persona",
+    "category": "Planning",
+    "tool": "Shopify Inbox persona editor / Sidekick refinement",
+    "inputs": "Service style and separately verified store sources and handoff settings",
+    "prompt": "Use short clear sentences and a warm matter-of-fact tone. Acknowledge frustration. Explain options without purchase pressure. Distinguish documented facts from uncertainty. Do not invent benefits, dates, discounts or policy exceptions. Respect the configured handoff process. Do not claim actions completed unless they actually completed. Keep facts in approved store sources rather than this persona.",
+    "output": "A short persona draft for review",
+    "review": "A prompt is not a guarantee. Test policy exceptions, unsupported promises, discount requests and human handoff.",
+    "guide": "/blog/shopify-inbox-ai-persona-prompt",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
