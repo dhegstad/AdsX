@@ -410,3 +410,14 @@ Published **three new articles** and expanded the ungated library from 47 to 50 
 Production build, 15 referral tests, 32 internal routes, canonical/schema/media/sitemap checks and three mobile layouts passed. Library search/copy verified. Source checker initially rejected Photoroom because its official domain was missing; registered Photoroom and Privy primary domains and reran successfully. Four IndexNow URLs received HTTP 200; receipt is not an indexing gain. Two November 7 guides and the startup calculator returned indexed status with matching canonicals in spaced inspection. Latest complete GSC reviewed privately; no affiliate revenue inferred.
 
 Privy public commission terms conflict recorded in partner ledger; no app partnership or link enabled. Recent conversion pages kept stable. No new newsletter access result; no campaigns sent. Next: resolve program terms and research distinct signup-to-confirmation reconciliation while preserving the ungated prompt library. No publication shortfall.
+
+
+## November 9 — Shopify AI review workflows and returns correction
+
+Published **three new articles** covering customer segment validation, physical return-reason analysis and Flow run diagnosis. Expanded the ungated prompt library from 50 to 53. [Manifest](publication-2026-11-09-shopify-ai.json). All prompts and numeric examples remain illustrative, not observed merchant results.
+
+Refreshed the existing returns-app comparison after checking its search history: removed the obsolete Returnly recommendation, corrected current Loop/AfterShip pricing, and removed unsupported uplift and setup-time claims. Original date and URL retained. This refresh does not count as a new article.
+
+Build, editorial, 15 affiliate tests, four mobile layouts, search/copy, 34 internal routes and live schema/canonical/media/sitemap checks passed. Five changed URLs received IndexNow receipts; no indexing or ranking result inferred. Reused the newest complete GSC snapshot and recent inspections on a spaced schedule; private metrics remain outside the repository. Existing conversion cohort kept stable.
+
+Loop partner research recorded with publisher eligibility, cost, qualification and commission terms unverified; no app referral link enabled. No new affiliate or newsletter access result; no campaigns sent. Next: verify unresolved return-case handoff requirements and current publisher program terms, while preserving recent articles for measurement. No publication shortfall.
