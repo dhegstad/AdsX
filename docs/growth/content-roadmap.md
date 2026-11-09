@@ -283,3 +283,10 @@ Three new guides and two prompts published; library now 44 prompts. Synonym-spec
 ## November 8 — Forms, image fidelity and Inbox configuration
 
 Three new Shopify merchant workflows published; the ungated prompt library now has 50 entries. See [manifest](publication-2026-11-08-shopify-ai.json). Keep recent conversion pages stable. Next research: a store's newsletter signup-to-confirmation reconciliation workflow (distinct from today's form replacement), and product-image rejection criteria as an expansion of today's guide rather than another replacement article. Source starting points: Shopify Forms creation/shared settings and Shopify media generation docs linked in the new guides. Verify actual sending integration and plan availability before publishing setup claims. Privy program terms conflict recorded in the partner ledger; no owned app referral link enabled.
+
+
+## November 9 — Segment, returns and Flow evidence
+
+Three distinct Shopify AI review guides published; library expanded to 53. Existing returns-app comparison corrected for Returnly closure and current Loop/AfterShip pricing. [Manifest](publication-2026-11-09-shopify-ai.json).
+
+Researched next candidates: an open-return migration handoff checklist, using Loop's official Returnly transition notice as evidence for unresolved-case ownership; a narrow customer-segment date-boundary appendix to the current guide, using Shopify's filter reference. Prefer an appendix for the latter to avoid duplicate intent. Verify live operational capabilities before claiming automatic historical case transfer. Loop publisher program remains unverified; continue approved-link diligence rather than inventing monetization.
