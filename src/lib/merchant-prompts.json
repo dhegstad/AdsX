@@ -575,5 +575,41 @@
     "review": "A prompt is not a guarantee. Test policy exceptions, unsupported promises, discount requests and human handoff.",
     "guide": "/blog/shopify-inbox-ai-persona-prompt",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "segment-review",
+    "title": "Review a customer segment",
+    "category": "Planning",
+    "tool": "Shopify Sidekick / segment editor",
+    "inputs": "Audience definition, cutoff, subscription requirement and synthetic boundary cases",
+    "prompt": "Draft a segment for [audience] with the exact cutoff [boundary]. Include only current marketing subscribers. Define behavior for customers without orders. Explain each filter and missing-value behavior. Return matching and nonmatching cases. Do not send campaigns or change consent.",
+    "output": "A query brief with acceptance cases",
+    "review": "Validate current syntax, actual sample membership and sending eligibility separately.",
+    "guide": "/blog/shopify-sidekick-customer-segment-review",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "return-reason-review",
+    "title": "Analyze physical return reasons",
+    "category": "Planning",
+    "tool": "Approved analysis assistant",
+    "inputs": "Sanitized physical-return table with row IDs, units, reasons and interval",
+    "prompt": "Preserve source reasons and row IDs. Total physical returned units by SKU and reason. Keep unknown reasons separate. Propose three investigative questions with supporting rows and disconfirming evidence. Do not infer intent or calculate rates without a valid denominator.",
+    "output": "Reconciled totals and bounded hypotheses",
+    "review": "Recalculate totals and distinguish physical returns, reversals and refunds.",
+    "guide": "/blog/shopify-ai-return-reason-analysis",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "flow-run-diagnosis",
+    "title": "Diagnose a Flow run",
+    "category": "Planning",
+    "tool": "Shopify Sidekick / Flow editor",
+    "inputs": "Expected behavior, sanitized trigger/branch/action evidence and missing information",
+    "prompt": "Diagnose the first mismatch between expected behavior and this run. Separate facts from possible causes. Propose the smallest change and matching, nonmatching and missing-data test cases. Do not activate or rerun anything. Explain whether repeated actions could have consequences.",
+    "output": "A focused diagnosis and test plan",
+    "review": "Verify the resource, step data and destination result; review repeat effects before retrying.",
+    "guide": "/blog/shopify-sidekick-flow-run-debugging",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
