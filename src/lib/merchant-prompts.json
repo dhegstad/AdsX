@@ -611,5 +611,41 @@
     "review": "Verify the resource, step data and destination result; review repeat effects before retrying.",
     "guide": "/blog/shopify-sidekick-flow-run-debugging",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "native-filter-brief",
+    "title": "Plan native collection filters",
+    "category": "App replacements",
+    "tool": "General assistant",
+    "inputs": "Verified catalog fields, representative values and shopping tasks",
+    "prompt": "Map each customer question to an existing catalog field, display label and test case. Flag missing facts and excessive values. Propose spelling merges without losing original values. Do not infer product facts, edit products or publish changes.",
+    "output": "A field map and storefront test cases",
+    "review": "Check technical distinctions, actual theme support and known-product results.",
+    "guide": "/blog/shopify-native-filters-boost-ai-replacement",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "fixed-bundle-brief",
+    "title": "Evaluate a fixed bundle replacement",
+    "category": "App replacements",
+    "tool": "General assistant",
+    "inputs": "Exact component variants, quantities, choices and operational requirements",
+    "prompt": "Classify this offer as fixed, multipack or mix-and-match. List component variants and quantities. Flag subscriptions and custom items. Separate presentation from inventory, checkout and fulfillment. Draft available, scarce-component and partial-return test cases. Do not modify the store.",
+    "output": "An offer specification and acceptance brief",
+    "review": "Verify native compatibility, component settings and actual total costs before canceling an app.",
+    "guide": "/blog/shopify-fixed-bundle-bundler-ai-brief",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "review-theme-analysis",
+    "title": "Find themes in product reviews",
+    "category": "App replacements",
+    "tool": "Approved analysis assistant",
+    "inputs": "Sanitized review IDs, product, rating, date and source text",
+    "prompt": "Preserve review IDs and original text. Assign zero or more themes; retain positive, negative and contradictory evidence. Count distinct reviews per theme and state the sample size. Leave unclear comments unclassified. Suggest questions, not causes or invented testimonials. Do not change ratings, verification or publication status.",
+    "output": "Traceable themes and investigative questions",
+    "review": "Read supporting rows, check negation and overlapping counts, and retain the original source.",
+    "guide": "/blog/shopify-ai-product-review-theme-analysis",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
