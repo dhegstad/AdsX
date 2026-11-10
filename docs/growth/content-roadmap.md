@@ -290,3 +290,10 @@ Three new Shopify merchant workflows published; the ungated prompt library now h
 Three distinct Shopify AI review guides published; library expanded to 53. Existing returns-app comparison corrected for Returnly closure and current Loop/AfterShip pricing. [Manifest](publication-2026-11-09-shopify-ai.json).
 
 Researched next candidates: an open-return migration handoff checklist, using Loop's official Returnly transition notice as evidence for unresolved-case ownership; a narrow customer-segment date-boundary appendix to the current guide, using Shopify's filter reference. Prefer an appendix for the latter to avoid duplicate intent. Verify live operational capabilities before claiming automatic historical case transfer. Loop publisher program remains unverified; continue approved-link diligence rather than inventing monetization.
+
+
+## November 10 — Filters, fixed bundles and review evidence
+
+Published three distinct app-function guides; merchant library now 56 prompts. [Manifest](publication-2026-11-10-shopify-ai.json). Native-filter evaluation is distinct from zero-result search diagnosis; fixed-kit replacement is distinct from ongoing bundle price maintenance; review-theme analysis is distinct from review-app selection and FAQ drafting.
+
+Researched follow-ups: filter-value grouping should extend today's guide after actual catalog evidence; bundle component/order handoff should extend the existing operational checklist rather than duplicate the replacement article. Judge.me review-export completeness is a potential migration checklist angle; official export documentation records file limits and excluded fields. Confirm data mapping before proposing automatic transfer. Boost free partner program is a concrete monetization candidate; await account steps and issued link. Recheck the free-trial landing page's indexing on the spaced schedule before changing content or URL.

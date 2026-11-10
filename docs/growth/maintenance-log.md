@@ -421,3 +421,14 @@ Refreshed the existing returns-app comparison after checking its search history:
 Build, editorial, 15 affiliate tests, four mobile layouts, search/copy, 34 internal routes and live schema/canonical/media/sitemap checks passed. Five changed URLs received IndexNow receipts; no indexing or ranking result inferred. Reused the newest complete GSC snapshot and recent inspections on a spaced schedule; private metrics remain outside the repository. Existing conversion cohort kept stable.
 
 Loop partner research recorded with publisher eligibility, cost, qualification and commission terms unverified; no app referral link enabled. No new affiliate or newsletter access result; no campaigns sent. Next: verify unresolved return-case handoff requirements and current publisher program terms, while preserving recent articles for measurement. No publication shortfall.
+
+
+## November 10 — Native app functions and review analysis
+
+Published **three new articles**: native filter evaluation, fixed-kit bundle replacement and product-review theme analysis. Expanded the ungated library from 53 to 56 prompts. [Manifest](publication-2026-11-10-shopify-ai.json). Current listings, free-tier alternatives and hypothetical labor costs separate avoided charges from net savings. No merchant execution claimed.
+
+Build, editorial, 15 affiliate tests, media/mobile, prompt search/copy and live canonical/schema/sitemap checks passed, including 34 internal routes. Judge.me official help domain added to the source checker. Four changed URLs received IndexNow receipts; no indexing or ranking inference. Recent conversion pages and yesterday's corrected returns comparison kept stable.
+
+Fresh complete GSC snapshot and spaced inspections reviewed privately. Forms and return-analysis pages indexed; free-trial landing page reported unknown despite HTTP 200, self canonical, index/follow and sitemap inclusion. No technical blocker established; recheck before changing the URL or copy.
+
+Boost free affiliate program researched and recorded: public 20% recurring offer, paid-customer eligibility, discount exclusions and payout thresholds. Dennis must complete enrollment/account steps before an owned link and reporting can be verified. No application, outreach, app affiliate activation or commissions claimed. Newsletter access unchanged; no campaigns sent. Next: follow indexing and partner enrollment, expand existing filter/bundle guides only when new implementation evidence warrants it. No publication shortfall.
