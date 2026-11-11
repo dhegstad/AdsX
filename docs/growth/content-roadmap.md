@@ -319,3 +319,5 @@ During the daily publication runs, review progress weekly. Compare rolling 28-da
 First publish the product-care block tutorial, supplier sample decision and swatch comparison already scoped above. Link each from its established parent guide where it answers the reader's next question. In parallel, prioritize the existing post-purchase survey comparison for the Fairing versus KnoCommerce decision. Verify current pricing, attribution question handling and integrations from both vendors before editing. The beginner Liquid guide is next for the learn-Liquid query family. Add a first exercise with an expected preview result and connect it to the Claude Code build tutorial. Reassess each refresh after 28 complete post-release days. Use new guides for distinct merchant tasks.
 
 November 11 progress. The Fairing and KnoCommerce refresh and product-care tutorial are live. The supplier sample decision and paid swatch comparison remain queued. Review the survey page after 28 complete post-refresh days.
+
+November 11 follow-up. The supplier sample decision is published and linked from trending products. The paid color-swatch comparison remains queued.
