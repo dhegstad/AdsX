@@ -647,5 +647,41 @@
     "review": "Read supporting rows, check negation and overlapping counts, and retain the original source.",
     "guide": "/blog/shopify-ai-product-review-theme-analysis",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "judge-me-export-migration-audit",
+    "title": "Before You Switch Review Apps, Audit Your Judge.me Export",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Anonymized status counts, product keys and destination fields",
+    "prompt": "Given only anonymized row labels, product keys, moderation states and destination field names, reconcile counts by state. Flag unmatched products, ambiguous mappings and statuses the destination cannot represent. Preserve archived rows separately. Do not infer verification or produce an upload file.",
+    "output": "Reconcile the review count, moderation status and product mapping before you let a new widget display customer reviews.",
+    "review": "Before disconnecting the old app, compare the destination preview against one published, hidden, pending and archived example. Confirm that reply text stays attached to the right review and media remains available. Strip emails, IP addresses and customer details from the AI working copy. A failed status check is a reason to hold the import even if the total number of rows matches.",
+    "guide": "/blog/judge-me-export-migration-audit",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-barcode-collision-audit",
+    "title": "Why a Shopify Barcode Scan Finds Two Variants",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Barcode strings, variant IDs and SKUs",
+    "prompt": "Group these sanitized barcode strings by exact value. Retain leading zeros. List distinct variant IDs and SKUs for each string. Separate repeated rows from codes shared by different variants. Do not generate replacement identifiers. Return only conflicts and the evidence needed to resolve each.",
+    "output": "Trace a duplicate scan to the physical product and variant before changing a barcode or paying for catalog cleanup.",
+    "review": "Use a test cart to scan each affected item after an authorized correction. Confirm the selected size and color, then remove the test items without completing a sale. A one-time worksheet can replace an occasional duplicate report. It cannot monitor supplier feeds. If an app also runs continuous alerts, include the cost of repeating the check before dropping it.",
+    "guide": "/blog/shopify-barcode-collision-audit",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-order-edit-balance-check",
+    "title": "After a Shopify Order Edit, Who Owes Whom?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Fictional totals, amount paid and fulfillment state",
+    "prompt": "Using these fictional order totals, paid amount, fulfillment state and requested swap, calculate the difference and identify who owes whom. List assumptions about shipping, tax and discounts. Flag missing inputs and separate payment actions from warehouse instructions. Do not edit an order, issue a refund or contact the buyer.",
+    "output": "Review a requested swap, check shipping and discounts, and distinguish an updated order total from money collected or refunded.",
+    "review": "A useful acceptance test includes an increase, a decrease and an even exchange. For each, verify the exact variant the warehouse sees and the payment status the agent sees. A staff checklist can cover low-volume requests. If you pay an app for buyer self-service or to synchronize warehouse changes, this manual workflow leaves those jobs with staff. At eight edits a week and five extra minutes each, that is roughly 35 hours per year before exception handling.",
+    "guide": "/blog/shopify-order-edit-balance-check",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
