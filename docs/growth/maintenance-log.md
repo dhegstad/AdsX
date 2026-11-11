@@ -432,3 +432,7 @@ Build, editorial, 15 affiliate tests, media/mobile, prompt search/copy and live 
 Fresh complete GSC snapshot and spaced inspections reviewed privately. Forms and return-analysis pages indexed; free-trial landing page reported unknown despite HTTP 200, self canonical, index/follow and sitemap inclusion. No technical blocker established; recheck before changing the URL or copy.
 
 Boost free affiliate program researched and recorded: public 20% recurring offer, paid-customer eligibility, discount exclusions and payout thresholds. Dennis must complete enrollment/account steps before an owned link and reporting can be verified. No application, outreach, app affiliate activation or commissions claimed. Newsletter access unchanged; no campaigns sent. Next: follow indexing and partner enrollment, expand existing filter/bundle guides only when new implementation evidence warrants it. No publication shortfall.
+
+## November 11 — Review exports, barcode conflicts and order edits
+
+Published three guides and expanded the ungated library to 59 prompts. [Release evidence](publication-2026-11-11-shopify-ai.json). Production build, editorial, both affiliate suites, three mobile layouts and live route checks passed. Two spaced Search Console inspections reported indexed. Used the latest available completed private snapshot. No attributed revenue or new subscriber result established.
