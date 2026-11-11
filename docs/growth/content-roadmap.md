@@ -301,3 +301,11 @@ Researched follow-ups: filter-value grouping should extend today's guide after a
 ## November 11 — Operations and merchant prompts
 
 Published the Judge.me export audit, POS barcode collision workflow and order edit balance review. Next candidate: evaluate one-way versus two-way rewards using the [Judge.me referral widget documentation](https://judge.me/help/en/articles/15192144-setting-up-referrals-with-widgets-and-emails). Model margin per redeemed reward and distinguish discount usage from referral shares. Check overlap with existing loyalty guides first.
+
+## Next publishing batch after November 11
+
+1. Build a product care block in a duplicate Shopify theme with Claude Code. Give merchants a single prompt, a missing-metafield fallback, mobile checks and rollback steps. Link from the existing Liquid build guide.
+2. Decide whether to order a supplier sample before launching a trending product. Use a worked landed-cost and break-even example. Link from the existing trending-products guide and cost calculator.
+3. Evaluate a paid color-swatch app against the merchant's theme. Check variant availability, accessible labels and maintenance cost before cancellation. Connect to the app selection path and the ungated prompt library.
+
+Verify native support, current app listing and pricing, and overlap before writing. Judge.me referral reward economics moves to reserve. Keep performance figures in the private reporting directory.
