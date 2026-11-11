@@ -5,7 +5,7 @@ excerpt: >-
   checkout behavior. Includes a fee worksheet and current PayPal integration
   differences.
 date: '2026-03-12'
-updated: '2026-09-16'
+updated: '2026-11-11'
 category: Guide
 tags:
   - Shopify
@@ -34,6 +34,14 @@ The practical default is to evaluate Shopify Payments where eligible and conside
 
 Shopify's [provider documentation](https://help.shopify.com/en/manual/payments/third-party-providers) distinguishes direct providers from providers that send customers to an external checkout. That difference belongs in your checkout test, alongside cost.
 
+## Shopify Payments vs. PayPal: can you offer both?
+
+For a US merchant deciding whether to add a PayPal button, the first question is how the wallet settles. An eligible store can offer card payments and PayPal Wallet through Shopify Payments. A buyer choosing PayPal at checkout does not necessarily mean the merchant has a second gateway to reconcile. Check the payment method on the order and match its net amount to the payout record for your integration.
+
+## Can you use standalone Stripe instead?
+
+In a Shopify Payments country, Shopify does not list standalone Stripe as a separate gateway. That also applies when your particular business is ineligible for Shopify Payments. Elsewhere, check the provider list for your store country before comparing Stripe rates. An existing Stripe account alone does not establish checkout availability. See [Shopify’s gateway availability rules](https://help.shopify.com/en/manual/payments/third-party-providers/payment-gateway-availability).
+
 ## PayPal setup depends on location
 
 The [PayPal Express Checkout documentation](https://help.shopify.com/en/manual/payments/paypal) currently says Express Checkout is unavailable to merchants in the United States and France; merchants there can offer PayPal Wallet through Shopify Payments. Other locations can have a different setup.
@@ -55,6 +63,10 @@ Record these inputs from your live agreements. Keep payment types separate when 
 Under the example assumptions, processing costs $150 plus $30, or $180. A separately applicable 2% platform fee adds $100. The resulting $280 is not a quote for Stripe, PayPal, or Shopify Payments; it demonstrates why comparing only the processing percentage can miss a material expense.
 
 Shopify documents exclusions from third-party transaction fees for PayPal and manual payments when Shopify Payments is activated. That does not mean PayPal itself is free, or that every third-party provider receives the same exclusion. Confirm how your particular integration is billed.
+
+## Compare currencies on one order
+
+Suppose a French store presents a USD price and receives EUR payouts. Record the amount the buyer paid, the settlement currency, the exchange rate applied and the net deposit. Compare like transactions across providers. A lower card rate can still produce a smaller deposit after conversion. Check [Shopify’s payout currencies](https://help.shopify.com/en/manual/payments/shopify-payments/store-currency/supported-payout-currencies) and the terms of your PayPal integration before modeling international sales.
 
 ## Compare payment flow as well as price
 

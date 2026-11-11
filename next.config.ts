@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
     // are URLs that still earn human clicks, each pointed at a live post on the
     // same intent (see KILLED SECTION SURVIVORS).
     return [
+      {
+        source: "/blog/shopify-basic-vs-shopify-vs-advanced-comparison",
+        destination: "/blog/shopify-basic-vs-shopify-vs-advanced-analytics",
+        permanent: true,
+      },
       // Slug change (2026-08-01): the 1MBB post was retitled/reslugged for
       // plain-language CTR. 308-redirect the old URL so ranking equity carries over.
       {
