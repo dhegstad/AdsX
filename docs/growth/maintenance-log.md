@@ -436,3 +436,5 @@ Boost free affiliate program researched and recorded: public 20% recurring offer
 ## November 11 — Review exports, barcode conflicts and order edits
 
 Published three guides and expanded the ungated library to 59 prompts. [Release evidence](publication-2026-11-11-shopify-ai.json). Production build, editorial, both affiliate suites, three mobile layouts and live route checks passed. Two spaced Search Console inspections reported indexed. Used the latest available completed private snapshot. No attributed revenue or new subscriber result established.
+
+November 11 follow-up. Refreshed the post-purchase survey comparison and published one additional article on a product-care block. Both parent guides link to it. Four new articles published across today’s two releases. [Follow-up manifest](publication-2026-11-11-survey-and-care.json).
