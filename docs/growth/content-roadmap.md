@@ -309,3 +309,11 @@ Published the Judge.me export audit, POS barcode collision workflow and order ed
 3. Evaluate a paid color-swatch app against the merchant's theme. Check variant availability, accessible labels and maintenance cost before cancellation. Connect to the app selection path and the ungated prompt library.
 
 Verify native support, current app listing and pricing, and overlap before writing. Judge.me referral reward economics moves to reserve. Keep performance figures in the private reporting directory.
+
+## November 11 traffic objective
+
+Dennis set a tenfold website traffic objective. Measure all-channel sessions over comparable complete 28-day windows once the AdsX analytics property is accessible. Use finalized Google Search Console web clicks as the immediate organic measure. Keep dated baselines and exact traffic figures in private reporting. The objective has no specified deadline.
+
+During the daily publication runs, review progress weekly. Compare rolling 28-day clicks with the fixed November baseline and the preceding window. Record clicks from new guides, gains or losses on existing pages, and which landing pages drove the change. Report confirmed subscribers and qualifying referrals when observable.
+
+First publish the product-care block tutorial, supplier sample decision and swatch comparison already scoped above. Link each from its established parent guide where it answers the reader's next question. In parallel, prioritize the existing post-purchase survey comparison for the Fairing versus KnoCommerce decision. Verify current pricing, attribution question handling and integrations from both vendors before editing. The beginner Liquid guide is next for the learn-Liquid query family. Add a first exercise with an expected preview result and connect it to the Claude Code build tutorial. Reassess each refresh after 28 complete post-release days. Use new guides for distinct merchant tasks.
