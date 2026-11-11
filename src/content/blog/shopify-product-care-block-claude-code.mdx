@@ -31,7 +31,7 @@ Paste this into the Custom liquid field. The heading belongs inside the conditio
 
 ```liquid
 {%- assign care = product.metafields.custom.care_instructions.value | strip -%}
-{%- if care != blank -%}
+{%- if care != '' -%}
   <div class="product-care">
     <h2>Product care</h2>
     <p>{{ care | escape | newline_to_br }}</p>
