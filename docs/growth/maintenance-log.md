@@ -440,3 +440,7 @@ Published three guides and expanded the ungated library to 59 prompts. [Release 
 November 11 follow-up. Refreshed the post-purchase survey comparison and published one additional article on a product-care block. Both parent guides link to it. Four new articles published across today’s two releases. [Follow-up manifest](publication-2026-11-11-survey-and-care.json).
 
 November 11 supplier sample follow-up. Published one additional guide, bringing the day's total to five new articles across three releases. [Release record](publication-2026-11-11-supplier-sample.json).
+
+## November 12 — Swatches, pack prices and referral rewards
+
+Published three new illustrated guides and added three prompts to the ungated library (62 total). Linked the swatch comparison from the physical-store app guide. Restored recognition of the supplier sample guide’s official Trade.gov source in editorial validation. Build, both affiliate suites, mobile layouts, clipboard, sitemap and live routes passed. IndexNow receipt and verified URLs are in the [release record](publication-2026-11-12-shopify-ai.json). Two spaced inspections returned indexed. No new attributable revenue or subscriber result established.
