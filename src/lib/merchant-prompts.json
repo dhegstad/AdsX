@@ -683,5 +683,41 @@
     "review": "A useful acceptance test includes an increase, a decrease and an even exchange. For each, verify the exact variant the warehouse sees and the payment status the agent sees. A staff checklist can cover low-volume requests. If you pay an app for buyer self-service or to synchronize warehouse changes, this manual workflow leaves those jobs with staff. At eight edits a week and five extra minutes each, that is roughly 35 hours per year before exception handling.",
     "guide": "/blog/shopify-order-edit-balance-check",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-native-swatches-vs-color-swatch-king",
+    "title": "Shopify Color Swatches: When Can You Drop the Paid App?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Choose Sand / Small and the merchant inputs listed in the guide",
+    "prompt": "Using this list of swatch placements, variant examples, staff rate and app invoice, build a keep-or-cancel worksheet. Give each placement a keyboard, sold-out and cart check. Calculate first-year savings after setup and recurring upkeep. Mark missing inputs unknown.",
+    "output": "Compare a native variant picker with Color Swatch King before the next renewal.",
+    "review": "Check the buying path for one representative shirt.",
+    "guide": "/blog/shopify-native-swatches-vs-color-swatch-king",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-unit-price-pack-size-audit",
+    "title": "Audit Shopify Unit Prices Before a Multipack Promotion",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$9 / 250 g and the merchant inputs listed in the guide",
+    "prompt": "Using these fictional SKU, pack count, net contents, unit and price rows, normalize comparable packs to grams and calculate price per kilogram. Show each denominator. Flag missing quantities and mixed gift boxes for human review. Never infer a net weight from shipping weight.",
+    "output": "Catch a pack-size denominator error before it makes a six-pack look more expensive than a single bag.",
+    "review": "The denominator is the contents sold in one purchase.",
+    "guide": "/blog/shopify-unit-price-pack-size-audit",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "judge-me-one-way-two-way-referral-cost",
+    "title": "Judge.me Referrals: What Does a Two-Sided Reward Cost?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$50 less $5 discount and the merchant inputs listed in the guide",
+    "prompt": "Compare one-way and two-way offers using these fictional basket, variable cost, friend discount, advocate discount and redemption inputs. Show incremental contribution per additional order and the break-even order count. Flag refund lag, fixed costs and repeat orders that might have happened anyway.",
+    "output": "Model a friend discount, an advocate reward and the repeat purchases needed to cover the difference.",
+    "review": "Illustrative cohort. Repeat-order contribution depends on incrementality.",
+    "guide": "/blog/judge-me-one-way-two-way-referral-cost",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]

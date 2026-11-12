@@ -1,0 +1,40 @@
+---
+title: "Audit Shopify Unit Prices Before a Multipack Promotion"
+excerpt: "Catch a pack-size denominator error before it makes a six-pack look more expensive than a single bag."
+date: "2026-11-12"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-unit-price-pack-size-audit.png"
+imageAlt: "Single bag — $9 / 250 g — $36 per kg. Six bags — $45 / 1,500 g — $30 per kg. Wrong quantity — $45 / 250 g — $180 per kg"
+---
+
+A shopper comparing coffee sees a 250 g bag for $9 and a six-pack for $45. The six-pack should look cheaper per kilogram. If someone copied the single bag’s net quantity to the pack variant, the storefront can tell the opposite story.
+
+![Single bag — $9 / 250 g — $36 per kg. Six bags — $45 / 1,500 g — $30 per kg. Wrong quantity — $45 / 250 g — $180 per kg](/images/editorial/shopify-unit-price-pack-size-audit.png)
+
+*Original AdsX illustration.*
+
+## Build a comparison from the label
+
+Use the net contents printed on the pack, its selling price, and one comparison unit for the family. Exclude the shipping carton. Multiply the number of bags by the contents of each bag. Six times 250 g gives 1,500 g. Divide $45 by 1.5 kg to get $30/kg. The single costs $36/kg, so the pack saves $6 per kilogram. Entering 250 g on the pack instead yields $180/kg. Changing a decimal display setting cannot repair that error.
+
+Shopify calculates the display from product price, total amount and base measure. Available units depend on the store’s unit-system setting. Shopify also documents that the unit type is shared across markets. Confirm the pack and single use a common base before comparing their displayed prices. [Shopify unit pricing](https://help.shopify.com/en/manual/products/details/product-pricing/unit-pricing)
+
+## Check the sale in a storefront preview
+
+Write a three-column record for each variant showing shelf label, expected unit price and displayed unit price. Preview both variants, including the collection tile customers first see. If a tile shows only a starting price, open the product and confirm which variant that price buys. Look for custom theme text that stays fixed as the selected variant changes.
+
+For a $39 pack promotion entered in the Price field, the same contents yield $26/kg. Check the active selling price used for the calculation. A crossed-out compare-at price or a discount applied later in checkout is a different input. Confirm what the shopper sees at each step before describing savings in an ad. [Shopify product pricing fields](https://help.shopify.com/en/manual/products/details/product-pricing)
+
+Give ambiguous packs their own exception list. A gift box containing both coffee and a mug needs a merchandising decision before anyone assigns the entire price to the weight of the coffee. An AI worksheet can flag that case while leaving the product record untouched.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Using these fictional SKU, pack count, net contents, unit and price rows, normalize comparable packs to grams and calculate price per kilogram. Show each denominator. Flag missing quantities and mixed gift boxes for human review. Never infer a net weight from shipping weight.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Should You Order a Supplier Sample? A Shopify Landed-Cost Example](/blog/shopify-supplier-sample-landed-cost).
