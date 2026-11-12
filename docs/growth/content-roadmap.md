@@ -321,3 +321,7 @@ First publish the product-care block tutorial, supplier sample decision and swat
 November 11 progress. The Fairing and KnoCommerce refresh and product-care tutorial are live. The supplier sample decision and paid swatch comparison remain queued. Review the survey page after 28 complete post-refresh days.
 
 November 11 follow-up. The supplier sample decision is published and linked from trending products. The paid color-swatch comparison remains queued.
+
+## November 12 progress
+
+Published the native swatch comparison, unit price pack-size audit and Judge.me referral reward economics. Next prioritize the beginner Liquid exercise and compare its complete post-change search window. For the next new guide, research when a collection’s color filter loses patterned swatches after theme changes, using the [Shopify filter display requirements](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-filters). Limit scope to filter-value presentation and check overlap with the existing native filter comparison before drafting.
