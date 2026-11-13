@@ -444,3 +444,7 @@ November 11 supplier sample follow-up. Published one additional guide, bringing 
 ## November 12 — Swatches, pack prices and referral rewards
 
 Published three new illustrated guides and added three prompts to the ungated library (62 total). Linked the swatch comparison from the physical-store app guide. Restored recognition of the supplier sample guide’s official Trade.gov source in editorial validation. Build, both affiliate suites, mobile layouts, clipboard, sitemap and live routes passed. IndexNow receipt and verified URLs are in the [release record](publication-2026-11-12-shopify-ai.json). Two spaced inspections returned indexed. No new attributable revenue or subscriber result established.
+
+## November 13 — Collection filters, download updates and inventory holds
+
+Published three illustrated guides, expanded the prompt library to 65, and refreshed the beginner Liquid tutorial with a product preview exercise. Production verification, mobile layouts, clipboard, editorial and affiliate suites passed. IndexNow acknowledged the five changed pages. Two Search Console inspections returned indexed. See the [release record](publication-2026-11-13-shopify-ai.json).

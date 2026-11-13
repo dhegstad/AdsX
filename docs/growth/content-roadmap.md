@@ -325,3 +325,7 @@ November 11 follow-up. The supplier sample decision is published and linked from
 ## November 12 progress
 
 Published the native swatch comparison, unit price pack-size audit and Judge.me referral reward economics. Next prioritize the beginner Liquid exercise and compare its complete post-change search window. For the next new guide, research when a collection’s color filter loses patterned swatches after theme changes, using the [Shopify filter display requirements](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-filters). Limit scope to filter-value presentation and check overlap with the existing native filter comparison before drafting.
+
+## November 13 progress
+
+The collection filter diagnostic and the beginner Liquid exercise are live. Compare the Liquid tutorial and its learn-Liquid query family across 28 complete days after the refresh. Next candidate: audit access limits after a digital bundle update, using the [Shopify delivery documentation](https://help.shopify.com/en/manual/products/digital-service-product/digital-downloads). Publish separately only if the decision concerns access limits across several assets. Reserve: follow an inventory adjustment through its history when a warehouse sync overwrites a manual count, using [Shopify inventory adjustments](https://help.shopify.com/en/manual/products/inventory/managing-inventory-quantities/track_inventory).
