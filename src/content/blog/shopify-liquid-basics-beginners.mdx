@@ -1,8 +1,8 @@
 ---
-title: "Shopify Liquid Basics: Beginner's Guide (No Coding)"
-excerpt: "Learn Shopify Liquid basics from scratch: objects, tags, and filters explained simply, with real examples to customize your theme without a developer."
+title: "Learn Shopify Liquid: A Beginner Tutorial with a Theme Preview"
+excerpt: "Display a product title in a theme preview, then learn how Liquid objects, tags and filters work with examples you can change."
 date: "2026-02-21"
-updated: "2026-02-21"
+updated: "2026-11-13"
 category: "Guide"
 tags: ["Shopify","Liquid","Theme Development"]
 author:
@@ -22,11 +22,17 @@ faqs:
     answer: "You edit Liquid code in Shopify's theme editor by going to Online Store > Themes > Actions > Edit Code. This opens a code editor where you can modify template files (.liquid), create snippets, and edit your theme's structure. You can also use Shopify CLI for local development, which offers a better coding experience for more extensive customizations."
 ---
 
-If you're running a [Shopify store](https://shopify.pxf.io/c/6318547/3797171/13624), you've probably encountered situations where your theme's built-in settings don't quite do what you need. Maybe you want to display a custom message based on cart value, show different content for specific products, or create unique layouts that your theme doesn't support.
+## Your first exercise: display the current product title
 
-This is where Liquid comes in. Liquid is Shopify's templating language, and understanding it unlocks the ability to customize virtually every aspect of your store's frontend.
+Duplicate your theme and open the duplicate in the theme editor. Choose a product template and select a product you recognize in the preview. If your theme offers a **Custom liquid** block or section there, add one and enter this line:
 
-This comprehensive guide will teach you Liquid fundamentals from the ground up. By the end, you'll understand how Liquid works, recognize its core components, and be able to make common customizations yourself.
+```liquid
+<p>Currently viewing: {{ product.title | escape }}</p>
+```
+
+For a product named Canvas Tote, expect **Currently viewing: Canvas Tote**. Switch the preview to another product. The words “Currently viewing” stay the same and the title changes. You have just read a property of the product object and passed it through a filter. The escape filter handles characters such as an ampersand when placing the title in HTML. [Shopify product object](https://shopify.dev/docs/api/liquid/objects/product) · [Escape filter](https://shopify.dev/docs/api/liquid/filters/escape)
+
+If only the prefix appears, check that the preview is showing a product. If you see the braces themselves, check whether you pasted the line into a rich-text field. Remove the practice block when finished. For a theme without a Custom liquid setting, use the [Claude Code and Shopify theme guide](/blog/claude-code-shopify-theme-liquid-build-guide) for a local preview workflow.
 
 ## What Is Shopify Liquid?
 
