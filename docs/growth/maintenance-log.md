@@ -448,3 +448,7 @@ Published three new illustrated guides and added three prompts to the ungated li
 ## November 13 — Collection filters, download updates and inventory holds
 
 Published three illustrated guides, expanded the prompt library to 65, and refreshed the beginner Liquid tutorial with a product preview exercise. Production verification, mobile layouts, clipboard, editorial and affiliate suites passed. IndexNow acknowledged the five changed pages. Two Search Console inspections returned indexed. See the [release record](publication-2026-11-13-shopify-ai.json).
+
+## November 14 — Access limits, adjustment history and sale prices
+
+Published three new illustrated guides and expanded the ungated library to 68 prompts. Linked the download-limit guide from the digital store app guide. Mobile, clipboard, build, editorial, affiliate and live checks passed. IndexNow acknowledged four URLs. Both spaced URL inspections returned indexed. [Release evidence](publication-2026-11-14-shopify-ai.json).

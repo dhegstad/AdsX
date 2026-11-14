@@ -329,3 +329,7 @@ Published the native swatch comparison, unit price pack-size audit and Judge.me 
 ## November 13 progress
 
 The collection filter diagnostic and the beginner Liquid exercise are live. Compare the Liquid tutorial and its learn-Liquid query family across 28 complete days after the refresh. Next candidate: audit access limits after a digital bundle update, using the [Shopify delivery documentation](https://help.shopify.com/en/manual/products/digital-service-product/digital-downloads). Publish separately only if the decision concerns access limits across several assets. Reserve: follow an inventory adjustment through its history when a warehouse sync overwrites a manual count, using [Shopify inventory adjustments](https://help.shopify.com/en/manual/products/inventory/managing-inventory-quantities/track_inventory).
+
+## November 14 progress
+
+Published the access-limit and inventory history backlog items plus the variant sale display diagnosis. Next investigate how a buyer can distinguish an active checkout discount from membership in a sale collection. Check overlap with the existing combination matrix and collection card guide. Sources include [collection conditions](https://help.shopify.com/en/manual/products/collections/conditions) and [discount eligibility](https://help.shopify.com/en/manual/discounts/discounts-faq). Reserve a distinct report-reading exercise on selecting cycle-count candidates from [inventory reports](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/inventory-reports).
