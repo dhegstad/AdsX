@@ -755,5 +755,41 @@
     "review": "An incoming carton belongs on a separate line until received.",
     "guide": "/blog/shopify-inventory-quality-hold-reconciliation",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-digital-bundle-access-limit",
+    "title": "Before You Limit Downloads on a Shopify Digital Bundle",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Save a local copy and the merchant inputs listed in the guide",
+    "prompt": "Given fictional variant, asset type, purchase promise, access limit and order date, draft a test matrix for an old and a new receipt. Include repeated button selections and local file use. Mark counter sharing unknown until observed. Exclude real receipt URLs.",
+    "output": "Check earlier purchases, linked content and support access before changing a digital variant’s download allowance.",
+    "review": "Inventory each asset before changing the variant allowance.",
+    "guide": "/blog/shopify-digital-bundle-access-limit",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-inventory-adjustment-keeps-reverting",
+    "title": "Why Does My Shopify Inventory Count Keep Changing Back?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Warehouse feed and the merchant inputs listed in the guide",
+    "prompt": "Sort these anonymized inventory events by time for each variant, location and state. Find opposing adjustments, show the arithmetic and name the evidence needed to distinguish a stale sync from a real receipt. Preserve unknown actors. Do not change stock.",
+    "output": "Use the adjustment history to trace a correction that disappears after a warehouse sync.",
+    "review": "Fictional timeline for one variant, location and inventory state.",
+    "guide": "/blog/shopify-inventory-adjustment-keeps-reverting",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-sale-price-missing-collection-card",
+    "title": "Shopify Sale Price Missing on the Collection Card? Check Each Variant",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Price $18 and the merchant inputs listed in the guide",
+    "prompt": "Review fictional rows of variant, price, compare-at and intended sale scope. Preserve blank versus zero. Flag conflicts, propose truthful card copy and list card-to-cart checks. Do not invent original prices or apply updates.",
+    "output": "Diagnose a sale price that appears on a product page but disappears in a collection before paying for a badge app.",
+    "review": "A variant-specific sale can make a product-wide promise inaccurate.",
+    "guide": "/blog/shopify-sale-price-missing-collection-card",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
