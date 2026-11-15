@@ -1,0 +1,38 @@
+---
+title: "Audit a Shopify Sale Collection Before Sharing the Discount Code"
+excerpt: "Use an AI worksheet to compare the advertised collection, the intended offer and the discount that actually applies at checkout."
+date: "2026-11-15"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-sale-collection-discount-scope-ai.png"
+imageAlt: "Linen shirt — $50 eligible — $40 expected. Canvas cap — $25 advertised — $20 expected. Gift pouch — $10 excluded — $10 expected"
+---
+
+Your sale collection contains a linen shirt and a cap. An email promises 20% off either item with WEEKEND. Someone adds the cap, enters the code and sees full price. The merchandising team and the person who built the code need one shared list of what the promise covers.
+
+![Linen shirt — $50 eligible — $40 expected. Canvas cap — $25 advertised — $20 expected. Gift pouch — $10 excluded — $10 expected](/images/editorial/shopify-sale-collection-discount-scope-ai.png)
+
+*Original AdsX illustration.*
+
+## Freeze the promise before testing the cart
+
+Copy the exact campaign sentence, its dates, minimum spend and customer restrictions. Record which products or variants the promotion owner intended to include. Capture the items visible in the collection at the same time. A collection determines what someone can browse. An amount-off discount has its own scope and eligibility settings. If you build a smart collection using conditions, include the relevant condition in your evidence. [Shopify collection conditions](https://help.shopify.com/en/manual/products/collections/conditions) · [Shopify amount-off discount settings](https://help.shopify.com/en/manual/discounts/discount-types/percentage-fixed-amount)
+
+For a pre-tax illustration, put one $50 shirt, one $25 cap and one excluded $10 pouch into a cart. The intended reduction is $15, giving a $70 subtotal. If checkout shows $75, inspect the line discounts. A $10 reduction on the shirt and zero on the cap explains the five-dollar gap. The subtotal alone cannot identify the offending line.
+
+## Ask AI to find disagreements in three lists
+
+Supply a campaign list, a collection snapshot and your transcription of the code settings. Use variant IDs and retain the product ID for grouping. Ask for each advertised item that lacks an eligibility match, each eligible item outside the advertised range, and any row with unknown eligibility. If a rule depends on customer status, dates or minimum quantity, supply that condition explicitly. Use an ordinary test customer that matches the campaign audience.
+
+Before changing the code, ask the promotion owner whether the cap should receive the discount. If yes, correct the discount scope and check the cap alone and in the mixed cart. If the cap was included in error, fix the collection or narrow the promise. Check a full-price control item in either case. Save the expected and observed line totals so support can distinguish a scope issue from a customer who entered a different code.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Compare campaign promises, collection membership and configured discount eligibility by variant ID. Flag missing and extra items and unknown customer restrictions. For each test cart calculate the expected line discounts and subtotal before tax. Require a human checkout observation before marking a case passed.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Shopify Discount Combinations: Test the Cart Before Launch](/blog/shopify-discount-combinations-test-matrix).
