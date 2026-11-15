@@ -452,3 +452,7 @@ Published three illustrated guides, expanded the prompt library to 65, and refre
 ## November 14 — Access limits, adjustment history and sale prices
 
 Published three new illustrated guides and expanded the ungated library to 68 prompts. Linked the download-limit guide from the digital store app guide. Mobile, clipboard, build, editorial, affiliate and live checks passed. IndexNow acknowledged four URLs. Both spaced URL inspections returned indexed. [Release evidence](publication-2026-11-14-shopify-ai.json).
+
+## November 15 — Shopify merchant AI guides
+
+Published three illustrated guides on inventory count selection, sale eligibility and missing cost coverage. Added three prompts for 71 total. Editorial, affiliate, build, mobile and clipboard checks passed. IndexNow acknowledged four URLs after live verification. [Release record](publication-2026-11-15-shopify-ai.json).

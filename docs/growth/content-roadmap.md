@@ -333,3 +333,7 @@ The collection filter diagnostic and the beginner Liquid exercise are live. Comp
 ## November 14 progress
 
 Published the access-limit and inventory history backlog items plus the variant sale display diagnosis. Next investigate how a buyer can distinguish an active checkout discount from membership in a sale collection. Check overlap with the existing combination matrix and collection card guide. Sources include [collection conditions](https://help.shopify.com/en/manual/products/collections/conditions) and [discount eligibility](https://help.shopify.com/en/manual/discounts/discounts-faq). Reserve a distinct report-reading exercise on selecting cycle-count candidates from [inventory reports](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/inventory-reports).
+
+## November 15 progress
+
+Published both November 14 backlog topics and a Sidekick profit-report reconciliation. Next investigate which return or discount entries explain differences between gross and net sales by variant using [Shopify profit reports](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/profit-reports). Check existing reporting coverage before drafting.
