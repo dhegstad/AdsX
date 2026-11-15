@@ -791,5 +791,41 @@
     "review": "A variant-specific sale can make a product-wide promise inaccurate.",
     "guide": "/blog/shopify-sale-price-missing-collection-card",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-abc-cycle-count-ai",
+    "title": "Use AI to Choose Which Shopify SKUs to Count First",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Olive apron and the merchant inputs listed in the guide",
+    "prompt": "Build a 30-minute physical count plan from these anonymized variant-location rows. Reserve eight minutes for recounts. Prioritize open pick discrepancies, then revenue exposure and time since count. Return selected and deferred rows, reasons and total minutes. Flag missing estimates. Do not adjust stock.",
+    "output": "Turn Shopify ABC grades, recent discrepancies and a shift budget into a count list a warehouse lead can review.",
+    "review": "Illustrative shift plan for one location.",
+    "guide": "/blog/shopify-abc-cycle-count-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-sale-collection-discount-scope-ai",
+    "title": "Audit a Shopify Sale Collection Before Sharing the Discount Code",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$50 eligible and the merchant inputs listed in the guide",
+    "prompt": "Compare campaign promises, collection membership and configured discount eligibility by variant ID. Flag missing and extra items and unknown customer restrictions. For each test cart calculate the expected line discounts and subtotal before tax. Require a human checkout observation before marking a case passed.",
+    "output": "Use an AI worksheet to compare the advertised collection, the intended offer and the discount that actually applies at checkout.",
+    "review": "Illustration assumes one unit, no stacking and prices before tax.",
+    "guide": "/blog/shopify-sale-collection-discount-scope-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-gross-profit-missing-cost-sidekick",
+    "title": "Why Shopify Gross Profit Can Leave Out a Best Seller",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$1,000 total and the merchant inputs listed in the guide",
+    "prompt": "In Shopify Sidekick, show gross profit by product variant for [start date] through [end date]. Identify the report and filters. For reconciliation, compare against net sales for that interval where available. Flag missing cost coverage and unavailable data. Exclude unknown costs from margin estimates and explain the denominator.",
+    "output": "Ask Sidekick for profit by variant, measure the sales covered by recorded costs and identify where an invoice is needed.",
+    "review": "Coverage in this example is 60% of net sales.",
+    "guide": "/blog/shopify-gross-profit-missing-cost-sidekick",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
