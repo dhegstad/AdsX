@@ -456,3 +456,7 @@ Published three new illustrated guides and expanded the ungated library to 68 pr
 ## November 15 — Shopify merchant AI guides
 
 Published three illustrated guides on inventory count selection, sale eligibility and missing cost coverage. Added three prompts for 71 total. Editorial, affiliate, build, mobile and clipboard checks passed. IndexNow acknowledged four URLs after live verification. [Release record](publication-2026-11-15-shopify-ai.json).
+
+## November 16 — Sales reversals, cohorts and reorder timing
+
+Published three illustrated guides and expanded the library to 74 prompts. Added the reorder timing example to the forecasting guide. Build, editorial, affiliate, mobile, clipboard and production checks passed. Two spaced URL inspections reported indexed. IndexNow acknowledged four URLs. [Release evidence](publication-2026-11-16-shopify-ai.json).

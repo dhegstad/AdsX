@@ -337,3 +337,7 @@ Published the access-limit and inventory history backlog items plus the variant 
 ## November 15 progress
 
 Published both November 14 backlog topics and a Sidekick profit-report reconciliation. Next investigate which return or discount entries explain differences between gross and net sales by variant using [Shopify profit reports](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/profit-reports). Check existing reporting coverage before drafting.
+
+## November 16 progress
+
+Published the gross-to-net reconciliation, repeat-buyer cohort comparison and inventory coverage exercise. Next candidate: investigate an order-level discount spread across differently priced line items using [Shopify sales report definitions](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/sales-report). Reserve a guide on reports that change after a product or variant rename, after checking the same documentation and prior catalog coverage.
