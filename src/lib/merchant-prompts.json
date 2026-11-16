@@ -827,5 +827,41 @@
     "review": "Coverage in this example is 60% of net sales.",
     "guide": "/blog/shopify-gross-profit-missing-cost-sidekick",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-net-sales-reversal-ai",
+    "title": "Trace Shopify Net Sales When a Refund Lands Next Month",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Gross $100 and the merchant inputs listed in the guide",
+    "prompt": "Using these fictional dated merchandise rows, preserve signed values and currency. Show net sales per month, pair each reversal with its original order reference and calculate the residual against each supplied control total. Flag unknown adjustments and duplicate values. Do not infer payout or profit.",
+    "output": "Reconcile two reporting periods with a variant worksheet that preserves the date and sign of each adjustment.",
+    "review": "Illustrative merchandise amounts exclude tax and shipping.",
+    "guide": "/blog/shopify-net-sales-reversal-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-cohort-month-one-repeat-ai",
+    "title": "Compare Shopify Repeat Purchases at the Same Cohort Age",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "100 first buyers and the merchant inputs listed in the guide",
+    "prompt": "Compare these fictional monthly first-purchase cohorts at Month 1. Use the cutoff to flag incomplete calendar months. Calculate rates from unique repeat buyers and original cohort sizes, show percentage-point changes and a weighted combined rate. Flag missing or inconsistent counts.",
+    "output": "Use an AI worksheet to compare first-time buyer cohorts without mistaking a partially observed month for a retention drop.",
+    "review": "Illustrative Month 1 rates are 18% and 20%.",
+    "guide": "/blog/shopify-cohort-month-one-repeat-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-days-remaining-reorder-check",
+    "title": "Will Inventory Last Until the Next Delivery? Read Shopify’s Days Remaining Report",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "42 units and the merchant inputs listed in the guide",
+    "prompt": "For each fictional SKU compute recent daily sales, coverage days and expected demand through the next usable receipt. Include order cutoff and receiving delay. Show gaps at baseline and faster demand. Keep dates of incoming units separate and flag stockouts or zero observed sales. Do not place orders.",
+    "output": "Compare the recent daily sales rate with supplier timing and expose the assumptions behind a reorder alert.",
+    "review": "Illustrative timing includes one day for receiving.",
+    "guide": "/blog/shopify-days-remaining-reorder-check",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
