@@ -863,5 +863,41 @@
     "review": "Illustrative timing includes one day for receiving.",
     "guide": "/blog/shopify-days-remaining-reorder-check",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-order-discount-allocation-ai",
+    "title": "Allocate a Shopify Order Discount Across Product Lines",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$80 of $100 and the merchant inputs listed in the guide",
+    "prompt": "Given anonymized line subtotals, quantities, discount scope and recorded allocations, calculate each eligible share and residual. Count the order discount once. Flag rounding and missing eligibility. Report observed versus expected amounts without modifying prices or issuing refunds.",
+    "output": "Check how a basket discount affects each product’s net sales before comparing margins or approving a refund.",
+    "review": "Example assumes both lines are eligible and excludes tax and shipping.",
+    "guide": "/blog/shopify-order-discount-allocation-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-renamed-product-sales-report-ai",
+    "title": "Find a Renamed Shopify Product in Historical Sales Reports",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Studio Cup and the merchant inputs listed in the guide",
+    "prompt": "Group these fictional sales rows by stable product ID and preserve historical and current names. Show units and net sales before and after grouping. Flag reused titles, missing IDs and successor products. Never merge on spelling alone.",
+    "output": "Build a product ID crosswalk so a catalog rename does not split a best seller or combine unrelated items.",
+    "review": "The illustrative total for product 410 is 20 units.",
+    "guide": "/blog/shopify-renamed-product-sales-report-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-overdue-order-balance-ai",
+    "title": "Which Shopify Orders Are Actually Overdue? Build a Balance Review",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "$600 less $200 and the merchant inputs listed in the guide",
+    "prompt": "Using fictional order aliases, currencies, due dates, verified outstanding balances and an as-of date, group orders into overdue, due today, upcoming and review needed. Show days overdue and currency subtotals. Flag conflicting payment evidence. Do not mark paid or contact buyers.",
+    "output": "Use an AI worksheet to distinguish unpaid balances due today, overdue balances and amounts awaiting reconciliation.",
+    "review": "Fictional balances in USD. Verify settlements before contacting customers.",
+    "guide": "/blog/shopify-overdue-order-balance-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
