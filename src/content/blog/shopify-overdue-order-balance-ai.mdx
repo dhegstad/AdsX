@@ -1,0 +1,40 @@
+---
+title: "Which Shopify Orders Are Actually Overdue? Build a Balance Review"
+excerpt: "Use an AI worksheet to distinguish unpaid balances due today, overdue balances and amounts awaiting reconciliation."
+date: "2026-11-17"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-overdue-order-balance-ai.png"
+imageAlt: "Order A — $600 less $200 — $400 past due. Order B — $500 due Nov 24 — $500 upcoming. Order C — Transfer claimed — Verify receipt"
+---
+
+Three wholesale orders show money outstanding on Monday morning. One is due next week, one buyer has already paid part of the invoice, and a third has sent a transfer reference. A list sorted by original order value puts the wrong customer at the top of the collection queue.
+
+![Order A — $600 less $200 — $400 past due. Order B — $500 due Nov 24 — $500 upcoming. Order C — Transfer claimed — Verify receipt](/images/editorial/shopify-overdue-order-balance-ai.png)
+
+*Original AdsX illustration.*
+
+## Use the due date from the order
+
+Shopify supports deferred payment terms and marks an unpaid order overdue after its due date. Check the actual due date and current payment status. Some terms depend on fulfillment or receipt. A blanket assumption that every balance is due 30 days after creation can send staff chasing a customer too early. [Shopify deferred payment orders](https://help.shopify.com/en/manual/fulfillment/managing-orders/payments/deferred-payments)
+
+At the start of November 17, suppose order A was due November 10 and $200 of its $600 total has settled. Its $400 outstanding is seven calendar days past due. Order B has a $500 outstanding balance due November 24. That is $900 outstanding across the two orders but only $400 overdue. An order due November 17 belongs in a due-today group under this worksheet’s convention.
+
+## Handle a payment claim as an exception
+
+A transfer reference on order C is evidence to investigate. Match the amount, currency, reference and receiving account against the actual receipt before recording payment. A screenshot or note from the customer may arrive before settlement. Keep a review owner and next check date so a second staff member can see why outreach was deferred. [Shopify manual payment guidance](https://help.shopify.com/en/manual/payments/manual-payments)
+
+Give the assistant aliases, due dates, currencies, agreed totals and verified balances. Exclude contact details and bank account numbers. Ask it to group amounts by currency, show its as-of date and return a separate list for contradictory statuses, disputed items or missing due dates. Reconcile the bucket totals to the same source snapshot. If rows repeat because a line-item export contains three products on one order, reduce it to one verified balance per order first.
+
+This worksheet can support a weekly review when someone still checks the payments. If you are evaluating a paid receivables app, estimate the time required to match transfers and resolve exceptions. Sorting a table is only one part of that work.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Using fictional order aliases, currencies, due dates, verified outstanding balances and an as-of date, group orders into overdue, due today, upcoming and review needed. Show days overdue and currency subtotals. Flag conflicting payment evidence. Do not mark paid or contact buyers.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Shopify Manual Payments: Bank Transfer and COD Workflow](/blog/shopify-manual-payments-bank-transfer-cod).
