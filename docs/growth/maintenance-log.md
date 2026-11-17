@@ -460,3 +460,7 @@ Published three illustrated guides on inventory count selection, sale eligibilit
 ## November 16 — Sales reversals, cohorts and reorder timing
 
 Published three illustrated guides and expanded the library to 74 prompts. Added the reorder timing example to the forecasting guide. Build, editorial, affiliate, mobile, clipboard and production checks passed. Two spaced URL inspections reported indexed. IndexNow acknowledged four URLs. [Release evidence](publication-2026-11-16-shopify-ai.json).
+
+## November 17 — Discount allocations, catalog renames and overdue balances
+
+Published three illustrated guides and expanded the library to 77 prompts. Linked the manual payments guide to the overdue balance worksheet. Editorial, build, affiliate, mobile, clipboard and live checks passed. Two earlier guides returned indexed on inspection. IndexNow acknowledged four URLs. [Release evidence](publication-2026-11-17-shopify-ai.json).
