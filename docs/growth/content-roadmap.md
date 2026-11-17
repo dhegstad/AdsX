@@ -341,3 +341,7 @@ Published both November 14 backlog topics and a Sidekick profit-report reconcili
 ## November 16 progress
 
 Published the gross-to-net reconciliation, repeat-buyer cohort comparison and inventory coverage exercise. Next candidate: investigate an order-level discount spread across differently priced line items using [Shopify sales report definitions](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/sales-report). Reserve a guide on reports that change after a product or variant rename, after checking the same documentation and prior catalog coverage.
+
+## November 17 progress
+
+Published both November 16 backlog topics and the overdue balance worksheet. Next investigate due-on-fulfillment terms when fulfillment timing changes, using the [deferred payment documentation](https://help.shopify.com/en/manual/fulfillment/managing-orders/payments/deferred-payments). Reserve a report-reading exercise on isolating sales channel mix from changes in individual product performance using [report grouping](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/reports-overview). Verify scope against existing articles before drafting.
