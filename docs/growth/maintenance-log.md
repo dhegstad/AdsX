@@ -464,3 +464,7 @@ Published three illustrated guides and expanded the library to 74 prompts. Added
 ## November 17 — Discount allocations, catalog renames and overdue balances
 
 Published three illustrated guides and expanded the library to 77 prompts. Linked the manual payments guide to the overdue balance worksheet. Editorial, build, affiliate, mobile, clipboard and live checks passed. Two earlier guides returned indexed on inspection. IndexNow acknowledged four URLs. [Release evidence](publication-2026-11-17-shopify-ai.json).
+
+## November 18 — Split shipments, channel mix and shipping costs
+
+Published three illustrated Shopify guides and expanded the ungated library to 80 prompts. Linked the shipping setup guide to the cost reconciliation worksheet. Editorial, affiliate suites, build, mobile and search/copy checks passed. Live canonicals, schema, images, sitemap and internal routes verified; IndexNow acknowledged four URLs. Latest complete nightly snapshot was November 10; a fresh private final-data query covered through November 16. Two spaced inspections returned indexed. No new affiliate revenue or confirmed subscriber attribution established. [Release evidence](publication-2026-11-18-shopify-ai.json). No publication shortfall.
