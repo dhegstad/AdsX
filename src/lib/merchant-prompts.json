@@ -899,5 +899,41 @@
     "review": "Fictional balances in USD. Verify settlements before contacting customers.",
     "guide": "/blog/shopify-overdue-order-balance-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-split-fulfillment-payment-requests-ai",
+    "title": "Shopify Split Shipments: Review Payment Requests with AI",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review anonymized split-shipment orders using order total, verified deposit, capture method at creation, payment terms, created fulfillment IDs and displayed payment request amounts",
+    "prompt": "Review anonymized split-shipment orders using order total, verified deposit, capture method at creation, payment terms, created fulfillment IDs and displayed payment request amounts. Reconcile the remaining balance and flag duplicate requests, missing eligibility and unsettled deposits. Do not infer eligibility from current settings. Do not send invoices or capture payments.",
+    "output": "Check which shipment can be invoiced, where the deposit goes and what remains for the final fulfillment.",
+    "review": "Fictional example excludes taxes and discounts; total remaining is $420.",
+    "guide": "/blog/shopify-split-fulfillment-payment-requests-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-sales-channel-mix-ai",
+    "title": "Did Shopify Sales Fall, or Did Your Channel Mix Change?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Using period, sales channel, order count and consistently defined sales amount, calculate channel order shares, channel averages and weighted overall averages",
+    "prompt": "Using period, sales channel, order count and consistently defined sales amount, calculate channel order shares, channel averages and weighted overall averages. Reconcile totals. Reweight current averages using prior order counts and label that assumption. Flag changed filters, mixed currencies, missing channels and metric-definition differences. Do not claim causation or change prices.",
+    "output": "Use a two-period worksheet to separate changing product demand from a shift between online and retail orders.",
+    "review": "Fictional 100-order periods with no discounts, reversals, taxes or shipping.",
+    "guide": "/blog/shopify-sales-channel-mix-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-shipping-revenue-cost-reconciliation-ai",
+    "title": "Do Shopify Shipping Charges Cover Your Fulfillment Costs?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Reconcile anonymized shipping revenue and shipment costs by order alias",
+    "prompt": "Reconcile anonymized shipping revenue and shipment costs by order alias. Inputs include shipment IDs, retained shipping revenue, label charges, credits or debits, materials, currencies and reconciliation date. Count order revenue once across multiple parcels. Show selected-cost surplus or shortfall and list excluded costs. Flag unmatched labels, duplicate costs, missing values and mixed currencies. Do not change checkout rates.",
+    "output": "Reconcile customer shipping charges with labels, adjustments and packing costs before changing delivery prices.",
+    "review": "Fictional USD example excludes taxes, labor, insurance and return labels.",
+    "guide": "/blog/shopify-shipping-revenue-cost-reconciliation-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
