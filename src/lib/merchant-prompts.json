@@ -935,5 +935,41 @@
     "review": "Fictional USD example excludes taxes, labor, insurance and return labels.",
     "guide": "/blog/shopify-shipping-revenue-cost-reconciliation-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-unused-label-credit-audit-ai",
+    "title": "Find Unused Shopify Shipping Labels and Reconcile Their Credits",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review anonymized label IDs, order aliases, purchase dates, carrier service, tracking status, manifest timing, charge amounts, void-request status and observed credits as of a supplied date",
+    "prompt": "Review anonymized label IDs, order aliases, purchase dates, carrier service, tracking status, manifest timing, charge amounts, void-request status and observed credits as of a supplied date. Flag missing eligibility facts, approaching age limits and duplicates. Reconcile candidate, requested and received amounts separately by currency. Never infer unused from missing tracking data. Do not void labels or claim cash refunds.",
+    "output": "Use an AI review sheet to distinguish labels eligible for voiding from credits actually received.",
+    "review": "Fictional example: $8 pending and one $8 label excluded.",
+    "guide": "/blog/shopify-unused-label-credit-audit-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-gift-card-sales-redemption-ai",
+    "title": "Why Shopify Gift Card Sales and Redemptions Appear in Different Reports",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Using gift-card aliases and dated event rows, separate purchased cards, cards issued without purchase, merchandise redemptions and adjustments",
+    "prompt": "Using gift-card aliases and dated event rows, separate purchased cards, cards issued without purchase, merchandise redemptions and adjustments. Preserve face value, amount paid, currency and opening/closing balances. Reconcile the balance equation and identify unexplained differences without inventing entries. Show merchandise sales separately from tender and gift-card purchases. Never request redeemable codes or modify balances.",
+    "output": "Reconcile gift-card purchases, merchandise sales and remaining balances without counting the same value twice.",
+    "review": "Fictional example excludes discounts, taxes, refunds and other transactions.",
+    "guide": "/blog/shopify-gift-card-sales-redemption-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-product-specifications-block-ai",
+    "title": "Build a Shopify Product Specifications Block with an AI Prompt",
+    "category": "Merchant workflows",
+    "tool": "AI coding assistant with an unpublished theme checkout",
+    "inputs": "Inspect the supplied unpublished Shopify theme and implement only a product specifications block for proposed product metafields custom.spec_material (single_line_text_field), custom.spec_height (dimension), custom.spec_weight (weight)",
+    "prompt": "Inspect the supplied unpublished Shopify theme and implement only a product specifications block for proposed product metafields custom.spec_material (single_line_text_field), custom.spec_height (dimension), custom.spec_weight (weight). Use semantic dl/dt/dd, preserve typed units with suitable Liquid rendering, hide absent rows and the empty block, and scope styles. No JavaScript unless justified, no external dependencies, no checkout changes. Report files changed and tests actually run. Provide checks for two products, missing fields, inches versus centimeters, long text and mobile layout. Do not claim variant-specific updates or production readiness.",
+    "output": "Create a small product-details block from typed metafields, with blank-row handling, unit checks and a realistic maintenance budget.",
+    "review": "Fictional product data. Missing fields should hide their own rows.",
+    "guide": "/blog/shopify-product-specifications-block-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
