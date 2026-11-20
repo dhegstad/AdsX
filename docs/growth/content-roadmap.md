@@ -353,3 +353,7 @@ Published the split-fulfillment payment and channel-mix backlog topics, plus a s
 ## November 19 progress
 
 Completed unused-label credit and gift-card reporting backlog items and a typed product-specification build brief. Next candidate: distinguish app-managed metafield data from merchant-owned fields before removing a display app, using [metafield definitions](https://shopify.dev/docs/apps/build/metafields) and an actual app export contract. Do not promise data retention without evidence. Reserve a theme exercise for mixed measurement units in the catalog; extend the specifications guide if the intent overlaps rather than creating another display tutorial. Continue linking useful new workflows from established guides while keeping recent commercial refreshes stable.
+
+## November 20 progress
+
+Published the app-metafield dependency topic and distinct guides on locale keys and missing complementary products. Skipped a proposed CSV overwrite article because the existing AI CSV review already covers it. Next investigate whether recommendation clicks lead to purchases using [Search & Discovery analytics](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-analytics). Separate display eligibility, engagement and conversion; do not promise revenue lifts. Reserve a glossary and placeholder QA exercise for theme translations using [storefront locale documentation](https://shopify.dev/docs/storefronts/themes/architecture/locales/storefront-locale-files), extending the current guide if it lacks a distinct intent.
