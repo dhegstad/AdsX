@@ -971,5 +971,41 @@
     "review": "Fictional product data. Missing fields should hide their own rows.",
     "guide": "/blog/shopify-product-specifications-block-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-app-metafield-export-before-uninstall-ai",
+    "title": "Before Replacing a Shopify App with AI, Check Who Owns Its Data",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review a sanitized Shopify field inventory and sample exports before app replacement",
+    "prompt": "Review a sanitized Shopify field inventory and sample exports before app replacement. For each displayed value, map owner resource, identifier, namespace/key, type, ownership evidence, export coverage and proposed destination. Flag unknown retention, missing assets, broken references and variant mapping risks. Do not assume reinstall restores data or that a product CSV contains every app field. Produce a dependency checklist; do not uninstall apps or alter data.",
+    "output": "Map app-owned and merchant-owned metafields, verify export coverage and test the replacement before uninstalling.",
+    "review": "A working preview alone does not establish independence from the app.",
+    "guide": "/blog/shopify-app-metafield-export-before-uninstall-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-ai-theme-block-translation-keys",
+    "title": "Fix Hard-Coded Text in an AI-Built Shopify Theme Block",
+    "category": "Merchant workflows",
+    "tool": "AI coding assistant with an unpublished theme checkout",
+    "inputs": "Inspect the supplied unpublished Shopify theme block",
+    "prompt": "Inspect the supplied unpublished Shopify theme block. Inventory storefront labels, theme-editor settings and product data separately. Replace only approved hard-coded storefront labels with appropriate existing or proposed locale keys and the Liquid t filter. Preserve JSON structure, placeholders, typed measurements and escaping. Handle schema labels in schema locale files only when requested. Report changed files and checks actually run; provide default/secondary-language, missing-key, plural and mobile-long-text checks. Do not translate product data or publish the theme.",
+    "output": "Move storefront labels into locale keys and review translated output without confusing it with theme-editor text.",
+    "review": "Changing a label does not translate every product value.",
+    "guide": "/blog/shopify-ai-theme-block-translation-keys",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-complementary-products-not-showing-ai",
+    "title": "Why Shopify Complementary Products Are Not Showing",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Given sanitized source-product and recommended-product rows, classify missing Shopify complementary products using status, Online Store publication, price, gift-card/unlisted flags, inventory, visitor-cart presence and template configuration",
+    "prompt": "Given sanitized source-product and recommended-product rows, classify missing Shopify complementary products using status, Online Store publication, price, gift-card/unlisted flags, inventory, visitor-cart presence and template configuration. Keep related-product rules separate. Mark missing evidence unknown and suggest the next admin or preview check. Include market/B2B context when supplied. Do not change inventory, publish products or claim lost revenue.",
+    "output": "Build an AI-assisted eligibility checklist for missing add-ons before changing recommendation code or buying another app.",
+    "review": "Fictional example; verify every requirement and the theme configuration.",
+    "guide": "/blog/shopify-complementary-products-not-showing-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
