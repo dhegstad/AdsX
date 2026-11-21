@@ -476,3 +476,7 @@ Published three illustrated guides and expanded the ungated library to 83 prompt
 ## November 20 — App data, translation keys and missing recommendations
 
 Published three illustrated Shopify guides and expanded the ungated library to 86 prompts. Linked the app-uninstall guide to the data-preservation checklist. Editorial, affiliate, build, mobile and clipboard checks passed. Verified production articles, images, canonicals, schema, sitemap and internal routes. IndexNow acknowledged four URLs. Reused the November 10 nightly snapshot; fresh private final-data query covered through November 18. Two spaced URL inspections returned indexed. No new attributable affiliate revenue or confirmed subscriber outcome established. [Release evidence](publication-2026-11-20-shopify-ai.json). No publication shortfall.
+
+## November 21 — Recommendation outcomes, alt text and tag collisions
+
+Published three illustrated guides and expanded the ungated library to 89 prompts. Linked the image optimization guide to the alt-text review workflow. Editorial, affiliate, build, mobile, clipboard and production checks passed. IndexNow acknowledged four live URLs. Latest complete nightly snapshot remains November 10; fresh private final-data query covered through November 19. Split-fulfillment and channel-mix guides returned indexed on spaced inspection. No new attributable revenue or confirmed subscriber result established. [Release evidence](publication-2026-11-21-shopify-ai.json). No publication shortfall.
