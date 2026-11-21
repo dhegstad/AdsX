@@ -357,3 +357,7 @@ Completed unused-label credit and gift-card reporting backlog items and a typed 
 ## November 20 progress
 
 Published the app-metafield dependency topic and distinct guides on locale keys and missing complementary products. Skipped a proposed CSV overwrite article because the existing AI CSV review already covers it. Next investigate whether recommendation clicks lead to purchases using [Search & Discovery analytics](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-analytics). Separate display eligibility, engagement and conversion; do not promise revenue lifts. Reserve a glossary and placeholder QA exercise for theme translations using [storefront locale documentation](https://shopify.dev/docs/storefronts/themes/architecture/locales/storefront-locale-files), extending the current guide if it lacks a distinct intent.
+
+## November 21 progress
+
+Published recommendation outcome analysis, per-image AI alt-text review and tag-collision auditing. Next candidate: searches that return products but receive no clicks, using [Search & Discovery analytics](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-analytics). Distinguish this from the existing zero-results guide and test whether a substantive extension would serve readers better. Keep the recent translation guide stable; do not split glossary and placeholder checks into a duplicate article. Explore catalog condition QA only for documented new behavior and distinct merchant needs.
