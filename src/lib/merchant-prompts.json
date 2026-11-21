@@ -1007,5 +1007,41 @@
     "review": "Fictional example; verify every requirement and the theme configuration.",
     "guide": "/blog/shopify-complementary-products-not-showing-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-recommendation-click-purchase-review-ai",
+    "title": "Shopify Recommendations Get Clicks: Are They Leading to Purchases?",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review supplied Shopify recommendation reports with dates, product scope, reported metric definitions, rates, available raw counts and availability interruptions",
+    "prompt": "Review supplied Shopify recommendation reports with dates, product scope, reported metric definitions, rates, available raw counts and availability interruptions. Keep click rate and purchase rate separate. Calculate percentage-point and relative changes only where valid. Flag denominator mismatches and small samples. Separate observations from hypotheses; do not infer incremental revenue or causation from a before-and-after comparison.",
+    "output": "Use an AI review brief to separate recommendation engagement, purchase rate and evidence of incremental revenue.",
+    "review": "Observed purchases do not prove the recommendation caused extra sales.",
+    "guide": "/blog/shopify-recommendation-click-purchase-review-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-ai-product-image-alt-text-review",
+    "title": "Review AI-Written Alt Text for Shopify Product Images",
+    "category": "Merchant workflows",
+    "tool": "Approved image-capable assistant",
+    "inputs": "Inspect each supplied product image with its media ID and approved product facts",
+    "prompt": "Inspect each supplied product image with its media ID and approved product facts. Draft concise alt text describing the specific visible view, aiming for 125 characters or fewer. Do not invent materials, certifications, waterproofing or performance claims. Preserve IDs and distinguish variants and image angles. Return current text, proposed text, visible evidence and uncertainties; mark unviewable images insufficient evidence. Do not save changes or claim accessibility compliance.",
+    "output": "Use a per-image prompt and approval checklist to catch invented materials, duplicate descriptions and unsupported product claims.",
+    "review": "Illustrative descriptions; no actual product images were evaluated here.",
+    "guide": "/blog/shopify-ai-product-image-alt-text-review",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-product-tag-collision-audit-ai",
+    "title": "Audit Shopify Product Tag Collisions Before Cleaning Up Your Catalog",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Audit exact product tag strings, product IDs and supplied collection/workflow/app consumers",
+    "prompt": "Audit exact product tag strings, product IDs and supplied collection/workflow/app consumers. Suggest potential spelling or punctuation collisions without merging them. Preserve original strings and business meanings. For proposed groups, calculate overlap and union by product ID; flag unknown consumers and all-versus-any rule differences. Return a review and rollback plan, not an import file. Do not rename tags or change live collection rules.",
+    "output": "Find ambiguous tag names and dependent collection rules before an AI cleanup changes what shoppers can see.",
+    "review": "A similar spelling is a review candidate, not permission to merge.",
+    "guide": "/blog/shopify-product-tag-collision-audit-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
