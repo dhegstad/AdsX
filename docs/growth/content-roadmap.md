@@ -361,3 +361,7 @@ Published the app-metafield dependency topic and distinct guides on locale keys 
 ## November 21 progress
 
 Published recommendation outcome analysis, per-image AI alt-text review and tag-collision auditing. Next candidate: searches that return products but receive no clicks, using [Search & Discovery analytics](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-analytics). Distinguish this from the existing zero-results guide and test whether a substantive extension would serve readers better. Keep the recent translation guide stable; do not split glossary and placeholder checks into a duplicate article. Explore catalog condition QA only for documented new behavior and distinct merchant needs.
+
+## November 22 progress
+
+Published the no-click search backlog item, a single-field engraving build brief and a theme-app handoff checklist. Next investigate cart-line updates when personalized copies of the same variant coexist, using [Cart Ajax API](https://shopify.dev/docs/api/ajax/reference/cart) and [cart template guidance](https://shopify.dev/docs/storefronts/themes/architecture/templates/cart). Distinguish line identity from variant identity and verify current key behavior before publishing implementation advice. Extend the engraving guide if the need is only another input-field example. Keep recent commercial and translation guides stable for measurement.

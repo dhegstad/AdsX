@@ -480,3 +480,7 @@ Published three illustrated Shopify guides and expanded the ungated library to 8
 ## November 21 — Recommendation outcomes, alt text and tag collisions
 
 Published three illustrated guides and expanded the ungated library to 89 prompts. Linked the image optimization guide to the alt-text review workflow. Editorial, affiliate, build, mobile, clipboard and production checks passed. IndexNow acknowledged four live URLs. Latest complete nightly snapshot remains November 10; fresh private final-data query covered through November 19. Split-fulfillment and channel-mix guides returned indexed on spaced inspection. No new attributable revenue or confirmed subscriber result established. [Release evidence](publication-2026-11-21-shopify-ai.json). No publication shortfall.
+
+## November 22 — No-click searches, engraving and theme app handoff
+
+Published three illustrated guides and expanded the ungated library to 92 prompts. Linked the theme extension guide to the app-handoff checklist. Editorial, affiliate, build, mobile, clipboard and live route/schema/media checks passed. IndexNow acknowledged four URLs. Latest complete nightly snapshot remains November 10; fresh private final-data query covered through November 20. Two spaced inspections returned indexed. No new affiliate revenue or confirmed subscriber attribution established. [Release evidence](publication-2026-11-22-shopify-ai.json). No publication shortfall.
