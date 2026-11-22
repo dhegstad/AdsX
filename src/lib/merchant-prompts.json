@@ -1043,5 +1043,41 @@
     "review": "A similar spelling is a review candidate, not permission to merge.",
     "guide": "/blog/shopify-product-tag-collision-audit-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-search-results-no-clicks-ai",
+    "title": "Shopify Search Has Results but No Clicks: Build an AI Review Queue",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review sanitized Shopify no-click search queries with reporting period, frequency, metric definitions and observed result cards",
+    "prompt": "Review sanitized Shopify no-click search queries with reporting period, frequency, metric definitions and observed result cards. Compare query intent with supplied product facts, prices, availability and screenshots. Separate relevance, presentation and availability hypotheses. Recommend one verifiable next check; propose a boost only for a relevant product. Do not conflate predictive search, preview traffic, Google ranking or purchases with result-page clicks.",
+    "output": "Review result relevance, product presentation and availability before boosting products or replacing your search app.",
+    "review": "Illustrative workflow, not an observed search experiment.",
+    "guide": "/blog/shopify-search-results-no-clicks-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-engraving-line-item-property-ai",
+    "title": "Build a Simple Shopify Engraving Text Field with an AI Prompt",
+    "category": "Merchant workflows",
+    "tool": "AI coding assistant with an unpublished theme checkout",
+    "inputs": "Inspect the supplied unpublished Shopify theme and add only an engraving text input to the actual product form using properties[Engraving]",
+    "prompt": "Inspect the supplied unpublished Shopify theme and add only an engraving text input to the actual product form using properties[Engraving]. Preserve variant, quantity and existing submission behavior; safely display the property in cart and drawer. Add a label and explain the supplied production text limit. No pricing surcharge, uploads or external dependencies. Identify quick-add and accelerated paths that bypass the field. Report files changed and checks actually run; provide two-name same-variant, blank, length, Unicode, removal and test-order acceptance checks. Do not publish.",
+    "output": "Capture text per cart line and test two personalized items without assuming the field replaces a complete options app.",
+    "review": "Fictional example. Text capture does not calculate an engraving surcharge.",
+    "guide": "/blog/shopify-engraving-line-item-property-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-app-embed-missing-after-theme-change-ai",
+    "title": "Shopify App Missing After a Theme Change? Check Embeds Before Reinstalling",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review a supplied Shopify theme handoff inventory: app name, integration type, old and target theme, template, market and expected behavior",
+    "prompt": "Review a supplied Shopify theme handoff inventory: app name, integration type, old and target theme, template, market and expected behavior. Separate installed status, app-embed activation, app-block placement and injected code. Identify missing evidence and propose specific desktop/mobile and downstream checks. Do not enable every embed, reinstall apps, copy unknown code or claim tracking works from visual presence. Produce a review checklist without modifying the store.",
+    "output": "Use an AI-assisted theme handoff checklist to distinguish app installation, embed activation and app-block placement.",
+    "review": "Code-injected integrations need their own provider instructions.",
+    "guide": "/blog/shopify-app-embed-missing-after-theme-change-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
