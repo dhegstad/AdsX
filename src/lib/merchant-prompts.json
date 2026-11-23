@@ -1079,5 +1079,41 @@
     "review": "Code-injected integrations need their own provider instructions.",
     "guide": "/blog/shopify-app-embed-missing-after-theme-change-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-personalized-cart-wrong-line-ai",
+    "title": "Shopify Cart Changes the Wrong Personalized Item: An AI Debugging Brief",
+    "category": "Merchant workflows",
+    "tool": "AI coding assistant in an unpublished theme",
+    "inputs": "Inspect supplied unpublished-theme quantity markup, cart handler and sanitized cart response for two lines sharing a variant but different properties",
+    "prompt": "Inspect supplied unpublished-theme quantity markup, cart handler and sanitized cart response for two lines sharing a variant but different properties. Trace the clicked row identifier into the request and response rendering. Propose the smallest patch using fresh line identity and existing locale-aware cart flow. Preserve loading, errors and accessibility. Test second-line quantity, removal, subsequent changes, discounts, drawer/page parity and rapid clicks. Report only checks actually run; do not publish or uninstall apps.",
+    "output": "Diagnose duplicate-variant cart lines before changing quantity handlers or replacing your personalization app.",
+    "review": "Illustrative acceptance case, not a tested theme patch.",
+    "guide": "/blog/shopify-personalized-cart-wrong-line-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-variant-image-mismatch-ai",
+    "title": "Shopify Shows the Wrong Variant Image: Build an AI Audit Before Buying an App",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review a supplied Shopify variant-to-image matrix with identifiers, option values, assigned image, merchant-approved expected image and observed storefront result",
+    "prompt": "Review a supplied Shopify variant-to-image matrix with identifiers, option values, assigned image, merchant-approved expected image and observed storefront result. Separate incorrect assignments from theme selection or gallery behavior. Never infer color from filenames alone. Produce a small correction queue and acceptance checks for selection, direct variant links, reload, mobile and submitted cart variant. Distinguish one assigned image from a filtered multi-image gallery. Make no store changes.",
+    "output": "Separate variant image assignment from gallery behavior and verify color-size combinations with a small review matrix.",
+    "review": "Original diagnostic workflow; no merchant storefront test claimed.",
+    "guide": "/blog/shopify-variant-image-mismatch-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-refund-restock-reconciliation-ai",
+    "title": "Shopify Refunds and Restocks: Use AI to Find Inventory Exceptions",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Compare sanitized order-line refund records, physical return receipts, inspection outcomes and inventory movements with timestamps and locations",
+    "prompt": "Compare sanitized order-line refund records, physical return receipts, inspection outcomes and inventory movements with timestamps and locations. Keep money, physical units and sellable inventory separate. Flag missing or inconsistent quantities with exact supporting rows and missing evidence. Allow valid no-return refunds and timing differences. Consider other sales, receipts and adjustments before attributing differences. Produce a human review queue only; never issue refunds, restock, send messages or infer a physical receipt from a payment status.",
+    "output": "Match refund evidence with physical receipt, inspection and inventory changes without treating refunded money as returned stock.",
+    "review": "Fictional examples. This worksheet proposes review, not adjustments.",
+    "guide": "/blog/shopify-refund-restock-reconciliation-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
