@@ -484,3 +484,7 @@ Published three illustrated guides and expanded the ungated library to 89 prompt
 ## November 22 — No-click searches, engraving and theme app handoff
 
 Published three illustrated guides and expanded the ungated library to 92 prompts. Linked the theme extension guide to the app-handoff checklist. Editorial, affiliate, build, mobile, clipboard and live route/schema/media checks passed. IndexNow acknowledged four URLs. Latest complete nightly snapshot remains November 10; fresh private final-data query covered through November 20. Two spaced inspections returned indexed. No new affiliate revenue or confirmed subscriber attribution established. [Release evidence](publication-2026-11-22-shopify-ai.json). No publication shortfall.
+
+## November 23 — Cart line identity, variant images and refund/restock review
+
+Published three illustrated Shopify AI guides and expanded the ungated library to 95 prompts. Added an engraving-to-cart-debugging link without changing the original publication date. Editorial, 15 affiliate/referral tests, build, mobile, library clipboard and local/live route/schema/media checks passed. IndexNow acknowledged four URLs; receipt is not an indexing or ranking gain. Latest complete nightly report remains November 10; private final-data query covers through November 21. Two spaced inspections (metafield export and theme translation) returned indexed. No new affiliate revenue or confirmed subscriber attribution established. [Release evidence](publication-2026-11-23-shopify-ai.json). Three new articles; no publication shortfall.
