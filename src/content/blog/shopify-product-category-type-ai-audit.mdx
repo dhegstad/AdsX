@@ -1,0 +1,54 @@
+---
+title: "Shopify Product Category vs Product Type: An AI Catalog Review"
+excerpt: "Build a review queue that preserves custom merchandising labels while checking standardized categories against product facts."
+date: "2026-11-24"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-product-category-type-ai-audit.png"
+imageAlt: "Category — Standard taxonomy — What is the product?. Type — Merchant-defined label — How do you organize it?. AI review — Facts plus allowed values — Flag uncertainty"
+---
+
+Summer favorites might be a useful internal label, but it does not tell Shopify what a product actually is. Before asking AI to categorize a catalog, separate the standardized product category from the merchant-defined product type. Otherwise a tidy spreadsheet can still put the wrong value in the wrong field.
+
+![Category — Standard taxonomy — What is the product?. Type — Merchant-defined label — How do you organize it?. AI review — Facts plus allowed values — Flag uncertainty](/images/editorial/shopify-product-category-type-ai-audit.png)
+
+*Original AdsX illustration.*
+
+## Define the output before supplying the catalog
+
+Shopify distinguishes a category from its Standard Product Taxonomy and a custom product type. Each product can have one of each. Category selection also affects available category metafields and can influence channel data and Shopify Tax calculations. It is not simply another marketing tag. [Shopify product taxonomy](https://help.shopify.com/en/manual/products/details/product-category)
+
+A product type can preserve a merchant's own organization. Shopify's example distinguishes a standard bed-sheet category from a custom descriptive label. Do not overwrite established type values just because they do not resemble standardized taxonomy names. [Shopify product types](https://help.shopify.com/en/manual/products/details/product-type)
+
+Request a worksheet with product identifier, current category, current type, factual main function, proposed category from an approved taxonomy list, evidence and review status. Keep the proposed type in a separate column, and leave it unchanged unless the merchant has supplied a new naming rule.
+
+## Give AI facts and a bounded vocabulary
+
+Use title, factual description, material and intended function where available. Supply the current official category choices you are considering. An assistant should choose only from that list or return unresolved; it should not fabricate a plausible breadcrumb or category ID.
+
+For a fictional bedside clock with a light, the main job is telling time and sounding an alarm. For a bedside lamp with a small decorative clock face, the main job might be lighting. Similar keywords do not establish the same category. Ask the merchant to resolve ambiguous function instead of allowing the assistant to decide from the first noun in a title.
+
+Keep the existing custom type, such as Bedside essentials, unless the organization rule is deliberately changing. That label may group different product functions for merchandising without becoming a standardized category.
+
+## Review a small batch and its dependencies
+
+Start with ten varied products: straightforward examples, ambiguous descriptions and products already used in automated collections or channel feeds. Check every proposed category against the official taxonomy and the actual product. Record an unresolved row when product facts are insufficient.
+
+Before applying a correction, inspect collection conditions and relevant category metafields. After the pilot, verify those values and the channel's received data rather than assuming a saved admin value proves every integration updated correctly. If classification affects tax treatment, have the responsible reviewer verify it; an AI label is not a tax determination.
+
+## Keep the first output out of an import file
+
+The review queue is deliberately separate from a production CSV. Approval should identify the exact product and old/new values. Preserve an export before edits, then use the current Shopify import format if a bulk update is appropriate. Follow the [product CSV change-review guide](/blog/shopify-ai-product-csv-change-review) for import handling rather than copying this worksheet directly into the store.
+
+Measure accepted suggestions and correction time. If 30 of 40 reviewed rows are accepted, that is a 75% acceptance rate for that sample, not a promise of catalog accuracy. A useful assistant makes uncertainty visible and reduces review work; it does not remove ownership of product data.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Review supplied product identifiers, factual descriptions, main functions, current categories and custom types against a supplied current Shopify taxonomy shortlist. Return separate category and type columns, evidence and review status. Choose only allowed categories or unresolved; never invent IDs. Preserve custom types unless an explicit naming rule requires change. Flag collection, category-metafield, channel and tax-review dependencies. Produce a review worksheet, not an import or store mutation.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Add Metafields & Metaobjects to Shopify via the API](/blog/shopify-catalog-metafields-metaobjects-api).

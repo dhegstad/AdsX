@@ -1,0 +1,52 @@
+---
+title: "Only Part of a Shopify Return Arrived: Build an AI Exception Brief"
+excerpt: "Reconcile expected and received items before processing a partial return or releasing replacement merchandise."
+date: "2026-11-24"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-partial-return-missing-items-ai.png"
+imageAlt: "Requested — Jacket plus belt — Two return lines. Received — Jacket only — Inspect the actual parcel. Unresolved — Belt missing — Keep a separate decision"
+---
+
+A return request lists a jacket and a belt. The parcel contains only the jacket. Processing both items as received would make the record look complete while hiding the missing belt. The useful AI task is to assemble the evidence for the next human decision.
+
+![Requested — Jacket plus belt — Two return lines. Received — Jacket only — Inspect the actual parcel. Unresolved — Belt missing — Keep a separate decision](/images/editorial/shopify-partial-return-missing-items-ai.png)
+
+*Original AdsX illustration.*
+
+## Capture the mismatch at line level
+
+Build a small worksheet with the return reference, order-line identifier, SKU, expected quantity, received quantity, condition, receipt date and evidence reference. Keep the refund decision, restock decision and exchange release decision in separate columns. A parcel tracking event proves delivery activity, not which items were inside it.
+
+For the jacket-and-belt example, record jacket expected one, received one; belt expected one, received zero. Do not let AI fill the missing receipt from the requested quantity. Use sanitized identifiers and approved warehouse notes rather than customer names or addresses when sharing evidence with an external assistant.
+
+## Check the store's actual return workflow
+
+Shopify documents partial processing of returns, allowing a merchant to act on the items ready to process. It also documents removing items that never arrived and handling exchange items separately. Its current page identifies Plus feature-test-drive availability for exchange and return enhancements, so check the controls available in the actual store rather than promising the same screen to every plan. [Shopify return processing](https://help.shopify.com/en/manual/fulfillment/managing-orders/returns/processing-returns)
+
+Creating a return and adding an exchange item do not complete the replacement shipment. Shopify's creation guide describes receiving and processing the return, resolving the financial balance and fulfilling exchange items as subsequent work. [Shopify returns and exchanges](https://help.shopify.com/en/manual/fulfillment/managing-orders/returns/creating-returns)
+
+## Ask for an exception brief, not an automatic resolution
+
+The assistant should summarize what is known, what is missing and which owner must decide. In this example, the warehouse can confirm the jacket's condition and whether a second parcel exists. Support can check the approved return agreement. The merchant decides whether the missing belt is still expected or should be removed from the return under the applicable process.
+
+A good brief says that the jacket has receipt evidence and the belt does not. It does not accuse a customer of withholding an item, infer fraud from a missing scan or issue an unsupported refund calculation. If discounts, fees or exchanges affect the balance, direct the reviewer to the actual return summary.
+
+## Verify the remaining work after processing
+
+After an authorized staff member processes the received portion, inspect the return again. Is the unresolved line still represented accurately? Is any replacement held or released as intended? Was only the approved quantity restocked at the intended location? Did the recorded financial action match the reviewed decision?
+
+Record the result and the next owner. Avoid marking the whole case finished merely because one refund succeeded or one replacement shipped. For money-versus-stock discrepancies after processing, use the [refund and restock reconciliation worksheet](/blog/shopify-refund-restock-reconciliation-ai).
+
+This prompt organizes exception handling; it does not replace a returns portal, label service or warehouse inspection. Evaluate an app by how reliably it handles this case, including unresolved lines and staff handoffs, rather than by its portal appearance alone. No operational return was processed for this guide.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Build an exception brief from sanitized return-line requests, physical receipt records, condition notes, shipment evidence and exchange status. Compare expected versus received quantity by identifier. Never infer receipt from a request or delivery scan. Separate refund, restock and exchange-release decisions. List known facts, missing evidence, owner and next check; do not accuse customers, calculate unsupported balances, close cases, send messages or change the store.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Shopify Returns Apps: Compare Loop and AfterShip Costs](/blog/shopify-returns-exchanges-apps).
