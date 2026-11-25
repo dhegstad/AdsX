@@ -1151,5 +1151,41 @@
     "review": "Fictional case; a request does not establish physical receipt.",
     "guide": "/blog/shopify-partial-return-missing-items-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-combined-listings-vs-variants-ai",
+    "title": "Shopify Combined Listings vs Variants: Build an AI Catalog Decision Brief",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review supplied product families, identifiers, URLs, option names, unique content, media, sales channels, plan and app dependencies",
+    "prompt": "Review supplied product families, identifiers, URLs, option names, unique content, media, sales channels, plan and app dependencies. Compare ordinary variants, independent products and eligible Combined Listings. Flag plan/theme/channel and subscription/bundle constraints for verification. Produce a pilot acceptance matrix for child selection, content, price, size, cart identity, direct links and mobile. Estimate supplied labor separately from subscriptions. Do not merge, delete, publish or invent compatibility.",
+    "output": "Decide whether separate product pages, ordinary variants or Combined Listings fit your catalog before changing its structure.",
+    "review": "Decision framework, not a tested catalog migration.",
+    "guide": "/blog/shopify-combined-listings-vs-variants-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-variant-channel-publishing-ai",
+    "title": "Hide a Shopify Variant on One Channel: An AI Publishing Checklist",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Build a channel-by-variant matrix from supplied product and variant identifiers, option values, parent publishing, variant publishing and intended destinations",
+    "prompt": "Build a channel-by-variant matrix from supplied product and variant identifiers, option values, parent publishing, variant publishing and intended destinations. Flag cases where the parent blocks a variant or all variants are excluded. Separate availability from inventory and product status. Check new-variant defaults and unsupported scheduling assumptions against current documentation. Produce a one-variant pilot and destination verification checklist. Do not publish, delete, duplicate products or change stock.",
+    "output": "Check parent and variant availability together before duplicating products or deleting a channel-specific option.",
+    "review": "Illustrative channel review; no store publishing changes performed.",
+    "guide": "/blog/shopify-variant-channel-publishing-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-flow-manual-retry-ai-checklist",
+    "title": "Before Retrying Shopify Flow: Use AI to Review Changed Data and Repeated Actions",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review sanitized original Flow run evidence, the proposed fix, current resource data and downstream results",
+    "prompt": "Review sanitized original Flow run evidence, the proposed fix, current resource data and downstream results. Separate original trigger data from current condition/action data. For each run, list completed effects, uncertain outcomes, changed eligibility and consequences of repetition. Group only cases sharing the same issue and compatible current state. Produce a human retry-review queue with a small pilot and destination checks. Do not activate workflows, retry runs, send messages or assume connector deduplication.",
+    "output": "Prepare a retry decision after fixing a workflow, accounting for current resource data and actions that may already have completed.",
+    "review": "Operational review brief; no workflow was activated or retried.",
+    "guide": "/blog/shopify-flow-manual-retry-ai-checklist",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]

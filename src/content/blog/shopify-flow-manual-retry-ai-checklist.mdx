@@ -1,0 +1,56 @@
+---
+title: "Before Retrying Shopify Flow: Use AI to Review Changed Data and Repeated Actions"
+excerpt: "Prepare a retry decision after fixing a workflow, accounting for current resource data and actions that may already have completed."
+date: "2026-11-25"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-flow-manual-retry-ai-checklist.png"
+imageAlt: "Original run — What already happened? — Check destination evidence. Current state — What changed since then? — Review fresh data. Retry decision — Which effects can repeat? — Approve a small cohort"
+---
+
+A workflow adds an internal tag and then fails while contacting another service. Fixing the connection does not answer whether the run should be retried. The tag may already exist, the order may have changed, and a downstream action may have an outcome that the original log does not establish.
+
+![Original run — What already happened? — Check destination evidence. Current state — What changed since then? — Review fresh data. Retry decision — Which effects can repeat? — Approve a small cohort](/images/editorial/shopify-flow-manual-retry-ai-checklist.png)
+
+*Original AdsX illustration.*
+
+## Begin after the cause is understood
+
+Use the existing [Flow run-debugging guide](/blog/shopify-sidekick-flow-run-debugging) to find the original mismatch. This checklist starts after the proposed correction is ready. Its question is whether rerunning a historical case will produce the intended result now.
+
+Shopify distinguishes transient errors, which can be retried automatically, from permanent errors. A run that appears delayed may still be working through automatic retries. Inspect its actual status and error before treating it as a candidate for manual recovery. [Shopify Flow troubleshooting](https://help.shopify.com/en/manual/shopify-flow/create/troubleshoot)
+
+## Compare original trigger data with today's state
+
+Manual retries require a finished run, an active workflow and a matching trigger. Shopify says the original trigger data is reused, while Get data actions fetch current data and conditions/actions use up-to-date data. A retry is therefore not a frozen replay of everything as it existed on the original date. [Shopify manual retry documentation](https://help.shopify.com/en/manual/shopify-flow/manage/manual-retry)
+
+For a fictional order, the original event occurred before cancellation. Today the order is canceled. A branch intended for open orders must be evaluated against that current state before a retry decision. Another order may have been handled manually by support after the failure. Grouping those cases with untouched orders can repeat work the team already completed.
+
+Supply AI with sanitized original-run evidence, the proposed correction, current resource state and destination results. Ask it to identify differences that change the intended outcome. Missing destination evidence should remain unresolved, not be interpreted as proof that an action never happened.
+
+## Classify effects before selecting a cohort
+
+Create columns for action, original evidence, current destination state, consequence of repetition and reviewer decision. Adding an existing internal label may have different consequences from creating another ticket or sending another message. Do not infer that every connector handles duplicates safely; verify the particular action and receiving system.
+
+For three illustrative orders, mark A as no known downstream effect, B as manually resolved and C as uncertain. That produces one candidate for review and two exceptions, not three automatic retries. The candidate still needs approval and the documented workflow prerequisites.
+
+Keep the scope small. Shopify's bulk retry guidance calls for checking that selected runs encountered the same issue. A similar error label is not enough when current order states or prior actions differ.
+
+## Confirm the business result after an authorized retry
+
+When an authorized operator retries a reviewed case, preserve the original and retry references. Inspect both the Flow result and the actual destination. Record whether the expected outcome occurred once, whether a duplicate appeared and which evidence supports that conclusion.
+
+Stop expanding the cohort if the pilot produces a surprising branch or repeated effect. Revisit the review rather than repeatedly clicking retry. AI can organize a recovery worksheet; it should not activate workflows, send communications or replay actions on the merchant's behalf from this prompt.
+
+This guide has not been executed against merchant runs. Its value is a clear decision record that separates fixing configuration from approving consequential recovery work.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Review sanitized original Flow run evidence, the proposed fix, current resource data and downstream results. Separate original trigger data from current condition/action data. For each run, list completed effects, uncertain outcomes, changed eligibility and consequences of repetition. Group only cases sharing the same issue and compatible current state. Produce a human retry-review queue with a small pilot and destination checks. Do not activate workflows, retry runs, send messages or assume connector deduplication.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Shopify Flow, Sidekick App, or Custom App: Choose by the Job](/blog/shopify-flow-sidekick-custom-app).
