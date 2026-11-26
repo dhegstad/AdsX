@@ -1,0 +1,54 @@
+---
+title: "Shopify Variants Missing Beyond 250? An AI Theme Audit Brief"
+excerpt: "Find theme code that assumes Liquid returns every variant before rewriting a picker or installing another options app."
+date: "2026-11-26"
+category: "Shopify Apps"
+author: {"name": "AdsX Team", "role": "Ecommerce Editorial"}
+intent: "learn"
+topics: ["shopify-apps", "ai-commerce"]
+tags: ["Merchant workflows"]
+image: "/images/editorial/shopify-high-variant-theme-audit-ai.png"
+imageAlt: "Admin — Variant exists? — Record its identifier. Theme — Complete-list assumption? — Inspect the data path. Storefront — Correct item selected? — Verify the cart result"
+---
+
+A product has hundreds of variants in the admin, but a custom selector appears to omit some combinations. Before recreating the catalog, inspect how the theme loads variants. A product-data limit and a storefront rendering limit are different problems.
+
+![Admin — Variant exists? — Record its identifier. Theme — Complete-list assumption? — Inspect the data path. Storefront — Correct item selected? — Verify the cart result](/images/editorial/shopify-high-variant-theme-audit-ai.png)
+
+*Original AdsX illustration.*
+
+## Reproduce one missing combination
+
+Record the product, option values and variant identifier for one combination that exists but fails in the storefront. Also record a nearby combination that works. Use an unpublished theme copy for investigation, and retain the product's publishing and availability state so an unpublished variant is not mistaken for a rendering defect.
+
+For a fictional product with 320 combinations, select a failing case from the part of the catalog that the interface omits. Do not assume that the 251st row in an export matches the theme's ordering. The useful evidence is a specific identifier missing from the data or selection path.
+
+## Search for complete-list assumptions
+
+Shopify documents that Liquid's `product.variants` returns at most 250 variants. Code that depends on receiving the full set can therefore fail for larger products. Its developer guide recommends reviewing uses of `product.variants` and `product | json`, and describes deferred loading and option-value APIs. Not every reference is defective: a check that only asks whether multiple variants exist has a different requirement from a complete selector. [Shopify high-variant theme guidance](https://shopify.dev/docs/storefronts/themes/product-merchandising/variants/support-high-variant-products)
+
+Give an AI coding assistant the actual product section, picker and related JavaScript. Ask it to classify each use as requiring the complete list, requiring only the selected variant, or needing further evidence. The deliverable should identify file locations and explain the dependency, not replace all occurrences mechanically.
+
+## Follow the selected merchandise into the form
+
+Shopify's variant guidance treats direct variant links and selector updates as part of theme support. A visual option label is not enough: the page must represent the selected variant correctly. [Shopify variant selection](https://shopify.dev/docs/storefronts/themes/product-merchandising/variants)
+
+Trace a selection from the input through any data request to the product form and cart. Verify title or option label, price, availability and merchandise identifier. Include an unavailable combination and a direct link to the formerly missing variant. If the code falls back to the first variant, the page can look functional while adding the wrong merchandise.
+
+Ask the assistant for the smallest proposed change compatible with the existing theme. Preserve loading, errors, keyboard behavior and cart integration. A broad picker rewrite creates more review work than an audit finding alone justifies.
+
+## Use a boundary-focused acceptance set
+
+Test a product below the relevant limit, a larger product, and the exact failing case. Include mobile, repeated selections and a request failure. Record expected and observed results separately; do not claim the entire catalog works from one successful click.
+
+This is a theme-code investigation, not an options-app replacement or a claim that Shopify cannot store more than 250 variants. If the native theme already supports the product, a custom modification may be the actual regression.
+
+A hypothetical three-hour audit at $50 per hour costs $150 before repairs. Compare that with provider support and the real scope of an app before promising subscription savings. The prompt is an initial review brief and has not been executed against a merchant theme.
+
+## Try the worksheet prompt
+
+Illustrative prompt, not execution-tested.
+
+> Audit supplied unpublished-theme product sections, variant picker and JavaScript for uses of product.variants and product JSON that require a complete variant list. Classify each dependency and cite file locations. Trace a supplied missing variant identifier through selection, loaded data, form submission and cart. Propose the smallest compatible fix with below-limit, above-limit, direct-link, unavailable, mobile and request-failure checks. Preserve accessibility and errors. Do not publish or claim tests not run.
+
+[Copy the prompt from the merchant library](/resources/shopify-merchant-prompt-library). For related work, see [Shopify Combined Listings vs Variants: Build an AI Catalog Decision Brief](/blog/shopify-combined-listings-vs-variants-ai).
