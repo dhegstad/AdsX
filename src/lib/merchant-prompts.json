@@ -1187,5 +1187,41 @@
     "review": "Operational review brief; no workflow was activated or retried.",
     "guide": "/blog/shopify-flow-manual-retry-ai-checklist",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-high-variant-theme-audit-ai",
+    "title": "Shopify Variants Missing Beyond 250? An AI Theme Audit Brief",
+    "category": "Merchant workflows",
+    "tool": "AI coding assistant in an unpublished theme",
+    "inputs": "Audit supplied unpublished-theme product sections, variant picker and JavaScript for uses of product",
+    "prompt": "Audit supplied unpublished-theme product sections, variant picker and JavaScript for uses of product.variants and product JSON that require a complete variant list. Classify each dependency and cite file locations. Trace a supplied missing variant identifier through selection, loaded data, form submission and cart. Propose the smallest compatible fix with below-limit, above-limit, direct-link, unavailable, mobile and request-failure checks. Preserve accessibility and errors. Do not publish or claim tests not run.",
+    "output": "Find theme code that assumes Liquid returns every variant before rewriting a picker or installing another options app.",
+    "review": "Diagnostic brief; no merchant-theme patch was executed.",
+    "guide": "/blog/shopify-high-variant-theme-audit-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-channel-mapping-sidekick-ai",
+    "title": "Use Sidekick to Map Shopify Channel Data Without Renaming Storefront Products",
+    "category": "Merchant workflows",
+    "tool": "Sidekick with merchant review",
+    "inputs": "Review the supplied eligible sales channel, target field, current source and proposed metafield namespace/key/type",
+    "prompt": "Review the supplied eligible sales channel, target field, current source and proposed metafield namespace/key/type. Propose a mapping using approved facts without changing storefront product titles. Show populated, empty, long and exception examples; flag shared-source effects and missing fallback decisions. Separate unsaved preview, saved feed data and destination approval/display. Do not save rules, publish products or invent missing specifications.",
+    "output": "Review channel field sources, shared metafields and preview limitations before saving an AI-generated mapping rule.",
+    "review": "Illustrative workflow; no live mapping rule was saved.",
+    "guide": "/blog/shopify-channel-mapping-sidekick-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-metaobject-block-blank-ai",
+    "title": "Shopify Metaobject Block Is Blank: An AI Diagnostic Checklist",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Diagnose a blank metaobject block using supplied product/template identifiers, definition, entry status, field values, intended storefront access, metafield reference and block dynamic source",
+    "prompt": "Diagnose a blank metaobject block using supplied product/template identifiers, definition, entry status, field values, intended storefront access, metafield reference and block dynamic source. Trace each connection and separate confirmed findings from missing evidence. Check recent handle changes and field-type compatibility. Propose the smallest correction plus populated/empty/mobile checks. Do not expose unrelated data, invent namespaces, duplicate entries or publish changes.",
+    "output": "Trace entry status, storefront access, references and template connections before rewriting a missing content block.",
+    "review": "Diagnostic workflow; no storefront access settings were changed.",
+    "guide": "/blog/shopify-metaobject-block-blank-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
