@@ -1223,5 +1223,41 @@
     "review": "Diagnostic workflow; no storefront access settings were changed.",
     "guide": "/blog/shopify-metaobject-block-blank-ai",
     "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-flow-schedule-timezone-ai",
+    "title": "Shopify Flow Ran at the Wrong Time? An AI Schedule Review",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review supplied Flow schedule date, named time zone, repeat/end rules, store zone, expected completion and sanitized run evidence",
+    "prompt": "Review supplied Flow schedule date, named time zone, repeat/end rules, store zone, expected completion and sanitized run evidence. Reconcile one dated occurrence with the run-log search window. Separate missing trigger, expired schedule, clock mismatch, empty fetched data and failed action. Flag overlapping runs and uncertain conversions. Produce a minimal correction proposal and future-occurrence check; do not activate, retry or send messages.",
+    "output": "Compare the configured schedule, store time zone and run-log window before recreating an apparently missing automation.",
+    "review": "Illustrative timing review; no workflow was activated.",
+    "guide": "/blog/shopify-flow-schedule-timezone-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-mobile-banner-crop-ai",
+    "title": "Shopify Banner Cropped on Mobile? An AI Review Before Editing the Image",
+    "category": "Merchant workflows",
+    "tool": "Image-capable assistant for review",
+    "inputs": "Review supplied source image dimensions, desktop/mobile screenshots, theme/version, section settings and required visible subject",
+    "prompt": "Review supplied source image dimensions, desktop/mobile screenshots, theme/version, section settings and required visible subject. Separate source composition from section cropping. Propose one native-setting or focal-point check at a time, with theme-support verification and all shared placements reviewed. Recommend a separate asset only with a stated need and original preserved. Do not invent product details, assume separate mobile-image support or claim conversion gains.",
+    "output": "Check section shape, theme support and a shared focal point before buying an image app or generating a replacement.",
+    "review": "Illustrative crop review; no merchant image was edited.",
+    "guide": "/blog/shopify-mobile-banner-crop-ai",
+    "status": "Illustrative prompt — not execution-tested"
+  },
+  {
+    "id": "shopify-shared-metaobject-change-review-ai",
+    "title": "Editing a Shared Shopify Metaobject: Build an AI Impact Checklist",
+    "category": "Merchant workflows",
+    "tool": "Approved analysis assistant",
+    "inputs": "Review supplied metaobject identifier/handle, old and proposed values, intended product scope and known references across resources, templates, dynamic sources and Liquid",
+    "prompt": "Review supplied metaobject identifier/handle, old and proposed values, intended product scope and known references across resources, templates, dynamic sources and Liquid. Separate a shared change from a local exception. Label reference completeness honestly. Produce changed/unchanged acceptance groups, prior-state capture and rollback checks, including mobile and translation review where applicable. Do not edit definitions, rename handles, duplicate entries or publish changes.",
+    "output": "Map known references before changing content reused across products, templates and other storefront placements.",
+    "review": "Fictional content example; reference completeness must be verified.",
+    "guide": "/blog/shopify-shared-metaobject-change-review-ai",
+    "status": "Illustrative prompt — not execution-tested"
   }
 ]
