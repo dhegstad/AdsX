@@ -385,3 +385,7 @@ Published both backlog items (high-variant audit and channel mapping) plus blank
 ## November 27 progress
 
 Published schedule time-zone review, mobile banner crop review, and shared metaobject change review. Library now has 107 prompts. Research queue: evaluate scheduled Flow Get-data query coverage using [scheduled trigger documentation](https://help.shopify.com/en/manual/shopify-flow/reference/triggers/scheduled-time), checking existing Flow guides before creating a distinct article; investigate shared image replacement scope using [theme image documentation](https://help.shopify.com/en/manual/online-store/images/theme-images), extending the crop guide if the intent overlaps. These are researched candidates, not evidence of search demand. Keep recent comparisons stable and prioritize observed query gaps.
+
+## November 28 progress
+
+Published Flow Get-data coverage, translation source-change maintenance and TinySEO versus Crush costs. Library now has 110 prompts. Researched candidates: changing a default store language and preserving translations, plus localized URL-slug change review, using [official language management documentation](https://help.shopify.com/en/manual/international/languages/manage-languages). The documentation describes destructive default-language effects and localized URL behavior; check existing migration and redirect guides before selecting a distinct new intent. Keep recently published comparisons stable. TinySEO partner enrollment remains a separate account/terms task, not a monetization result.
